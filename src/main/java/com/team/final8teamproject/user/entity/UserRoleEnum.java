@@ -1,9 +1,9 @@
 package com.team.final8teamproject.user.entity;
 
 public enum UserRoleEnum {
-    BUYER(Authority.BUYER),  // 사용자 권한
-    SELLER(Authority.SELLER),  // 판매자 권한
-    ADMIN(Authority.ADMIN);  // 관리자 권한
+    OWNER(Authority.OWNER),  // 사업자 권한
+    MEMBER(Authority.MEMBER),  // 회원 권한
+    MANAGER(Authority.MANAGER);  // 관리자 권한
     private final String authority;
     UserRoleEnum(String authority) {
         this.authority = authority;
@@ -12,8 +12,8 @@ public enum UserRoleEnum {
         return this.authority;
     }
     public static class Authority {
-        public static final String BUYER  = "ROLE_BUYER";
-        public static final String SELLER = "ROLE_SELLER";
-        public static final String ADMIN = "ROLE_ADMIN";
+        public static final String OWNER  = "ROLE_OWNER";
+        public static final String MEMBER = "ROLE_MEMBER";
+        public static final String MANAGER = "ROLE_MANAGER";
     }
 }
