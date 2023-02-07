@@ -28,5 +28,11 @@ public class User extends Timestaped {
     @Column(nullable = false)
     private String email;
 
+    public User(String username, String password, UserRoleEnum role, String nickName){
+        this.username =username;
+        this.password = password;
+        this.role = role;
+        this.nickName = nickName;
+    }
 
 }
