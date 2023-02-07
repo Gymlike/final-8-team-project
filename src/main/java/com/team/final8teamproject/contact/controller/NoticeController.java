@@ -26,7 +26,9 @@ public class NoticeController {
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         noticeService.saveNotice(noticeRequest, userDetails.getUser().getId());
         return ResponseEntity.ok("등록완료");
-//관리자 공지사항 수정
+            //new ResponseEntity<>("등록완료",HttpStatus.CREATED);
+
+
 //관리자 공지사항 삭제
     }
 }
