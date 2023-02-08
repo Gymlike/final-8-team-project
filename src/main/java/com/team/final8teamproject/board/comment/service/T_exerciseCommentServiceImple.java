@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.comment.service;
 
+import com.team.final8teamproject.board.comment.dto.CreatT_exerciseCommentRequestDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
 import com.team.final8teamproject.share.exception.CustomException;
@@ -23,7 +24,7 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
     @Override
     @Transactional
     public ResponseEntity<String> createComment(String comment, Long boardId, String userName) {
-//        t_exerciseService.findT_exerciseBoardById(boardId);//별로다..
+//        t_exerciseService.findT_exerciseBoardById(boardId);
         T_exerciseComment t_exerciseComment = new T_exerciseComment(comment,userName,boardId);
         commentRepository.save(t_exerciseComment);
         return new ResponseEntity<>("댓글 작성완료", HttpStatus.OK);
@@ -49,6 +50,21 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
     @Override
     public void deleteByBoardId(Long boardId) {
         commentRepository.deleteByBoardId(boardId);
+    }
+
+    @Override
+    public ResponseEntity<String> updateComment(CreatT_exerciseCommentRequestDTO requestDto, User user, Long commentId) {
+        T_exerciseComment comment =  commentRepository.findById(commentId).orElseThrow(()-> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
+
+        String username = user.getUsername();
+
+        String commentContent = requestDto.getComment();
+
+        if(comment.isWriter(username)){
+            comment.update(commentContent);
+            return new ResponseEntity<>("댓글 수정완료",HttpStatus.OK);
+        }
+        throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
     }
 
 }

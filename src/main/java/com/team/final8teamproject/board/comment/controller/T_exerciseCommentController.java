@@ -27,4 +27,11 @@ public class T_exerciseCommentController {
     public ResponseEntity<String> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
         return tExerciseCommentService.deleteComment(userDetails.getUser(), commentId);
     }
+
+    //댓글수정
+    @PutMapping("/{boardId}/comment/{commentId}")
+    public ResponseEntity<String> updateComment(@RequestBody CreatT_exerciseCommentRequestDTO requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
+
+        return tExerciseCommentService.updateComment(requestDto, userDetails.getUser(), commentId);
+    }
 }

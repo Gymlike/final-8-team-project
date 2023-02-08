@@ -130,8 +130,8 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     public ResponseEntity<String> editSalePost(Long boardId,
                                                CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
                                                User user,
-                                               MultipartFile file) throws  IOException {
-
+                                               MultipartFile file) throws  IOException
+    {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         if(t_exercise.isWriter(user.getId())){
