@@ -133,4 +133,9 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         }throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
     }
 
+    @Override
+    public T_exercise findT_exerciseBoardById(Long id) {
+        return t_exerciseRepository.findById(id).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+    }
+
 }

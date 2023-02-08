@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.service;
 
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface T_exerciseService {
     @Transactional
@@ -22,4 +24,7 @@ public interface T_exerciseService {
     ResponseEntity<String> deleteSalePost(Long boardId, User user);
 
     ResponseEntity<String> editSalePost(Long boardId, CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
+
+
+    T_exercise findT_exerciseBoardById(Long id);
 }
