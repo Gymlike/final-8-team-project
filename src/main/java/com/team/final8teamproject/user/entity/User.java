@@ -39,4 +39,11 @@ public class User extends Timestamped {
         this.email = email;
     }
 
+    public boolean isUserId(Long userid) {
+        return this.id.equals(userid);
+    }
+
+    public String getWriterName() {
+        return this.username;
+    }
 }
