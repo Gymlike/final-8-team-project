@@ -2,6 +2,8 @@ package com.team.final8teamproject.board.comment.dto;
 
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
 

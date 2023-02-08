@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class CreatT_exerciseCommentRequestDTO {
-    private String comment;
+    private final String comment;
+    public CreatT_exerciseCommentRequestDTO(String comment) {
+        this.comment = comment;
+    }
 }
