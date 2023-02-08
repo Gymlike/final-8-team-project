@@ -64,6 +64,19 @@ public class T_exerciseController {
         return t_exerciseService.deleteSalePost(boardId,userDetails.getUser()); //인증은 앞단에서..했다고 가정하니까....
     }
 
+
+    //오운완 게시물 수정
+    @PutMapping("/{boardId}")
+    public ResponseEntity<String> editSalePost(@PathVariable Long boardId,
+                                                      @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
+                                                      @RequestPart("file") MultipartFile file,
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        User user = userDetails.getUser();
+
+        return t_exerciseService.editSalePost(boardId,creatTExerciseBordRequestDTO,user,file);
+    }
+
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC:Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
@@ -72,7 +85,4 @@ public class T_exerciseController {
         }
         return PageRequest.of(page -1, size,sort);
     }
-
-
-
 }

@@ -1,10 +1,12 @@
 package com.team.final8teamproject.board.entity;
 
+import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.share.TimeStamp;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Getter
@@ -41,5 +43,12 @@ public class T_exercise extends TimeStamp {
 
         return this.user.isUserId(userid);
 
+    }
+
+    public void editSalePost(CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,String filename,String filepath) {
+        this.title = creatTExerciseBordRequestDTO.getTitle();
+        this.content = creatTExerciseBordRequestDTO.getContent();
+        this.filename = filename;
+        this.filepath = filepath;
     }
 }
