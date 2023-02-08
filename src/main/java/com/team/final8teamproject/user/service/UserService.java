@@ -9,6 +9,7 @@ import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.RefreshTokenRepository;
 import com.team.final8teamproject.user.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +35,8 @@ public class UserService {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String nickName = requestDto.getNickName();
+        String email = requestDto.getEmail();
+        String phoneNumber =requestDto.getPhoneNumber();
 
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
@@ -46,7 +49,11 @@ public class UserService {
             }
             role = UserRoleEnum.MANAGER;
         }
-        User user = new User(username, password, role, nickName);
+        User user = User.builder()
+                .nickName(nickName).email(email)
+                .phoneNumber(phoneNumber).password(password)
+                .username(username).role(role)
+                .build();
         userRepository.save(user);
         return new MessageResponseDto("회원가입 성공");
     }
@@ -64,8 +71,8 @@ public class UserService {
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
         String refreshToken = (String)redisUtil.get("RT:" +user.getUsername());
-        if(ObjectUtils.isEmpty(refreshToken)){
-            throw new IllegalArgumentException("잘못된 요청입니다.");
+        if(!ObjectUtils.isEmpty(refreshToken)){
+            throw new IllegalArgumentException("이미 로그인 되어 있습니다..");
         }
         LoginResponseDto loginResponseDto =jwtUtil.createToken(user.getUsername(), user.getRole());
 
@@ -77,10 +84,11 @@ public class UserService {
     public String logout(String accessToken, User users) {
 
         // refreshToken 테이블의 refreshToken 삭제
-        refreshTokenRepository.deleteRefreshTokenByEmail(users.getEmail());
+        redisUtil.delete("RT:" + users.getUsername());
+//        refreshTokenRepository.deleteRefreshTokenByEmail(users.getEmail());
 
         // 레디스에 accessToken 사용못하도록 등록
-        redisUtil.setBlackList(accessToken, "accessToken", 5L);
+        redisUtil.setBlackList("RT:"+accessToken, "accessToken", 5L);
 
         return "로그아웃 완료";
     }
