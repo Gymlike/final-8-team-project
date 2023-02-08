@@ -4,6 +4,8 @@ package com.team.final8teamproject.board.service;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.reository.T_exerciseRepository;
+import com.team.final8teamproject.exception.CustomException;
+import com.team.final8teamproject.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -72,22 +74,28 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
      */
     @Override
     public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
-        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
         return new T_exerciseBoardResponseDTO(t_exercise);
     }
 
 
+    /**
+     * 작성자만 오운완 게시글 삭제가능!
+     * @param boardId 게시글아이디ㅣ
+     * @param user  삭제요청을한 유저
+     * @return  status
+     */
     @Override
     @Transactional
     public ResponseEntity<String> deleteSalePost(Long boardId, User user) {
-        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new IllegalArgumentException("게시물 없음"));
-         //()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST) 예외처리..!
+        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+
 
         if (t_exercise.getUser().getId().equals(user.getId())) {
             t_exerciseRepository.deleteById(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
         } else {
-            throw new IllegalStateException("사용자 불일치");
+            throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
                     
         }
     }
