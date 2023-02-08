@@ -12,7 +12,21 @@ import lombok.NoArgsConstructor;
 public class T_exerciseCommentReply extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COMMENT_ID")
+    @Column(name = "COMMENT_REPLY_ID")
     private Long id;
 
+    @Column(nullable = false)
+    private String comment;
+
+    @Column(nullable = false)
+    private String username;
+
+
+    private Long commentId;
+
+    public T_exerciseCommentReply(String comment, String username, Long commentId) {
+        this.comment = comment;
+        this.username = username;
+        this.commentId = commentId;
+    }
 }
