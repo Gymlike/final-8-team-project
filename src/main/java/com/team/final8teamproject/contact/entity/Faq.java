@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.entity;
 
+import com.team.final8teamproject.user.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Faq {
+public class Faq extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

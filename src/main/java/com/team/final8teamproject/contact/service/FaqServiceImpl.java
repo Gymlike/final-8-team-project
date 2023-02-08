@@ -6,6 +6,8 @@ import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.entity.Faq;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -73,3 +75,6 @@ public class FaqServiceImpl implements FaqService {
   }
 
 }
+
+
+

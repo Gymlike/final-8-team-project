@@ -2,6 +2,7 @@ package com.team.final8teamproject.contact.entity;
 
 import com.team.final8teamproject.contact.dto.NoticeRequest;
 
+import com.team.final8teamproject.user.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,11 +13,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Notice {
+public class Notice extends Timestamped {
 
-    /**
-     * 컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

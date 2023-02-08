@@ -29,6 +29,8 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String email;
 
+
+
     @Builder
     public User(String username, String password, UserRoleEnum role, String nickName, String phoneNumber, String email){
         this.username =username;
