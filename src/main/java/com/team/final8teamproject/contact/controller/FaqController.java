@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/faq")
 @RestController
-public class FaqController {
+public class FaqController {// todo  메서드 마다 권한 설정
 
   private final FaqServiceImpl faqServiceImpl;
 
@@ -34,8 +34,8 @@ public class FaqController {
     return ResponseEntity.ok("등록 완료");
   }
 
-  //todo 정렬기준 디폴트값 : direction적용되는지 확인,작성날짜  구현 이렇게 맞는지 확인하기!!
-  @GetMapping("")
+//todo 풀받은 후  웹컨피그 . permitAll()/api/faq/check/**
+  @GetMapping("/check")
   public List<FaqResponse> getFaqList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
@@ -44,22 +44,12 @@ public class FaqController {
     return faqServiceImpl.getFaqList(page, size, direction, properties);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/check/{id}")
   public FaqResponse getSelectedFaq(@PathVariable Long id) {
     return faqServiceImpl.getSelectedFaq(id);
   }
 
-
-  //todo 권한 :관리자
-  @DeleteMapping("/{id}")
-  public ResponseEntity deleteFaq(@PathVariable Long id,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    faqServiceImpl.deleteFaq(id, userDetails.getUser().getId());
-    return ResponseEntity.ok("삭제 완료");
-  }
-
-  //todo 검색 기능  ( 제목, 내용  작성자필요한지!!?? 물어보기 우선 작성자는 미구현 )
-  @GetMapping("/keyword")
+  @GetMapping("/check/keyword")
   public List<FaqResponse> searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -69,5 +59,15 @@ public class FaqController {
     return faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
 
   }
+  //todo 권한 :관리자
+  @DeleteMapping("/{id}")
+  public ResponseEntity deleteFaq(@PathVariable Long id,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    faqServiceImpl.deleteFaq(id, userDetails.getUser().getId());
+    return ResponseEntity.ok("삭제 완료");
+  }
+
+  //todo 검색 기능  ( 제목, 내용  작성자필요한지!!?? 물어보기 우선 작성자는 미구현 )
+
 
 }

@@ -22,15 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-//문의하기
-//1. 회원(유저), 사업자 - 문의글 등록 / 수정 /삭제
-//2. 관리자 - 문의 답변 등록/ 수정 /삭제 / 고객문의글 삭제 기능
+
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
-public class InquiryController {
+public class InquiryController {// todo  메서드 마다 권한 설정
 
-  //todo 페이징 처리  // 키워드 검색?
   private final InquiryServiceImpl inquiryServiceImpl;
 
   @PostMapping("/user/contact/inquiry")
@@ -39,7 +36,8 @@ public class InquiryController {
     inquiryServiceImpl.createInquiry(inquiryRequest, userDetails.getUser().getId());
     return ResponseEntity.ok("등록 완료");
   }
- //todo 조회는 관리자, 유저, 사업자 다 가능
+
+//todo 풀받은 후  웹컨피그 . permitAll()/api/contact/inquiry/**
   @GetMapping("/contact/inquiry")
   public List<InquiryResponse>  getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -49,8 +47,24 @@ public class InquiryController {
     return inquiryServiceImpl.getInquiry(page,size,direction,properties);
   }
 
+  @GetMapping("/contact/inquiry/{id}")
+  public InquiryResponse getSelectedInquiry(@PathVariable Long  id){
+    return inquiryServiceImpl.getSelectedInquiry(id);
+  }
 
 
+
+  @GetMapping("/contact/inquiry")
+  public List<InquiryResponse> searchByKeyword(
+      @RequestParam(value = "keyword", required = false) String keyword,
+      @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+      @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
+      @RequestParam(value = "properties", required = false, defaultValue = "createAt") String properties) {
+    return inquiryServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+  }
+
+  //todo 모든 put매핑에 , 입력값만 최신화 되도록 하기 patch 안됨
   @PutMapping("/user/contact/inquiry/{id}")
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -65,23 +79,13 @@ public class InquiryController {
     inquiryServiceImpl.deleteInquiry(id,userDetails.getUser().getId());
     return ResponseEntity.ok("삭제 완료");
   }
-  //권한!
-//  @DeleteMapping("/manager/contact/inquiry/{id}")
-//  public ResponseEntity deleteInquiryM(@PathVariable Long id,
-//      @AuthenticationPrincipal UserDetailsImpl userDetails){
-//    inquiryServiceImpl.deleteManger(id,userDetails.getUser().getId());
-//    return ResponseEntity.ok("삭제 완료");
-//  }
-
-  //todo  키워드 검색으로 조회
-  @GetMapping("/contact/inquiry/")
-  public List<InquiryResponse> searchByKeyword(
-      @RequestParam(value = "keyword", required = false) String keyword,
-      @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-      @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
-      @RequestParam(value = "properties", required = false, defaultValue = "createAt") String properties) {
-    return inquiryServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+  //todo 권한 : 관리자만
+  // 관리자의 문의사항 삭제 기능
+  @DeleteMapping("/manager/contact/inquiry/{id}")
+  public ResponseEntity deleteManager(@PathVariable Long id){
+    inquiryServiceImpl.deleteManager(id);
+    return ResponseEntity.ok("삭제 완료");
   }
+
 
 }

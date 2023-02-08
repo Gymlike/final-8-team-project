@@ -21,6 +21,8 @@ public class InquiryServiceImpl implements InquiryService {
 
   private final InquiryRepository inquiryRepository;
 
+
+
   @Transactional
   @Override
   public void createInquiry(InquiryRequest inquiryRequest, Long userId) {
@@ -28,12 +30,12 @@ public class InquiryServiceImpl implements InquiryService {
     inquiryRepository.save(inquiry);
   }
 
-  // todo 조회기능 페이징 처리
+
   @Transactional
   @Override
   public void updateInquiry(Long id, Long userId, InquiryRequest inquiryRequest) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다. ")
+        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
     );
     if (inquiry.getUserId().equals(userId)) {
       inquiry.update(inquiryRequest);
@@ -53,6 +55,16 @@ public class InquiryServiceImpl implements InquiryService {
         .toList();
    return inquiryResponses;
   }
+
+  @Transactional(readOnly = true)
+  @Override
+  public  InquiryResponse getSelectedInquiry(Long id) {
+    Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
+        ()-> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+    );
+    return new InquiryResponse(inquiry);
+  }
+
   @Transactional(readOnly = true)
   @Override
   public List<InquiryResponse> searchByKeyword(String keyword, int page, int size, Direction direction,
@@ -78,18 +90,16 @@ public class InquiryServiceImpl implements InquiryService {
       throw new IllegalArgumentException("접근 할 수  있는 권한이 없습니다.");
     }
   }
-//
+
+  //todo 관리자따로, 유저따로 삭제 가능하게 하기
+
   @Transactional
   @Override
   public void deleteManager(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("해당 문의 글이 존재 하지 않습니다.")
     );
-    if (inquiry.getUserId().equals(userIdOrManagerId)) {
       inquiryRepository.delete(inquiry);
-    } else {
-      throw new IllegalArgumentException("접근 할 수  있는 권한이 없습니다.");
-    }
   }
 }
 
