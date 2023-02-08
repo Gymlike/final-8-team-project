@@ -1,10 +1,12 @@
 package com.team.final8teamproject.board.service;
 
 
+import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.reository.T_exerciseRepository;
 import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,4 +48,15 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
     }
+
+    @Override
+    public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search) {
+        List<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+
+        return tExerciseList.stream()
+                .map(T_exerciseBoardResponseDTO::new)
+                .toList();
+    }
+
+
 }
