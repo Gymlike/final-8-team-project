@@ -70,7 +70,7 @@ public class T_exerciseController {
     public ResponseEntity<String> editSalePost(@PathVariable Long boardId,
                                                       @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @RequestPart("file") MultipartFile file,
-                                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
         User user = userDetails.getUser();
 
