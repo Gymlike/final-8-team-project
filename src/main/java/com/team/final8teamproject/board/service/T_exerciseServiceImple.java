@@ -91,7 +91,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
 
-        if (t_exercise.getUser().getId().equals(user.getId())) {
+        if (t_exercise.isWriter(user.getId())) {
             t_exerciseRepository.deleteById(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
         } else {

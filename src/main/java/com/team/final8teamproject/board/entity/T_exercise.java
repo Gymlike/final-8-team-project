@@ -36,4 +36,10 @@ public class T_exercise extends TimeStamp {
         this.filepath = filepath;
         this.user = user;
     }
+
+    public boolean isWriter(Long userid) {
+
+        return this.user.isUserId(userid);
+
+    }
 }

@@ -42,4 +42,7 @@ public class User extends Timestamped {
         this.email = email;
     }
 
+    public boolean isUserId(Long userid) {
+        return this.id.equals(userid);
+    }
 }
