@@ -4,7 +4,6 @@ import com.team.final8teamproject.board.comment.dto.CreatT_exerciseCommentReques
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
-import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -48,8 +47,8 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
     }
 
     @Override
-    public List<T_exerciseComment> findCommentByUserName(String userName){
-        return commentRepository.findByUsername(userName);
+    public List<T_exerciseComment> findCommentByBoardId(Long boardId){
+        return commentRepository.findByBoardId(boardId);
     }
 
     @Override

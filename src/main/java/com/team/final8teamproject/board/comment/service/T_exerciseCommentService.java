@@ -12,7 +12,9 @@ public interface T_exerciseCommentService {
 
     ResponseEntity<String> deleteComment(User user, Long commentId);
 
-    List<T_exerciseComment> findCommentByUserName(String userName);
+//    List<T_exerciseComment> findCommentByUserName(String userName);
+
+    List<T_exerciseComment> findCommentByBoardId(Long boardId);
 
     void deleteByBoardId(Long boardId);
 

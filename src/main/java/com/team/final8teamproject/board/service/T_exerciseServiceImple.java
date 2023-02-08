@@ -83,9 +83,8 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     @Override
     public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-        String username = t_exercise.getWriterName();
 
-        List<T_exerciseComment> comments = tExerciseCommentService.findCommentByUserName(username);
+        List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
 
         List<CommentResponseDTO> commentFilter = comments.stream().map(CommentResponseDTO::new).toList();
 
