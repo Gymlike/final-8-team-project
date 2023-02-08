@@ -5,6 +5,9 @@ import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
+import com.team.final8teamproject.comment.dto.CommentResponseDTO;
+import com.team.final8teamproject.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.comment.repository.T_exerciseCommentRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -26,6 +29,8 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class T_exerciseServiceImple  implements  T_exerciseService{
     private final T_exerciseRepository t_exerciseRepository;
+
+    private final T_exerciseCommentRepository tExerciseCommentRepository;
 
     /**
      * 오운완 게시물 생성
@@ -70,13 +75,20 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
 
     /**
      * 오운완 게시물 하나 조회 ~ 전체 조회랑 반환 내용은 동일함... 프론트에서 취사선택..
+     * 조회시 댓글조회도 같이 됨 !
      * @param boardId  보드고유아이디
      * @return DTO에 담아서 반환
      */
     @Override
     public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-        return new T_exerciseBoardResponseDTO(t_exercise);
+        String username = t_exercise.getWriterName();
+
+        List<T_exerciseComment> comments = tExerciseCommentRepository.findByUsername(username);
+
+        List<CommentResponseDTO> commentFilter = comments.stream().map(CommentResponseDTO::new).toList();
+
+        return new T_exerciseBoardResponseDTO(t_exercise,commentFilter);
     }
 
 
