@@ -8,4 +8,6 @@ import java.util.List;
 public interface T_exerciseCommentRepository extends JpaRepository<T_exerciseComment,Long> {
 
     List<T_exerciseComment> findByUsername(String username);
+
+    void deleteByBoardId(Long boardId);
 }
