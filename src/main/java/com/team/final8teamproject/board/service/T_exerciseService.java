@@ -17,4 +17,6 @@ public interface T_exerciseService {
     List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search);
 
     T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
+
+    ResponseEntity<String> deleteSalePost(Long boardId, User user);
 }

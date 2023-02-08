@@ -77,4 +77,20 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     }
 
 
+    @Override
+    @Transactional
+    public ResponseEntity<String> deleteSalePost(Long boardId, User user) {
+        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new IllegalArgumentException("게시물 없음"));
+         //()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST) 예외처리..!
+
+        if (t_exercise.getUser().getId().equals(user.getId())) {
+            t_exerciseRepository.deleteById(boardId);
+            return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
+        } else {
+            throw new IllegalStateException("사용자 불일치")
+                    
+        }
+    }
+
+
 }
