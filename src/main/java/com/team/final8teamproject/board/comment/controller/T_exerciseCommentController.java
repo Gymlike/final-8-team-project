@@ -9,7 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/t-exercise")
+@RequestMapping("/t-exercise")
 @RequiredArgsConstructor
 public class T_exerciseCommentController {
     private final T_exerciseCommentService tExerciseCommentService;

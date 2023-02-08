@@ -3,6 +3,8 @@ package com.team.final8teamproject.board.comment.service;
 import com.team.final8teamproject.board.comment.dto.CreatT_exerciseCommentRequestDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
+import com.team.final8teamproject.board.repository.T_exerciseRepository;
+import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -19,15 +21,18 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
 
-//    private final T_exerciseService t_exerciseService;
+//   private final T_exerciseService t_exerciseService;
+    private final T_exerciseRepository tExerciseRepository;
     private final T_exerciseCommentRepository commentRepository;
     @Override
     @Transactional
     public ResponseEntity<String> createComment(String comment, Long boardId, String userName) {
 //        t_exerciseService.findT_exerciseBoardById(boardId);
-        T_exerciseComment t_exerciseComment = new T_exerciseComment(comment,userName,boardId);
-        commentRepository.save(t_exerciseComment);
-        return new ResponseEntity<>("댓글 작성완료", HttpStatus.OK);
+       if (tExerciseRepository.existsById(boardId)) {
+           T_exerciseComment t_exerciseComment = new T_exerciseComment(comment, userName, boardId);
+           commentRepository.save(t_exerciseComment);
+           return new ResponseEntity<>("댓글 작성완료", HttpStatus.OK);
+       }throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     }
 
     @Override
