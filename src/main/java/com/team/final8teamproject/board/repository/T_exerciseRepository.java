@@ -1,4 +1,4 @@
-package com.team.final8teamproject.board.reository;
+package com.team.final8teamproject.board.repository;
 
 import com.team.final8teamproject.board.entity.T_exercise;
 import org.springframework.data.domain.Pageable;

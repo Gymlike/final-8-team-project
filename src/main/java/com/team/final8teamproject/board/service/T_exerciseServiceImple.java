@@ -4,7 +4,7 @@ package com.team.final8teamproject.board.service;
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
-import com.team.final8teamproject.board.reository.T_exerciseRepository;
+import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;

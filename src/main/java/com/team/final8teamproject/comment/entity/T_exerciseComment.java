@@ -1,4 +1,4 @@
 package com.team.final8teamproject.comment.entity;
 
-public class Comment {
+public class T_exerciseComment {
 }
