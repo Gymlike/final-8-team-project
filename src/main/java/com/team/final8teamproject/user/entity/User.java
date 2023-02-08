@@ -18,9 +18,6 @@ public class User extends Timestamped {
     private String username;
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
-    private String passwordValr;
     private String image;
     @Column(nullable = false)
     private String nickName;

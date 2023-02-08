@@ -37,7 +37,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 jwtExceptionHandler(response, "Invalid JWT signature", HttpStatus.BAD_REQUEST.value());
                 return;
             }
-            String isLogout = (String)redisUtil.getBlackList("RT:"+token);
+            String isLogout = (String)redisUtil.getBlackList(token);
+            log.info(isLogout);
             if(ObjectUtils.isEmpty(isLogout)){
                 Claims info = jwtUtil.getUserInfoFromToken(token);
                 setAuthentication(info.getSubject());
