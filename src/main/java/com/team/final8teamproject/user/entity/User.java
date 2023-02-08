@@ -18,9 +18,6 @@ public class User extends Timestamped {
     private String username;
     @Column(nullable = false)
     private String password;
-
- /*   @Column(nullable = false)
-    private String passwordValr;*/
     private String image;
     @Column(nullable = false)
     private String nickName;
@@ -42,11 +39,4 @@ public class User extends Timestamped {
         this.email = email;
     }
 
-    public boolean isUserId(Long userid) {
-        return this.id.equals(userid);
-    }
-
-    public String getWriterName() {
-        return this.username;
-    }
 }

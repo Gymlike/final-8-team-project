@@ -70,15 +70,14 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())){
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
-        String refreshToken = (String)redisUtil.get("RT:" +user.getUsername());
-        if(!ObjectUtils.isEmpty(refreshToken)){
-            throw new IllegalArgumentException("이미 로그인 되어 있습니다..");
-        }
-        LoginResponseDto loginResponseDto =jwtUtil.createToken(user.getUsername(), user.getRole());
+//        String refreshToken = (String)redisUtil.get("RT:" +user.getUsername());
+//        if(!ObjectUtils.isEmpty(refreshToken)){
+//            throw new IllegalArgumentException("이미 로그인 되어 있습니다..");
+//        }
+//        LoginResponseDto loginResponseDto =jwtUtil.createToken(user.getUsername(), user.getRole());
+//        redisUtil.set("RT:" +user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
 
-        redisUtil.set("RT:" +user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
-
-        return loginResponseDto;
+        return jwtUtil.createToken(user.getUsername(), user.getRole());
     }
 
     public String logout(String accessToken, User users) {
