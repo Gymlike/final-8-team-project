@@ -52,6 +52,13 @@ public class T_exerciseController {
         return t_exerciseService.getAllT_exerciseBoards(pageRequest,search);
     }
 
+    //오운완 선택 게시물 조회
+    @GetMapping("/{boardId}")
+    public T_exerciseBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId){
+
+        return t_exerciseService.getT_exerciseBoard(boardId);
+    }
+
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC:Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);

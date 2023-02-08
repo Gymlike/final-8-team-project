@@ -49,6 +49,13 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
     }
 
+    
+    /**
+     * 오운완 전체 게시물 조회 페이징 + 검색 처리
+     * @param pageRequest 페이징 처리 디폴트값은 컨트롤러 단서 확인
+     * @param search 게시물 검색시 들어갈 값.. 디폴트값을 ""로해서 입력x시 전체 게시물 검색
+     * @return 리스트로 반환
+     */
     @Override
     public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search) {
         List<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
@@ -56,6 +63,17 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         return tExerciseList.stream()
                 .map(T_exerciseBoardResponseDTO::new)
                 .toList();
+    }
+
+    /**
+     * 오운완 게시물 하나 조회 ~ 전체 조회랑 반환 내용은 동일함... 프론트에서 취사선택..
+     * @param boardId  보드고유아이디
+     * @return DTO에 담아서 반환
+     */
+    @Override
+    public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
+        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+        return new T_exerciseBoardResponseDTO(t_exercise);
     }
 
 
