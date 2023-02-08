@@ -9,7 +9,6 @@ import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.RefreshTokenRepository;
 import com.team.final8teamproject.user.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,13 +41,7 @@ public class UserService {
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
-        UserRoleEnum role = UserRoleEnum.OWNER;
-        if (requestDto.isAdmin()) {
-            if (!requestDto.getAdminToken().equals(MANAGER_TOKEN)) {
-                throw new SecurityException("관리자 암호가 틀렸습니다.");
-            }
-            role = UserRoleEnum.MANAGER;
-        }
+        UserRoleEnum role = UserRoleEnum.MEMBER;
         User user = User.builder()
                 .nickName(nickName).email(email)
                 .phoneNumber(phoneNumber).password(password)
@@ -70,25 +63,24 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())){
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
-//        String refreshToken = (String)redisUtil.get("RT:" +user.getUsername());
-//        if(!ObjectUtils.isEmpty(refreshToken)){
-//            throw new IllegalArgumentException("이미 로그인 되어 있습니다..");
-//        }
-//        LoginResponseDto loginResponseDto =jwtUtil.createToken(user.getUsername(), user.getRole());
-//        redisUtil.set("RT:" +user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+        LoginResponseDto loginResponseDto =jwtUtil.createToken(user.getUsername(), user.getRole());
+        redisUtil.setRefreshToken("RT:" +user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
 
-        return jwtUtil.createToken(user.getUsername(), user.getRole());
+        return loginResponseDto;
     }
 
-    public String logout(String accessToken, User users) {
+    @Transactional
+    public String logout(String accessToken, String username) {
 
-        // refreshToken 테이블의 refreshToken 삭제
-        redisUtil.delete("RT:" + users.getUsername());
-//        refreshTokenRepository.deleteRefreshTokenByEmail(users.getEmail());
-
+        if(redisUtil.getRefreshToken(accessToken) != null){
+            redisUtil.deleteRefreshToken(username);
+        }
         // 레디스에 accessToken 사용못하도록 등록
-        redisUtil.setBlackList("RT:"+accessToken, "accessToken", 5L);
+        Long expiration = jwtUtil.getExpiration(accessToken);
+        redisUtil.setBlackList(accessToken, "logout", expiration);
 
         return "로그아웃 완료";
     }
+
+
 }

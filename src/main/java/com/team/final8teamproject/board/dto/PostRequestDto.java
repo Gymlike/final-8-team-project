@@ -1,4 +1,4 @@
-package com.team.final8teamproject.user.dto;
+package com.team.final8teamproject.board.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

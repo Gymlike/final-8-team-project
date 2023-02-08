@@ -1,10 +1,10 @@
-package com.team.final8teamproject.user.service;
+package com.team.final8teamproject.board.service;
 
 import com.team.final8teamproject.user.dto.MessageResponseDto;
-import com.team.final8teamproject.user.dto.PostRequestDto;
-import com.team.final8teamproject.user.entity.Post;
+import com.team.final8teamproject.board.dto.PostRequestDto;
+import com.team.final8teamproject.board.entity.Post;
 import com.team.final8teamproject.user.entity.User;
-import com.team.final8teamproject.user.repository.PostRepository;
+import com.team.final8teamproject.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

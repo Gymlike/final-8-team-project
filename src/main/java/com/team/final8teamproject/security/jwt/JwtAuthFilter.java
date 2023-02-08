@@ -24,7 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
-//    private final RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -36,6 +36,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 //                throw new SecurityException("토큰이 유효하지 않습니다");
                 jwtExceptionHandler(response, "Invalid JWT signature", HttpStatus.BAD_REQUEST.value());
                 return;
+            }
+            boolean refreshToken = redisUtil.hasKeyBlackList(token);
+            if(refreshToken){
+                throw new IllegalArgumentException("Please Login again.");
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
             setAuthentication(info.getSubject());
@@ -73,15 +77,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-    }
-    //token시간 초기화
-    public void deleteAuthentication(String username){
-        SecurityContext context = SecurityContextHolder.getContext();
-        //jwtUtil에서  username에 알맞은 User객체를 가져와서 Authentication에 넣어준다.
-        Authentication authentication = jwtUtil.createAuthentication(username);
-        //그리고 빈 컨텍스트에 가져온 데이터(User객체와, username) authentication변수를 넣어주고
-        context.setAuthentication(authentication);
-        //누가 인증하였는지에 대한 정보들을 저장한다.
-        SecurityContextHolder.setContext(context);
     }
 }

@@ -3,6 +3,7 @@ package com.team.final8teamproject.user.controller;
 
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
     @PostMapping("/signup")
     public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return userService.signUp(signupRequestDto);
@@ -31,9 +33,11 @@ public class UserController {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
         return new MessageResponseDto("로그인 되었습니다.");
     }
+    //3. 로그아웃
     @DeleteMapping("/logout")
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
-    , @RequestBody TokenRequestDto tokenRequestDto){
-        return new MessageResponseDto(userService.logout(tokenRequestDto.getAccessToken(), userDetails.getUser()));
+    , HttpServletRequest request){
+        String accessToken = jwtUtil.resolveToken(request);
+        return new MessageResponseDto(userService.logout(accessToken, userDetails.getUsername()));
     }
 }

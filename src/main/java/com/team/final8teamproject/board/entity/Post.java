@@ -1,12 +1,12 @@
-package com.team.final8teamproject.user.entity;
+package com.team.final8teamproject.board.entity;
 
-import com.team.final8teamproject.user.dto.PostRequestDto;
+import com.team.final8teamproject.board.dto.PostRequestDto;
+import com.team.final8teamproject.user.entity.Timestamped;
+import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
 
 @Entity
 @Getter
@@ -20,11 +20,9 @@ public class Post extends Timestamped {
 
     @Column(nullable = false)
     private String title;
-
     @Column(nullable = false)
 //    @ManyToOne
     private String username;
-
 
     private int likeCount;
 

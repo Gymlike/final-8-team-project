@@ -1,8 +1,8 @@
-package com.team.final8teamproject.user.controller;
+package com.team.final8teamproject.board.controller;
 
 import com.team.final8teamproject.user.dto.MessageResponseDto;
-import com.team.final8teamproject.user.dto.PostRequestDto;
-import com.team.final8teamproject.user.service.PostService;
+import com.team.final8teamproject.board.dto.PostRequestDto;
+import com.team.final8teamproject.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
