@@ -23,6 +23,8 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
 //   private final T_exerciseService t_exerciseService;
     private final T_exerciseRepository tExerciseRepository;
     private final T_exerciseCommentRepository commentRepository;
+
+
     @Override
     @Transactional
     public ResponseEntity<String> createComment(String comment, Long boardId, String userName) {
@@ -57,6 +59,7 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updateComment(CreatT_exerciseCommentRequestDTO requestDto, User user, Long commentId) {
         T_exerciseComment comment =  commentRepository.findById(commentId).orElseThrow(()-> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
 
