@@ -1,6 +1,5 @@
 package com.team.final8teamproject.user.controller;
 
-
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,12 +9,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+    //1. 회원가입
     @PostMapping("/signup")
     public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return userService.signUp(signupRequestDto);
@@ -31,9 +33,26 @@ public class UserController {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
         return new MessageResponseDto("로그인 되었습니다.");
     }
+
+    //3. 로그아웃
     @DeleteMapping("/logout")
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
     , @RequestBody TokenRequestDto tokenRequestDto){
         return new MessageResponseDto(userService.logout(tokenRequestDto.getAccessToken(), userDetails.getUser()));
     }
+
+    //4. 프로필 수정
+    @PostMapping("/profile")
+    public void modifyProfile(
+            @RequestBody ProfileModifyRequestDto profileModifyRequestDto
+            , @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.modifyProfile(profileModifyRequestDto, userDetails.getUser());
+    }
+
+    //5. 프로필 조회
+    @GetMapping("/profile")
+    public ProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.getProfile(userDetails.getUser());
+    }
+
 }

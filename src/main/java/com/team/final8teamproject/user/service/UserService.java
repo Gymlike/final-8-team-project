@@ -9,7 +9,6 @@ import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.RefreshTokenRepository;
 import com.team.final8teamproject.user.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +22,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private static final String MANAGER_TOKEN = "D1d@A$5dm4&4D1d1i34n%7";
     // 회원가입 로직
     private final UserRepository userRepository;
@@ -30,18 +30,22 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    //1. 회원가입
     @Transactional
     public MessageResponseDto signUp(SignupRequestDto requestDto) {
+
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String nickName = requestDto.getNickName();
-        String email = requestDto.getEmail();
-        String phoneNumber =requestDto.getPhoneNumber();
+        String email =  requestDto.getEmail();
+        String phoneNumber = requestDto.getPhoneNumber();
 
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
+
         UserRoleEnum role = UserRoleEnum.OWNER;
         if (requestDto.isAdmin()) {
             if (!requestDto.getAdminToken().equals(MANAGER_TOKEN)) {
@@ -58,9 +62,10 @@ public class UserService {
         return new MessageResponseDto("회원가입 성공");
     }
 
-    //2.로그인
+    //2. 로그인
     @Transactional
     public LoginResponseDto login(LoginRequestDto requestDto) {
+
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
 
@@ -91,4 +96,16 @@ public class UserService {
 
         return "로그아웃 완료";
     }
-}
+
+    //4. 프로필 조회
+    @Transactional
+    public ProfileResponseDto getProfile(User user) {
+        return new ProfileResponseDto(user.getId(), user.getUsername(), user.getNickName(), user.getImage(), user.getEmail());
+    }
+
+    //5. 프로필 수정
+    @Transactional
+    public void modifyProfile (ProfileModifyRequestDto profileModifyRequestDto, User user){
+        user.changeProfile(profileModifyRequestDto);
+        userRepository.save(user);
+    }
