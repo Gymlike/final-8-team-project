@@ -87,7 +87,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
             t_exerciseRepository.deleteById(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
         } else {
-            throw new IllegalStateException("사용자 불일치")
+            throw new IllegalStateException("사용자 불일치");
                     
         }
     }

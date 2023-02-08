@@ -59,7 +59,7 @@ public class T_exerciseController {
         return t_exerciseService.getT_exerciseBoard(boardId);
     }
     //오운완 게시물 삭제
-    @DeleteMapping(/{boardId})
+    @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteT_exerciseBoard(@PathVariable Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return t_exerciseService.deleteSalePost(boardId,userDetails.getUser()); //인증은 앞단에서..했다고 가정하니까....
     }
