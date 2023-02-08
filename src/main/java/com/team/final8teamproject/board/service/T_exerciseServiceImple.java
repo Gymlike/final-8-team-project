@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.service;
 
 
+import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
@@ -30,7 +31,7 @@ import java.util.UUID;
 public class T_exerciseServiceImple  implements  T_exerciseService{
     private final T_exerciseRepository t_exerciseRepository;
 
-    private final T_exerciseCommentRepository tExerciseCommentRepository;
+    private final T_exerciseCommentService tExerciseCommentService;
 
     /**
      * 오운완 게시물 생성
@@ -84,7 +85,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
         String username = t_exercise.getWriterName();
 
-        List<T_exerciseComment> comments = tExerciseCommentRepository.findByUsername(username);
+        List<T_exerciseComment> comments = tExerciseCommentService.findCommentByUserName(username);
 
         List<CommentResponseDTO> commentFilter = comments.stream().map(CommentResponseDTO::new).toList();
 
@@ -106,6 +107,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
 
         if (t_exercise.isWriter(user.getId())) {
             t_exerciseRepository.deleteById(boardId);
+            tExerciseCommentService.deleteByBoardId(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
         } else {
             throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
