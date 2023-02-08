@@ -2,13 +2,14 @@ package com.team.final8teamproject.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "users")
-public class User extends Timestaped {
+public class User extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "User_ID")
@@ -28,11 +29,14 @@ public class User extends Timestaped {
     @Column(nullable = false)
     private String email;
 
-    public User(String username, String password, UserRoleEnum role, String nickName){
+    @Builder
+    public User(String username, String password, UserRoleEnum role, String nickName, String phoneNumber, String email){
         this.username =username;
         this.password = password;
         this.role = role;
         this.nickName = nickName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
 }
