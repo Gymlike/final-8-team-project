@@ -1,4 +1,4 @@
-package com.team.final8teamproject.comment.dto;
+package com.team.final8teamproject.board.comment.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,13 +1,9 @@
-package com.team.final8teamproject.comment.service;
+package com.team.final8teamproject.board.comment.service;
 
-import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.service.T_exerciseService;
-import com.team.final8teamproject.comment.dto.CreatT_exerciseCommentRequestDTO;
-import com.team.final8teamproject.comment.entity.T_exerciseComment;
-import com.team.final8teamproject.comment.repository.T_exerciseCommentRepository;
-import com.team.final8teamproject.user.entity.User;
+import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

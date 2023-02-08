@@ -1,6 +1,6 @@
-package com.team.final8teamproject.comment.dto;
+package com.team.final8teamproject.board.comment.dto;
 
-import com.team.final8teamproject.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

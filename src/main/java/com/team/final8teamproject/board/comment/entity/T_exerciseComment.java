@@ -1,4 +1,4 @@
-package com.team.final8teamproject.comment.entity;
+package com.team.final8teamproject.board.comment.entity;
 
 import com.team.final8teamproject.share.TimeStamp;
 import jakarta.persistence.*;

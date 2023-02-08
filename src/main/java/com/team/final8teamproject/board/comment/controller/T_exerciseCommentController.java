@@ -1,11 +1,9 @@
-package com.team.final8teamproject.comment.controller;
+package com.team.final8teamproject.board.comment.controller;
 
-import com.team.final8teamproject.comment.dto.CreatT_exerciseCommentRequestDTO;
-import com.team.final8teamproject.comment.service.T_exerciseCommentService;
+import com.team.final8teamproject.board.comment.dto.CreatT_exerciseCommentRequestDTO;
+import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
-import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
-package com.team.final8teamproject.comment.repository;
+package com.team.final8teamproject.board.comment.repository;
 
-import com.team.final8teamproject.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
