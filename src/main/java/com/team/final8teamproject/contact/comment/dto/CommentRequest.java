@@ -8,10 +8,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
-public  CommentRequest(String comment, Long parentId) {
+public class CommentRequest {
+
+  private final String comment;
+  private final Long parent_id;
+  private final String username;
 
   @Builder
-  public CommentRequest {
+  public CommentRequest(String comment, Long parent_id, String username) {
+    this.comment = comment;
+    this.parent_id = parent_id;
+    this.username = username;
   }
 
   /* Dto -> Entity*/

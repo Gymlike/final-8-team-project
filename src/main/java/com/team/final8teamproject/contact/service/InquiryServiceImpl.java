@@ -1,14 +1,11 @@
 package com.team.final8teamproject.contact.service;
 
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
-import com.team.final8teamproject.contact.dto.FaqResponse;
+
 import com.team.final8teamproject.contact.dto.InquiryRequest;
-import com.team.final8teamproject.contact.dto.InquiryRequestDto;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
-import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +23,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void createInquiry(InquiryRequestDto inquiryRequest, Long userId) {
+  public void createInquiry(InquiryRequest inquiryRequest, Long userId) {
     Inquiry inquiry = inquiryRequest.toEntity(userId);
     inquiryRepository.save(inquiry);
   }
@@ -34,7 +31,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void updateInquiry(Long id, Long userId, InquiryRequestDto inquiryRequest) {
+  public void updateInquiry(Long id, Long userId, InquiryRequest inquiryRequest) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
     );

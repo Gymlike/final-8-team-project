@@ -1,13 +1,12 @@
 package com.team.final8teamproject.contact.controller;
 
 
-import com.team.final8teamproject.contact.dto.InquiryRequestDto;
+import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +29,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
   private final InquiryServiceImpl inquiryServiceImpl;
 
   @PostMapping("/user/contact/inquiry")
-  public ResponseEntity createInquiry(@RequestBody InquiryRequestDto inquiryRequest,
+  public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     inquiryServiceImpl.createInquiry(inquiryRequest, userDetails.getUser().getId());
     return ResponseEntity.ok("등록 완료");
@@ -67,7 +66,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
   @PutMapping("/user/contact/inquiry/{id}")
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @RequestBody InquiryRequestDto inquiryRequest){
+      @RequestBody InquiryRequest inquiryRequest){
     inquiryServiceImpl.updateInquiry(id,userDetails.getUser().getId(),inquiryRequest);
     return ResponseEntity.ok("수정 완료");
   }
