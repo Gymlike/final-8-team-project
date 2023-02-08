@@ -26,8 +26,8 @@ public class T_exerciseController {
 
 
     //오운완 게시판 생성
-    @PostMapping("/")
-    public ResponseEntity<String> creatT_exerciseBord(@RequestPart("creatTExerciseBordRequestDTO") @Valid CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
+    @PostMapping
+    public ResponseEntity<String> creatT_exerciseBord(@RequestPart("creatTExerciseBordRequestDTO") CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @RequestPart("file") MultipartFile file,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
@@ -39,10 +39,10 @@ public class T_exerciseController {
     }
 
     //오운완 전체 게시물 조회
-    @GetMapping("/")
+    @GetMapping ("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
     public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
-            @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,
+            @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
             @RequestParam(value = "sortBy",required = false,defaultValue = "createdAt")String sortBy,
             @RequestParam(value = "search",required = false,defaultValue = "") String search
@@ -53,7 +53,7 @@ public class T_exerciseController {
     }
 
     //오운완 선택 게시물 조회
-    @GetMapping("/{boardId}")
+    @GetMapping("/selectboard/{boardId}")
     public T_exerciseBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId){
 
         return t_exerciseService.getT_exerciseBoard(boardId);
@@ -66,7 +66,7 @@ public class T_exerciseController {
 
 
     //오운완 게시물 수정
-    @PutMapping("/{boardId}")
+    @PatchMapping("/{boardId}")
     public ResponseEntity<String> editSalePost(@PathVariable Long boardId,
                                                       @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @RequestPart("file") MultipartFile file,

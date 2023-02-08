@@ -140,8 +140,10 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
             String filepath = System.getProperty("user.dir")+"/src/main/resources/static/files";
             File savefile = new File(filepath, filename);
             file.transferTo(savefile);
+            String content = creatTExerciseBordRequestDTO.getContent();
+            String title = creatTExerciseBordRequestDTO.getTitle();
 
-            t_exercise.editSalePost(creatTExerciseBordRequestDTO,filename,filepath);
+            t_exercise.editSalePost(title,content,filename,filepath);
             return new ResponseEntity<>("게시물 수정 완료",HttpStatus.OK);
 
         }throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);

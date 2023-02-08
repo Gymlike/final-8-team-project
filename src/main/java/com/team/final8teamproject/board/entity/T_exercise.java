@@ -6,6 +6,8 @@ import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -45,9 +47,9 @@ public class T_exercise extends TimeStamp {
 
     }
 
-    public void editSalePost(CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,String filename,String filepath) {
-        this.title = creatTExerciseBordRequestDTO.getTitle();
-        this.content = creatTExerciseBordRequestDTO.getContent();
+    public void editSalePost(String title,String content,String filename,String filepath) {
+        this.title = title;
+        this.content = content;
         this.filename = filename;
         this.filepath = filepath;
     }
