@@ -20,8 +20,15 @@ public class T_exerciseComment extends TimeStamp {
     @Column(nullable = false)
     private String username;
 
-    public T_exerciseComment(String comment, String username) {
+    private Long boardId;
+
+    public T_exerciseComment(String comment, String username,Long boardId) {
         this.comment = comment;
         this.username = username;
+        this.boardId =boardId;
+    }
+
+    public boolean isWriter(String username) {
+        return this.username.equals(username);
     }
 }

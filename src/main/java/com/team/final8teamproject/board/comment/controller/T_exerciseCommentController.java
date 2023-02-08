@@ -13,10 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class T_exerciseCommentController {
     private final T_exerciseCommentService tExerciseCommentService;
-    @PostMapping("/{id}/comment")
-    public ResponseEntity<String> createComment(@RequestBody CreatT_exerciseCommentRequestDTO requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
+
+    //댓글작성
+    @PostMapping("/{boardId}/comment")
+    public ResponseEntity<String> createComment(@RequestBody CreatT_exerciseCommentRequestDTO requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long boardId) {
         String comment = requestDto.getComment();
         String userName = userDetails.getUser().getUsername();
-        return tExerciseCommentService.createComment(comment, id,userName);
+        return tExerciseCommentService.createComment(comment, boardId,userName);
+    }
+
+    //댓글삭제
+    @DeleteMapping("/{boardId}/comment/{commentId}")
+    public ResponseEntity<String> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
+        return tExerciseCommentService.deleteComment(userDetails.getUser(), commentId);
     }
 }
