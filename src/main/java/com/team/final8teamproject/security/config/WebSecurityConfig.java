@@ -4,6 +4,7 @@ import com.team.final8teamproject.security.exception.CustomAccessDeniedHandler;
 import com.team.final8teamproject.security.exception.CustomAuthenticationEntryPoint;
 import com.team.final8teamproject.security.jwt.JwtAuthFilter;
 import com.team.final8teamproject.security.jwt.JwtUtil;
+import com.team.final8teamproject.security.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -17,17 +18,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
-@EnableGlobalMethodSecurity(prePostEnabled = true) // @Secured 어노테이션 활성화
+//@EnableGlobalMethodSecurity(prePostEnabled = true) // @Secured 어노테이션 활성화
 @EnableScheduling // @Scheduled 어노테이션 활성화
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     @Bean
@@ -50,11 +51,12 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.authorizeRequests()
         http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.
+                .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers("/h2-console").permitAll()
                 .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
                 //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
                 // JWT 인증/인가를 사용하기 위한 설정
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, redisUtil), UsernamePasswordAuthenticationFilter.class);
                 // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
                 http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
                 // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우

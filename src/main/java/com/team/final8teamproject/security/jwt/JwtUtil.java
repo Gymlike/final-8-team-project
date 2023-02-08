@@ -47,23 +47,9 @@ public class JwtUtil {
 
     // header 토큰을 가져오기
     public String resolveToken(HttpServletRequest request) {
-        // Http프로토콜의 request정보를 서블릿에게 전달하기 위한 목적으로 사용하는 매개변수
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        // 우리가 아래에서 설정한 "Authorization"의 헤더를 가져옴
-        // StringUtils.hasText는 값이 있을경우 true , 공백이거나 Null이 들어온 경우 false반환
-        // bearerToken.startsWith는 필드값이 해당 변수와 동일한지 확인
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
-            // bearer 제외하고 나머지 문자열 반환
-            //substring(int beginIndex)
-            //substring(int beginIndex, int endIndex)
-            /*
-            인자로 beginIndex만 전달하면, 이 index가 포함된 문자부터 마지막까지 잘라서 리턴합니다.
-            위의 내용은 7번째 부터 끝까지 문자열을 리턴한다는 의미이다.
-            여기서는 BEARER_PREFIX 에 들어있는 "Bearer " 부분을 잘라내고 보내주기 위해서 넣은것이다.
-            인자로 beginIndex, endIndex를 모두 전달하면 begin을 포함한 문자부터
-            endIndex 이전 index의 문자까지 잘라서 리턴합니다.
-             */
         }
         return null;
     }
@@ -74,7 +60,7 @@ public class JwtUtil {
         Date date = new Date();
         //권한 가져오기
         // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
-        String accessToken = Jwts.builder()
+        String accessToken = BEARER_PREFIX + Jwts.builder()
                         .setSubject(username) // 토큰 용도
                         .claim(AUTHORIZATION_KEY, role) // payload에 들어갈 정보 조각들
                         .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료시간 설정
@@ -131,5 +117,14 @@ public class JwtUtil {
     }
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    //남은 유효시간
+    public Long getExpiration(String accessToken) {
+        // accessToken 남은 유효시간
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        // 현재 시간
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
     }
 }

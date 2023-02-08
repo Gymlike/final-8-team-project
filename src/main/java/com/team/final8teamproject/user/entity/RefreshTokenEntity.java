@@ -12,13 +12,7 @@ public class RefreshTokenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-
-    @Column(nullable = false)
     private String username;
-
-    @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private Long time;
 }

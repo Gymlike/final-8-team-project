@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -34,7 +34,6 @@ public class UserController {
     @DeleteMapping("/logout")
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
     , @RequestBody TokenRequestDto tokenRequestDto){
-
         return new MessageResponseDto(userService.logout(tokenRequestDto.getAccessToken(), userDetails.getUser()));
     }
 }
