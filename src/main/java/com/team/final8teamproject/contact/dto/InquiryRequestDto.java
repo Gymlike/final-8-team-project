@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
-public class InquiryRequest {
+public class InquiryRequestDto {
   private final String title;
   private final String content;
 

@@ -1,6 +1,7 @@
 package com.team.final8teamproject.contact.entity;
 
-import com.team.final8teamproject.contact.dto.InquiryRequest;
+
+import com.team.final8teamproject.contact.dto.InquiryRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,7 +42,7 @@ public class Inquiry {
     this.secretCheckBox = secretCheckBox;
   }
 
-  public void update(InquiryRequest inquiryRequest) {
+  public void update(InquiryRequestDto inquiryRequest) {
     this.title = title;
     this.content = content;
   }

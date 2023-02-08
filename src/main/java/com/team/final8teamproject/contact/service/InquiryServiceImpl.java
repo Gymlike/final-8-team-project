@@ -3,6 +3,7 @@ package com.team.final8teamproject.contact.service;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
+import com.team.final8teamproject.contact.dto.InquiryRequestDto;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.entity.Inquiry;
@@ -25,7 +26,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void createInquiry(InquiryRequest inquiryRequest, Long userId) {
+  public void createInquiry(InquiryRequestDto inquiryRequest, Long userId) {
     Inquiry inquiry = inquiryRequest.toEntity(userId);
     inquiryRepository.save(inquiry);
   }
@@ -33,7 +34,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void updateInquiry(Long id, Long userId, InquiryRequest inquiryRequest) {
+  public void updateInquiry(Long id, Long userId, InquiryRequestDto inquiryRequest) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
     );
