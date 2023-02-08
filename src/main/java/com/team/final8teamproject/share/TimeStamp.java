@@ -1,4 +1,4 @@
-package com.team.final8teamproject.board.entity;
+package com.team.final8teamproject.share;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

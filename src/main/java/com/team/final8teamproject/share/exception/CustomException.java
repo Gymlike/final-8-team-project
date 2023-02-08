@@ -1,4 +1,4 @@
-package com.team.final8teamproject.exception;
+package com.team.final8teamproject.share.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
