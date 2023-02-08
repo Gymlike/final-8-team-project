@@ -1,18 +1,17 @@
 package com.team.final8teamproject.board.entity;
 
-import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
+
 import com.team.final8teamproject.share.TimeStamp;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.web.multipart.MultipartFile;
+
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class T_exercise extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
