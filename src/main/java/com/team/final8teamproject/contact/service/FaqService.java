@@ -11,6 +11,8 @@ public interface FaqService {
   List<FaqResponse> getFaqList(int page, int size, Direction direction, String properties);
 
   FaqResponse getSelectedFaq(Long id);
+
   List<FaqResponse> searchByKeyword(String keyword, int page, int size, Direction direction, String properties);
+  // List<FaqResponse> searchByKeyword(String keyword, int page, int size, Direction direction, String properties);
 
 }

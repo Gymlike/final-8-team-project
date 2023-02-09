@@ -1,7 +1,6 @@
 package com.team.final8teamproject.contact.dto;
 
 import com.team.final8teamproject.contact.entity.Inquiry;
-import com.team.final8teamproject.contact.entity.Notice;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,18 +12,25 @@ public class InquiryRequest {
   private final String title;
   private final String content;
 
+
+  private boolean secretCheckBox = false; //todo true 바뀌면 ? 비밀글 되야함. 해당 유저와 관리자만 볼 수 있음
+
+
+
   @Builder
-  public InquiryRequest(String title, String content) {
+  public InquiryRequest(String title, String content,Boolean secretCheckBox) {
     this.title = title;
     this.content = content;
+    this.secretCheckBox = secretCheckBox;
 
   }
 
-  public Inquiry toEntity(Long userId) {
+  public Inquiry toEntity(String username) {
     return Inquiry.builder()
-        .userId(userId)
         .title(title)
         .content(content)
+        .username(username)
+        .secretCheckBox(secretCheckBox) //defalt = false, true 이면 비밀글 처리됨
         .build();
   }
 

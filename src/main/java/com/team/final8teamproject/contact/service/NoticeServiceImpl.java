@@ -2,10 +2,10 @@ package com.team.final8teamproject.contact.service;
 
 
 import com.team.final8teamproject.contact.Repository.NoticeRepository;
-import com.team.final8teamproject.contact.dto.InquiryResponse;
+//import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
-import com.team.final8teamproject.contact.entity.Inquiry;
+//import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.entity.Notice;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +57,7 @@ public class NoticeServiceImpl implements NoticeService {
       Direction direction, String properties) {
     String title = keyword;
     String content = keyword;
-    Page<Notice> noticeListPage = noticeRepository.findAllBySearch(title, content,
+    Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(title, content,
         PageRequest.of(page - 1, size, direction, properties));
     List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
         .toList();

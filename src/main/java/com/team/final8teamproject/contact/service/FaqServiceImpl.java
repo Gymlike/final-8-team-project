@@ -6,6 +6,8 @@ import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.entity.Faq;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +56,7 @@ public class FaqServiceImpl implements FaqService {
       Direction direction, String properties) {
     String question = keyword;
     String answer = keyword;
-    Page<Faq> faqListPage = faqRepository.findAllBySearch(question,answer,PageRequest.of(page-1,size,direction,properties));
+    Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,answer,PageRequest.of(page-1,size,direction,properties));
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
     return faqResponses;
   }
@@ -73,3 +75,6 @@ public class FaqServiceImpl implements FaqService {
   }
 
 }
+
+
+
