@@ -1,5 +1,6 @@
 package com.team.final8teamproject.user.entity;
 
+import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.user.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,6 +36,10 @@ public class Post extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User users;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Owner_id")
+    private Owner owner;
 
     //양방향에 데이터를 저장해주기 위해서 사용한 메소드
     //그런데 오류나서 죽여뒀다.
