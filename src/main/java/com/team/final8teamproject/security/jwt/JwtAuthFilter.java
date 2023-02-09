@@ -24,7 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
-    private final RedisUtil redisUtil;
+//    private final RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -37,14 +37,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 jwtExceptionHandler(response, "Invalid JWT signature", HttpStatus.BAD_REQUEST.value());
                 return;
             }
-            String isLogout = (String)redisUtil.getBlackList(token);
-            log.info(isLogout);
-            if(ObjectUtils.isEmpty(isLogout)){
-                Claims info = jwtUtil.getUserInfoFromToken(token);
-                setAuthentication(info.getSubject());
-            }
-            jwtExceptionHandler(response, "Logout User Token", HttpStatus.BAD_REQUEST.value());
-            return;
+            Claims info = jwtUtil.getUserInfoFromToken(token);
+            setAuthentication(info.getSubject());
+//            String isLogout = (String)redisUtil.getBlackList("RT:"+token);
+//            log.info(isLogout);
+//            if(ObjectUtils.isEmpty(isLogout)){
+//                Claims info = jwtUtil.getUserInfoFromToken(token);
+//                setAuthentication(info.getSubject());
+//            }
+//            jwtExceptionHandler(response, "Logout User Token", HttpStatus.BAD_REQUEST.value());
+//            return;
         }
         //filterChain은 체인의 다음 필터를 호출하거나 호출 필터가 체인의 마지막 필터인 경우 체인 끝에 리소스를 호출합니다.
         filterChain.doFilter(request,response);
