@@ -44,6 +44,9 @@ dependencies {
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.1'
     //mysql전 h2콘솔을 사용하기위해서 사용
     runtimeOnly 'com.h2database:h2'
+    //이메일 인증
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     //websocket사용을 위한 의존성
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
