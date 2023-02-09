@@ -28,5 +28,4 @@ public class PostController {
 
         return postService.createPost(requestDto, userDetails.getUser());
     }
-
 }

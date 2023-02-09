@@ -38,6 +38,8 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String email;
 
+
+
     @Builder
     public User(String username, String password, String phoneNumber, String email , String nickName, UserRoleEnum role){
         this.username =username;
@@ -54,4 +56,11 @@ public class User extends Timestamped {
         this.phoneNumber = profileModifyRequestDto.getPhoneNumber();
     }
 
+    public boolean isUserId(Long userid) {
+        return this.id.equals(userid);
+    }
+
+    public String getWriterName() {
+        return this.username;
+    }
 }
