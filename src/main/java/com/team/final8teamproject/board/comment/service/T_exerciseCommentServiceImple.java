@@ -1,7 +1,5 @@
 package com.team.final8teamproject.board.comment.service;
 
-import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
-import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.commentReply.service.T_exerciseCommentReplyService;
 import com.team.final8teamproject.board.comment.dto.CreatT_exerciseCommentRequestDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;

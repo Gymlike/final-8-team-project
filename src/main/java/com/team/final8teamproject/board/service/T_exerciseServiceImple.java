@@ -1,6 +1,8 @@
 package com.team.final8teamproject.board.service;
 
 
+import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
+import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
@@ -22,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,8 +90,18 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
+        List<CommentResponseDTO> commentFilter = new ArrayList<>();
 
-        List<CommentResponseDTO> commentFilter = comments.stream().map(CommentResponseDTO::new).toList();
+
+        for (T_exerciseComment comment : comments) {
+            List<T_exerciseCommentReply> commentReplyList = comment.getCommentReplyList();
+            List<CommentReplyResponseDTO> toList = commentReplyList.stream().map(CommentReplyResponseDTO::new).toList();
+            String commentContent = comment.getComment();
+            String username = comment.getUsername();
+            LocalDateTime createdAt = comment.getCreatedAt();
+            CommentResponseDTO dto = new CommentResponseDTO(commentContent,username,createdAt,toList);
+            commentFilter.add(dto);
+        }
 
         return new T_exerciseBoardResponseDTO(t_exercise,commentFilter);
     }
