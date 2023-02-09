@@ -52,10 +52,4 @@ public class T_exercise extends TimeStamp {
         this.filename = filename;
         this.filepath = filepath;
     }
-
-
-    public String getWriterName() {
-
-        return user.getWriterName();
-    }
 }
