@@ -38,6 +38,8 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String email;
 
+
+
     @Builder
     public User(String username, String password, String phoneNumber, String email , String nickName, UserRoleEnum role){
         this.username =username;
