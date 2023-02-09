@@ -6,7 +6,7 @@ import com.team.final8teamproject.manager.entity.GeneralManager;
 import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.manager.entity.ManagerRoleEnum;
 import com.team.final8teamproject.manager.repository.GeneralManagerRepository;
-import com.team.final8teamproject.manager.repository.AdminRepository;
+import com.team.final8teamproject.manager.repository.ManagerRepository;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GeneralManagerServiceImpl implements GeneralManagerService {
     private final GeneralManagerRepository generalManagerRepository;
-    private final AdminRepository adminRepository;
+    private final ManagerRepository managerRepository;
     private final RedisUtil redisUtil;
     private final JwtUtil jwtUtil;
     //실행시 테이블에 저장
@@ -49,7 +49,7 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
     //관리자 조회
     public List<WaitMangerResponseDto> waitManagerList(Pageable pageable) {
         Pageable page = pageableSetting(pageable.getPageNumber(), pageable.getPageSize());
-        Page<Manager> approval = adminRepository.findByRole(page, ManagerRoleEnum.WAIT);
+        Page<Manager> approval = managerRepository.findByRole(page, ManagerRoleEnum.WAIT);
         return approval.stream().map(WaitMangerResponseDto::new).collect(Collectors.toList());
     }
     public Pageable pageableSetting(int page, int size){
@@ -61,7 +61,7 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
     @Transactional
     @Override
     public ManagerMessageDto approval(String manager) {
-        Manager manager1 = adminRepository.findByManager(manager).orElseThrow(
+        Manager manager1 = managerRepository.findByManager(manager).orElseThrow(
                 ()-> new IllegalArgumentException("해당 신청자를 찾을수 없습니다.")
         );
         manager1.approvalManager(ManagerRoleEnum.MANAGER);
