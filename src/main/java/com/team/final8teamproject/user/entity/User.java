@@ -29,14 +29,20 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private Long experience;
+
     @Builder
-    public User(String username, String password, UserRoleEnum role, String nickName, String phoneNumber, String email){
+    public User(String username, String password, UserRoleEnum role,
+                String nickName, String phoneNumber, String email,
+                Long experience){
         this.username =username;
         this.password = password;
         this.role = role;
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.experience = experience;
     }
 
 }

@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.security.userservice.UserDetailsImpl;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -21,6 +21,7 @@ public class UserController {
     @PostMapping("/signup")
     public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return userService.signUp(signupRequestDto);
+
     }
     //2.로그인
     @PostMapping("/login")

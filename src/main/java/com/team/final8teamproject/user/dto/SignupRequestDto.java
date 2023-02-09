@@ -20,4 +20,5 @@ public class SignupRequestDto {
     @Pattern(regexp = "(?=.*[0-9])^[0-9]{11}$", message = "11122223333형식으로 -를 빼고 입력해주시기 바랍니다.")
     private String phoneNumber;
     private String email;
+    private Long experience =0L;
 }

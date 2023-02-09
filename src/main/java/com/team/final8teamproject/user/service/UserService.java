@@ -22,7 +22,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private static final String MANAGER_TOKEN = "D1d@A$5dm4&4D1d1i34n%7";
     // 회원가입 로직
     private final UserRepository userRepository;
     private final RedisUtil redisUtil;
@@ -72,6 +71,9 @@ public class UserService {
     @Transactional
     public String logout(String accessToken, String username) {
 
+//        if(redisUtil.hasKey(accessToken)){
+//            redisUtil.deleteRefreshToken(username);
+//        }
         if(redisUtil.getRefreshToken(accessToken) != null){
             redisUtil.deleteRefreshToken(username);
         }

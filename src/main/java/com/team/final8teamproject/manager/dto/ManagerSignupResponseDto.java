@@ -3,10 +3,10 @@ package com.team.final8teamproject.manager.dto;
 import lombok.Getter;
 
 @Getter
-public class ManagerLoginResponseDto {
+public class ManagerSignupResponseDto {
     private String message;
 
-    public ManagerLoginResponseDto(String message){
+    public ManagerSignupResponseDto(String message){
         this.message = message;
     }
 }

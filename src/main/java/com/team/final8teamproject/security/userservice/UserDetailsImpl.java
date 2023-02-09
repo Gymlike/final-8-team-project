@@ -1,4 +1,4 @@
-package com.team.final8teamproject.security.service;
+package com.team.final8teamproject.security.userservice;
 
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;

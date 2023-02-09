@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.security.userservice.UserDetailsImpl;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 
 @RestController

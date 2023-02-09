@@ -3,11 +3,11 @@ package com.team.final8teamproject.manager.service;
 import com.team.final8teamproject.manager.dto.ManagerLoginRequestDto;
 import com.team.final8teamproject.manager.dto.ManagerLoginResponseDto;
 import com.team.final8teamproject.manager.dto.ManagerSignupRequestDto;
-import com.team.final8teamproject.manager.dto.ManagerSignupReseponseDto;
+import com.team.final8teamproject.manager.dto.ManagerSignupResponseDto;
 
 public interface ManagerService {
-    public ManagerSignupReseponseDto signup(ManagerSignupRequestDto managerSignupRequestDto);
-    public ManagerLoginResponseDto login(ManagerLoginRequestDto managerLoginRequestDto);
-    public void logout();
+    ManagerSignupResponseDto signup(ManagerSignupRequestDto managerSignupRequestDto);
+    ManagerLoginResponseDto login(ManagerLoginRequestDto managerLoginRequestDto);
+    void logout(String accessToken, String manager);
 
 }
