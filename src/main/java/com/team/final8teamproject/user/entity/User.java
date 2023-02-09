@@ -56,4 +56,11 @@ public class User extends Timestamped {
         this.phoneNumber = profileModifyRequestDto.getPhoneNumber();
     }
 
+    public boolean isUserId(Long userid) {
+        return this.id.equals(userid);
+    }
+
+    public String getWriterName() {
+        return this.username;
+    }
 }
