@@ -2,7 +2,6 @@ package com.team.final8teamproject.board.like.service;
 
 import com.team.final8teamproject.board.like.entity.T_exerciseLike;
 import com.team.final8teamproject.board.like.repository.T_exerciseLikeRepository;
-import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
