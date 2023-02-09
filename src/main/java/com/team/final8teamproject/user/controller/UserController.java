@@ -1,25 +1,34 @@
 package com.team.final8teamproject.user.controller;
 
-
+import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
+    private final EmailService emailService;
+
+    //1. 회원가입
     @PostMapping("/signup")
-    public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+    public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) {
+        if (!signupRequestDto.getPassword().equals((signupRequestDto.getPassword2()))) {
+            throw new IllegalArgumentException("일치X");
+//         bindingResult.rejectValue("password2", "passwordInCorrect", "비밀번호가 일치하지 않습니다");
+        }
         return userService.signUp(signupRequestDto);
     }
+
     //2.로그인
     @PostMapping("/login")
     public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
@@ -31,9 +40,19 @@ public class UserController {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
         return new MessageResponseDto("로그인 되었습니다.");
     }
+
+    //3. 로그아웃
     @DeleteMapping("/logout")
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
     , @RequestBody TokenRequestDto tokenRequestDto){
         return new MessageResponseDto(userService.logout(tokenRequestDto.getAccessToken(), userDetails.getUser()));
     }
+
+    //4. 이메일 인증
+    @PostMapping("/emailConfirm")
+    public String emailConfirm(@RequestParam String email) throws Exception {
+        String confirm = emailService.sendSimpleMessage(email);
+        return confirm;
+    }
+
 }
