@@ -26,4 +26,11 @@ public class T_exerciseCommentReplyController {
         return t_exerciseCommentReplyService.creatCommentRely(commentId,comment,username);
     }
 
+    //대댓글 수정
+    @PutMapping("/comment/{commentID}")
+    public ResponseEntity<String> updateCommentReply(@RequestBody CreatT_exerciseCommentReplyRequestDTO requestDTO,
+                                                     @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                     @PathVariable Long commentID){
+        return t_exerciseCommentReplyService.updateCommentReply(requestDTO,userDetails.getUser(),commentID);
+    }
 }

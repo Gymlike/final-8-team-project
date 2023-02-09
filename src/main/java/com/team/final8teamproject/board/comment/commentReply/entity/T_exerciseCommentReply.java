@@ -33,4 +33,13 @@ public class T_exerciseCommentReply extends TimeStamp {
         this.comments = comments;
         comments.getCommentReplyList().add(this);
     }
+
+    public boolean isWriter(String username) {
+        return this.username.equals(username);
+    }
+
+    public void update(String commentReplyContent) {
+        this.commentContent = commentReplyContent;
+    }
+
 }
