@@ -1,6 +1,6 @@
 package com.team.final8teamproject.contact.controller;
 
-import com.team.final8teamproject.contact.dto.InquiryResponse;
+//import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl;

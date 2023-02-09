@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InquiryRepository extends JpaRepository<Inquiry,Long> {
 
-  Page<Inquiry> findAllBySearch(String title, String content, PageRequest of);
+
+  Page<Inquiry> findAllByTitleContainingOrContentContaining(String title, String content, PageRequest of);
 }

@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NoticeRepository extends JpaRepository<Notice,Long> {
 
 
-  Page<Notice> findAllBySearch(String title, String content, PageRequest of);
+  Page<Notice> findAllByTitleContainingOrContentContaining(String title, String content, PageRequest of);
 }

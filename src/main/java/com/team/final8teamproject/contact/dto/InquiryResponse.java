@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 public class InquiryResponse {
  private final String title;
  private final String content;
+ private final String username;
 
 
   public InquiryResponse(Inquiry inquiry) {
     this.title = inquiry.getTitle();
     this.content = inquiry.getContent();
+    this.username = inquiry.getUsername();
   }
 }
