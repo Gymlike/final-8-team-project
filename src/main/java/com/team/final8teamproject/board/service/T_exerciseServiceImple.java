@@ -99,8 +99,9 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
             List<CommentReplyResponseDTO> toList = commentReplyList.stream().map(CommentReplyResponseDTO::new).toList();
             String commentContent = comment.getComment();
             String username = comment.getUsername();
+            Long id = comment.getId();
             LocalDateTime createdAt = comment.getCreatedAt();
-            CommentResponseDTO dto = new CommentResponseDTO(commentContent,username,createdAt,toList);
+            CommentResponseDTO dto = new CommentResponseDTO(id,commentContent,username,createdAt,toList);
             commentFilter.add(dto);
         }
 

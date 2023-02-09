@@ -13,6 +13,8 @@ import java.util.List;
 @Getter
 public class CommentResponseDTO {
 
+    private final Long id;
+
     private final String content;
 
     private final String writerName;
@@ -20,7 +22,8 @@ public class CommentResponseDTO {
     private final LocalDateTime creatAt;
     private final List<CommentReplyResponseDTO> commentReplyList;
 
-    public CommentResponseDTO(String content, String writerName, LocalDateTime creatAt, List<CommentReplyResponseDTO> commentReplyList) {
+    public CommentResponseDTO(Long id, String content, String writerName, LocalDateTime creatAt, List<CommentReplyResponseDTO> commentReplyList) {
+        this.id = id;
         this.content = content;
         this.writerName = writerName;
         this.creatAt = creatAt;

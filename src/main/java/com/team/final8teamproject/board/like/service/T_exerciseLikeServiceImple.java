@@ -23,7 +23,7 @@ public class T_exerciseLikeServiceImple implements T_exerciseLikeService {
             tExerciseLikeRepository.save(tExerciseLike);
 
             //303코드 보내서 중복요청 막고싶은데...~.~ 그러면 좋아요 취소기능을 하나더 만들어야하나?
-            return new ResponseEntity<>("좋아요 증가", HttpStatus.OK);
+            return new ResponseEntity<>("좋아요 증가", HttpStatus.OK);//중복요청
         }else{
             tExerciseLikeRepository.deleteByUsernameAndBoardId(username,boardId);
 

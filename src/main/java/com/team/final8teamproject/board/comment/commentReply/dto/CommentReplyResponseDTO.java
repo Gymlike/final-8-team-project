@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CommentReplyResponseDTO {
+
+    private final Long id;
     private final String content;
 
     private final String writerName;
@@ -17,5 +19,6 @@ public class CommentReplyResponseDTO {
         this.content = t_exerciseCommentReply.getCommentContent();
         this.writerName = t_exerciseCommentReply.getUsername();
         this.creatAt = t_exerciseCommentReply.getCreatedAt();
+        this.id = t_exerciseCommentReply.getId();
     }
 }

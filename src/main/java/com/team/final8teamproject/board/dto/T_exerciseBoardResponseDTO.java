@@ -12,6 +12,8 @@ public class T_exerciseBoardResponseDTO {
 
 
     private  Long like=(long)0;
+
+    private final Long id;
     private final String title;
 
     private final String content;
@@ -25,6 +27,7 @@ public class T_exerciseBoardResponseDTO {
 
     public T_exerciseBoardResponseDTO(Long like,T_exercise t_exercise, List<CommentResponseDTO> commentList) {
         this.like= like;
+        this.id = t_exercise.getId();
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
@@ -32,6 +35,7 @@ public class T_exerciseBoardResponseDTO {
         this.commentList = commentList;
     }
     public T_exerciseBoardResponseDTO( T_exercise t_exercise) {
+        this.id = t_exercise.getId();
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
