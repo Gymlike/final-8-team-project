@@ -1,10 +1,7 @@
 package com.team.final8teamproject.user.service;
 
 import com.team.final8teamproject.security.redis.RedisUtil;
-import com.team.final8teamproject.user.dto.LoginRequestDto;
-import com.team.final8teamproject.user.dto.LoginResponseDto;
-import com.team.final8teamproject.user.dto.MessageResponseDto;
-import com.team.final8teamproject.user.dto.SignupRequestDto;
+import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.RefreshTokenRepository;
@@ -15,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Optional;
 
@@ -24,7 +20,7 @@ import java.util.Optional;
 public class UserService {
 
     private static final String MANAGER_TOKEN = "D1d@A$5dm4&4D1d1i34n%7";
-    // 회원가입 로직
+
     private final UserRepository userRepository;
     private final RedisUtil redisUtil;
     private final JwtUtil jwtUtil;
@@ -37,8 +33,9 @@ public class UserService {
 
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
+//        String password2 = passwordEncoder.encode(requestDto.getPassword2());
         String nickName = requestDto.getNickName();
-        String email =  requestDto.getEmail();
+        String email = requestDto.getEmail();
         String phoneNumber = requestDto.getPhoneNumber();
 
         Optional<User> found = userRepository.findByUsername(username);
@@ -53,10 +50,11 @@ public class UserService {
             }
             role = UserRoleEnum.MANAGER;
         }
+
         User user = User.builder()
-                .nickName(nickName).email(email)
-                .phoneNumber(phoneNumber).password(password)
+                .nickName(nickName).password(password)
                 .username(username).role(role)
+                .email(email).phoneNumber(phoneNumber)
                 .build();
         userRepository.save(user);
         return new MessageResponseDto("회원가입 성공");
@@ -72,7 +70,7 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new SecurityException("사용자를 찾을수 없습니다.")
         );
-        if (!passwordEncoder.matches(password, user.getPassword())){
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
 //        String refreshToken = (String)redisUtil.get("RT:" +user.getUsername());
@@ -85,6 +83,8 @@ public class UserService {
         return jwtUtil.createToken(user.getUsername(), user.getRole());
     }
 
+
+    //3. 로그아웃
     public String logout(String accessToken, User users) {
 
         // refreshToken 테이블의 refreshToken 삭제
@@ -92,20 +92,9 @@ public class UserService {
 //        refreshTokenRepository.deleteRefreshTokenByEmail(users.getEmail());
 
         // 레디스에 accessToken 사용못하도록 등록
-        redisUtil.setBlackList("RT:"+accessToken, "accessToken", 5L);
+        redisUtil.setBlackList("RT:" + accessToken, "accessToken", 5L);
 
         return "로그아웃 완료";
     }
 
-    //4. 프로필 조회
-    @Transactional
-    public ProfileResponseDto getProfile(User user) {
-        return new ProfileResponseDto(user.getId(), user.getUsername(), user.getNickName(), user.getImage(), user.getEmail());
-    }
-
-    //5. 프로필 수정
-    @Transactional
-    public void modifyProfile (ProfileModifyRequestDto profileModifyRequestDto, User user){
-        user.changeProfile(profileModifyRequestDto);
-        userRepository.save(user);
-    }
+}

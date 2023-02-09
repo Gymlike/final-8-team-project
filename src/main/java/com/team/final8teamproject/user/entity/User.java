@@ -1,7 +1,9 @@
 package com.team.final8teamproject.user.entity;
 
+import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,13 +38,14 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String email;
 
-    public User(String username, String password, UserRoleEnum role, String nickName){
+    @Builder
+    public User(String username, String password, String phoneNumber, String email , String nickName, UserRoleEnum role){
         this.username =username;
         this.password = password;
-        this.role = role;
         this.nickName = nickName;
-        this.email = email;
         this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.role = role;
     }
 
     public void changeProfile(ProfileModifyRequestDto profileModifyRequestDto) {
