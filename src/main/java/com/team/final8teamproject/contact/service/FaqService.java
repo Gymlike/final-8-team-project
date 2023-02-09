@@ -13,6 +13,6 @@ public interface FaqService {
   FaqResponse getSelectedFaq(Long id);
 
   List<FaqResponse> searchByKeyword(String keyword, int page, int size, Direction direction, String properties);
-  // List<FaqResponse> searchByKeyword(String keyword, int page, int size, Direction direction, String properties);
+
 
 }

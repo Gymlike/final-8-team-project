@@ -40,7 +40,7 @@ public class FaqController {// todo  메서드 마다 권한 설정
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
-      @RequestParam(value = "properties", required = false, defaultValue = "createAt") String properties) {
+      @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return faqServiceImpl.getFaqList(page, size, direction, properties);
   }
 
@@ -55,7 +55,7 @@ public class FaqController {// todo  메서드 마다 권한 설정
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
-      @RequestParam(value = "properties", required = false, defaultValue = "createAt") String properties) {
+      @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
 
   }
@@ -67,7 +67,7 @@ public class FaqController {// todo  메서드 마다 권한 설정
     return ResponseEntity.ok("삭제 완료");
   }
 
-  //todo 검색 기능  ( 제목, 내용  작성자필요한지!!?? 물어보기 우선 작성자는 미구현 )
+
 
 
 }
