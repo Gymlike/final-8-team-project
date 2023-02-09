@@ -27,10 +27,17 @@ public class T_exerciseCommentReplyController {
     }
 
     //대댓글 수정
-    @PutMapping("/comment/{commentID}")
+    @PutMapping("/comment/{commentId}")
     public ResponseEntity<String> updateCommentReply(@RequestBody CreatT_exerciseCommentReplyRequestDTO requestDTO,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                     @PathVariable Long commentID){
-        return t_exerciseCommentReplyService.updateCommentReply(requestDTO,userDetails.getUser(),commentID);
+                                                     @PathVariable Long commentId){
+        return t_exerciseCommentReplyService.updateCommentReply(requestDTO,userDetails.getUser(),commentId);
+    }
+
+    //대댓글 삭제
+    @DeleteMapping("/comment/{commentId}")
+    public ResponseEntity<String> deleteCommentReply(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                     @PathVariable Long commentId) {
+        return t_exerciseCommentReplyService.deleteCommentReply(userDetails.getUser(),commentId);
     }
 }

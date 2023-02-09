@@ -48,4 +48,17 @@ public class T_exerciseCommentReplyServiceImple implements T_exerciseCommentRepl
         }
         throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT_REPLY);
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> deleteCommentReply(User user, Long commentId) {
+        String username = user.getUsername();
+        T_exerciseCommentReply commentReply = tExerciseCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
+        if(commentReply.isWriter(username)){
+            tExerciseCommentReplyRepository.deleteById(commentId);
+
+            return new ResponseEntity<>("대댓글 삭제완료",HttpStatus.OK);
+        }
+        throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT_REPLY);
+    }
 }

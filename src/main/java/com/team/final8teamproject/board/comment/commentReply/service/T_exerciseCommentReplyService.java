@@ -11,4 +11,6 @@ public interface T_exerciseCommentReplyService {
     ResponseEntity<String> creatCommentRely(Long commentId, String comment, String username);
 
     ResponseEntity<String> updateCommentReply(CreatT_exerciseCommentReplyRequestDTO requestDTO, User user, Long commentID);
+
+    ResponseEntity<String> deleteCommentReply(User user, Long commentId);
 }
