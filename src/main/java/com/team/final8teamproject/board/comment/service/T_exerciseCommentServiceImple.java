@@ -1,5 +1,8 @@
 package com.team.final8teamproject.board.comment.service;
 
+import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
+import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
+import com.team.final8teamproject.board.comment.commentReply.service.T_exerciseCommentReplyService;
 import com.team.final8teamproject.board.comment.dto.CreatT_exerciseCommentRequestDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
@@ -22,6 +25,8 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
 
 //   private final T_exerciseService t_exerciseService;
     private final T_exerciseRepository tExerciseRepository;
+
+    private final T_exerciseCommentReplyService tExerciseCommentReplyService;
     private final T_exerciseCommentRepository commentRepository;
 
 
@@ -50,11 +55,13 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
 
     @Override
     public List<T_exerciseComment> findCommentByBoardId(Long boardId){
+
         return commentRepository.findByBoardId(boardId);
     }
 
     @Override
     public void deleteByBoardId(Long boardId) {
+
         commentRepository.deleteByBoardId(boardId);
     }
 

@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.comment.commentReply.entity;
 
+import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.share.TimeStamp;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,17 +17,20 @@ public class T_exerciseCommentReply extends TimeStamp {
     private Long id;
 
     @Column(nullable = false)
-    private String comment;
+    private String commentContent;
 
     @Column(nullable = false)
     private String username;
 
 
-    private Long commentId;
+    @ManyToOne
+    @JoinColumn(name ="COMMENT_ID")
+    private T_exerciseComment comments;
 
-    public T_exerciseCommentReply(String comment, String username, Long commentId) {
-        this.comment = comment;
+    public T_exerciseCommentReply(String commentContent, String username, T_exerciseComment comments) {
+        this.commentContent = commentContent;
         this.username = username;
-        this.commentId = commentId;
+        this.comments = comments;
+        comments.getCommentReplyList().add(this);
     }
 }

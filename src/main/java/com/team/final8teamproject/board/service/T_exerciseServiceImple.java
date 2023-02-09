@@ -77,6 +77,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     /**
      * 오운완 게시물 하나 조회 ~ 전체 조회랑 반환 내용은 동일함... 프론트에서 취사선택..
      * 조회시 댓글조회도 같이 됨 !
+     * 대댓글도 가져와야함 ... 미춰버려~ 이건 댓글 가져오는 로직에서 댓
      * @param boardId  보드고유아이디
      * @return DTO에 담아서 반환
      */

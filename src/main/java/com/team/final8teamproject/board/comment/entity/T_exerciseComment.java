@@ -1,10 +1,14 @@
 package com.team.final8teamproject.board.comment.entity;
 
+import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.share.TimeStamp;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,6 +32,9 @@ public class T_exerciseComment extends TimeStamp {
         this.username = username;
         this.boardId =boardId;
     }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "comments" , cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<T_exerciseCommentReply> commentReplyList = new ArrayList<>();
+
 
     public boolean isWriter(String username) {
         return this.username.equals(username);
