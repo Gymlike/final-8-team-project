@@ -64,7 +64,7 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
         Manager manager1 = adminRepository.findByManager(manager).orElseThrow(
                 ()-> new IllegalArgumentException("해당 신청자를 찾을수 없습니다.")
         );
-        manager1.approvalManager(ManagerRoleEnum.ADMIN);
+        manager1.approvalManager(ManagerRoleEnum.MANAGER);
         return new ManagerMessageDto(manager+"의 매니저 활동을 승인하셨습니다.");
     }
 
