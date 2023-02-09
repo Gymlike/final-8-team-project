@@ -31,4 +31,9 @@ public class T_exerciseLikeServiceImple implements T_exerciseLikeService {
             return new ResponseEntity<>("좋아요 취소",HttpStatus.OK);
         }
     }
+
+    @Override
+    public Long countLike(Long boardID) {
+     return  tExerciseLikeRepository.countByBoardId(boardID);
+    }
 }

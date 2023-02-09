@@ -11,6 +11,7 @@ import java.util.List;
 public class T_exerciseBoardResponseDTO {
 
 
+    private  Long like=(long)0;
     private final String title;
 
     private final String content;
@@ -22,14 +23,15 @@ public class T_exerciseBoardResponseDTO {
     private  List<CommentResponseDTO> commentList;
 
 
-    public T_exerciseBoardResponseDTO(T_exercise t_exercise, List<CommentResponseDTO> commentList) {
+    public T_exerciseBoardResponseDTO(Long like,T_exercise t_exercise, List<CommentResponseDTO> commentList) {
+        this.like= like;
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
         this.createdDate =t_exercise.getCreatedAt();
         this.commentList = commentList;
     }
-    public T_exerciseBoardResponseDTO(T_exercise t_exercise) {
+    public T_exerciseBoardResponseDTO( T_exercise t_exercise) {
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?

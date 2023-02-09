@@ -7,6 +7,7 @@ import com.team.final8teamproject.board.comment.service.T_exerciseCommentService
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
@@ -36,7 +37,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     private final T_exerciseRepository t_exerciseRepository;
 
     private final T_exerciseCommentService tExerciseCommentService;
-
+    private final T_exerciseLikeService tExerciseLikeService;
     /**
      * 오운완 게시물 생성
      * @param title  제목
@@ -91,7 +92,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
         List<CommentResponseDTO> commentFilter = new ArrayList<>();
-
+        Long countLike = tExerciseLikeService.countLike(boardId);
 
         for (T_exerciseComment comment : comments) {
             List<T_exerciseCommentReply> commentReplyList = comment.getCommentReplyList();
@@ -103,7 +104,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
             commentFilter.add(dto);
         }
 
-        return new T_exerciseBoardResponseDTO(t_exercise,commentFilter);
+        return new T_exerciseBoardResponseDTO(countLike,t_exercise,commentFilter);
     }
 
 

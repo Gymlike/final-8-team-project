@@ -10,4 +10,6 @@ public interface T_exerciseLikeRepository extends JpaRepository<T_exerciseLike,L
   Boolean existsByUsernameAndBoardId(String username,Long boardId);
 
   void deleteByUsernameAndBoardId(String username,Long boardId);
+
+  Long countByBoardId(Long boardId);
 }
