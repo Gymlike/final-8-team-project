@@ -22,15 +22,13 @@ public class ExceptionAdviceHandler {
     }
 
 
-    //    @ExceptionHandler({IllegalArgumentException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    protected ResponseEntity handleIllegalArgumentException(IllegalArgumentException e) {
-//        ApiExceptionDto apiExceptionDto = new ApiExceptionDto();
-//        apiExceptionDto.setErrorMessage(e.getMessage());
-//        apiExceptionDto.setHttpStatus(HttpStatus.BAD_REQUEST);
-//        log.warn(e.getMessage());
-//        return new ResponseEntity(apiExceptionDto, HttpStatus.BAD_REQUEST);
-//    }
+        @ExceptionHandler({IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity handleIllegalArgumentException(IllegalArgumentException e) {
+        ApiExceptionDTO apiExceptionDto = new ApiExceptionDTO(e.getMessage(), HttpStatus.BAD_REQUEST);
+        log.warn(e.getMessage());
+        return new ResponseEntity(apiExceptionDto, HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler({NullPointerException.class})
     protected ResponseEntity handleNullPointerException(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

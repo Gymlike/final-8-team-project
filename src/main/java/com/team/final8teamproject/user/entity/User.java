@@ -39,6 +39,8 @@ public class User extends Timestamped {
     private String email;
 
 
+    @Column(nullable = false)
+    private Long experience;
 
     @Builder
     public User(String username, String password, UserRoleEnum role,

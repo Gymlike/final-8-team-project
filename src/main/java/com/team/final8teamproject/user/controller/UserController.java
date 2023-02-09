@@ -1,6 +1,5 @@
 package com.team.final8teamproject.user.controller;
 
-import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,16 +10,16 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
+import com.team.final8teamproject.security.userservice.EmailService;
 import com.team.final8teamproject.security.userservice.UserDetailsImpl;
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
     private final JwtUtil jwtUtil;
-
     //1. 회원가입
     @PostMapping("/signup")
     public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) {
@@ -54,8 +53,7 @@ public class UserController {
     //4. 이메일 인증
     @PostMapping("/emailConfirm")
     public String emailConfirm(@RequestParam String email) throws Exception {
-        String confirm = emailService.sendSimpleMessage(email);
-        return confirm;
+        return emailService.sendSimpleMessage(email);
     }
 
 }
