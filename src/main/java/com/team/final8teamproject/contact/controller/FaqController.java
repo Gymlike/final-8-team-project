@@ -3,6 +3,8 @@ package com.team.final8teamproject.contact.controller;
 
 import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
+import com.team.final8teamproject.contact.dto.InquiryRequest;
+import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.service.FaqServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,6 +61,14 @@ public class FaqController {// todo  메서드 마다 권한 설정
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
 
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity updateFaq(@PathVariable Long id,
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestBody UpdateFaqRequest updateFaqRequest){
+    faqServiceImpl.updateFaq(id,userDetails.getUser().getId(),updateFaqRequest);
+    return ResponseEntity.ok("수정 완료");
   }
   //todo 권한 :관리자
   @DeleteMapping("/{id}")

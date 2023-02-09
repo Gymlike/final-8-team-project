@@ -3,15 +3,13 @@ package com.team.final8teamproject.contact.service;
 import com.team.final8teamproject.contact.Repository.FaqRepository;
 import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
+import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,15 +27,17 @@ public class FaqServiceImpl implements FaqService {
     faqRepository.save(faq);
   }
 
- //FAQ 전체 조회 (보기)
+  //FAQ 전체 조회 (보기)
   @Override
   @Transactional(readOnly = true)
   public List<FaqResponse> getFaqList(int page, int size, Direction direction, String properties) {
-    Page<Faq> faqListPage = faqRepository.findAll(PageRequest.of(page-1,size,direction,properties));
-    if(faqListPage.isEmpty()){
+    Page<Faq> faqListPage = faqRepository.findAll(
+        PageRequest.of(page - 1, size, direction, properties));
+    if (faqListPage.isEmpty()) {
       throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
     }
-    List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).collect(Collectors.toList());
+    List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
+        .collect(Collectors.toList());
     return faqResponses;
   }
 
@@ -46,19 +46,36 @@ public class FaqServiceImpl implements FaqService {
   @Transactional(readOnly = true)
   public FaqResponse getSelectedFaq(Long id) {
     Faq faq = faqRepository.findById(id).orElseThrow(
-        ()-> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
     );
     return new FaqResponse(faq);
   }
+
   @Override
   @Transactional(readOnly = true)
   public List<FaqResponse> searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
     String question = keyword;
     String answer = keyword;
-    Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,answer,PageRequest.of(page-1,size,direction,properties));
+    Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
+        answer, PageRequest.of(page - 1, size, direction, properties));
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
     return faqResponses;
+
+  }
+
+  @Transactional
+  @Override
+  public void updateFaq(Long id, Long managerId, UpdateFaqRequest updateFaqRequest) {
+    Faq faq = faqRepository.findById(id).orElseThrow(
+        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+    );
+    if (faq.getManagerId().equals(managerId)) {
+      faq.update(updateFaqRequest);
+      faqRepository.save(faq);
+    } else {
+      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+    }
   }
 
   @Override
@@ -73,6 +90,7 @@ public class FaqServiceImpl implements FaqService {
       throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
     }
   }
+
 
 }
 

@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.entity;
 
+import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.user.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -31,5 +32,10 @@ public class Faq extends Timestamped {
     this.managerId = managerId;
     this.question = question;
     this.answer = answer;
+  }
+
+  public void update(UpdateFaqRequest updateFaqRequest) {
+   this.question = updateFaqRequest.getQuestion();
+   this.answer = updateFaqRequest.getAnswer();
   }
 }
