@@ -12,6 +12,7 @@ public class LoginResponseDto {
     private String accessToken;
     private String refreshToken;
     private Long refreshTokenExpirationTime;
+
     @Builder
     public LoginResponseDto(String grantType, String accessToken, String refreshToken, Long refreshTokenExpirationTime) {
         this.grantType = grantType;
