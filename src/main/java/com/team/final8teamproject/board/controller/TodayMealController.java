@@ -26,7 +26,7 @@ public class TodayMealController {
     private final TodayMealService todayMealService;
 
 
-    //오운완 게시판 생성
+    //오먹 게시판 생성
     @PostMapping
     public ResponseEntity<String> creatTodayMealBord(@RequestPart("BordRequestDTO") CreatBordRequestDTO creatBordRequestDTO,
                                                      @RequestPart("file") MultipartFile file,
@@ -39,7 +39,7 @@ public class TodayMealController {
         return todayMealService.creatTodayMealBord(title,content,file,user);
     }
 
-    //오운완 전체 게시물 조회
+    //오먹 전체 게시물 조회
     @GetMapping ("/allboard")
     public List<TodayMealBoardResponseDTO> getAllTodayMealBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
@@ -53,29 +53,29 @@ public class TodayMealController {
         return todayMealService.getAllTodayBoards(pageRequest,search);
     }
 
-    //오운완 선택 게시물 조회
+    //오먹 선택 게시물 조회
     @GetMapping("/selectboard/{boardId}")
     public TodayMealBoardResponseDTO getTodayMealBoard(@PathVariable Long boardId){
 
         return todayMealService.getTodayMealBoard(boardId);
     }
-    //오운완 게시물 삭제
+    //오먹 게시물 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteT_exerciseBoard(@PathVariable Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return todayMealService.deletePost(boardId,userDetails.getUser()); //인증은 앞단에서..했다고 가정하니까....
     }
 
 
-    //오운완 게시물 수정
+    //오먹 게시물 수정
     @PatchMapping("/{boardId}")
-    public ResponseEntity<String> editSalePost(@PathVariable Long boardId,
-                                                      @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                                      @RequestPart("file") MultipartFile file,
-                                                      @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
+    public ResponseEntity<String> editPost(@PathVariable Long boardId,
+                                           @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                           @RequestPart("file") MultipartFile file,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
         User user = userDetails.getUser();
 
-        return t_exerciseService.editSalePost(boardId,creatTExerciseBordRequestDTO,user,file);
+        return todayMealService.editPost(boardId,creatTExerciseBordRequestDTO,user,file);
     }
 
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {

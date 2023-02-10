@@ -116,7 +116,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
      */
     @Override
     @Transactional
-    public ResponseEntity<String> deleteSalePost(Long boardId, User user) {
+    public ResponseEntity<String> deletePost(Long boardId, User user) {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
 
@@ -142,10 +142,10 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
      */
     @Override
     @Transactional
-    public ResponseEntity<String> editSalePost(Long boardId,
-                                               CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                               User user,
-                                               MultipartFile file) throws  IOException
+    public ResponseEntity<String> editPost(Long boardId,
+                                           CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                           User user,
+                                           MultipartFile file) throws  IOException
     {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 

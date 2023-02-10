@@ -21,7 +21,7 @@ public interface TodayMealService {
 
     ResponseEntity<String> deletePost(Long boardId, User user);
 
-    ResponseEntity<String> editSalePost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
+    ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
 
 
     T_exercise findT_exerciseBoardById(Long id);

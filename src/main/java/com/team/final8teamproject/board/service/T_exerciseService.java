@@ -20,9 +20,9 @@ public interface T_exerciseService {
 
     T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
 
-    ResponseEntity<String> deleteSalePost(Long boardId, User user);
+    ResponseEntity<String> deletePost(Long boardId, User user);
 
-    ResponseEntity<String> editSalePost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
+    ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
 
 
     T_exercise findT_exerciseBoardById(Long id);

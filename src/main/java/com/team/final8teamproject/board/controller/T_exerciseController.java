@@ -61,20 +61,20 @@ public class T_exerciseController {
     //오운완 게시물 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteT_exerciseBoard(@PathVariable Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return t_exerciseService.deleteSalePost(boardId,userDetails.getUser()); //인증은 앞단에서..했다고 가정하니까....
+        return t_exerciseService.deletePost(boardId,userDetails.getUser()); //인증은 앞단에서..했다고 가정하니까....
     }
 
 
     //오운완 게시물 수정
     @PatchMapping("/{boardId}")
-    public ResponseEntity<String> editSalePost(@PathVariable Long boardId,
-                                                      @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                                      @RequestPart("file") MultipartFile file,
-                                                      @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
+    public ResponseEntity<String> editPost(@PathVariable Long boardId,
+                                           @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                           @RequestPart("file") MultipartFile file,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
         User user = userDetails.getUser();
 
-        return t_exerciseService.editSalePost(boardId,creatTExerciseBordRequestDTO,user,file);
+        return t_exerciseService.editPost(boardId,creatTExerciseBordRequestDTO,user,file);
     }
 
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {
