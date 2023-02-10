@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "Owners")
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Owner extends Timestamped {
@@ -17,7 +17,7 @@ public class Owner extends Timestamped {
     @Column(name = "workoutGymOwner")
     private Long id;
     @Column(nullable = false, unique = true)
-    private String ownerName;
+    private String ownername;
     @Column(nullable = false)
     private String password;
     private String image;
@@ -40,8 +40,8 @@ public class Owner extends Timestamped {
     private String storeNumber;
 
     @Builder
-    public Owner(String ownerName, String password, UserRoleEnum role, String nickName, String phoneNumber, String email, String storeName, String storeNumber) {
-        this.ownerName = ownerName;
+    public Owner(String ownername, String password, UserRoleEnum role, String nickName, String phoneNumber, String email, String storeName, String storeNumber) {
+        this.ownername = ownername;
         this.password = password;
         this.role = role;
         this.nickName = nickName;

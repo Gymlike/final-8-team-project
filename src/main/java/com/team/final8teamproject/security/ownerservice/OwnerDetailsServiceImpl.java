@@ -1,8 +1,7 @@
-package com.team.final8teamproject.security.service;
+package com.team.final8teamproject.security.ownerservice;
 
 import com.team.final8teamproject.owner.entity.Owner;
-import com.team.final8teamproject.user.entity.User;
-import com.team.final8teamproject.user.repository.OwnerRepository;
+import com.team.final8teamproject.owner.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +16,6 @@ public class OwnerDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Owner owner = ownerRepository.findByOwnername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
-        return new OwnerDetailsImpl(owner, owner.getOwnerName());
+        return new OwnerDetailsImpl(owner, owner.getOwnername());
     }
 }

@@ -1,12 +1,9 @@
-package com.team.final8teamproject.user.controller;
+package com.team.final8teamproject.owner.controller;
 
-import com.team.final8teamproject.security.service.OwnerDetailsImpl;
-import com.team.final8teamproject.security.service.UserDetailsImpl;
-import com.team.final8teamproject.user.dto.CreatePostGymRequestDto;
-import com.team.final8teamproject.user.dto.GymPostResponseDto;
-import com.team.final8teamproject.user.service.GymPostService;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.Getter;
+import com.team.final8teamproject.security.ownerservice.OwnerDetailsImpl;
+import com.team.final8teamproject.owner.dto.CreatePostGymRequestDto;
+import com.team.final8teamproject.owner.dto.GymPostResponseDto;
+import com.team.final8teamproject.owner.service.GymPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

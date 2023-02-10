@@ -1,11 +1,13 @@
-package com.team.final8teamproject.user.service;
+package com.team.final8teamproject.owner.service;
 
+import com.team.final8teamproject.owner.dto.OwnerLoginRequestDto;
+import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.redis.RedisUtil;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
-import com.team.final8teamproject.user.repository.OwnerRepository;
+import com.team.final8teamproject.owner.repository.OwnerRepository;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +39,7 @@ public class OwnerService {
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
-        UserRoleEnum role = UserRoleEnum.OWNER;
+        UserRoleEnum role = UserRoleEnum.OWNER;//내일 물어보기
         if (requestDto.isAdmin()) {
             if (!requestDto.getAdminToken().equals(MANAGER_TOKEN)) {
                 throw new SecurityException("관리자 암호가 틀렸습니다.");
@@ -47,7 +49,7 @@ public class OwnerService {
         Owner owner = Owner.builder()
                 .nickName(nickName).email(email)
                 .phoneNumber(phoneNumber).password(password)
-                .ownerName(ownername).role(role)
+                .ownername(ownername).role(role)
                 .storeName(storeName).storeNumber(storeNumber)
                 .build();
         ownerRepository.save(owner);
@@ -55,7 +57,7 @@ public class OwnerService {
     }
     //2.로그인
     @Transactional
-    public LoginResponseDto login(LoginRequestDto requestDto) {
+    public LoginResponseDto login(OwnerLoginRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
 
@@ -65,13 +67,13 @@ public class OwnerService {
         if (!passwordEncoder.matches(password, owner.getPassword())){
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
-        String refreshToken = (String)redisUtil.get("RT:" +owner.getOwnerName());
+        String refreshToken = (String)redisUtil.get("RT:" +owner.getOwnername());
         if(!ObjectUtils.isEmpty(refreshToken)){
             throw new IllegalArgumentException("이미 로그인 되어 있습니다..");
         }
-        LoginResponseDto loginResponseDto =jwtUtil.createToken(owner.getOwnerName(), owner.getRole());
+        LoginResponseDto loginResponseDto =jwtUtil.createToken(owner.getOwnername(), owner.getRole());
 
-        redisUtil.set("RT:" +owner.getOwnerName(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+        redisUtil.set("RT:" +owner.getOwnername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
 
         return loginResponseDto;
     }
@@ -79,7 +81,7 @@ public class OwnerService {
     public String logout(String accessToken, Owner owner) {
 
         // refreshToken 테이블의 refreshToken 삭제
-        redisUtil.delete("RT:" + owner.getOwnerName());
+        redisUtil.delete("RT:" + owner.getOwnername());
 //        refreshTokenRepository.deleteRefreshTokenByEmail(users.getEmail());
 
         // 레디스에 accessToken 사용못하도록 등록

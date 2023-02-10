@@ -1,11 +1,11 @@
-package com.team.final8teamproject.user.service;
+package com.team.final8teamproject.owner.service;
 
 import com.team.final8teamproject.owner.entity.GymBoard;
 import com.team.final8teamproject.owner.entity.Owner;
-import com.team.final8teamproject.user.dto.CreatePostGymRequestDto;
-import com.team.final8teamproject.user.dto.GymPostResponseDto;
-import com.team.final8teamproject.user.repository.GymBoardRepository;
-import com.team.final8teamproject.user.repository.OwnerRepository;
+import com.team.final8teamproject.owner.dto.CreatePostGymRequestDto;
+import com.team.final8teamproject.owner.dto.GymPostResponseDto;
+import com.team.final8teamproject.owner.repository.GymBoardRepository;
+import com.team.final8teamproject.owner.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +28,7 @@ public class GymPostService {
     //상품 페이징
     @Transactional(readOnly = true)
     public List<GymPostResponseDto> getGymPost(String userName) {
-        List<GymBoard> gymBoards = gymBoardRepository.findAllByUsername(userName);
+        List<GymBoard> gymBoards = gymBoardRepository.findAllByUserName(userName);
 
         List<GymPostResponseDto> gymPostResponseDtosList = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class GymPostService {
 
     @Transactional(readOnly = true)
     public List<GymPostResponseDto> getAllGymPost(int pageChoice, String username){
-        Page<GymBoard> gymBoards = gymBoardRepository.findByUsername(pageableGymPostSetting(pageChoice),username);
+        Page<GymBoard> gymBoards = gymBoardRepository.findByUserName(pageableGymPostSetting(pageChoice),username);
         return gymBoards.stream().map(GymPostResponseDto::new).collect(Collectors.toList());
     }
 
@@ -61,7 +61,7 @@ public class GymPostService {
 
         GymBoard gymBoard = GymBoard.builder()
                 .title(requestDto.getTitle())
-                .writer(requestDto.getWriter())
+                .userName(requestDto.getUsername())
                 .content(requestDto.getContents())
                 .image(requestDto.getImage())
                 .trainer(requestDto.getTrainer())
@@ -79,7 +79,7 @@ public class GymPostService {
         Owner owner = ownerRepository.findByOwnername(userName).orElseThrow(
                 () ->new IllegalArgumentException("사용자가 존재하지 않습니다.")
         );
-        GymBoard gymBoard = gymBoardRepository.findByIdAndUsername(id, owner.getOwnerName()).orElseThrow(
+        GymBoard gymBoard = gymBoardRepository.findByIdAndUserName(id, owner.getOwnername()).orElseThrow(
                 () -> new IllegalArgumentException("글이 존재하지 않습니다.")
         );
 
@@ -96,7 +96,7 @@ public class GymPostService {
                 () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
         );
 
-        GymBoard gymBoard = gymBoardRepository.findByIdAndUsername(id, owner.getOwnerName()).orElseThrow(
+        GymBoard gymBoard = gymBoardRepository.findByIdAndUserName(id, owner.getOwnername()).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
         gymBoardRepository.deleteById(gymBoard.getId());

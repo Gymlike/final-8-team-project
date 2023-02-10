@@ -1,6 +1,6 @@
 package com.team.final8teamproject.owner.entity;
 
-import com.team.final8teamproject.user.dto.CreatePostGymRequestDto;
+import com.team.final8teamproject.owner.dto.CreatePostGymRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class GymBoard {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private String writer;          //작성자 이름으로 나중에 수정할때 db에서 글 작성자랑 현재 로그인한 작성자랑 맞는지 확인어떻게??
+    private String userName;          //작성자 이름으로 나중에 수정할때 db에서 글 작성자랑 현재 로그인한 작성자랑 맞는지 확인어떻게??
 
     //운동시설 소개 글
     @Column(nullable = false)
@@ -38,9 +38,9 @@ public class GymBoard {
 //    private String price;
 
     @Builder
-    public GymBoard(String title, String writer, String content, String image, String trainer, String region) {
+    public GymBoard(String title, String userName, String content, String image, String trainer, String region) {
         this.title = title;
-        this.writer = writer;
+        this.userName = userName;
         this.content = content;
         this.image = image;
         this.trainer = trainer;
@@ -49,7 +49,7 @@ public class GymBoard {
 
     public void update(CreatePostGymRequestDto createPostGymRequestDto){
         this.title = createPostGymRequestDto.getTitle();
-        this.writer = createPostGymRequestDto.getWriter();
+        this.userName = createPostGymRequestDto.getUsername();
         this.content = createPostGymRequestDto.getContents();
         this.image = createPostGymRequestDto.getImage();
         this.trainer = createPostGymRequestDto.getTrainer();

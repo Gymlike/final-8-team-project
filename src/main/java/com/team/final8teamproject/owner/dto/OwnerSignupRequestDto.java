@@ -1,4 +1,4 @@
-package com.team.final8teamproject.user.dto;
+package com.team.final8teamproject.owner.dto;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;

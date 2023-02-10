@@ -1,4 +1,4 @@
-package com.team.final8teamproject.user.repository;
+package com.team.final8teamproject.owner.repository;
 
 import com.team.final8teamproject.owner.entity.GymBoard;
 import com.team.final8teamproject.owner.entity.Owner;
@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GymBoardRepository extends JpaRepository<GymBoard, Long> {
-    List<GymBoard> findAllByUsername(String username);
-    Optional<GymBoard> findByIdAndUsername(Long id, String username);
+    List<GymBoard> findAllByUserName(String userName);
+    Optional<GymBoard> findByIdAndUserName(Long id, String userName);
     Page<GymBoard> findAll(Pageable pageable);
-    Page<GymBoard> findByUsername(Pageable pageable, String username);
+    Page<GymBoard> findByUserName(Pageable pageable, String userName);
     void deleteById(Long id);
 
 }
