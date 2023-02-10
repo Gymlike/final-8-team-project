@@ -1,8 +1,8 @@
 package com.team.final8teamproject.contact.contactComment.servive;
 
-import com.team.final8teamproject.contact.contactComment.dto.ContactCommentRequest;
-import com.team.final8teamproject.contact.contactComment.entity.ContactComment;
-import com.team.final8teamproject.contact.contactComment.repository.ContactCommentRepository;
+import com.team.final8teamproject.contact.contactComment.dto.CommentRequest;
+import com.team.final8teamproject.contact.contactComment.entity.Comment;
+import com.team.final8teamproject.contact.contactComment.repository.CommentRepository;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 
@@ -12,21 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ContactCommentServiceImpl implements ContactCommentService {
+public class CommentServiceImpl implements CommentService {
 
   private final InquiryServiceImpl inquiryServiceImpl;
-  private final ContactCommentRepository contactCommentRepository;
+  private final CommentRepository commentRepository;
 
   @Transactional
   @Override
-  public void InquiryComment(ContactCommentRequest contactCommentRequest, Long inquiryId, String username) {
+  public void InquiryComment(CommentRequest commentRequest, Long inquiryId, String username) {
     Inquiry inquiry = inquiryServiceImpl.findById(inquiryId);
 
-    ContactComment parent = null;
+    Comment parent = null;
     //자식 댓글인 경우
-    if(contactCommentRequest.getParentId() != null){
+    if(commentRequest.getParentId() != null){
       try {
-        parent = (ContactComment) contactCommentRepository.findById(contactCommentRequest.getParentId()).orElseThrow(
+        parent = (Comment) commentRepository.findById(commentRequest.getParentId()).orElseThrow(
             ()-> new IllegalArgumentException(" 해당 댓글이 존재 하지 않습니다.")
         );
       } catch (Throwable e) {
@@ -39,13 +39,13 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     //댓글인 경우
       if(parent ==null){
        // Comment comment = new Comment(commentRequest.toEntity(inquiryId,username,parent));
-        ContactComment contactComment = contactCommentRequest.toEntity(inquiry,username,parent);
-        contactCommentRepository.save(contactComment);
+        Comment comment = commentRequest.toEntity(inquiry,username,parent);
+        commentRepository.save(comment);
       }
       else {//대댓글인 경우
-      ContactComment contactComment = contactCommentRequest.toEntity(inquiry,username,parent );
-      contactComment.setMainInquiryId(inquiry.getId());
-      contactCommentRepository.save(contactComment);
+      Comment comment = commentRequest.toEntity(inquiry,username,parent );
+      comment.setMainInquiryId(inquiry.getId());
+      commentRepository.save(comment);
       }
 
 

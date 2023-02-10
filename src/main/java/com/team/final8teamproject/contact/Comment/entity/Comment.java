@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class ContactComment extends Timestamped {
+public class Comment extends Timestamped {
 
   @Getter(AccessLevel.NONE)
   @Id
@@ -55,10 +55,10 @@ public class ContactComment extends Timestamped {
 
   @ManyToOne
   @JoinColumn(name = "parent_id")
-  private ContactComment parent;
+  private Comment parent;
 
   @OneToMany(mappedBy = "parent",orphanRemoval = true)
-  private List<ContactComment> children = new ArrayList<>();
+  private List<Comment> children = new ArrayList<>();
 
 
 //  public Comment(CommentRequest commentRequest, Inquiry inquiry, String username, Comment parent) {
@@ -69,9 +69,9 @@ public class ContactComment extends Timestamped {
 //        this.mainInquiryId =inquiry.getId();
 
  @Builder
-  public ContactComment(String comment, String username, Inquiry inquiry, Long parentId,
+  public Comment(String comment, String username, Inquiry inquiry, Long parentId,
      Long mainInquiryId,
-      ContactComment parent, List<ContactComment> children) {
+      Comment parent, List<Comment> children) {
     this.comment = comment;
     this.username = username;
     this.inquiry = inquiry;
