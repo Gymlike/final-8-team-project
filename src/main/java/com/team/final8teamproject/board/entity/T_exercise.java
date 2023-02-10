@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.entity;
 
 
-import com.team.final8teamproject.share.TimeStamp;
+import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class T_exercise extends TimeStamp {
+public class T_exercise extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,12 +1,11 @@
 package com.team.final8teamproject.user.entity;
 
+import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.user.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
 
 @Entity
 @Getter

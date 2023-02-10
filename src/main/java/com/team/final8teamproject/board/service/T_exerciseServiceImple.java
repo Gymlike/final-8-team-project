@@ -11,7 +11,6 @@ import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
-import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -100,7 +99,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
             String commentContent = comment.getComment();
             String username = comment.getUsername();
             Long id = comment.getId();
-            LocalDateTime createdAt = comment.getCreatedAt();
+            LocalDateTime createdAt = comment.getCreatedDate();
             CommentResponseDTO dto = new CommentResponseDTO(id,commentContent,username,createdAt,toList);
             commentFilter.add(dto);
         }

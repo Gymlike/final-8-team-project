@@ -3,7 +3,7 @@ package com.team.final8teamproject.contact.contactComment.entity;
 
 
 import com.team.final8teamproject.contact.entity.Inquiry;
-import com.team.final8teamproject.user.entity.Timestamped;
+import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
