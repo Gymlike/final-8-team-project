@@ -1,36 +1,14 @@
 package com.team.final8teamproject.manager.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import net.minidev.json.annotate.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Getter
 public class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotBlank
-    private String manager;
-    @JsonIgnore
-    @NotBlank
-    private String password;
-    private String profileImage;
-    @NotBlank
-    private String nickname;
-    private ManagerRoleEnum role;
+    private int id;
 
-    @Builder
-    public Manager(String manager, String password, String nickname, ManagerRoleEnum role) {
-        this.manager = manager;
-        this.password = password;
-        this.nickname = nickname;
-        this.role = role;
-    }
-
-    public void approvalManager(ManagerRoleEnum role) {
-        this.role = role;
-    }
 }
