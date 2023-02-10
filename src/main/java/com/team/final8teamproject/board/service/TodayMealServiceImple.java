@@ -68,7 +68,7 @@ public class TodayMealServiceImple implements  TodayMealService{
 
     
     /**
-     * 오운완 전체 게시물 조회 페이징 + 검색 처리
+     * 오멕 게시물 조회 페이징 + 검색 처리
      * @param pageRequest 페이징 처리 디폴트값은 컨트롤러 단서 확인
      * @param search 게시물 검색시 들어갈 값.. 디폴트값을 ""로해서 입력x시 전체 게시물 검색
      * @return 리스트로 반환
@@ -83,17 +83,19 @@ public class TodayMealServiceImple implements  TodayMealService{
     }
 
     /**
-     * 오운완 게시물 하나 조회 ~ 전체 조회랑 반환 내용은 동일함... 프론트에서 취사선택..
+     * 오먹.. 게시물 하나 조회 ~ 전체 조회랑 반환 내용은 동일함... 프론트에서 취사선택..
      * 조회시 댓글조회도 같이 됨 !
      * 대댓글도 가져와야함 ... 미춰버려~ 이건 댓글 가져오는 로직에서 댓
      * @param boardId  보드고유아이디
      * @return DTO에 담아서 반환
      */
+    //댓글...관련 불러오는거 수정해야됨 ..!!! ! ! ! ! ! ! ! ! !! ! ! ! !
     @Override
-    public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
-        T_exercise t_exercise = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+    public TodayMealBoardResponseDTO getTodayMealBoard(Long boardId) {
+        TodayMeal todayMeal = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
+
         List<CommentResponseDTO> commentFilter = new ArrayList<>();
         Long countLike = tExerciseLikeService.countLike(boardId);
 
@@ -108,7 +110,7 @@ public class TodayMealServiceImple implements  TodayMealService{
             commentFilter.add(dto);
         }
 
-        return new T_exerciseBoardResponseDTO(countLike,t_exercise,commentFilter);
+        return new TodayMealBoardResponseDTO(countLike,todayMeal,commentFilter);
     }
 
 

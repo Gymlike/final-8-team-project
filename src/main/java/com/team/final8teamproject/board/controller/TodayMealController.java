@@ -56,9 +56,9 @@ public class TodayMealController {
 
     //오운완 선택 게시물 조회
     @GetMapping("/selectboard/{boardId}")
-    public T_exerciseBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId){
+    public TodayMealBoardResponseDTO getTodayMealBoard(@PathVariable Long boardId){
 
-        return t_exerciseService.getT_exerciseBoard(boardId);
+        return todayMealService.getTodayMealBoard(boardId);
     }
     //오운완 게시물 삭제
     @DeleteMapping("/{boardId}")

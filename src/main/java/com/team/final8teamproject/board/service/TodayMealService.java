@@ -18,7 +18,7 @@ public interface TodayMealService {
 
     List<TodayMealBoardResponseDTO> getAllTodayBoards(Pageable pageRequest, String search);
 
-    T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
+    TodayMealBoardResponseDTO getTodayMealBoard(Long boardId);
 
     ResponseEntity<String> deleteSalePost(Long boardId, User user);
 
