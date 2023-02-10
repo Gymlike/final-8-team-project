@@ -1,5 +1,8 @@
 package com.team.final8teamproject.contact.service;
 
+import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
+import com.team.final8teamproject.contact.Comment.servive.ContactCommentServiceImpl;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 
 import com.team.final8teamproject.contact.dto.InquiryRequest;
@@ -18,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryServiceImpl implements InquiryService {
 
   private final InquiryRepository inquiryRepository;
-
+ // private final ContactCommentServiceImpl contactCommentService;
+  private final ContactCommentRepository contactCommentRepository;
 
 
   @Transactional
@@ -57,13 +61,17 @@ public class InquiryServiceImpl implements InquiryService {
    return inquiryResponses;
   }
 
+  // todo commentList 같이 보여주기 디티오로
   @Transactional(readOnly = true)
   @Override
   public  InquiryResponse getSelectedInquiry(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        ()-> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
-    );
-    return new InquiryResponse(inquiry);
+        ()-> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다."));
+ //List<ContactComment> comments = contactCommentService.findCommentByInquiryId(id);
+  //  List<ContactComment> comments = contactCommentRepository.findAllByInquiryId(id);
+
+ return new InquiryResponse(inquiry);
+ //return new InquiryResponse(inquiry,comments);
   }
 
   @Transactional(readOnly = true)
@@ -92,8 +100,8 @@ public class InquiryServiceImpl implements InquiryService {
     }
   }
 
-  //todo 관리자따로, 유저따로 삭제 가능하게 하기
 
+/** 관리자가 유저 글 삭제 기능*/
   @Transactional
   @Override
   public void deleteManager(Long id) {

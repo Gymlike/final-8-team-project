@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
-public class UpdateCommentRequest {
+public class UpdateContactCommentRequest {
 
     private final String comments;
 

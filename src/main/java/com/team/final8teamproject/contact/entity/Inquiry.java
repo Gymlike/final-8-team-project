@@ -2,12 +2,8 @@ package com.team.final8teamproject.contact.entity;
 
 
 //import com.team.final8teamproject.contact.contactComment.entity.ContactComment;
-import com.team.final8teamproject.contact.Comment.entity.Comment;
-import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.user.entity.Timestamped;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

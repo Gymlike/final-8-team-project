@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //todo 권한 : 관리자만  ( 조회 기능시 메서드별 권한 설정 요망)
 @RequiredArgsConstructor
-@RequestMapping("/api/managers/notice")
+@RequestMapping("/api/managers/notices")
 @RestController
 public class NoticeController {
 
@@ -56,7 +56,7 @@ public class NoticeController {
     return noticeServiceImpl.getSelectedNotice(id);
   }
 
-  @GetMapping("/check/keyword")
+  @GetMapping("/check/keywords")
   public List<NoticeResponse>searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,

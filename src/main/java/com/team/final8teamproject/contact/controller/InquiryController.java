@@ -28,7 +28,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
 
   private final InquiryServiceImpl inquiryServiceImpl;
 
-  @PostMapping("/user/contact/inquiry")
+  @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     inquiryServiceImpl.createInquiry(inquiryRequest, userDetails.getUser().getUsername());
@@ -36,7 +36,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
   }
 
  // todo 풀받은 후  웹컨피그 . permitAll()/api/contact/inquiry/**
-  @GetMapping("/contact/inquiry")
+  @GetMapping("/contact/inquiries")
   public List<InquiryResponse>  getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
@@ -45,14 +45,14 @@ public class InquiryController {// todo  메서드 마다 권한 설정
     return inquiryServiceImpl.getInquiry(page,size,direction,properties);
   }
 
-  @GetMapping("/contact/inquiry/{id}")
+  @GetMapping("/contact/inquiries/{id}")
   public InquiryResponse getSelectedInquiry(@PathVariable Long  id){
     return inquiryServiceImpl.getSelectedInquiry(id);
   }
 
 
 
-  @GetMapping("/contact/inquiry/keyword")
+  @GetMapping("/contact/inquiries/keywords")
   public List<InquiryResponse> searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -63,7 +63,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
   }
 
   //todo 모든 put매핑에 , 입력값만 최신화 되도록 하기 patch 안됨
-  @PutMapping("/user/contact/inquiry/{id}")
+  @PutMapping("/user/contact/inquiries/{id}")
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody InquiryRequest inquiryRequest){
@@ -71,7 +71,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
     return ResponseEntity.ok("수정 완료");
   }
   //todo 관리자가 유저 문의글 삭제 가능
-  @DeleteMapping("/user/contact/inquiry/{id}")
+  @DeleteMapping("/users/contact/inquiries/{id}")
   public ResponseEntity deleteInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
     inquiryServiceImpl.deleteInquiry(id,userDetails.getUser().getUsername());
@@ -79,7 +79,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
   }
   //todo 권한 : 관리자만
   // 관리자의 문의사항 삭제 기능
-  @DeleteMapping("/manager/contact/inquiry/{id}")
+  @DeleteMapping("/managers/contact/inquiries/{id}")
   public ResponseEntity deleteManager(@PathVariable Long id){
     inquiryServiceImpl.deleteManager(id);
     return ResponseEntity.ok("삭제 완료");
