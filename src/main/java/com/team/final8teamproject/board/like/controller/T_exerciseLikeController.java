@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.like.controller;
 
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
-import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.security.userservice.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

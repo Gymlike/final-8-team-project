@@ -1,4 +1,4 @@
-package com.team.final8teamproject.security.service;
+package com.team.final8teamproject.security.userservice;
 
 public interface EmailService {
 
