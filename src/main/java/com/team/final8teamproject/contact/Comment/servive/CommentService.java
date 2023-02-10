@@ -1,7 +1,7 @@
-package com.team.final8teamproject.contact.contactComment.servive;
+package com.team.final8teamproject.contact.Comment.servive;
 
 
-import com.team.final8teamproject.contact.contactComment.dto.CommentRequest;
+import com.team.final8teamproject.contact.Comment.dto.CommentRequest;
 
 
 public interface CommentService {

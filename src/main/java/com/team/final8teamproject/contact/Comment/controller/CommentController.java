@@ -1,7 +1,7 @@
-package com.team.final8teamproject.contact.contactComment.controller;
+package com.team.final8teamproject.contact.Comment.controller;
 
-import com.team.final8teamproject.contact.contactComment.dto.CommentRequest;
-import com.team.final8teamproject.contact.contactComment.servive.CommentServiceImpl;
+import com.team.final8teamproject.contact.Comment.dto.CommentRequest;
+import com.team.final8teamproject.contact.Comment.servive.CommentServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

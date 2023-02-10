@@ -1,4 +1,4 @@
-package com.team.final8teamproject.contact.contactComment.entity;
+package com.team.final8teamproject.contact.Comment.entity;
 //문의사항에 대한 답글 용
 
 

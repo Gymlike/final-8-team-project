@@ -2,7 +2,7 @@ package com.team.final8teamproject.contact.entity;
 
 
 //import com.team.final8teamproject.contact.contactComment.entity.ContactComment;
-import com.team.final8teamproject.contact.contactComment.entity.ContactComment;
+import com.team.final8teamproject.contact.Comment.entity.Comment;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.user.entity.Timestamped;
 import jakarta.persistence.*;
@@ -12,7 +12,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.attoparser.dom.Comment;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,7 +35,7 @@ public class Inquiry extends Timestamped {
   private String content;
 
   @OneToMany(mappedBy = "inquiry", cascade = CascadeType.REMOVE) // cascade 함께 삭제하도록 구현
-  private List<ContactComment> comments = new ArrayList<>();
+  private List<Comment> comments = new ArrayList<>();
 
   private Boolean secretCheckBox; // todo ** 관리자만 보기 와 모두 보기 선택지 - 관리자만 보기시 관리지만 볼 수 있음
 
