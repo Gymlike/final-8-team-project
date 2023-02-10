@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.controller;
 
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.service.TodayMealService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.entity.User;
@@ -40,8 +41,8 @@ public class TodayMealController {
     }
 
     //오운완 전체 게시물 조회
-    @GetMapping ("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
-    public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(
+    @GetMapping ("/allboard")
+    public List<TodayMealBoardResponseDTO> getAllT_exerciseBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
             @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
