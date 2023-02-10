@@ -1,6 +1,5 @@
 package com.team.final8teamproject.board.service;
 
-import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
@@ -20,7 +19,7 @@ public interface TodayMealService {
 
     TodayMealBoardResponseDTO getTodayMealBoard(Long boardId);
 
-    ResponseEntity<String> deleteSalePost(Long boardId, User user);
+    ResponseEntity<String> deletePost(Long boardId, User user);
 
     ResponseEntity<String> editSalePost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
 

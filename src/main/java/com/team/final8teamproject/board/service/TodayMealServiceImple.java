@@ -122,11 +122,11 @@ public class TodayMealServiceImple implements  TodayMealService{
      */
     @Override
     @Transactional
-    public ResponseEntity<String> deleteSalePost(Long boardId, User user) {
-        T_exercise t_exercise = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+    public ResponseEntity<String> deletePost(Long boardId, User user) {
+        TodayMeal todayMeal = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
 
-        if (t_exercise.isWriter(user.getId())) {
+        if (todayMeal.isWriter(user.getId())) {
             todayMealRepository.deleteById(boardId);
             tExerciseCommentService.deleteByBoardId(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
