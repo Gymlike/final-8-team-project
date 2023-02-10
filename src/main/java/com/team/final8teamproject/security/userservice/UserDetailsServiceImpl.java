@@ -1,7 +1,6 @@
-package com.team.final8teamproject.security.service;
+package com.team.final8teamproject.security.userservice;
 
 import com.team.final8teamproject.user.entity.User;
-import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -40,7 +40,5 @@ public class SignupRequestDto {
     @Email
     private String email;
 
-    private boolean admin = false;
-    private String adminToken = "";
-
+    private Long experience =0L;
 }

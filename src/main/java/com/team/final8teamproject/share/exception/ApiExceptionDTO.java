@@ -9,5 +9,9 @@ import org.springframework.http.HttpStatus;
 public class ApiExceptionDTO {
     private String errorMessage;
     private HttpStatus httpStatus;
+    public  ApiExceptionDTO(String errorMessage, HttpStatus httpStatus){
+        this.errorMessage = errorMessage;
+        this.httpStatus = httpStatus;
+    }
 
 }

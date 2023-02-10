@@ -4,7 +4,7 @@ package com.team.final8teamproject.contact.controller;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
-import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.security.userservice.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
