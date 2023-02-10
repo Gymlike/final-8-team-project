@@ -1,4 +1,4 @@
-package com.team.final8teamproject.security.service;
+package com.team.final8teamproject.security.userservice;
 
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
