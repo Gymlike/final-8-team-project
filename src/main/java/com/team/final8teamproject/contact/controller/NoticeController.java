@@ -5,7 +5,7 @@ import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;

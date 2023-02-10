@@ -3,7 +3,7 @@ package com.team.final8teamproject.security.jwt;
 
 import com.team.final8teamproject.user.dto.LoginResponseDto;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
-import com.team.final8teamproject.security.userservice.UserDetailsServiceImpl;
+import com.team.final8teamproject.security.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -30,8 +30,8 @@ public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long ACCESS_TOKEN_TIME = 60 * 30 * 1000L;            // 30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 2 * 24 * 60 * 60 * 1000L; //2일
+    private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L;            // 30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L; //7일
     private final UserDetailsServiceImpl userDetailsService;
     @Value("${jwt.secret.key}")
     private String secretKey;

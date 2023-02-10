@@ -1,6 +1,6 @@
 package com.team.final8teamproject.user.controller;
 
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import com.team.final8teamproject.user.dto.ProfileResponseDto;
 import com.team.final8teamproject.user.service.ProfileService;
