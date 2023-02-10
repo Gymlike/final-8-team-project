@@ -3,7 +3,7 @@ package com.team.final8teamproject.board.controller;
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

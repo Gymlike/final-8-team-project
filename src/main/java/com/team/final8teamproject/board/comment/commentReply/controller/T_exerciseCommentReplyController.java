@@ -2,7 +2,9 @@ package com.team.final8teamproject.board.comment.commentReply.controller;
 
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatT_exerciseCommentReplyRequestDTO;
 import com.team.final8teamproject.board.comment.commentReply.service.T_exerciseCommentReplyService;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.board.service.T_exerciseService;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

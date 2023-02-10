@@ -23,7 +23,7 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String password;
 
-    private String profileImage;
+    private String image;
 
     @Column(nullable = false)
     private String nickName;
@@ -39,25 +39,20 @@ public class User extends Timestamped {
     private String email;
 
 
-    @Column(nullable = false)
-    private Long experience;
 
     @Builder
-    public User(String username, String password, UserRoleEnum role,
-                String nickName, String phoneNumber, String email,
-                Long experience){
+    public User(String username, String password, String phoneNumber, String email , String nickName, UserRoleEnum role){
         this.username =username;
         this.password = password;
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.experience = experience;
         this.role = role;
     }
 
     public void changeProfile(ProfileModifyRequestDto profileModifyRequestDto) {
         this.nickName = profileModifyRequestDto.getNickname();
-        this.profileImage = profileModifyRequestDto.getImage();
+        this.image = profileModifyRequestDto.getImage();
         this.phoneNumber = profileModifyRequestDto.getPhoneNumber();
     }
 

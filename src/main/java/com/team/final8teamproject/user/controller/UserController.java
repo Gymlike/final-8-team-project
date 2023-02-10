@@ -1,8 +1,8 @@
 package com.team.final8teamproject.user.controller;
 
+import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,16 +10,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.userservice.EmailService;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api")
-public class UserController {
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 
+@RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
+public class UserController {
     private final UserService userService;
     private final EmailService emailService;
-    private final JwtUtil jwtUtil;
+
     //1. 회원가입
     @PostMapping("/signup")
     public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) {
@@ -45,15 +44,15 @@ public class UserController {
     //3. 로그아웃
     @DeleteMapping("/logout")
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
-    , HttpServletRequest request){
-        String accessToken = jwtUtil.resolveToken(request);
-        return new MessageResponseDto(userService.logout(accessToken, userDetails.getUsername()));
+    , @RequestBody TokenRequestDto tokenRequestDto){
+        return new MessageResponseDto(userService.logout(tokenRequestDto.getAccessToken(), userDetails.getUser()));
     }
 
     //4. 이메일 인증
     @PostMapping("/emailConfirm")
     public String emailConfirm(@RequestParam String email) throws Exception {
-        return emailService.sendSimpleMessage(email);
+        String confirm = emailService.sendSimpleMessage(email);
+        return confirm;
     }
 
 }
