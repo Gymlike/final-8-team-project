@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class BoardResponseDTO {
+public class T_exerciseBoardResponseDTO {
 
 
     private  Long like=(long)0;
@@ -25,7 +25,7 @@ public class BoardResponseDTO {
     private  List<CommentResponseDTO> commentList;
 
 
-    public BoardResponseDTO(Long like, T_exercise t_exercise, List<CommentResponseDTO> commentList) {
+    public T_exerciseBoardResponseDTO(Long like, T_exercise t_exercise, List<CommentResponseDTO> commentList) {
         this.like= like;
         this.id = t_exercise.getId();
         this.title = t_exercise.getTitle();
@@ -34,7 +34,7 @@ public class BoardResponseDTO {
         this.createdDate =t_exercise.getCreatedDate();
         this.commentList = commentList;
     }
-    public BoardResponseDTO(T_exercise t_exercise) {
+    public T_exerciseBoardResponseDTO(T_exercise t_exercise) {
         this.id = t_exercise.getId();
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();

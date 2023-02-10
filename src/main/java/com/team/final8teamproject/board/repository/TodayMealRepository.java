@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TodayMealRepository extends JpaRepository<TodayMeal,Long> {
-    List<T_exercise> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(
+    List<TodayMeal> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(
             String title,
             String content,
             Pageable pageable

@@ -6,12 +6,12 @@ import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCo
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
-import com.team.final8teamproject.board.dto.BoardResponseDTO;
+import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.entity.TodayMeal;
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
-import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.board.repository.TodayMealRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
@@ -74,11 +74,11 @@ public class TodayMealServiceImple implements  TodayMealService{
      * @return 리스트로 반환
      */
     @Override
-    public List<BoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search) {
-        List<T_exercise> tExerciseList = todayMealRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+    public List<TodayMealBoardResponseDTO> getAllTodayBoards(Pageable pageRequest, String search) {
+        List<TodayMeal> todayMeal = todayMealRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
 
-        return tExerciseList.stream()
-                .map(BoardResponseDTO::new)
+        return todayMeal.stream()
+                .map(TodayMealBoardResponseDTO::new)
                 .toList();
     }
 
@@ -90,7 +90,7 @@ public class TodayMealServiceImple implements  TodayMealService{
      * @return DTO에 담아서 반환
      */
     @Override
-    public BoardResponseDTO getT_exerciseBoard(Long boardId) {
+    public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
         T_exercise t_exercise = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
@@ -108,7 +108,7 @@ public class TodayMealServiceImple implements  TodayMealService{
             commentFilter.add(dto);
         }
 
-        return new BoardResponseDTO(countLike,t_exercise,commentFilter);
+        return new T_exerciseBoardResponseDTO(countLike,t_exercise,commentFilter);
     }
 
 
