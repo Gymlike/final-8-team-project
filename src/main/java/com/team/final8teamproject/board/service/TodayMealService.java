@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.service;
 
-import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.BoardResponseDTO;
+import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.user.entity.User;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-public interface T_exerciseService {
-    @Transactional
+public interface TodayMealService {
+
     ResponseEntity<String> creatTodayMealBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException;
 
     List<BoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search);

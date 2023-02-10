@@ -3,14 +3,16 @@ package com.team.final8teamproject.board.service;
 
 import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
-import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
-import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
-import com.team.final8teamproject.board.dto.BoardResponseDTO;
-import com.team.final8teamproject.board.entity.T_exercise;
-import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
-import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
+import com.team.final8teamproject.board.dto.BoardResponseDTO;
+import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.entity.TodayMeal;
+import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
+import com.team.final8teamproject.board.repository.T_exerciseRepository;
+import com.team.final8teamproject.board.repository.TodayMealRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -32,13 +34,15 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class T_exerciseServiceImple  implements  T_exerciseService{
-    private final T_exerciseRepository t_exerciseRepository;
+public class TodayMealServiceImple implements  TodayMealService{
+    private final TodayMealRepository todayMealRepository;
 
     private final T_exerciseCommentService tExerciseCommentService;
     private final T_exerciseLikeService tExerciseLikeService;
+
+
     /**
-     * 오운완 게시물 생성
+     *오먹 게시물 생성
      * @param title  제목
      * @param content  내용
      * @param file   이게 올릴 이미지임..!
@@ -56,8 +60,8 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         File savefile = new File(filepath, filename);
         file.transferTo(savefile);
 
-        T_exercise t_exercise = new T_exercise(title,content,filename,filepath,user);
-        t_exerciseRepository.save(t_exercise);
+        TodayMeal todayMeal = new TodayMeal(title,content,filename,filepath,user);
+        todayMealRepository.save(todayMeal);
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
     }
@@ -71,7 +75,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
      */
     @Override
     public List<BoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search) {
-        List<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+        List<T_exercise> tExerciseList = todayMealRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
 
         return tExerciseList.stream()
                 .map(BoardResponseDTO::new)
@@ -87,7 +91,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
      */
     @Override
     public BoardResponseDTO getT_exerciseBoard(Long boardId) {
-        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+        T_exercise t_exercise = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
         List<CommentResponseDTO> commentFilter = new ArrayList<>();
@@ -117,11 +121,11 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     @Override
     @Transactional
     public ResponseEntity<String> deleteSalePost(Long boardId, User user) {
-        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+        T_exercise t_exercise = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
 
         if (t_exercise.isWriter(user.getId())) {
-            t_exerciseRepository.deleteById(boardId);
+            todayMealRepository.deleteById(boardId);
             tExerciseCommentService.deleteByBoardId(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
         } else {
@@ -147,7 +151,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
                                                User user,
                                                MultipartFile file) throws  IOException
     {
-        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+        T_exercise t_exercise = todayMealRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         if(t_exercise.isWriter(user.getId())){
             UUID uuid = UUID.randomUUID();
@@ -166,7 +170,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
 
     @Override
     public T_exercise findT_exerciseBoardById(Long id) {
-        return t_exerciseRepository.findById(id).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+        return todayMealRepository.findById(id).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
     }
 
 }
