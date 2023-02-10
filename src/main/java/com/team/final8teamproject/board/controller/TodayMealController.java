@@ -42,7 +42,7 @@ public class TodayMealController {
 
     //오운완 전체 게시물 조회
     @GetMapping ("/allboard")
-    public List<TodayMealBoardResponseDTO> getAllT_exerciseBoards(
+    public List<TodayMealBoardResponseDTO> getAllTodayMealBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
             @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
