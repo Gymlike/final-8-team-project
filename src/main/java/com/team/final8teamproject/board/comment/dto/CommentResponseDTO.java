@@ -2,8 +2,6 @@ package com.team.final8teamproject.board.comment.dto;
 
 
 import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
-import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
-import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -19,14 +17,14 @@ public class CommentResponseDTO {
 
     private final String writerName;
 
-    private final LocalDateTime creatAt;
+    private final LocalDateTime creatDate;
     private final List<CommentReplyResponseDTO> commentReplyList;
 
-    public CommentResponseDTO(Long id, String content, String writerName, LocalDateTime creatAt, List<CommentReplyResponseDTO> commentReplyList) {
+    public CommentResponseDTO(Long id, String content, String writerName, LocalDateTime creatDate, List<CommentReplyResponseDTO> commentReplyList) {
         this.id = id;
         this.content = content;
         this.writerName = writerName;
-        this.creatAt = creatAt;
+        this.creatDate = creatDate;
         this.commentReplyList = commentReplyList;
     }
 }

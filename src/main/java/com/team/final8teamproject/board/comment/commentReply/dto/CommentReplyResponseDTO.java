@@ -13,12 +13,12 @@ public class CommentReplyResponseDTO {
 
     private final String writerName;
 
-    private final LocalDateTime creatAt;
+    private final LocalDateTime creatDate;
 
     public CommentReplyResponseDTO(T_exerciseCommentReply t_exerciseCommentReply) {
         this.content = t_exerciseCommentReply.getCommentContent();
         this.writerName = t_exerciseCommentReply.getUsername();
-        this.creatAt = t_exerciseCommentReply.getCreatedDate();
+        this.creatDate = t_exerciseCommentReply.getCreatedDate();
         this.id = t_exerciseCommentReply.getId();
     }
 }

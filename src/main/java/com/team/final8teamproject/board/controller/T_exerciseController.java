@@ -44,7 +44,7 @@ public class T_exerciseController {
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
             @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
-            @RequestParam(value = "sortBy",required = false,defaultValue = "createdAt")String sortBy,
+            @RequestParam(value = "sortBy",required = false,defaultValue = "createdDate")String sortBy,
             @RequestParam(value = "search",required = false,defaultValue = "") String search
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
