@@ -22,4 +22,10 @@ public class Trainer {
 
     @Column
     private String contents;
+
+    public Trainer(String trainername, String storeName, String contents) {
+        this.trainername = trainername;
+        this.storeName = storeName;
+        this.contents = contents;
+    }
 }
