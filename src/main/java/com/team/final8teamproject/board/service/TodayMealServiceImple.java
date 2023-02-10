@@ -6,12 +6,10 @@ import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCo
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
-import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
-import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.entity.TodayMeal;
-import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
+import com.team.final8teamproject.board.like.service.TodayMealLikeService;
 import com.team.final8teamproject.board.repository.TodayMealRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
@@ -38,7 +36,7 @@ public class TodayMealServiceImple implements  TodayMealService{
     private final TodayMealRepository todayMealRepository;
 
     private final T_exerciseCommentService tExerciseCommentService;
-    private final T_exerciseLikeService tExerciseLikeService;
+    private final TodayMealLikeService todayMealLikeService;
 
 
     /**
@@ -97,7 +95,7 @@ public class TodayMealServiceImple implements  TodayMealService{
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
 
         List<CommentResponseDTO> commentFilter = new ArrayList<>();
-        Long countLike = tExerciseLikeService.countLike(boardId);
+        Long countLike = todayMealLikeService.countLike(boardId);
 
         for (T_exerciseComment comment : comments) {
             List<T_exerciseCommentReply> commentReplyList = comment.getCommentReplyList();

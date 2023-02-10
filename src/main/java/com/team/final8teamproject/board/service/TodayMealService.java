@@ -22,7 +22,7 @@ public interface TodayMealService {
 
     ResponseEntity<String> deletePost(Long boardId, User user);
 
-    ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
+    ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatBordRequestDTO, User user, MultipartFile file) throws IOException;
 
 
     TodayMeal findBoardById(Long id);
