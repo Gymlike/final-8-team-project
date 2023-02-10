@@ -67,11 +67,14 @@ public class FaqServiceImpl implements FaqService {
   @Transactional
   @Override
   public void updateFaq(Long id, Long managerId, UpdateFaqRequest updateFaqRequest) {
+    String question = updateFaqRequest.getQuestion();
+    String answer = updateFaqRequest.getAnswer();
+
     Faq faq = faqRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
     );
     if (faq.getManagerId().equals(managerId)) {
-      faq.update(updateFaqRequest);
+      faq.update(question,answer);
       faqRepository.save(faq);
     } else {
       throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");

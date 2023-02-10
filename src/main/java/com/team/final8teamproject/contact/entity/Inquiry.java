@@ -34,9 +34,6 @@ public class Inquiry extends Timestamped {
   @Column(nullable = false)
   private String content;
 
-  @OneToMany(mappedBy = "inquiry", cascade = CascadeType.REMOVE) // cascade 함께 삭제하도록 구현
-  private List<Comment> comments = new ArrayList<>();
-
   private Boolean secretCheckBox; // todo ** 관리자만 보기 와 모두 보기 선택지 - 관리자만 보기시 관리지만 볼 수 있음
 
   @Builder
@@ -47,7 +44,8 @@ public class Inquiry extends Timestamped {
     this.secretCheckBox = secretCheckBox;
   }
 
-  public void update(InquiryRequest inquiryRequest) {
+
+  public void update(String title, String content) {
     this.title = title;
     this.content = content;
   }

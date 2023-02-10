@@ -19,6 +19,7 @@ public interface InquiryService {
   List<InquiryResponse> searchByKeyword(String keyword, int page, int size, Direction direction, String properties);
   InquiryResponse getSelectedInquiry(Long id);
   Inquiry findById(Long inquiryId);
+  Boolean existsById(Long inquiryId);
 
 
 }

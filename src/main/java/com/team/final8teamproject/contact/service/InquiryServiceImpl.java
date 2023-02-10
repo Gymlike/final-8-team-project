@@ -32,11 +32,14 @@ public class InquiryServiceImpl implements InquiryService {
   @Transactional
   @Override
   public void updateInquiry(Long id, String username, InquiryRequest inquiryRequest) {
+    String title = inquiryRequest.getTitle();
+    String content = inquiryRequest.getContent();
+
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
     );
     if (inquiry.getUsername().equals(username)) {
-      inquiry.update(inquiryRequest);
+      inquiry.update(title,content);
       inquiryRepository.save(inquiry);
     } else {
       throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
@@ -105,6 +108,10 @@ public class InquiryServiceImpl implements InquiryService {
           ()-> new IllegalArgumentException(" 해당 문의 글이 존재하지 않습니다.")
       );
       return inquiry;
+  }
+
+  public Boolean existsById(Long inquiryId){
+     return inquiryRepository.existsById(inquiryId);
   }
 }
 
