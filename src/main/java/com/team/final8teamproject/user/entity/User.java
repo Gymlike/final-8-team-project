@@ -45,11 +45,12 @@ public class User extends Timestamped {
     @Builder
     public User(String username, String password, UserRoleEnum role,
                 String nickName, String phoneNumber, String email,
-                Long experience){
+                String profileImage, Long experience){
         this.username =username;
         this.password = password;
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
+        this.profileImage = profileImage;
         this.email = email;
         this.experience = experience;
         this.role = role;

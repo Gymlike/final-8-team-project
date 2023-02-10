@@ -16,7 +16,7 @@ public class ProfileServiceImpl implements ProfileService {
     //1. 프로필 조회
     @Transactional
     public ProfileResponseDto getProfile(User user) {
-        return new ProfileResponseDto(user.getUsername(), user.getNickName(), user.getEmail() ,user.getImage(), user.getPhoneNumber());
+        return new ProfileResponseDto(user.getUsername(), user.getNickName(), user.getEmail(), user.getProfileImage(), user.getPhoneNumber());
     }
 
     //2. 프로필 수정
