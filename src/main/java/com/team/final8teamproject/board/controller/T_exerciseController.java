@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.controller;
 
-import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
-import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.BoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.entity.User;
@@ -27,7 +27,7 @@ public class T_exerciseController {
 
     //오운완 게시판 생성
     @PostMapping
-    public ResponseEntity<String> creatT_exerciseBord(@RequestPart("creatTExerciseBordRequestDTO") CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
+    public ResponseEntity<String> creatT_exerciseBord(@RequestPart("creatTExerciseBordRequestDTO") CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @RequestPart("file") MultipartFile file,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
@@ -35,12 +35,12 @@ public class T_exerciseController {
         String title = creatTExerciseBordRequestDTO.getTitle();
         User user = userDetails.getUser();
 
-        return t_exerciseService.creatTExerciseBord(title,content,file,user);
+        return t_exerciseService.creatTodayMealBord(title,content,file,user);
     }
 
     //오운완 전체 게시물 조회
     @GetMapping ("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
-    public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(
+    public List<BoardResponseDTO> getAllT_exerciseBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
             @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
@@ -54,7 +54,7 @@ public class T_exerciseController {
 
     //오운완 선택 게시물 조회
     @GetMapping("/selectboard/{boardId}")
-    public T_exerciseBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId){
+    public BoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId){
 
         return t_exerciseService.getT_exerciseBoard(boardId);
     }
@@ -68,7 +68,7 @@ public class T_exerciseController {
     //오운완 게시물 수정
     @PatchMapping("/{boardId}")
     public ResponseEntity<String> editSalePost(@PathVariable Long boardId,
-                                                      @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO,
+                                                      @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @RequestPart("file") MultipartFile file,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
