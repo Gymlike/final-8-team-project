@@ -171,7 +171,7 @@ public class TodayMealServiceImple implements  TodayMealService{
     }
 
     @Override
-    public T_exercise findT_exerciseBoardById(Long id) {
+    public TodayMeal findBoardById(Long id) {
         return todayMealRepository.findById(id).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
     }
 

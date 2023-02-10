@@ -3,6 +3,7 @@ package com.team.final8teamproject.board.service;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.entity.TodayMeal;
 import com.team.final8teamproject.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,5 @@ public interface TodayMealService {
     ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
 
 
-    T_exercise findT_exerciseBoardById(Long id);
+    TodayMeal findBoardById(Long id);
 }
