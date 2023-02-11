@@ -1,5 +1,5 @@
 package com.team.final8teamproject.contact.Comment.entity;
-//문의사항에 대한 답글 용
+
 
 
 import com.team.final8teamproject.user.entity.Timestamped;
@@ -60,9 +60,6 @@ public class ContactComment extends Timestamped {
     this.comments = comments;
   }
 
-//  public void setId(Long parentId) {
-//    this.parent.getId() = parentId;
-//  }
 }
 
 // todo  문의사항에 관리자가 답변글 남기면 - > 답변글에  해당 글 주인이 다시 답글 할수 있어야해 .. 음 ..

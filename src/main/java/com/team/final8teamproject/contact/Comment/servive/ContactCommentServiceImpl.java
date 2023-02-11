@@ -32,11 +32,10 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   @Override
   public void saveInquiryComment(Long inquiryId, CreateContactCommentRequest createContactCommentRequest,
       String username) {
-    String comments = createContactCommentRequest.getComments();
+   // String comments = createContactCommentRequest.getComments();
     if (!inquiryService.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
-
       /**부모댓글이 있는 경우 - 대댓글 등록*/
       ContactComment parent = null;
       if (createContactCommentRequest.getParentId() != null) {
@@ -55,8 +54,6 @@ public class ContactCommentServiceImpl implements ContactCommentService {
       }else{
      //   ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username, parent);
-        System.out.println(contactComment.getComments());
-      //  System.out.println(createContactCommentRequest.getComments());
         contactCommentRepository.save(contactComment);
       }
     }
