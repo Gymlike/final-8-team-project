@@ -20,7 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// todo  세터 사용 하지않고 , 부보댓글 아이디 저장하는 방법
+/**inquiry , user 연관관계  x  없이 구현
+ *todo  세터 사용 하지않고 , 부보댓글 아이디 저장하는 방법
+ */
+
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,9 +39,7 @@ public class ContactComment extends Timestamped {
 
   @Column(nullable = false)
   private String username;
-
-
-  //inquiry , user 연관관계  x  없이 구현
+  @Column(nullable = false)
   private Long inquiryId;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -62,5 +63,5 @@ public class ContactComment extends Timestamped {
 
 }
 
-// todo  문의사항에 관리자가 답변글 남기면 - > 답변글에  해당 글 주인이 다시 답글 할수 있어야해 .. 음 ..
+
 

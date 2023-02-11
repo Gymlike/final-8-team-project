@@ -27,22 +27,23 @@ public class ContactCommentServiceImpl implements ContactCommentService {
    *
    * 부모댓글이 없는 경우.
    * 포스트에 댓글을 저장
+   * // todo  문의사항에 관리자가 답변글 남기면 - > 답변글에  해당 글 주인이 다시 답글 할수 있어야해 .. 음 ..
    */
 
   @Override
   public void saveInquiryComment(Long inquiryId, CreateContactCommentRequest createContactCommentRequest,
       String username) {
-   // String comments = createContactCommentRequest.getComments();
     if (!inquiryService.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
-      /**부모댓글이 있는 경우 - 대댓글 등록*/
+      /**부모댓글이 있는 경우 - 대댓글 등록. 즉 자식 댓글이 됨 */
       ContactComment parent = null;
       if (createContactCommentRequest.getParentId() != null) {
         parent = contactCommentRepository.findById(createContactCommentRequest.getParentId()).orElseThrow(
             () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
         );
-        // 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인
+
+        /** 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인*/
         if (!parent.getInquiryId().equals(inquiryId)) {
           throw new CustomException(ExceptionStatus.WRONG_POST_ID);
         }
@@ -50,6 +51,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
        // ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         contactComment.getParent().setId(createContactCommentRequest.getParentId());
         contactCommentRepository.save(contactComment);
+
         /**부모댓글이 없는 경우 - 댓글 등록*/
       }else{
      //   ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
