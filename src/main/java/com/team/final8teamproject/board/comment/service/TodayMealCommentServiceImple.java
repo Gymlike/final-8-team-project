@@ -68,7 +68,7 @@ public class TodayMealCommentServiceImple implements TodayMealCommentService {
     @Override
     @Transactional
     public ResponseEntity<String> updateComment(CreatCommentRequestDTO requestDto, User user, Long commentId) {
-        T_exerciseComment comment =  commentRepository.findById(commentId).orElseThrow(()-> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
+        TodayMealComment comment =  commentRepository.findById(commentId).orElseThrow(()-> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
 
         String username = user.getUsername();
 
