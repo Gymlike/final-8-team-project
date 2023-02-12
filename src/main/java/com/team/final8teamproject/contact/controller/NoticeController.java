@@ -41,7 +41,7 @@ public class NoticeController {
   }
 
 
-  //todo 페이징 처리 /,조회기능 /키워드검색 api/managers/notice/check/**
+  //todo 페이징 처리 /,조회기능 /키워드검색 api/managers/notices/check/**
   @GetMapping("/check")
   public List<NoticeResponse> getNoticeList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,

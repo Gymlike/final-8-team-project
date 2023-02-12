@@ -36,7 +36,7 @@ public class InquiryController {// todo  메서드 마다 권한 설정
     return ResponseEntity.ok("등록 완료");
   }
 
- // todo 풀받은 후  웹컨피그 . permitAll()/api/contact/inquiry/**
+ // todo 풀받은 후  웹컨피그 . permitAll()/api/contact/inquiries/**
   @GetMapping("/contact/inquiries")
   public List<InquiryResponse>  getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
