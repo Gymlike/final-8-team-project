@@ -45,7 +45,7 @@ public class TodayMealCommentServiceImple implements TodayMealCommentService {
     @Transactional
     public ResponseEntity<String> deleteComment(User user, Long commentId) {
         String username = user.getUsername();
-        T_exerciseComment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
+        TodayMealComment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
         if(comment.isWriter(username)){
                 commentRepository.deleteById(commentId);
           return new ResponseEntity<>("댓글 삭제완료",HttpStatus.OK);
