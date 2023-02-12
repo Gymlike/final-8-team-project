@@ -11,4 +11,5 @@ public interface ContactCommentRepository extends JpaRepository<ContactComment,L
   List<ContactComment> findAllByInquiryId(Long inquiryId);
 
   List<ContactComment> findAllByInquiryIdAndParentIsNull(Long id);
+  void deleteAllByInquiryId(Long inquiryId);
 }

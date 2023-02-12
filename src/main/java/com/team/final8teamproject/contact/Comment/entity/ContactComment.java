@@ -61,6 +61,9 @@ public class ContactComment extends Timestamped {
     this.comments = comments;
   }
 
+  public boolean isWriter(String username) {
+    return this.username.equals(username);
+  }
 }
 
 

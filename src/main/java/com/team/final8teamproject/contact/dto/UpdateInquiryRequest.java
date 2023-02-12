@@ -8,32 +8,21 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
-public class InquiryRequest {
+public class UpdateInquiryRequest {
+
   private final String title;
   private final String content;
-
-
-  private boolean secretCheckBox = false; //todo true 바뀌면 ? 비밀글 되야함. 해당 유저와 관리자만 볼 수 있음
-
-
-
-  @Builder
-  public InquiryRequest(String title, String content,Boolean secretCheckBox) {
+@Builder
+  public UpdateInquiryRequest(String title, String content) {
     this.title = title;
     this.content = content;
-    this.secretCheckBox = secretCheckBox;
-
   }
-
 
   public Inquiry toEntity(String username) {
     return Inquiry.builder()
         .title(title)
         .content(content)
         .username(username)
-        .secretCheckBox(secretCheckBox) //defalt = false, true 이면 비밀글 처리됨
         .build();
   }
-
-
 }

@@ -45,5 +45,9 @@ public class Inquiry extends Timestamped {
     this.title = title;
     this.content = content;
   }
+
+  public boolean isWriter(String username) {
+    return this.username.equals(username);
+  }
 }
 

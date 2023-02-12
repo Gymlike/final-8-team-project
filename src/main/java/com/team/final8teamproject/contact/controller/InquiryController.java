@@ -3,6 +3,7 @@ package com.team.final8teamproject.contact.controller;
 
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
+import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
@@ -63,11 +64,11 @@ public class InquiryController {// todo  메서드 마다 권한 설정
   }
 
   //todo 모든 put매핑에 , 입력값만 최신화 되도록 하기 patch 안됨
-  @PutMapping("/user/contact/inquiries/{id}")
+  @PutMapping("/users/contact/inquiries/{id}")
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @RequestBody InquiryRequest inquiryRequest){
-    inquiryServiceImpl.updateInquiry(id,userDetails.getUser().getUsername(),inquiryRequest);
+      @RequestBody UpdateInquiryRequest updateInquiryRequest){
+    inquiryServiceImpl.updateInquiry(id,userDetails.getUser().getUsername(),updateInquiryRequest);
     return ResponseEntity.ok("수정 완료");
   }
   //todo 관리자가 유저 문의글 삭제 가능
