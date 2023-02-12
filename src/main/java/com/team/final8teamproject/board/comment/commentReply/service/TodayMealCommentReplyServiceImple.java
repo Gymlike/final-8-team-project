@@ -54,7 +54,7 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
     @Transactional
     public ResponseEntity<String> deleteCommentReply(User user, Long commentId) {
         String username = user.getUsername();
-        T_exerciseCommentReply commentReply = todayMealCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
+        TodayMealCommentReply commentReply = todayMealCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
         if(commentReply.isWriter(username)){
             todayMealCommentReplyRepository.deleteById(commentId);
 
