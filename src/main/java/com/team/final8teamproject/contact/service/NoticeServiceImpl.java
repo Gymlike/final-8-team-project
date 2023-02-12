@@ -9,6 +9,9 @@ import com.team.final8teamproject.contact.entity.Notice;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +37,7 @@ public class NoticeServiceImpl implements NoticeService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<NoticeResponse> getNoticeList(int page, int size, Direction direction,
+  public Result getNoticeList(int page, int size, Direction direction,
       String properties) {
     Page<Notice> noticeListPage = noticeRepository.findAll(
         PageRequest.of(page, size, direction, properties));
@@ -43,7 +46,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
     List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
         .toList();
-    return noticeResponses;
+    return new Result(noticeResponses);
   }
 
   @Transactional(readOnly = true)
@@ -57,7 +60,7 @@ public class NoticeServiceImpl implements NoticeService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<NoticeResponse> searchByKeyword(String keyword, int page, int size,
+  public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
     String title = keyword;
     String content = keyword;
@@ -69,7 +72,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
     List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
         .toList();
-    return noticeResponses;
+    return new Result(noticeResponses.size(),noticeResponses);
   }
 
   @Transactional
@@ -102,5 +105,22 @@ public class NoticeServiceImpl implements NoticeService {
       throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
 
+  }
+
+  @Getter
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  public static class Result<T> {
+
+    private T data;
+    private T count;
+
+    public Result(T data) {
+      this.data = data;
+    }
+
+    public Result(T data, T count) {
+      this.data = data;
+      this.count = count;
+    }
   }
 }

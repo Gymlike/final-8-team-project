@@ -5,6 +5,7 @@ import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
+import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class InquiryController {
   }
 
   @GetMapping("/contact/inquiries")
-  public List<InquiryResponse>  getInquiry(
+  public Result getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
@@ -55,7 +56,7 @@ public class InquiryController {
 
 
   @GetMapping("/contact/inquiries/keywords")
-  public List<InquiryResponse> searchByKeyword(
+  public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,

@@ -10,6 +10,9 @@ import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +56,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<InquiryResponse> getInquiry(int page, int size, Direction direction,
+  public Result getInquiry(int page, int size, Direction direction,
       String properties) {
     Page<Inquiry> inquiryListPage = inquiryRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
@@ -62,7 +65,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-    return inquiryResponses;
+    return new Result(inquiryResponses);
   }
 
   /**
@@ -84,7 +87,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<InquiryResponse> searchByKeyword(String keyword, int page, int size,
+  public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
 
     String title = keyword;
@@ -97,7 +100,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-    return inquiryResponses;
+    return new Result(inquiryResponses.size(),inquiryResponses);
   }
 
 
@@ -137,6 +140,21 @@ public class InquiryServiceImpl implements InquiryService {
     return inquiry;
   }
 
+  @Getter
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  public static class Result<T> {
+    private T data;
+    private T count;
+
+    public Result(T data) {
+      this.data = data;
+    }
+
+    public Result(T data, T count) {
+      this.data = data;
+      this.count = count;
+    }
+  }
 }
 
 

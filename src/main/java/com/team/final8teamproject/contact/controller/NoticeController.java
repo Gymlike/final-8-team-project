@@ -5,6 +5,7 @@ import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl;
+import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class NoticeController {
 
   //todo 페이징 처리 /,조회기능 /키워드검색 api/managers/notices/check/**
   @GetMapping("/check")
-  public List<NoticeResponse> getNoticeList(
+  public Result getNoticeList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
@@ -59,7 +60,7 @@ public class NoticeController {
   }
 
   @GetMapping("/check/keywords")
-  public List<NoticeResponse>searchByKeyword(
+  public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "10") int size,

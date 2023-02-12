@@ -9,6 +9,9 @@ import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +35,7 @@ public class FaqServiceImpl implements FaqService {
   //FAQ 전체 조회 (보기)
   @Override
   @Transactional(readOnly = true)
-  public List<FaqResponse> getFaqList(int page, int size, Direction direction, String properties) {
+  public Result getFaqList(int page, int size, Direction direction, String properties) {
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
     if(faqListPage.isEmpty()){
@@ -41,7 +44,8 @@ public class FaqServiceImpl implements FaqService {
 
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
         .collect(Collectors.toList());
-    return faqResponses;
+   // return faqResponses;
+    return new Result(faqResponses);
   }
 
   //FAQ 해당 글 조회 (보기,가져오기)
@@ -56,7 +60,7 @@ public class FaqServiceImpl implements FaqService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<FaqResponse> searchByKeyword(String keyword, int page, int size,
+  public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
     String question = keyword;
     String answer = keyword;
@@ -66,8 +70,8 @@ public class FaqServiceImpl implements FaqService {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
-    return faqResponses;
-
+   // return faqResponses;
+return new Result(faqResponses.size(),faqResponses);
   }
 
   @Transactional
@@ -100,7 +104,21 @@ public class FaqServiceImpl implements FaqService {
     }
   }
 
+  @Getter
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  public static class Result<T> {
+    private T data;
+    private T count;
 
+    public Result(T data) {
+      this.data = data;
+    }
+
+    public Result(T data, T count) {
+      this.data = data;
+      this.count = count;
+    }
+  }
 }
 
 
