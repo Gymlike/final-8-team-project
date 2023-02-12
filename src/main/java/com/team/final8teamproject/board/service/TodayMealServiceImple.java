@@ -5,7 +5,8 @@ import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyRes
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
-import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
+import com.team.final8teamproject.board.comment.entity.TodayMealComment;
+import com.team.final8teamproject.board.comment.service.TodayMealCommentService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.entity.TodayMeal;
@@ -35,7 +36,7 @@ import java.util.UUID;
 public class TodayMealServiceImple implements  TodayMealService{
     private final TodayMealRepository todayMealRepository;
 
-    private final T_exerciseCommentService tExerciseCommentService;
+    private final TodayMealCommentService todayMealCommentService;
     private final TodayMealLikeService todayMealLikeService;
 
 
@@ -92,13 +93,13 @@ public class TodayMealServiceImple implements  TodayMealService{
     public TodayMealBoardResponseDTO getTodayMealBoard(Long boardId) {
         TodayMeal todayMeal = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
-        List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
+        List<TodayMealComment> comments = todayMealCommentService.findCommentByBoardId(boardId);
 
         List<CommentResponseDTO> commentFilter = new ArrayList<>();
         Long countLike = todayMealLikeService.countLike(boardId);
 
-        for (T_exerciseComment comment : comments) {
-            List<T_exerciseCommentReply> commentReplyList = comment.getCommentReplyList();
+        for (TodayMealComment comment : comments) {
+            List<T_exerciseCommentReply> commentReplyList = comment.getCommentReplyList(); //수정해야되는 부분..!
             List<CommentReplyResponseDTO> toList = commentReplyList.stream().map(CommentReplyResponseDTO::new).toList();
             String commentContent = comment.getComment();
             String username = comment.getUsername();
@@ -126,7 +127,7 @@ public class TodayMealServiceImple implements  TodayMealService{
 
         if (todayMeal.isWriter(user.getId())) {
             todayMealRepository.deleteById(boardId);
-            tExerciseCommentService.deleteByBoardId(boardId);
+            todayMealCommentService.deleteByBoardId(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
         } else {
             throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);

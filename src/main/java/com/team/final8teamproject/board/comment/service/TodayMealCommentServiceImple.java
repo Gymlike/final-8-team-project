@@ -54,7 +54,7 @@ public class TodayMealCommentServiceImple implements TodayMealCommentService {
     }
 
     @Override
-    public List<T_exerciseComment> findCommentByBoardId(Long boardId){
+    public List<TodayMealComment> findCommentByBoardId(Long boardId){
 
         return commentRepository.findByBoardId(boardId);
     }

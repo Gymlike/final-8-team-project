@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.comment.service;
 
 import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
 
@@ -14,7 +15,7 @@ public interface TodayMealCommentService {
 
 //    List<T_exerciseComment> findCommentByUserName(String userName);
 
-    List<T_exerciseComment> findCommentByBoardId(Long boardId);
+    List<TodayMealComment> findCommentByBoardId(Long boardId);
 
     void deleteByBoardId(Long boardId);
 
