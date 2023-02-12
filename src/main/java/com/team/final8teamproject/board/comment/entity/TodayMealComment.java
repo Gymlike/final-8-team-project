@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.comment.entity;
 
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
+import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
 import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -33,7 +34,7 @@ public class TodayMealComment extends Timestamped {
         this.boardId =boardId;
     }
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "comments" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<T_exerciseCommentReply> commentReplyList = new ArrayList<>();
+    private List<TodayMealCommentReply> commentReplyList = new ArrayList<>();
 
 
     public boolean isWriter(String username) {

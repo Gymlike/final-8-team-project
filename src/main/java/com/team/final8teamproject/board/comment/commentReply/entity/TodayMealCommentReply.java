@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.comment.commentReply.entity;
 
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,9 +26,9 @@ public class TodayMealCommentReply extends Timestamped {
 
     @ManyToOne
     @JoinColumn(name ="COMMENT_ID")
-    private T_exerciseComment comments;
+    private TodayMealComment comments;
 
-    public TodayMealCommentReply(String commentContent, String username, T_exerciseComment comments) {
+    public TodayMealCommentReply(String commentContent, String username, TodayMealComment comments) {
         this.commentContent = commentContent;
         this.username = username;
         this.comments = comments;

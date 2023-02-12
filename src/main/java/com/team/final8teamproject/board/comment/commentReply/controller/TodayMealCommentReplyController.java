@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.comment.commentReply.controller;
 
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatCommentReplyRequestDTO;
-import com.team.final8teamproject.board.comment.commentReply.service.T_exerciseCommentReplyService;
+import com.team.final8teamproject.board.comment.commentReply.service.TodayMealCommentReplyService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/t-exercise")
+@RequestMapping("/todaymeal")
 public class TodayMealCommentReplyController {
 
-    private final T_exerciseCommentReplyService t_exerciseCommentReplyService;
+    private final TodayMealCommentReplyService todayMealCommentReplyService;
     //대댓글 생성
     @PostMapping("/comment/{commentId}")
     public ResponseEntity<String> creatCommentReply(@PathVariable Long commentId,
@@ -21,7 +21,7 @@ public class TodayMealCommentReplyController {
                                                     @RequestBody CreatCommentReplyRequestDTO requestDTO){
         String username = userDetails.getUser().getUsername();
         String comment = requestDTO.getComment();
-        return t_exerciseCommentReplyService.creatCommentRely(commentId,comment,username);
+        return todayMealCommentReplyService.creatCommentRely(commentId,comment,username);
     }
 
     //대댓글 수정
@@ -29,13 +29,13 @@ public class TodayMealCommentReplyController {
     public ResponseEntity<String> updateCommentReply(@RequestBody CreatCommentReplyRequestDTO requestDTO,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId){
-        return t_exerciseCommentReplyService.updateCommentReply(requestDTO,userDetails.getUser(),commentId);
+        return todayMealCommentReplyService.updateCommentReply(requestDTO,userDetails.getUser(),commentId);
     }
 
     //대댓글 삭제
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<String> deleteCommentReply(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId) {
-        return t_exerciseCommentReplyService.deleteCommentReply(userDetails.getUser(),commentId);
+        return todayMealCommentReplyService.deleteCommentReply(userDetails.getUser(),commentId);
     }
 }

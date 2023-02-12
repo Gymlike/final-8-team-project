@@ -2,9 +2,13 @@ package com.team.final8teamproject.board.comment.commentReply.service;
 
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatCommentReplyRequestDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
+import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
 import com.team.final8teamproject.board.comment.commentReply.repository.T_exerciseCommentReplyRepository;
+import com.team.final8teamproject.board.comment.commentReply.repository.TodayMealCommentReplyRepository;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
-import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
+import com.team.final8teamproject.board.comment.entity.TodayMealComment;
+import com.team.final8teamproject.board.comment.repository.TodayMealCommentRepository;
+import com.team.final8teamproject.board.entity.TodayMeal;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -18,17 +22,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class TodayMealCommentReplyServiceImple implements T_exerciseCommentReplyService {
+public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyService {
 
-    private final T_exerciseCommentRepository tExerciseCommentRepository;
+    private final TodayMealCommentRepository todayMealCommentRepository;
 
-    private final T_exerciseCommentReplyRepository tExerciseCommentReplyRepository;
+    private final TodayMealCommentReplyRepository tExerciseCommentReplyRepository;
+
     @Override
     @Transactional
     public ResponseEntity<String> creatCommentRely(Long commentId, String commentContent, String username) {
-        if(tExerciseCommentRepository.existsById(commentId)){
-            T_exerciseComment comment = tExerciseCommentRepository.findById((commentId)).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
-            T_exerciseCommentReply t_exerciseCommentReply = new T_exerciseCommentReply(commentContent,username,comment);
+        if(todayMealCommentRepository.existsById(commentId)){
+            TodayMealComment comment = todayMealCommentRepository.findById((commentId)).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
+            TodayMealCommentReply t_exerciseCommentReply = new TodayMealCommentReply(commentContent,username,comment);
             tExerciseCommentReplyRepository.save(t_exerciseCommentReply);
         return new ResponseEntity<>("대댓글 작성완료", HttpStatus.OK);
         }throw new CustomException(ExceptionStatus.COMMENT_NOT_EXIST);
