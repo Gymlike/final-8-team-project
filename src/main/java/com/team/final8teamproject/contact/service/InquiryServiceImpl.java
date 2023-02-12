@@ -7,6 +7,8 @@ import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,13 +40,13 @@ public class InquiryServiceImpl implements InquiryService {
     String content = updateInquiryRequest.getContent();
 
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if(inquiry.isWriter(username)){
       inquiry.update(title, content);
       inquiryRepository.save(inquiry);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
@@ -70,7 +72,7 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public InquiryResponse getSelectedInquiry(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다."));
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
     // List<ContactComment> comments = contactCommentRepository.findAllByInquiryId(id);
     List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
         id);
@@ -97,14 +99,14 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public void deleteInquiry(Long id, String username) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재 하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (inquiry.isWriter(username)) {
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);
     } else {
-      throw new IllegalArgumentException("접근 할 수  있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
@@ -116,7 +118,7 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public void deleteManager(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재 하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     inquiryRepository.delete(inquiry);
   }
@@ -124,7 +126,7 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public Inquiry findById(Long inquiryId) {
     Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(
-        () -> new IllegalArgumentException(" 해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     return inquiry;
   }

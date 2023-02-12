@@ -5,6 +5,8 @@ import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,7 @@ public class FaqServiceImpl implements FaqService {
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
     if (faqListPage.isEmpty()) {
-      throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+      throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     }
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
         .collect(Collectors.toList());
@@ -46,7 +48,7 @@ public class FaqServiceImpl implements FaqService {
   @Transactional(readOnly = true)
   public FaqResponse getSelectedFaq(Long id) {
     Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     return new FaqResponse(faq);
   }
@@ -71,13 +73,13 @@ public class FaqServiceImpl implements FaqService {
     String answer = updateFaqRequest.getAnswer();
 
     Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (faq.getManagerId().equals(managerId)) {
       faq.update(question,answer);
       faqRepository.save(faq);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
@@ -85,12 +87,12 @@ public class FaqServiceImpl implements FaqService {
   @Transactional
   public void deleteFaq(Long id, Long managerId) {
     Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (faq.getManagerId().equals(managerId)) {
       faqRepository.delete(faq);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 

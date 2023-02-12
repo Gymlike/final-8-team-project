@@ -6,6 +6,8 @@ import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.contact.entity.Notice;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,7 +47,7 @@ public class NoticeServiceImpl implements NoticeService {
   @Override
   public NoticeResponse getSelectedNotice(Long id) {
     Notice notice = noticeRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 공지사항이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     return new NoticeResponse(notice);
   }
@@ -56,7 +58,8 @@ public class NoticeServiceImpl implements NoticeService {
       Direction direction, String properties) {
     String title = keyword;
     String content = keyword;
-    Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(title, content,
+    Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(
+        title, content,
         PageRequest.of(page - 1, size, direction, properties));
     List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
         .toList();
@@ -70,13 +73,13 @@ public class NoticeServiceImpl implements NoticeService {
     String content = updateNoticeRequest.getContent();
 
     Notice notice = noticeRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 공지사항이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (notice.getManagerId().equals(managerId)) {
-      notice.update(title,content);
+      notice.update(title, content);
       noticeRepository.save(notice);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
 
   }
@@ -85,13 +88,13 @@ public class NoticeServiceImpl implements NoticeService {
   @Override
   public void deleteNotice(Long id, Long managerId) {
     Notice notice = noticeRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 공지사항이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (notice.getManagerId().equals(managerId)) {
       noticeRepository.delete(notice);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
-  }
 
+  }
 }
