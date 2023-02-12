@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/** 웹컨피그.requestMatchers("/api/contact/inquiries/**").permitAll()
+ * todo  메서드 마다 권한 설정
+ */
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
-public class InquiryController {// todo  메서드 마다 권한 설정
+public class InquiryController {
 
   private final InquiryServiceImpl inquiryServiceImpl;
 
@@ -36,7 +38,6 @@ public class InquiryController {// todo  메서드 마다 권한 설정
     return ResponseEntity.ok("등록 완료");
   }
 
- // todo 풀받은 후  웹컨피그 . permitAll()/api/contact/inquiries/**
   @GetMapping("/contact/inquiries")
   public List<InquiryResponse>  getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,

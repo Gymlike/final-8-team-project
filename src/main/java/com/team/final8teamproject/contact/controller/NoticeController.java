@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NoticeController {
 
-
+  /** 웹컨피그.requestMatchers("/api/faqs/check/**").permitAll()
+   * todo  메서드 마다 권한 설정
+   */
   private final NoticeServiceImpl noticeServiceImpl;
 
   //관리자 공지사항 등록

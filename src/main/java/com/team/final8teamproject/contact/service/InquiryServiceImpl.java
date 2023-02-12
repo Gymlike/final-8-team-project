@@ -57,6 +57,9 @@ public class InquiryServiceImpl implements InquiryService {
       String properties) {
     Page<Inquiry> inquiryListPage = inquiryRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
+    if(inquiryListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
     return inquiryResponses;
@@ -89,6 +92,9 @@ public class InquiryServiceImpl implements InquiryService {
 
     Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(
         title, content, PageRequest.of(page - 1, size, direction, properties));
+    if(inquiryListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
     return inquiryResponses;

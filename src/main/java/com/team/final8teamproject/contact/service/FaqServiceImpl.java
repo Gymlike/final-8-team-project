@@ -35,9 +35,10 @@ public class FaqServiceImpl implements FaqService {
   public List<FaqResponse> getFaqList(int page, int size, Direction direction, String properties) {
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
-    if (faqListPage.isEmpty()) {
-      throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
+    if(faqListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
+
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
         .collect(Collectors.toList());
     return faqResponses;
@@ -61,6 +62,9 @@ public class FaqServiceImpl implements FaqService {
     String answer = keyword;
     Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
         answer, PageRequest.of(page - 1, size, direction, properties));
+    if(faqListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
     return faqResponses;
 

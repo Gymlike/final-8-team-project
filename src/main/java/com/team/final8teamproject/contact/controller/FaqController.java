@@ -21,10 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 웹컨피그.requestMatchers("/api/faqs/check/**").permitAll()
+ *  이미지 파일 ? 여러개 올리는 방법? 구현 할까말까
+ * todo  메서드 마다 권한 설정
+ */
 @RequiredArgsConstructor
 @RequestMapping("/api/faqs")
 @RestController
-public class FaqController {// todo  메서드 마다 권한 설정
+public class FaqController {
 
   private final FaqServiceImpl faqServiceImpl;
 
@@ -36,7 +40,7 @@ public class FaqController {// todo  메서드 마다 권한 설정
     return ResponseEntity.ok("등록 완료");
   }
 
-//todo 풀받은 후  웹컨피그 . permitAll()/api/faqs/check/**
+
   @GetMapping("/check")
   public List<FaqResponse> getFaqList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,

@@ -38,6 +38,9 @@ public class NoticeServiceImpl implements NoticeService {
       String properties) {
     Page<Notice> noticeListPage = noticeRepository.findAll(
         PageRequest.of(page, size, direction, properties));
+    if(noticeListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
         .toList();
     return noticeResponses;
@@ -61,6 +64,9 @@ public class NoticeServiceImpl implements NoticeService {
     Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(
         title, content,
         PageRequest.of(page - 1, size, direction, properties));
+    if(noticeListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
         .toList();
     return noticeResponses;
