@@ -12,5 +12,6 @@ public interface TodayMealLikeRepository extends JpaRepository<TodayMealLike,Lon
 
   void deleteByUsernameAndBoardId(String username,Long boardId);
 
+  //레디스 캐시에 저장해놓고 .. ?
   Long countByBoardId(Long boardId);
 }

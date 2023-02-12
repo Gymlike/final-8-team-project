@@ -9,9 +9,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/t-exercise")
+@RequestMapping("/todaymeal")
 @RequiredArgsConstructor
-public class T_exerciseCommentController {
+public class TodayMealCommentController {
     private final T_exerciseCommentService tExerciseCommentService;
 
     //댓글작성
@@ -22,7 +22,7 @@ public class T_exerciseCommentController {
         return tExerciseCommentService.createComment(comment, boardId,userName);
     }
 
-    //댓글삭제 //
+    //댓글삭제
     @DeleteMapping("/{boardId}/comment/{commentId}")
     public ResponseEntity<String> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
         return tExerciseCommentService.deleteComment(userDetails.getUser(), commentId);

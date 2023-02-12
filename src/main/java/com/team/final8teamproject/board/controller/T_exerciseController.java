@@ -25,7 +25,7 @@ public class T_exerciseController {
     private final T_exerciseService t_exerciseService;
 
 
-    //오운완 게시판 생성
+    //오운완 게시판 생성//
     @PostMapping
     public ResponseEntity<String> creatT_exerciseBord(@RequestPart("creatTExerciseBordRequestDTO") CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @RequestPart("file") MultipartFile file,
