@@ -3,7 +3,6 @@ package com.team.final8teamproject.contact.controller;
 
 import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
-import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.service.FaqServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/faq")
+@RequestMapping("/api/faqs")
 @RestController
 public class FaqController {// todo  메서드 마다 권한 설정
 
@@ -52,7 +51,7 @@ public class FaqController {// todo  메서드 마다 권한 설정
     return faqServiceImpl.getSelectedFaq(id);
   }
 
-  @GetMapping("/check/keyword")
+  @GetMapping("/check/keywords")
   public List<FaqResponse> searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,

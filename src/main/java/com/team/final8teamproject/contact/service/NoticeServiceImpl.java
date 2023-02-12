@@ -66,11 +66,14 @@ public class NoticeServiceImpl implements NoticeService {
   @Transactional
   @Override
   public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest) {
+    String title = updateNoticeRequest.getTitle();
+    String content = updateNoticeRequest.getContent();
+
     Notice notice = noticeRepository.findById(id).orElseThrow(
         () -> new IllegalArgumentException("해당 공지사항이 존재하지 않습니다.")
     );
     if (notice.getManagerId().equals(managerId)) {
-      notice.update(updateNoticeRequest);
+      notice.update(title,content);
       noticeRepository.save(notice);
     } else {
       throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");

@@ -1,8 +1,11 @@
 package com.team.final8teamproject.contact.entity;
 
-import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.user.entity.Timestamped;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,8 +37,8 @@ public class Faq extends Timestamped {
     this.answer = answer;
   }
 
-  public void update(UpdateFaqRequest updateFaqRequest) {
-   this.question = updateFaqRequest.getQuestion();
-   this.answer = updateFaqRequest.getAnswer();
+  public void update(String question, String answer) {
+    this.question = question;
+    this.answer = answer;
   }
 }

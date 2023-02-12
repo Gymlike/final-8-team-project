@@ -39,9 +39,9 @@ public class Notice extends Timestamped {
     }
 
 
-    public void update(UpdateNoticeRequest updateNoticeRequest){
-        this.title = updateNoticeRequest.getTitle();
-        this.content = updateNoticeRequest.getContent();
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
     }
 
 
