@@ -3,9 +3,7 @@ package com.team.final8teamproject.board.comment.commentReply.service;
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatCommentReplyRequestDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
-import com.team.final8teamproject.board.comment.commentReply.repository.T_exerciseCommentReplyRepository;
 import com.team.final8teamproject.board.comment.commentReply.repository.TodayMealCommentReplyRepository;
-import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.board.comment.repository.TodayMealCommentRepository;
 import com.team.final8teamproject.board.entity.TodayMeal;
@@ -26,7 +24,7 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
 
     private final TodayMealCommentRepository todayMealCommentRepository;
 
-    private final TodayMealCommentReplyRepository tExerciseCommentReplyRepository;
+    private final TodayMealCommentReplyRepository todayMealCommentReplyRepository;
 
     @Override
     @Transactional
@@ -34,7 +32,7 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
         if(todayMealCommentRepository.existsById(commentId)){
             TodayMealComment comment = todayMealCommentRepository.findById((commentId)).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
             TodayMealCommentReply t_exerciseCommentReply = new TodayMealCommentReply(commentContent,username,comment);
-            tExerciseCommentReplyRepository.save(t_exerciseCommentReply);
+            todayMealCommentReplyRepository.save(t_exerciseCommentReply);
         return new ResponseEntity<>("대댓글 작성완료", HttpStatus.OK);
         }throw new CustomException(ExceptionStatus.COMMENT_NOT_EXIST);
     }
@@ -42,7 +40,7 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
     @Override
     @Transactional
     public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, User user, Long commentID) {
-        T_exerciseCommentReply commentReply = tExerciseCommentReplyRepository.findById(commentID).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
+        TodayMealCommentReply commentReply = todayMealCommentReplyRepository.findById(commentID).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
         String username = user.getUsername();
         String comment = requestDTO.getComment();
         if (commentReply.isWriter(username)) {
@@ -56,9 +54,9 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
     @Transactional
     public ResponseEntity<String> deleteCommentReply(User user, Long commentId) {
         String username = user.getUsername();
-        T_exerciseCommentReply commentReply = tExerciseCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
+        T_exerciseCommentReply commentReply = todayMealCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
         if(commentReply.isWriter(username)){
-            tExerciseCommentReplyRepository.deleteById(commentId);
+            todayMealCommentReplyRepository.deleteById(commentId);
 
             return new ResponseEntity<>("대댓글 삭제완료",HttpStatus.OK);
         }
