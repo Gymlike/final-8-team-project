@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class CommentReplyResponseDTO {
+public class T_exerciseCommentReplyResponseDTO {
 
     private final Long id;
     private final String content;
@@ -15,7 +15,7 @@ public class CommentReplyResponseDTO {
 
     private final LocalDateTime creatDate;
 
-    public CommentReplyResponseDTO(T_exerciseCommentReply t_exerciseCommentReply) {
+    public T_exerciseCommentReplyResponseDTO(T_exerciseCommentReply t_exerciseCommentReply) {
         this.content = t_exerciseCommentReply.getCommentContent();
         this.writerName = t_exerciseCommentReply.getUsername();
         this.creatDate = t_exerciseCommentReply.getCreatedDate();

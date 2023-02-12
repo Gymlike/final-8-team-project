@@ -1,10 +1,10 @@
 package com.team.final8teamproject.board.service;
 
 
-import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
-import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
-import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
-import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.commentReply.dto.TodayMealCommentReplyResponseDTO;
+import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
+import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
+import com.team.final8teamproject.board.comment.dto.TodayMealCommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.board.comment.service.TodayMealCommentService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
@@ -95,17 +95,17 @@ public class TodayMealServiceImple implements  TodayMealService{
 
         List<TodayMealComment> comments = todayMealCommentService.findCommentByBoardId(boardId);
 
-        List<CommentResponseDTO> commentFilter = new ArrayList<>();
+        List<TodayMealCommentResponseDTO> commentFilter = new ArrayList<>();
         Long countLike = todayMealLikeService.countLike(boardId);
 
         for (TodayMealComment comment : comments) {
-            List<T_exerciseCommentReply> commentReplyList = comment.getCommentReplyList(); //수정해야되는 부분..!
-            List<CommentReplyResponseDTO> toList = commentReplyList.stream().map(CommentReplyResponseDTO::new).toList();
+            List<TodayMealCommentReply> commentReplyList = comment.getCommentReplyList(); //수정해야되는 부분..!
+            List<TodayMealCommentReplyResponseDTO> toList = commentReplyList.stream().map(TodayMealCommentReplyResponseDTO::new).toList();
             String commentContent = comment.getComment();
             String username = comment.getUsername();
             Long id = comment.getId();
             LocalDateTime createdAt = comment.getCreatedDate();
-            CommentResponseDTO dto = new CommentResponseDTO(id,commentContent,username,createdAt,toList);
+            TodayMealCommentResponseDTO dto = new TodayMealCommentResponseDTO(id,commentContent,username,createdAt,toList);
             commentFilter.add(dto);
         }
 

@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.service;
 
 
-import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
+import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
@@ -9,7 +9,7 @@ import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
-import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
+import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
@@ -90,17 +90,17 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
-        List<CommentResponseDTO> commentFilter = new ArrayList<>();
+        List<T_exerciseCommentResponseDTO> commentFilter = new ArrayList<>();
         Long countLike = tExerciseLikeService.countLike(boardId);
 
         for (T_exerciseComment comment : comments) {
             List<T_exerciseCommentReply> commentReplyList = comment.getCommentReplyList();
-            List<CommentReplyResponseDTO> toList = commentReplyList.stream().map(CommentReplyResponseDTO::new).toList();
+            List<T_exerciseCommentReplyResponseDTO> toList = commentReplyList.stream().map(T_exerciseCommentReplyResponseDTO::new).toList();
             String commentContent = comment.getComment();
             String username = comment.getUsername();
             Long id = comment.getId();
             LocalDateTime createdAt = comment.getCreatedDate();
-            CommentResponseDTO dto = new CommentResponseDTO(id,commentContent,username,createdAt,toList);
+            T_exerciseCommentResponseDTO dto = new T_exerciseCommentResponseDTO(id,commentContent,username,createdAt,toList);
             commentFilter.add(dto);
         }
 

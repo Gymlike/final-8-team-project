@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.dto;
 
 import com.team.final8teamproject.board.entity.T_exercise;
-import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
+import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -22,10 +22,10 @@ public class T_exerciseBoardResponseDTO {
 
     private final LocalDateTime createdDate;
 
-    private  List<CommentResponseDTO> commentList;
+    private  List<T_exerciseCommentResponseDTO> commentList;
 
 
-    public T_exerciseBoardResponseDTO(Long like, T_exercise t_exercise, List<CommentResponseDTO> commentList) {
+    public T_exerciseBoardResponseDTO(Long like, T_exercise t_exercise, List<T_exerciseCommentResponseDTO> commentList) {
         this.like= like;
         this.id = t_exercise.getId();
         this.title = t_exercise.getTitle();

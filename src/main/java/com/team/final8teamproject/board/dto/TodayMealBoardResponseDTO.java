@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.dto;
 
-import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
-import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
+import com.team.final8teamproject.board.comment.dto.TodayMealCommentResponseDTO;
 import com.team.final8teamproject.board.entity.TodayMeal;
 import lombok.Getter;
 
@@ -23,10 +23,10 @@ public class TodayMealBoardResponseDTO {
 
     private final LocalDateTime createdDate;
 
-    private  List<CommentResponseDTO> commentList;
+    private  List<TodayMealCommentResponseDTO> commentList;
 
 
-    public TodayMealBoardResponseDTO(Long like, TodayMeal todayMeal, List<CommentResponseDTO> commentList) {
+    public TodayMealBoardResponseDTO(Long like, TodayMeal todayMeal, List<TodayMealCommentResponseDTO> commentList) {
         this.like= like;
         this.id = todayMeal.getId();
         this.title = todayMeal.getTitle();
