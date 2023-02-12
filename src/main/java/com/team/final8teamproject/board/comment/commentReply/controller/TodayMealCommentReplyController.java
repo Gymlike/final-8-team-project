@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/t-exercise")
-public class T_exerciseCommentReplyController {
+public class TodayMealCommentReplyController {
 
     private final T_exerciseCommentReplyService t_exerciseCommentReplyService;
     //대댓글 생성

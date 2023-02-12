@@ -15,12 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class T_exerciseCommentReplyServiceImple implements T_exerciseCommentReplyService {
+public class TodayMealCommentReplyServiceImple implements T_exerciseCommentReplyService {
 
     private final T_exerciseCommentRepository tExerciseCommentRepository;
 
