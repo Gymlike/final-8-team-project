@@ -27,7 +27,7 @@ public class T_exerciseController {
 
     //오운완 게시판 생성//
     @PostMapping
-    public ResponseEntity<String> creatT_exerciseBord(@RequestPart("creatTExerciseBordRequestDTO") CreatBordRequestDTO creatTExerciseBordRequestDTO,
+    public ResponseEntity<String> creatT_exerciseBord(@RequestPart("BordRequestDTO") CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @RequestPart("file") MultipartFile file,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
