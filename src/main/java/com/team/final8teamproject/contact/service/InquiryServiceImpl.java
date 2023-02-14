@@ -65,7 +65,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-    return new Result(inquiryResponses);
+    return new Result(inquiryResponses.size(),inquiryResponses);
   }
 
   /**
@@ -143,16 +143,17 @@ public class InquiryServiceImpl implements InquiryService {
   @Getter
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class Result<T> {
-    private T data;
     private T count;
+    private T data;
+
 
     public Result(T data) {
       this.data = data;
     }
 
-    public Result(T data, T count) {
-      this.data = data;
+    public Result(T count, T data) {
       this.count = count;
+      this.data = data;
     }
   }
 }

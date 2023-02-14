@@ -45,7 +45,7 @@ public class FaqServiceImpl implements FaqService {
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
         .collect(Collectors.toList());
    // return faqResponses;
-    return new Result(faqResponses);
+    return new Result(faqResponses.size(),faqResponses);
   }
 
   //FAQ 해당 글 조회 (보기,가져오기)
@@ -107,16 +107,17 @@ return new Result(faqResponses.size(),faqResponses);
   @Getter
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class Result<T> {
-    private T data;
     private T count;
+    private T data;
+
 
     public Result(T data) {
       this.data = data;
     }
 
-    public Result(T data, T count) {
-      this.data = data;
+    public Result(T count, T data) {
       this.count = count;
+      this.data = data;
     }
   }
 }
