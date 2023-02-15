@@ -34,6 +34,7 @@ public class FaqController {
 
   private final FaqServiceImpl faqServiceImpl;
 
+
   //todo 권한 :관리자
   @PostMapping("")
   public ResponseEntity saveFaq(@RequestBody FaqRequest faqRequest,
@@ -43,11 +44,12 @@ public class FaqController {
   }
 
 
+
   @GetMapping("/check")
   public Result getFaqList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "2") int size,
-      @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
+      @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return faqServiceImpl.getFaqList(page, size, direction, properties);
   }

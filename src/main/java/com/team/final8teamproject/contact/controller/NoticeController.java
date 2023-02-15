@@ -43,13 +43,12 @@ public class NoticeController {
     //new ResponseEntity<>("등록완료",HttpStatus.CREATED);
   }
 
-
   //todo 페이징 처리 /,조회기능 /키워드검색 api/managers/notices/check/**
   @GetMapping("/check")
   public Result getNoticeList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
       @RequestParam(value = "size", required = false, defaultValue = "2") int size,
-      @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
+      @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return noticeServiceImpl.getNoticeList(page, size, direction, properties);
   }

@@ -9,6 +9,7 @@ import com.team.final8teamproject.contact.entity.Notice;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,12 +41,12 @@ public class NoticeServiceImpl implements NoticeService {
   public Result getNoticeList(int page, int size, Direction direction,
       String properties) {
     Page<Notice> noticeListPage = noticeRepository.findAll(
-        PageRequest.of(page, size, direction, properties));
+        PageRequest.of(page-1, size, direction, properties));
     if(noticeListPage.isEmpty()){
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
-    List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
-        .toList();
+    List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new).collect(
+        Collectors.toList());
     return new Result(noticeResponses.size(),noticeResponses);
   }
 
@@ -70,8 +71,8 @@ public class NoticeServiceImpl implements NoticeService {
     if(noticeListPage.isEmpty()){
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
-    List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new)
-        .toList();
+    List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new).collect(
+        Collectors.toList());
     return new Result(noticeResponses.size(),noticeResponses);
   }
 

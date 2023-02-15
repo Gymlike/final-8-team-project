@@ -53,9 +53,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.authorizeRequests()
     http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.
-        .requestMatchers("/api/faqs/check/**").permitAll()
-        .requestMatchers("/api/contact/inquiries/**").permitAll()
-        .requestMatchers("/api/managers/notices/check/**").permitAll()
         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
         .requestMatchers("/api/users/**").permitAll()
         .requestMatchers("/h2-console").permitAll()
@@ -63,6 +60,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/t-exercise/selectboard/**").permitAll()
         .requestMatchers("/todaymeal/allboard").permitAll()
         .requestMatchers("/todaymeal/selectboard/**").permitAll()
+        .requestMatchers("/api/faqs/check/**").permitAll()
+        .requestMatchers("/api/contact/inquiries/**").permitAll()
+        .requestMatchers("/api/managers/notices/check/**").permitAll()
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
         // JWT 인증/인가를 사용하기 위한 설정

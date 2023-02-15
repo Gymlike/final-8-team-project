@@ -62,10 +62,10 @@ private final NoticeRepository noticeRepository;
     ContactComment childrenComment2 = new ContactComment("댓글",1L,"member",parentComment1);
     contactCommentRepository.save(childrenComment2);
 
-//    Notice notice = new Notice(1L,"공지사항","공지글 1");
-//    Notice notice1 = new Notice(1L,"공지사항1","공지글 2");
-//    noticeRepository.save(notice);
-//    noticeRepository.save(notice1);
+    Notice notice = new Notice(1L,"공지사항","공지사항입니다.");
+    Notice notice1 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    noticeRepository.save(notice);
+    noticeRepository.save(notice1);
 
 
     Faq faq1 = new Faq(1L,"센터 운영 중인데 [ㅇㅇㅇ] 에 등록?입점? 하고 싶습니다.","홈페이지 상단 xx 페이지에서 ~ 진행");
