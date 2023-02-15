@@ -5,8 +5,13 @@ import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,15 +35,17 @@ public class FaqServiceImpl implements FaqService {
   //FAQ 전체 조회 (보기)
   @Override
   @Transactional(readOnly = true)
-  public List<FaqResponse> getFaqList(int page, int size, Direction direction, String properties) {
+  public Result getFaqList(int page, int size, Direction direction, String properties) {
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
-    if (faqListPage.isEmpty()) {
-      throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+    if(faqListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
+
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
         .collect(Collectors.toList());
-    return faqResponses;
+   // return faqResponses;
+    return new Result(faqResponses.size(),faqResponses);
   }
 
   //FAQ 해당 글 조회 (보기,가져오기)
@@ -46,22 +53,25 @@ public class FaqServiceImpl implements FaqService {
   @Transactional(readOnly = true)
   public FaqResponse getSelectedFaq(Long id) {
     Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     return new FaqResponse(faq);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public List<FaqResponse> searchByKeyword(String keyword, int page, int size,
+  public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
     String question = keyword;
     String answer = keyword;
     Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
         answer, PageRequest.of(page - 1, size, direction, properties));
+    if(faqListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
-    return faqResponses;
-
+   // return faqResponses;
+return new Result(faqResponses.size(),faqResponses);
   }
 
   @Transactional
@@ -71,13 +81,13 @@ public class FaqServiceImpl implements FaqService {
     String answer = updateFaqRequest.getAnswer();
 
     Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (faq.getManagerId().equals(managerId)) {
       faq.update(question,answer);
       faqRepository.save(faq);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
@@ -85,16 +95,31 @@ public class FaqServiceImpl implements FaqService {
   @Transactional
   public void deleteFaq(Long id, Long managerId) {
     Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (faq.getManagerId().equals(managerId)) {
       faqRepository.delete(faq);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
+  @Getter
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  public static class Result<T> {
+    private T count;
+    private T data;
 
+
+    public Result(T data) {
+      this.data = data;
+    }
+
+    public Result(T count, T data) {
+      this.count = count;
+      this.data = data;
+    }
+  }
 }
 
 

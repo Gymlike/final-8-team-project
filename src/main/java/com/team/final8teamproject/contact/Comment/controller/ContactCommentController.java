@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+/**
+ * todo  관리자,총관리자, 작성한 유저(유저,사업자) 댓글 등록 ,수정,삭제
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
 public class ContactCommentController {
-//todo  관리자,총관리자, 작성한 유저(유저,사업자) 댓글 등록 ,수정,삭제
-
 
   private final ContactCommentServiceImpl contactCommentServiceIml;
 

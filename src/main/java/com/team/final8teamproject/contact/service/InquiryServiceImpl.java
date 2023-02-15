@@ -7,7 +7,12 @@ import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,26 +43,29 @@ public class InquiryServiceImpl implements InquiryService {
     String content = updateInquiryRequest.getContent();
 
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if(inquiry.isWriter(username)){
       inquiry.update(title, content);
       inquiryRepository.save(inquiry);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
 
   @Transactional(readOnly = true)
   @Override
-  public List<InquiryResponse> getInquiry(int page, int size, Direction direction,
+  public Result getInquiry(int page, int size, Direction direction,
       String properties) {
     Page<Inquiry> inquiryListPage = inquiryRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
+    if(inquiryListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-    return inquiryResponses;
+    return new Result(inquiryResponses.size(),inquiryResponses);
   }
 
   /**
@@ -70,7 +78,7 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public InquiryResponse getSelectedInquiry(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다."));
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
     // List<ContactComment> comments = contactCommentRepository.findAllByInquiryId(id);
     List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
         id);
@@ -79,7 +87,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<InquiryResponse> searchByKeyword(String keyword, int page, int size,
+  public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
 
     String title = keyword;
@@ -87,9 +95,12 @@ public class InquiryServiceImpl implements InquiryService {
 
     Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(
         title, content, PageRequest.of(page - 1, size, direction, properties));
+    if(inquiryListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-    return inquiryResponses;
+    return new Result(inquiryResponses.size(),inquiryResponses);
   }
 
 
@@ -97,14 +108,14 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public void deleteInquiry(Long id, String username) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재 하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (inquiry.isWriter(username)) {
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);
     } else {
-      throw new IllegalArgumentException("접근 할 수  있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
@@ -116,7 +127,7 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public void deleteManager(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재 하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     inquiryRepository.delete(inquiry);
   }
@@ -124,11 +135,27 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public Inquiry findById(Long inquiryId) {
     Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(
-        () -> new IllegalArgumentException(" 해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     return inquiry;
   }
 
+  @Getter
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  public static class Result<T> {
+    private T count;
+    private T data;
+
+
+    public Result(T data) {
+      this.data = data;
+    }
+
+    public Result(T count, T data) {
+      this.count = count;
+      this.data = data;
+    }
+  }
 }
 
 

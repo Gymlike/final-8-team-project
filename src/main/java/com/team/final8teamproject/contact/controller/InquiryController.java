@@ -5,6 +5,7 @@ import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
+import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/** 웹컨피그.requestMatchers("/api/contact/inquiries/**").permitAll()
+ * todo  메서드 마다 권한 설정
+ */
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
-public class InquiryController {// todo  메서드 마다 권한 설정
+public class InquiryController {
 
   private final InquiryServiceImpl inquiryServiceImpl;
 
@@ -36,12 +39,11 @@ public class InquiryController {// todo  메서드 마다 권한 설정
     return ResponseEntity.ok("등록 완료");
   }
 
- // todo 풀받은 후  웹컨피그 . permitAll()/api/contact/inquiry/**
   @GetMapping("/contact/inquiries")
-  public List<InquiryResponse>  getInquiry(
+  public Result getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-      @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
+      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
+      @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return inquiryServiceImpl.getInquiry(page,size,direction,properties);
   }
@@ -54,10 +56,10 @@ public class InquiryController {// todo  메서드 마다 권한 설정
 
 
   @GetMapping("/contact/inquiries/keywords")
-  public List<InquiryResponse> searchByKeyword(
+  public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return inquiryServiceImpl.searchByKeyword(keyword, page, size, direction, properties);

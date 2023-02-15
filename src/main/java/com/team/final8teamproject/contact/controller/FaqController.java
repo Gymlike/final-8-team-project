@@ -1,10 +1,12 @@
 package com.team.final8teamproject.contact.controller;
 
 
+import com.sun.mail.imap.ResyncData;
 import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.service.FaqServiceImpl;
+import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 웹컨피그.requestMatchers("/api/faqs/check/**").permitAll()
+ *  이미지 파일 ? 여러개 올리는 방법? 구현 할까말까
+ * todo  메서드 마다 권한 설정
+ */
 @RequiredArgsConstructor
 @RequestMapping("/api/faqs")
 @RestController
-public class FaqController {// todo  메서드 마다 권한 설정
+public class FaqController {
 
   private final FaqServiceImpl faqServiceImpl;
+
 
   //todo 권한 :관리자
   @PostMapping("")
@@ -36,12 +43,13 @@ public class FaqController {// todo  메서드 마다 권한 설정
     return ResponseEntity.ok("등록 완료");
   }
 
-//todo 풀받은 후  웹컨피그 . permitAll()/api/faq/check/**
+
+
   @GetMapping("/check")
-  public List<FaqResponse> getFaqList(
+  public Result getFaqList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-      @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
+      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
+      @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return faqServiceImpl.getFaqList(page, size, direction, properties);
   }
@@ -52,10 +60,10 @@ public class FaqController {// todo  메서드 마다 권한 설정
   }
 
   @GetMapping("/check/keywords")
-  public List<FaqResponse> searchByKeyword(
+  public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
