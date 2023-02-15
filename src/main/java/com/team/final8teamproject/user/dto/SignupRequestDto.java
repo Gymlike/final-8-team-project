@@ -3,6 +3,7 @@ package com.team.final8teamproject.user.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class SignupRequestDto {
     private String image;
 
     @NotBlank
+//    @Size(min=2,max=4, message = "사용자이름은 2~4글자여야 합니다.")
     private String nickName;
 
     @NotBlank

@@ -6,12 +6,10 @@ import com.team.final8teamproject.security.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
@@ -40,6 +38,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if(refreshToken){
                 throw new IllegalArgumentException("Please Login again.");
             }
+            /**
+             여기서 관리자인지 유저인지 확인한다음에..
+             setAuthentication을 해줘야한다...
+             어떤게 권한을 확인하고 보내줄것인가? 답없는데..??
+             합쳐서 해야하나? 나눠서 해야하나??
+             한 데이터베이스에 넣어두지 않을탠데..
+             */
             Claims info = jwtUtil.getUserInfoFromToken(token);
             setAuthentication(info.getSubject());
         }
@@ -53,7 +58,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     public void setAuthentication(String username) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         //jwtUtil에서  username에 알맞은 User객체를 가져와서 Authentication에 넣어준다.
-        Authentication authentication = jwtUtil.createAuthentication(username);
+        Authentication authentication = jwtUtil.createUserAuthentication(username);
+
         //그리고 빈 컨텍스트에 가져온 데이터(User객체와, username) authentication변수를 넣어주고
         context.setAuthentication(authentication);
         //누가 인증하였는지에 대한 정보들을 저장한다.

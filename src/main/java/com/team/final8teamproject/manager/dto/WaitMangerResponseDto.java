@@ -9,7 +9,7 @@ public class WaitMangerResponseDto {
     private String password;
     private String nickname;
     public WaitMangerResponseDto(Manager manager){
-        this.manager = manager.getManager();
+        this.manager = manager.getManagerName();
         this.password = manager.getPassword();
         this.nickname = manager.getNickname();
     }

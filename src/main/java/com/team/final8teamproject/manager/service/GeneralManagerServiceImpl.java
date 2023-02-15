@@ -1,5 +1,7 @@
 package com.team.final8teamproject.manager.service;
 
+import com.team.final8teamproject.manager.dto.ManagerLoginRequestDto;
+import com.team.final8teamproject.manager.dto.ManagerLoginResponseDto;
 import com.team.final8teamproject.manager.dto.ManagerMessageDto;
 import com.team.final8teamproject.manager.dto.WaitMangerResponseDto;
 import com.team.final8teamproject.manager.entity.GeneralManager;
@@ -9,11 +11,15 @@ import com.team.final8teamproject.manager.repository.GeneralManagerRepository;
 import com.team.final8teamproject.manager.repository.ManagerRepository;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.user.dto.LoginResponseDto;
+import com.team.final8teamproject.user.entity.User;
+import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +34,8 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
     private final ManagerRepository managerRepository;
     private final RedisUtil redisUtil;
     private final JwtUtil jwtUtil;
+
+    private final PasswordEncoder passwordEncoder;
     //실행시 테이블에 저장
     @Transactional
     @Override
@@ -42,9 +50,25 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
     //총 관리자 로그인
     @Transactional
     @Override
-    public ManagerMessageDto login(String manager){
+    public LoginResponseDto login(ManagerLoginRequestDto requestDto){
 
-        return new ManagerMessageDto("로그인 성공했습니다");
+        String username = requestDto.getUsername();
+        String password = requestDto.getPassword();
+
+        GeneralManager manager = generalManagerRepository.findByGeneralName(username).orElseThrow(
+                () -> new SecurityException("사용자를 찾을수 없습니다.")
+        );
+        if (!passwordEncoder.matches(password, manager.getPassword())) {
+            throw new SecurityException("사용자를 찾을수 없습니다.");
+        }
+        LoginResponseDto loginResponseDto =jwtUtil.createManagerToken(manager.getGeneralName(), manager.getRole());
+
+        if(redisUtil.hasKey("RT:" +manager.getGeneralName())){
+            throw new SecurityException("이미 접속중인 사용자 입니다.");
+        }
+        redisUtil.setRefreshToken("RT:" +manager.getGeneralName(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+
+        return loginResponseDto;
     }
     //관리자 조회
     public List<WaitMangerResponseDto> waitManagerList(Pageable pageable) {
@@ -61,7 +85,7 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
     @Transactional
     @Override
     public ManagerMessageDto approval(String manager) {
-        Manager manager1 = managerRepository.findByManager(manager).orElseThrow(
+        Manager manager1 = managerRepository.findByManagerName(manager).orElseThrow(
                 ()-> new IllegalArgumentException("해당 신청자를 찾을수 없습니다.")
         );
         manager1.approvalManager(ManagerRoleEnum.MANAGER);

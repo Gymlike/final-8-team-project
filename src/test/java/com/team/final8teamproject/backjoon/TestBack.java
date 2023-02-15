@@ -2,6 +2,9 @@ package com.team.final8teamproject.backjoon;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 class TestBack {
@@ -33,5 +36,15 @@ class TestBack {
         //then
         assertEquals(result1, 10);
         assertEquals(result2, 28);
+    }
+
+    @Test
+    public void BaekJoonLine(){
+        //given
+
+        //when
+
+        //then
+
     }
 }

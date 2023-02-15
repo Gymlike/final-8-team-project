@@ -12,16 +12,15 @@ public interface GeneralManagerDetails extends Serializable {
      */
     Collection<? extends GrantedAuthority> getAuthorities();
 
-    /**
-     * Returns the password used to authenticate the user.
-     * @return the password
-     */
+    String getGeneralName();
+
     String getPassword();
 
-    /**
-     * Returns the username used to authenticate the user. Cannot return
-     * <code>null</code>.
-     * @return the username (never <code>null</code>)
-     */
-    String getGeneralManager();
+    boolean isAccountNonExpired();
+
+    boolean isAccountNonLocked();
+
+    boolean isCredentialsNonExpired();
+
+    boolean isEnabled();
 }

@@ -11,7 +11,6 @@ import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
-import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -52,7 +51,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     @Override
     public ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException {
         UUID uuid = UUID.randomUUID();
-        String filename = uuid+"_"+file.getOriginalFilename();
+        String filename = uuid+"_"+file.getOriginalFilename()+".jpeg";
         String filepath = System.getProperty("user.dir")+"/src/main/resources/static/files";
         File savefile = new File(filepath, filename);
         file.transferTo(savefile);

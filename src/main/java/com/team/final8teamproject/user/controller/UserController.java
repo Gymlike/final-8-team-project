@@ -47,13 +47,26 @@ public class UserController {
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
     , HttpServletRequest request){
         String accessToken = jwtUtil.resolveToken(request);
+
         return new MessageResponseDto(userService.logout(accessToken, userDetails.getUsername()));
     }
 
     //4. 이메일 인증
-    @PostMapping("/emailConfirm")
+    @PostMapping("/emailcconfirm")
     public String emailConfirm(@RequestParam String email) throws Exception {
         return emailService.sendSimpleMessage(email);
     }
-
+    //파일서비스란 인터페이스를 만들어서 이것을 이용하여 저장하게 해놓으면
+    //나중에 할수있다.
+    //http표준 요청상에는 get은 body를 사용하면 안된다. param을 사용해야한다.
+    //5.Id찾기
+    @GetMapping("/find/username")
+    public FindByResponseDto getfindByUsername(@RequestParam("email") String email){
+        return userService.findByUsername(email);
+    }
+    //6.Password찾기
+    @PostMapping("/find/password")
+    public FindByResponseDto findPassword(@RequestBody FindPasswordRequestDto responseDto) {
+        return userService.userFindPassword(responseDto);
+    }
 }

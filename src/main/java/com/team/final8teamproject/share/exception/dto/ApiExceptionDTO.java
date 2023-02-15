@@ -1,4 +1,4 @@
-package com.team.final8teamproject.share.exception;
+package com.team.final8teamproject.share.exception.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 @Setter
 public class ApiExceptionDTO {
     private String errorMessage;
-    private HttpStatus httpStatus;
-    public  ApiExceptionDTO(String errorMessage, HttpStatus httpStatus){
+    private int Status;
+    public  ApiExceptionDTO(String errorMessage, int Status){
         this.errorMessage = errorMessage;
-        this.httpStatus = httpStatus;
+        this.Status = Status;
     }
 
 }

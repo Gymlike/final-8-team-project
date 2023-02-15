@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
 
-    Optional<Manager> findByManager(String manager);
-    void deleteByManager(String manager);
+    Optional<Manager> findByManagerName(String manager);
+    void deleteByManagerName(String manager);
     Page<Manager> findByRole(Pageable pageable, ManagerRoleEnum role);
 }

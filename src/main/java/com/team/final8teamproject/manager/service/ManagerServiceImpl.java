@@ -4,12 +4,15 @@ import com.team.final8teamproject.manager.dto.ManagerLoginRequestDto;
 import com.team.final8teamproject.manager.dto.ManagerLoginResponseDto;
 import com.team.final8teamproject.manager.dto.ManagerSignupRequestDto;
 import com.team.final8teamproject.manager.dto.ManagerSignupResponseDto;
+import com.team.final8teamproject.manager.entity.GeneralManager;
 import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.manager.entity.ManagerRoleEnum;
 import com.team.final8teamproject.manager.repository.ManagerRepository;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.user.dto.LoginResponseDto;
 import com.team.final8teamproject.user.repository.RefreshTokenRepository;
+import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,13 +37,13 @@ public class ManagerServiceImpl implements ManagerService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         String nickName = requestDto.getNickname();
 
-        Optional<Manager> found = managerRepository.findByManager(managerName);
+        Optional<Manager> found = managerRepository.findByManagerName(managerName);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
         ManagerRoleEnum role = ManagerRoleEnum.WAIT;
         Manager manager = Manager.builder()
-                .manager(managerName).password(password)
+                .managerName(managerName).password(password)
                 .nickname(nickName).role(role)
                 .build();
         managerRepository.save(manager);
@@ -50,9 +53,26 @@ public class ManagerServiceImpl implements ManagerService {
     // 관리자 로그인
     @Override
     @Transactional
-    public ManagerLoginResponseDto login(ManagerLoginRequestDto managerLoginRequestDto){
 
-        return new ManagerLoginResponseDto("로그인 성공했습니다");
+    public LoginResponseDto login(ManagerLoginRequestDto requestDto){
+
+        String username = requestDto.getUsername();
+        String password = requestDto.getPassword();
+
+        Manager manager = managerRepository.findByManagerName(username).orElseThrow(
+                () -> new SecurityException("사용자를 찾을수 없습니다.")
+        );
+        if (!passwordEncoder.matches(password, manager.getPassword())) {
+            throw new SecurityException("사용자를 찾을수 없습니다.");
+        }
+        LoginResponseDto loginResponseDto =jwtUtil.createManagerToken(manager.getManagerName(), manager.getRole());
+
+        if(redisUtil.hasKey("RT:" +manager.getManagerName())){
+            throw new SecurityException("이미 접속중인 사용자 입니다.");
+        }
+        redisUtil.setRefreshToken("RT:" +manager.getManagerName(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+
+        return loginResponseDto;
     }
 
     //관리자 로그아웃

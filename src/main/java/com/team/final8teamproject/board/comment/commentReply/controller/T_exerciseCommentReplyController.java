@@ -3,6 +3,7 @@ package com.team.final8teamproject.board.comment.commentReply.controller;
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatT_exerciseCommentReplyRequestDTO;
 import com.team.final8teamproject.board.comment.commentReply.service.T_exerciseCommentReplyService;
 import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +20,7 @@ public class T_exerciseCommentReplyController {
     public ResponseEntity<String> creatCommentReply(@PathVariable Long commentId,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                     @RequestBody CreatT_exerciseCommentReplyRequestDTO requestDTO){
-        String username = userDetails.getUser().getUsername();
+        String username = userDetails.getBase().getUsername();
         String comment = requestDTO.getComment();
         return t_exerciseCommentReplyService.creatCommentRely(commentId,comment,username);
     }
@@ -29,13 +30,13 @@ public class T_exerciseCommentReplyController {
     public ResponseEntity<String> updateCommentReply(@RequestBody CreatT_exerciseCommentReplyRequestDTO requestDTO,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId){
-        return t_exerciseCommentReplyService.updateCommentReply(requestDTO,userDetails.getUser(),commentId);
+        return t_exerciseCommentReplyService.updateCommentReply(requestDTO, userDetails.getBase().getUsername(),commentId);
     }
 
     //대댓글 삭제
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<String> deleteCommentReply(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId) {
-        return t_exerciseCommentReplyService.deleteCommentReply(userDetails.getUser(),commentId);
+        return t_exerciseCommentReplyService.deleteCommentReply(userDetails.getBase().getUsername(),commentId);
     }
 }

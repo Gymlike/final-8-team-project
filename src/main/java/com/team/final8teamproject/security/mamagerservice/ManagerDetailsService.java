@@ -5,5 +5,5 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface ManagerDetailsService {
 
-    ManagerDetails loadManagerByManager(String username) throws UsernameNotFoundException;
+    ManagerDetails loadManagerByManagerName(String managerName) throws UsernameNotFoundException;
 }
