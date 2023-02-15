@@ -1,39 +1,28 @@
 package com.team.final8teamproject.manager.entity;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
-
-@Entity
+//lombok
+@Entity(name = "Manager")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Manager {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotBlank
-    private String managerName;
-    @JsonIgnore
-    @NotBlank
-    private String password;
+
+@DiscriminatorValue(value = "Manager")
+public class Manager extends BaseEntity{
     private String profileImage;
     @NotBlank
     private String nickname;
-    private ManagerRoleEnum role;
 
     @Builder
-    public Manager(String managerName, String password, String nickname, ManagerRoleEnum role) {
-        this.managerName = managerName;
-        this.password = password;
+    public Manager(String username, String password, String nickname, UserRoleEnum role) {
+        super(username, password, role);
         this.nickname = nickname;
-        this.role = role;
     }
 
-    public void approvalManager(ManagerRoleEnum role) {
-        this.role = role;
-    }
 }

@@ -1,11 +1,13 @@
 package com.team.final8teamproject.base.entity;
 
+import com.team.final8teamproject.manager.entity.ManagerRoleEnum;
 import com.team.final8teamproject.user.entity.Timestamped;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Getter
@@ -19,15 +21,15 @@ public class BaseEntity extends Timestamped {
     private Long id;
     @Column(nullable = false, unique = true)
     private String username;
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
-
     @Column(nullable = false)
     private String email;
-
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
+
     public BaseEntity(String username, String password, String email, UserRoleEnum role){
         this.username = username;
         this.password = password;
@@ -35,6 +37,11 @@ public class BaseEntity extends Timestamped {
         this.role = role;
     }
 
+    public BaseEntity(String username, String password, UserRoleEnum role){
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
     public void changePassword(String password){
         this.password = password;
     }
@@ -45,5 +52,9 @@ public class BaseEntity extends Timestamped {
 
     public String getWriterName() {
         return this.username;
+    }
+
+    public void approvalManager(UserRoleEnum role) {
+        this.role = role;
     }
 }
