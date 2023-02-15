@@ -17,7 +17,9 @@ public class User extends Timestamped {
     @Column(name = "User_ID")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    private Long kakaoId;
+
+//    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -32,7 +34,7 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -45,8 +47,8 @@ public class User extends Timestamped {
     @Builder
     public User(String username, String password, UserRoleEnum role,
                 String nickName, String phoneNumber, String email,
-                String profileImage, Long experience){
-        this.username =username;
+                String profileImage, Long experience) {
+        this.username = username;
         this.password = password;
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
@@ -69,4 +71,22 @@ public class User extends Timestamped {
     public String getWriterName() {
         return this.username;
     }
+
+    //    카카오 사용자
+    @Builder
+    public User(String nickName, Long kakaoId, String username, String password, String email, Long experience ,UserRoleEnum role) {
+        this.nickName = nickName;
+        this.kakaoId = kakaoId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.experience = experience;
+        this.role = role;
+    }
+
+    public User KakaoIdUpdate(String username) {
+        this.username = username;
+        return this;
+    }
+
 }

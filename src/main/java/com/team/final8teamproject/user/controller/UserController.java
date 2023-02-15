@@ -1,8 +1,11 @@
 package com.team.final8teamproject.user.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.user.dto.*;
+import com.team.final8teamproject.user.service.KakaoService;
 import com.team.final8teamproject.user.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +16,7 @@ import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -44,7 +47,7 @@ public class UserController {
     //3. 로그아웃
     @DeleteMapping("/logout")
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
-    , @RequestBody TokenRequestDto tokenRequestDto){
+            , @RequestBody TokenRequestDto tokenRequestDto) {
         return new MessageResponseDto(userService.logout(tokenRequestDto.getAccessToken(), userDetails.getUser()));
     }
 

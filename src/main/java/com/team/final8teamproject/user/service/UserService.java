@@ -1,6 +1,8 @@
 package com.team.final8teamproject.user.service;
 
 import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
@@ -52,9 +54,9 @@ public class UserService {
         }
 
         User user = User.builder()
-                .nickName(nickName).password(password)
-                .username(username).role(role)
-                .email(email).phoneNumber(phoneNumber)
+                .username(username).password(password)
+                .nickName(nickName).email(email).phoneNumber(phoneNumber)
+                .role(role).experience(requestDto.getExperience())
                 .build();
         userRepository.save(user);
         return new MessageResponseDto("회원가입 성공");
@@ -68,10 +70,10 @@ public class UserService {
         String password = requestDto.getPassword();
 
         User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new SecurityException("사용자를 찾을수 없습니다.")
+                () -> new CustomException(ExceptionStatus.WRONG_USERNAME)
         );
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new SecurityException("사용자를 찾을수 없습니다.");
+            throw new CustomException(ExceptionStatus.WRONG_PASSWORD);
         }
 //        String refreshToken = (String)redisUtil.get("RT:" +user.getUsername());
 //        if(!ObjectUtils.isEmpty(refreshToken)){

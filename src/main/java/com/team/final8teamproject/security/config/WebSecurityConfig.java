@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,18 +20,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 //@EnableGlobalMethodSecurity(prePostEnabled = true) // @Secured 어노테이션 활성화
 @EnableScheduling // @Scheduled 어노테이션 활성화
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,6 +48,7 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -50,18 +56,21 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.authorizeRequests()
         http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.
-                .requestMatchers("/api/users/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/user/**").permitAll()
                 .requestMatchers("/h2-console").permitAll()
                 .requestMatchers("/t-exercise/allboard").permitAll()
                 .requestMatchers("/t-exercise/selectboard/**").permitAll()
+                .requestMatchers("/api/user/kakao/callback").permitAll()
+                .requestMatchers("/api/home").permitAll()
                 .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
                 //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-                // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
-                http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
-                // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
-                http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+        // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
+        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
 
 //                .formLogin().failureHandler();
 //                http.exceptionHandling().accessDeniedHandler(new AccessDeniedHandlerImpl());
@@ -71,4 +80,12 @@ public class WebSecurityConfig {
 //        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
         return http.build();
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry corsRegistry) {
+        corsRegistry.addMapping("/**")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
+                .exposedHeaders("Authorization");
+    }
+
 }

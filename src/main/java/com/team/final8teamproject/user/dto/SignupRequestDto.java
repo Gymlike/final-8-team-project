@@ -43,4 +43,6 @@ public class SignupRequestDto {
     private boolean admin = false;
     private String adminToken = "";
 
+    private Long experience = 0L;
+
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
+//    private final KakaoProfileService kakaoProfileService;
 
     //1. 프로필 조회
     @GetMapping()
@@ -27,5 +28,10 @@ public class ProfileController {
             , @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
         profileService.modifyProfile(profileModifyRequestDto, userDetailsImpl.getUser());
     }
+
+//    @GetMapping("/kakao")
+//    public KakaoProfileResponseDto KakaoProfile(@Valid @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+//        return kakaoProfileService.KakaoProfile(userDetailsImpl.getKakaoUser());
+//    }
 
 }
