@@ -1,5 +1,6 @@
 package com.team.final8teamproject.base.entity;
 
+import com.team.final8teamproject.manager.entity.ManagerRoleEnum;
 import com.team.final8teamproject.user.entity.Timestamped;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
