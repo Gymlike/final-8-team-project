@@ -64,8 +64,30 @@ private final NoticeRepository noticeRepository;
 
     Notice notice = new Notice(1L,"공지사항","공지사항입니다.");
     Notice notice1 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice2 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice3 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice4 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice5 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice6 = new Notice(1L,"공지사항","공지사항입니다.");
+    Notice notice7 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice8 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice9 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice10 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice11= new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice12= new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
     noticeRepository.save(notice);
     noticeRepository.save(notice1);
+    noticeRepository.save(notice2);
+    noticeRepository.save(notice3);
+    noticeRepository.save(notice4);
+    noticeRepository.save(notice5);
+    noticeRepository.save(notice6);
+    noticeRepository.save(notice7);
+    noticeRepository.save(notice8);
+    noticeRepository.save(notice9);
+    noticeRepository.save(notice10);
+    noticeRepository.save(notice11);
+    noticeRepository.save(notice12);
 
 
     Faq faq1 = new Faq(1L,"센터 운영 중인데 [ㅇㅇㅇ] 에 등록?입점? 하고 싶습니다.","홈페이지 상단 xx 페이지에서 ~ 진행");
