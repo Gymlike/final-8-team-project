@@ -7,6 +7,8 @@ import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
+import com.team.final8teamproject.contact.entity.Notice;
+import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
@@ -58,6 +60,8 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public Result getInquiry(int page, int size, Direction direction,
       String properties) {
+    List<Inquiry> inquiryList = inquiryRepository.findAll();
+    int totalCount = inquiryList.size();
     Page<Inquiry> inquiryListPage = inquiryRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
     if(inquiryListPage.isEmpty()){
@@ -65,8 +69,18 @@ public class InquiryServiceImpl implements InquiryService {
     }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-    return new Result(inquiryResponses.size(),inquiryResponses);
+    int countList = size;
+    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int totalPage = totalCount / countList;
+    if (totalCount % countList > 0) {
+      totalPage++;
+    }
+    if (totalPage < page) {
+      page = totalPage;
+    }
+    return new Result(page, totalCount, countPage, totalPage, inquiryResponses);
   }
+
 
   /**
    * 건당 문의 글 조회 시
@@ -89,10 +103,10 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
-
-    String title = keyword;
-    String content = keyword;
-
+      String title = keyword;
+      String content = keyword;
+      List<Inquiry> inquiryList = inquiryRepository.findAllByTitleContainingOrContentContaining(title,content);
+      int totalCount = inquiryList.size();
     Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(
         title, content, PageRequest.of(page - 1, size, direction, properties));
     if(inquiryListPage.isEmpty()){
@@ -100,9 +114,17 @@ public class InquiryServiceImpl implements InquiryService {
     }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-    return new Result(inquiryResponses.size(),inquiryResponses);
+    int countList = size;
+    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int totalPage = totalCount / countList;
+    if (totalCount % countList > 0) {
+      totalPage++;
+    }
+    if (totalPage < page) {
+      page = totalPage;
+    }
+    return new Result(page, totalCount, countPage, totalPage, inquiryResponses);
   }
-
 
   @Transactional
   @Override
@@ -143,16 +165,23 @@ public class InquiryServiceImpl implements InquiryService {
   @Getter
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class Result<T> {
-    private T count;
+
+    private int page;
+    private int totalCount;
+    private int countPage;
+    private int totalPage;
     private T data;
 
-
-    public Result(T data) {
+    public Result(int totalCount, T data) {
+      this.totalCount = totalCount;
       this.data = data;
     }
 
-    public Result(T count, T data) {
-      this.count = count;
+    public Result(int page, int totalCount, int countPage, int totalPage, T data) {
+      this.page = page;
+      this.totalCount = totalCount;
+      this.countPage = countPage;
+      this.totalPage = totalPage;
       this.data = data;
     }
   }
