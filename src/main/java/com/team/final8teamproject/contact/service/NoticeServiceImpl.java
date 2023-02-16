@@ -78,8 +78,7 @@ public class NoticeServiceImpl implements NoticeService {
     if (totalPage < page) {
       page = totalPage;
     }
-   // return new Result(page,totalCount,startPage,endPage,totalPage,noticeResponses);
-     return new Result(page,totalCount,countPage,totalPage,noticeResponses);
+    return new Result(page,totalCount,startPage,endPage,totalPage,noticeResponses);
   }
 
 
@@ -151,9 +150,10 @@ public class NoticeServiceImpl implements NoticeService {
   @Getter
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class Result<T> {
-    private int page ; 
+    private int page ;
     private int totalCount;
-    private int countPage;
+    private int startPage;
+    private int endPage;
     private int totalPage;
     private T data;
 
@@ -162,10 +162,11 @@ public class NoticeServiceImpl implements NoticeService {
       this.data = data;
     }
 
-    public Result(int page, int totalCount, int countPage, int totalPage, T data) {
+    public Result(int page, int totalCount, int startPage, int endPage, int totalPage, T data) {
       this.page = page;
       this.totalCount = totalCount;
-      this.countPage = countPage;
+      this.startPage = startPage;
+      this.endPage = endPage;
       this.totalPage = totalPage;
       this.data = data;
     }
