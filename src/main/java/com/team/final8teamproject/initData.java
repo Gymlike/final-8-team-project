@@ -48,8 +48,12 @@ private final NoticeRepository noticeRepository;
 
     Inquiry ownerInquiry = new Inquiry("owner","사업자 문의","입점가능?",false);
     Inquiry memberInquiry = new Inquiry("member","회원 문의","회원가입?",true); // 문의글 비밀상태
+    Inquiry ownerInquiry1 = new Inquiry("owner","아무거나 문의","입점가능?",false);
+    Inquiry memberInquiry2 = new Inquiry("member","이것도 문의","회원가입?",true); // 문의글 비밀상태
     inquiryRepository.save(ownerInquiry);
     inquiryRepository.save(memberInquiry);
+    inquiryRepository.save(ownerInquiry1);
+    inquiryRepository.save(memberInquiry2);
 
     ContactComment parentComment = new ContactComment("부모댓글",1L,"member",null);
     ContactComment parentComment1 = new ContactComment("부모댓글",1L,"member",null);
@@ -64,17 +68,22 @@ private final NoticeRepository noticeRepository;
 
     Notice notice = new Notice(1L,"공지사항","공지사항입니다.");
     Notice notice1 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice2 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice3 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice4 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice5 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice6 = new Notice(1L,"공지사항","공지사항입니다.");
-    Notice notice7 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice8 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice9 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice10 = new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice11= new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
-    Notice notice12= new Notice(1L," 대체공휴일 휴무 안내","휴무입니다.");
+    Notice notice2 = new Notice(1L," 더미1","휴무입니다.");
+    Notice notice3 = new Notice(1L," 더미2","휴무입니다.");
+    Notice notice4 = new Notice(1L," 더미3","휴무입니다.");
+    Notice notice5 = new Notice(1L," 더미4","휴무입니다.");
+    Notice notice6 = new Notice(1L,"더미5","공지사항입니다.");
+    Notice notice7 = new Notice(1L," 더미6","휴무입니다.");
+    Notice notice8 = new Notice(1L,"더미7","휴무입니다.");
+    Notice notice9 = new Notice(1L," 더미8","휴무입니다.");
+    Notice notice10 = new Notice(1L," 더미9","휴무입니다.");
+    Notice notice11= new Notice(1L," 더미10","휴무입니다.");
+    Notice notice12= new Notice(1L," 더미11","휴무입니다.");
+    Notice notice13 = new Notice(1L," 더미12","휴무입니다.");
+    Notice notice14 = new Notice(1L," 더미13","휴무입니다.");
+    Notice notice15 = new Notice(1L," 더미14","휴무입니다.");
+    Notice notice16= new Notice(1L," 더미15","휴무입니다.");
+    Notice notice17= new Notice(1L," 더미16","휴무입니다.");
     noticeRepository.save(notice);
     noticeRepository.save(notice1);
     noticeRepository.save(notice2);
@@ -88,6 +97,11 @@ private final NoticeRepository noticeRepository;
     noticeRepository.save(notice10);
     noticeRepository.save(notice11);
     noticeRepository.save(notice12);
+    noticeRepository.save(notice13);
+    noticeRepository.save(notice14);
+    noticeRepository.save(notice15);
+    noticeRepository.save(notice16);
+    noticeRepository.save(notice17);
 
 
     Faq faq1 = new Faq(1L,"센터 운영 중인데 [ㅇㅇㅇ] 에 등록?입점? 하고 싶습니다.","홈페이지 상단 xx 페이지에서 ~ 진행");
