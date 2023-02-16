@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/owners")
+@RequestMapping("/api/owner")
 @RequiredArgsConstructor
 public class OwnerController {
     private final OwnerService ownerService;

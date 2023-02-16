@@ -1,5 +1,6 @@
 package com.team.final8teamproject.owner.entity;
 
+import com.team.final8teamproject.owner.dto.GymReviewUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,12 +16,15 @@ public class GymReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-    @ManyToOne
-    @JoinColumn(name="Gym_ID", nullable = false)
-    private Gym gym;
+    private String comment;
+    private Long gymId;
     @Builder
-    public GymReview(Gym gym, String username){
+    public GymReview(Long gymId, String username, String comment){
         this.username = username;
-        this.gym = gym;
+        this.comment = comment;
+        this.gymId = gymId;
+    }
+    public void update(String comment){
+        this.comment =comment;
     }
 }

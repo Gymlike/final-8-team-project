@@ -9,6 +9,8 @@ import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.entity.Notice;
 import com.team.final8teamproject.contact.service.FaqService;
+import com.team.final8teamproject.owner.entity.Owner;
+import com.team.final8teamproject.owner.repository.OwnerRepository;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.UserRepository;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Component;
 public class initData implements ApplicationRunner {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final OwnerRepository ownerRepository;
     private final InquiryRepository inquiryRepository;
     private final FaqRepository faqRepository;
 //    private final ContactCommentRepository contactCommentRepository;
@@ -37,19 +40,24 @@ public class initData implements ApplicationRunner {
                 .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
                 .username("manager").role(UserRoleEnum.MANAGER).experience(0L)
                 .build();
-        User owner =User.builder()
-                .nickName("owner").email("owner@google.com")
-                .phoneNumber("01022223333").password(passwordEncoder.encode("owner1234"))
+        Owner owner = Owner.builder()
+                .nickName("owner1").email("owner@google.com")
+                .phoneNumber("01022223333")
+                .ownerNumber("owner2")
+                .password(passwordEncoder.encode("owner1234"))
                 .username("owner1").role(UserRoleEnum.OWNER).experience(0L)
                 .build();
-        User owner1 =User.builder()
-                .nickName("owner1").email("owner2@google.com")
-                .phoneNumber("01022233333").password(passwordEncoder.encode("owner1234"))
+        Owner owner1 = Owner.builder()
+                .nickName("owner2").email("owner2@google.com")
+                .ownerNumber("owner2")
+                .phoneNumber("01022233333")
+                .password(passwordEncoder.encode("owner1234"))
                 .username("owner2").role(UserRoleEnum.OWNER).experience(0L)
                 .build();
         User member =User.builder()
                 .nickName("member").email("member1@google.com")
-                .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
+                .phoneNumber("01033334444")
+                .password(passwordEncoder.encode("member1234"))
                 .username("member1").role(UserRoleEnum.MEMBER).experience(0L)
                 .build();
 
@@ -62,8 +70,8 @@ public class initData implements ApplicationRunner {
         userRepository.save(manager);
         userRepository.save(member);
         userRepository.save(member1);
-        userRepository.save(owner);
-        userRepository.save(owner1);
+        ownerRepository.save(owner);
+        ownerRepository.save(owner1);
 
 
         // -------------------고객 센터 관련

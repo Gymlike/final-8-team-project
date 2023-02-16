@@ -17,8 +17,6 @@ public class Owner extends BaseEntity {
     private String profileImage;
 
     @Column(nullable = false)
-    private String storeName;
-    @Column(nullable = false)
     private String ownerNumber;
 
     @Column(nullable = false)
@@ -38,7 +36,6 @@ public class Owner extends BaseEntity {
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
         this.experience = experience;
-        this.storeName= storeName;
         this.ownerNumber = ownerNumber;
     }
 

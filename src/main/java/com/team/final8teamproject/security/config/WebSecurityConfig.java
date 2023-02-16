@@ -54,11 +54,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 //        http.authorizeRequests()
         http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/api/owner/**").permitAll()
                 .requestMatchers("/api/manager/**").hasAnyRole("Manager","GeneralManager")
                 .requestMatchers("/owner/**").hasAnyRole("Owner","Manager","GeneralManager")
                 .requestMatchers("/api/general/**").hasRole("GeneralManager")
-                .requestMatchers("/api/signup").permitAll()
-                .requestMatchers("/api/login").permitAll()
                 .requestMatchers("/h2-console").permitAll()
                 .requestMatchers("/t-exercise/allboard").permitAll()
                 .requestMatchers("/t-exercise/selectboard/**").permitAll()

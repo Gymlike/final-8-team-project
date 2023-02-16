@@ -1,5 +1,7 @@
 package com.team.final8teamproject.user.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.security.redis.RedisUtil;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.User;
@@ -17,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class UserService {
     private static final String MANAGER_TOKEN = "D1d@A$5dm4&4D1d1i34n%7";
     private final JavaMailSender mailSender;
     private final UserRepository userRepository;
+    private final BaseRepository baseRepository;
     private final RedisUtil redisUtil;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
@@ -69,7 +71,7 @@ public class UserService {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
 
-        User user = userRepository.findByUsername(username).orElseThrow(
+        BaseEntity user = baseRepository.findByUsername(username).orElseThrow(
                 () -> new SecurityException("사용자를 찾을수 없습니다.")
         );
         if (!passwordEncoder.matches(password, user.getPassword())) {
@@ -104,7 +106,7 @@ public class UserService {
     //4. 유저 아이디 찾기
     @Transactional
     public FindByResponseDto findByUsername(String email){
-        User user = userRepository.findByEmail(email).orElseThrow(
+        BaseEntity user = baseRepository.findByEmail(email).orElseThrow(
                 ()->new IllegalArgumentException("이메일을 다시 입력해주시기 바랍니다.")
         );
         if (user.getUsername().isEmpty()){
@@ -117,7 +119,7 @@ public class UserService {
     //5. 비밀번호찾기
     @Transactional
     public FindByResponseDto userFindPassword(FindPasswordRequestDto vo){
-        User user = userRepository.findByEmail(vo.getEmail()).orElseThrow(
+        BaseEntity user = baseRepository.findByEmail(vo.getEmail()).orElseThrow(
                 ()->new IllegalArgumentException("이메일을 다시 입력해주시기 바랍니다.")
         );
 

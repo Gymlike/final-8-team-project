@@ -10,16 +10,18 @@ public class GymPostResponseDto {
     private String username;
     private String content;
     private String image;
-    private String trainer;
+    private String gymName;
     private String location;
+    private String ownerNumber;
 
     public GymPostResponseDto(GymBoard gymBoard) {
         this.id = gymBoard.getId();
         this.title = gymBoard.getTitle();
-        this.username =gymBoard.getUserName();
+        this.username =gymBoard.getUsername();
         this.content =gymBoard.getContent();
-        this.image =gymBoard.getImage();
-        this.trainer =gymBoard.getTrainer();
+        this.image =gymBoard.getGymImage();
+        this.gymName =gymBoard.getGymName();
         this.location = gymBoard.getRegion();
+        this.ownerNumber= gymBoard.getOwnerNumber();
     }
 }
