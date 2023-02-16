@@ -1,7 +1,7 @@
 package com.team.final8teamproject.security.userservice;
 
-import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.base.repository.BaseRepository;
+import com.team.final8teamproject.user.entity.User;
+import com.team.final8teamproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,4 +25,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
         return new UserDetailsImpl(base, base.getUsername());
     }
+
 }

@@ -1,4 +1,4 @@
-package com.team.final8teamproject.share.exception.dto;
+package com.team.final8teamproject.share.exception;
 
 import lombok.Getter;
 import lombok.Setter;

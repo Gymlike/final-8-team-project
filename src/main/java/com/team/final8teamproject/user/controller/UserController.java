@@ -47,7 +47,6 @@ public class UserController {
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
     , HttpServletRequest request){
         String accessToken = jwtUtil.resolveToken(request);
-
         return new MessageResponseDto(userService.logout(accessToken, userDetails.getUsername()));
     }
 
