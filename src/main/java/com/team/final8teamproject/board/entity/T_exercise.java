@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.entity;
 
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.share.TimeStamp;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
@@ -30,9 +31,9 @@ public class T_exercise extends TimeStamp {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private User user;
+    private BaseEntity user;
 
-    public T_exercise(String title, String content, String filename, String filepath,User user) {
+    public T_exercise(String title, String content, String filename, String filepath,BaseEntity user) {
         this.title = title;
         this.content = content;
         this.filename = filename;

@@ -1,8 +1,8 @@
-package com.team.final8teamproject.owner.controller;
+package com.team.final8teamproject.gymboard.controller;
 
-import com.team.final8teamproject.owner.dto.GymBoardReviewRequestDto;
-import com.team.final8teamproject.owner.dto.GymReviewUpdateRequestDto;
-import com.team.final8teamproject.owner.service.GymBoardReviewService;
+import com.team.final8teamproject.gymboard.dto.GymBoardReviewRequestDto;
+import com.team.final8teamproject.gymboard.dto.GymReviewUpdateRequestDto;
+import com.team.final8teamproject.gymboard.service.GymBoardReviewService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,9 +15,9 @@ public class GymBoardReviewController {
 
     private final GymBoardReviewService gymBoardReviewService;
     //1.운동시설 리뷰 작성
-    @PostMapping("/write")
-    public String writeReview(@RequestBody GymBoardReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        gymBoardReviewService.writeReview(requestDto, userDetails.getUsername());
+    @PostMapping("/write/{id}")
+    public String writeReview(@PathVariable Long id, @RequestBody GymBoardReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        gymBoardReviewService.writeReview(id, requestDto, userDetails.getUsername());
         return "작성 성공";
     }
 

@@ -1,13 +1,10 @@
-package com.team.final8teamproject.owner.entity;
+package com.team.final8teamproject.gymboard.entity;
 
-import com.team.final8teamproject.owner.dto.CreatePostGymRequestDto;
+import com.team.final8teamproject.gymboard.dto.CreatePostGymRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -37,7 +34,7 @@ public class GymBoard {
 
     //나중에 트레이너 추가하기
 
-    @Builder
+    @Builder(builderMethodName = "GymBoard")
     public GymBoard(String title, String username, String gymName,String content, String image, String ownerNumber, String region) {
         this.title = title;
         this.ownerNumber= ownerNumber;
@@ -48,9 +45,10 @@ public class GymBoard {
         this.region = region;
     }
 
-    public void update(CreatePostGymRequestDto createPostGymRequestDto){
+ @Builder(builderMethodName = "gymBoardUpdate")
+    public void update(CreatePostGymRequestDto createPostGymRequestDto, String username){
         this.title = createPostGymRequestDto.getTitle();
-        this.username = createPostGymRequestDto.getUsername();
+        this.username = username;
         this.content = createPostGymRequestDto.getContents();
         this.gymImage = createPostGymRequestDto.getImage();
         this.region = createPostGymRequestDto.getRegion();

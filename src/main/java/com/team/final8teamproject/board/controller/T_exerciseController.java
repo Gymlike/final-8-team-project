@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.controller;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
@@ -33,9 +34,9 @@ public class T_exerciseController {
 
         String content = creatTExerciseBordRequestDTO.getContent();
         String title = creatTExerciseBordRequestDTO.getTitle();
-        User user = (User) userDetails.getBase();
+        BaseEntity base = userDetails.getBase();
 
-        return t_exerciseService.creatTExerciseBord(title,content,file,user);
+        return t_exerciseService.creatTExerciseBord(title,content,file,base);
     }
 
     //오운완 전체 게시물 조회
@@ -61,7 +62,7 @@ public class T_exerciseController {
     //오운완 게시물 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteT_exerciseBoard(@PathVariable Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return t_exerciseService.deleteSalePost(boardId,(User)userDetails.getBase()); //인증은 앞단에서..했다고 가정하니까....
+        return t_exerciseService.deleteSalePost(boardId,userDetails.getBase()); //인증은 앞단에서..했다고 가정하니까....
     }
 
 

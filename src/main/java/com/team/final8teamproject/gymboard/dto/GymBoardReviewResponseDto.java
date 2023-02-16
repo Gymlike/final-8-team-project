@@ -1,8 +1,7 @@
-package com.team.final8teamproject.owner.dto;
+package com.team.final8teamproject.gymboard.dto;
 
-import com.team.final8teamproject.owner.entity.GymReview;
+import com.team.final8teamproject.gymboard.entity.GymReview;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class GymBoardReviewResponseDto {

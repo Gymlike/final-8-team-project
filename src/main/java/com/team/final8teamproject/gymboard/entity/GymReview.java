@@ -1,6 +1,5 @@
-package com.team.final8teamproject.owner.entity;
+package com.team.final8teamproject.gymboard.entity;
 
-import com.team.final8teamproject.owner.dto.GymReviewUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

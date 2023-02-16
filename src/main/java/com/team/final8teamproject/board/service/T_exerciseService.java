@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.dto.CreatT_exerciseBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
@@ -15,13 +16,13 @@ import java.util.Optional;
 
 public interface T_exerciseService {
     @Transactional
-    ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException;
+    ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, BaseEntity base) throws NullPointerException, IOException;
 
     List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search);
 
     T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
 
-    ResponseEntity<String> deleteSalePost(Long boardId, User user);
+    ResponseEntity<String> deleteSalePost(Long boardId, BaseEntity base);
 
     ResponseEntity<String> editSalePost(Long boardId, CreatT_exerciseBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
 
