@@ -58,11 +58,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers("/api/owners/**").permitAll()
                 .requestMatchers("/h2-console").permitAll()
                 .requestMatchers("/t-exercise/allboard").permitAll()
                 .requestMatchers("/t-exercise/selectboard/**").permitAll()
                 .requestMatchers("/api/user/kakao/callback").permitAll()
+                .requestMatchers("/api/profile/kakao").permitAll()
                 .requestMatchers("/api/home").permitAll()
+                .requestMatchers("/api/company/**").permitAll()
                 .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
                 //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
                 // JWT 인증/인가를 사용하기 위한 설정

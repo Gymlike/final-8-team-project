@@ -41,6 +41,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     //mysql전 h2콘솔을 사용하기위해서 사용
     runtimeOnly 'com.h2database:h2'
+    //사업자정보조회
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     //이메일 인증

@@ -24,5 +24,5 @@ public class OwnerSignupRequestDto {
     private boolean admin = false;
     private String adminToken = "";
     private String storeName;
-    private String StoreNumber;
+    private String storeNumber;
 }
