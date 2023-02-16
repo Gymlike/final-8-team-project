@@ -3,7 +3,7 @@ package com.team.final8teamproject.owner.controller;
 import com.team.final8teamproject.owner.dto.OwnerLoginRequestDto;
 import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.ownerservice.OwnerDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.owner.service.OwnerService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/owners")
+@RequestMapping("/api/owner")
 @RequiredArgsConstructor
 public class OwnerController {
     private final OwnerService ownerService;
@@ -32,9 +32,10 @@ public class OwnerController {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
         return new MessageResponseDto("로그인 되었습니다.");
     }
+    //3.로그아웃
     @DeleteMapping("/logout")
-    public MessageResponseDto logout(@AuthenticationPrincipal OwnerDetailsImpl ownerDetails
+    public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
             , @RequestBody TokenRequestDto tokenRequestDto){
-        return new MessageResponseDto(ownerService.logout(tokenRequestDto.getAccessToken(), ownerDetails.getOwner()));
+        return new MessageResponseDto(ownerService.logout(tokenRequestDto.getAccessToken(), userDetails.getUsername()));
     }
 }

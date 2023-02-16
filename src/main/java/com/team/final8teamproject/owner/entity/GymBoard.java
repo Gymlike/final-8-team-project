@@ -6,53 +6,53 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
 public class GymBoard {
     @Id
+    @Column(name = "Gym_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "GymPost_ID")
     private Long id;
+    @Column(nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String ownerNumber;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private String userName;          //작성자 이름으로 나중에 수정할때 db에서 글 작성자랑 현재 로그인한 작성자랑 맞는지 확인어떻게??
-
-    //운동시설 소개 글
+    private String gymName;
     @Column(nullable = false)
     private String content;
-    @Column(nullable = false)
-    private String image;
-
-    //소속된 트레이너
-    @Column(nullable = false)
-    private String trainer;
-
-    //주소
+    //가격 어떻게 해야하는지
+    private String price;
+    private String convenientFacilities;
+    private String phoneNumber;
     @Column(nullable = false)
     private String region;
+    private String gymImage;
 
-    //운동시설 이용가격 적는곳을 또 따로 만들어야 하는가?
-//    @Column(nullable = false)
-//    private String price;
+    //나중에 트레이너 추가하기
 
     @Builder
-    public GymBoard(String title, String userName, String content, String image, String trainer, String region) {
+    public GymBoard(String title, String username, String gymName,String content, String image, String ownerNumber, String region) {
         this.title = title;
-        this.userName = userName;
+        this.ownerNumber= ownerNumber;
+        this.gymName = gymName;
+        this.username = username;
         this.content = content;
-        this.image = image;
-        this.trainer = trainer;
+        this.gymImage = image;
         this.region = region;
     }
 
     public void update(CreatePostGymRequestDto createPostGymRequestDto){
         this.title = createPostGymRequestDto.getTitle();
-        this.userName = createPostGymRequestDto.getUsername();
+        this.username = createPostGymRequestDto.getUsername();
         this.content = createPostGymRequestDto.getContents();
-        this.image = createPostGymRequestDto.getImage();
-        this.trainer = createPostGymRequestDto.getTrainer();
+        this.gymImage = createPostGymRequestDto.getImage();
         this.region = createPostGymRequestDto.getRegion();
     }
 }

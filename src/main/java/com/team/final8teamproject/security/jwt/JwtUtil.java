@@ -1,6 +1,5 @@
 package com.team.final8teamproject.security.jwt;
 
-
 import com.team.final8teamproject.user.dto.LoginResponseDto;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.security.service.UserDetailsServiceImpl;
@@ -54,19 +53,39 @@ public class JwtUtil {
         return null;
     }
 
+    /**
+     *  일반유저, 오너유저, 총관리자, 관리자 토큰 생성 메소드 부분
+     */
+
     // 토큰 생성
-    //유저정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
-    public LoginResponseDto createToken(String username, UserRoleEnum role) {
+    //유저(일반 사업자)정보를 가지고 AccessToken, RefreshToken 을 반환해주는 메서드
+    public LoginResponseDto createUserToken(String username, UserRoleEnum role) {
         Date date = new Date();
         //권한 가져오기
         // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
-        String accessToken = BEARER_PREFIX + Jwts.builder()
-                        .setSubject(username) // 토큰 용도
-                        .claim(AUTHORIZATION_KEY, role) // payload에 들어갈 정보 조각들
-                        .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료시간 설정
-                        .setIssuedAt(date) // 토큰 발행일
-                        .signWith(key, signatureAlgorithm) // key변수 값과 해당 알고리즘으로 sign
-                        .compact(); // 토큰 생성
+        return getLoginResponseDto(Jwts.builder()
+                .setSubject(username) // 토큰 용도
+                .claim(AUTHORIZATION_KEY, role), date);
+    }
+
+
+    // 총관리자, 관리자 가지고 AccessToken, RefreshToken 을 반환해주는 메서드
+    public LoginResponseDto createManagerToken(String general, UserRoleEnum role) {
+        Date date = new Date();
+        //권한 가져오기
+        // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
+        return getLoginResponseDto(Jwts.builder()
+                .setSubject(general) // 토큰 용도
+                .claim(AUTHORIZATION_KEY, role), date);
+    }
+
+    //토큰(AccessToken, RefreshToken) 생성 메서드
+    private LoginResponseDto getLoginResponseDto(JwtBuilder general, Date date) {
+        String accessToken = BEARER_PREFIX + general // payload에 들어갈 정보 조각들
+                .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료시간 설정
+                .setIssuedAt(date) // 토큰 발행일
+                .signWith(key, signatureAlgorithm) // key변수 값과 해당 알고리즘으로 sign
+                .compact(); // 토큰 생성
 
         String refreshToken = Jwts.builder()
                 .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_EXPIRE_TIME))
@@ -80,6 +99,29 @@ public class JwtUtil {
                 .refreshTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
                 .build();
     }
+
+
+    /**
+     *  일반유저, 오너유저, 총관리자, 관리자 인증 객체 생성 메소드 부분
+     */
+    // 일반 유저 인증 객체 생성
+    public Authentication createUserAuthentication(String username) {
+        //
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+    //오너 유저 인증 객체 생성
+
+
+
+    /**
+     *  -----------------------------------------------
+     *
+     *     Header에서 가져온 토큰 검증하는 메소드
+     *
+     *  -----------------------------------------------
+     */
 
     // 토큰 검증
     // Header에서 토큰 가져오기
@@ -107,14 +149,6 @@ public class JwtUtil {
         return false;
     }
 
-    // 인증 객체 생성
-    public Authentication createAuthentication(String username) {
-        //
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-    }
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }

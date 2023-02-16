@@ -1,6 +1,6 @@
 package com.team.final8teamproject.security.service;
 
-import com.team.final8teamproject.user.entity.User;
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,21 +10,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
-    private final User user;
+    private final BaseEntity base;
     private final String username;
 
-    public UserDetailsImpl(User user, String username) {
-        this.user = user;
+    public UserDetailsImpl(BaseEntity base, String username) {
+        this.base = base;
         this.username = username;
     }
 
-    public User getUser() {
-        return user;
+    public BaseEntity getBase() {
+        return base;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRoleEnum role = user.getRole();
+        UserRoleEnum role = base.getRole();
         String authority = role.getAuthority();
 
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
