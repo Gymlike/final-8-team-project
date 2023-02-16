@@ -72,9 +72,21 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     @Override
     public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search) {
         List<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
-        return tExerciseList.stream()
-                .map(T_exerciseBoardResponseDTO::new)
-                .toList();
+        List<T_exerciseBoardResponseDTO> boardResponseDTO = new ArrayList<>();
+        for (T_exercise t_exercise : tExerciseList) {
+            Long boardId = t_exercise.returnPostId();
+            Long countLike = tExerciseLikeService.countLike(boardId);
+            String title = t_exercise.getTitle();
+            String content = t_exercise.getContent();
+            String filepath = t_exercise.getFilepath();
+            LocalDateTime modifiedDate = t_exercise.getModifiedDate();
+            String username = t_exercise.getUser().getUsername();
+            String nickName = t_exercise.getUser().getNickName();
+
+            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike,boardId,title,content,filepath,modifiedDate,username,nickName);
+             boardResponseDTO.add(dto);
+        }
+        return boardResponseDTO;
     }
 
     /**

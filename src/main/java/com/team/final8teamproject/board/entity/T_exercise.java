@@ -52,4 +52,9 @@ public class T_exercise extends Timestamped {
         this.filename = filename;
         this.filepath = filepath;
     }
+
+    public Long returnPostId(){
+        return id;
+    }
+
 }
