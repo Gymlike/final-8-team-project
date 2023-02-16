@@ -3,7 +3,7 @@ package com.team.final8teamproject.owner.controller;
 import com.team.final8teamproject.owner.dto.CreatePostGymRequestDto;
 import com.team.final8teamproject.owner.dto.GymPostResponseDto;
 import com.team.final8teamproject.owner.service.GymPostService;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

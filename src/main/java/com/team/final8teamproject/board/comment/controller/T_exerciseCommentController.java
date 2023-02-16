@@ -2,7 +2,7 @@ package com.team.final8teamproject.board.comment.controller;
 
 import com.team.final8teamproject.board.comment.dto.CreatT_exerciseCommentRequestDTO;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

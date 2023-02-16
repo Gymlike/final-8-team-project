@@ -3,7 +3,7 @@ package com.team.final8teamproject.owner.controller;
 import com.team.final8teamproject.owner.dto.OwnerLoginRequestDto;
 import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.owner.service.OwnerService;
 import jakarta.servlet.http.HttpServletResponse;

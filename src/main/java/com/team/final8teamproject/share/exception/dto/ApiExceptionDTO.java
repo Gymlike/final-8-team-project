@@ -1,8 +1,7 @@
-package com.team.final8teamproject.share.exception;
+package com.team.final8teamproject.share.exception.dto;
 
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.http.HttpStatus;
+import lombok.Setter; 
 
 @Getter
 @Setter

@@ -2,7 +2,7 @@ package com.team.final8teamproject.owner.controller;
 
 import com.team.final8teamproject.owner.dto.GymRequestDto;
 import com.team.final8teamproject.owner.service.OwnerGymService;
-import com.team.final8teamproject.security.userservice.UserDetailsImpl;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
