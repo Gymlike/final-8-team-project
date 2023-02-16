@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,10 +46,13 @@ public class NoticeServiceImpl implements NoticeService {
   @Override
   public Result getNoticeList(int page, int size, Direction direction,
       String properties) {
+
     List<Notice> noticeList = noticeRepository.findAll();
     int totalCount = noticeList.size();
     Page<Notice> noticeListPage = noticeRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
+
+
     if (noticeListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
@@ -75,7 +79,6 @@ public class NoticeServiceImpl implements NoticeService {
     );
     return new NoticeResponse(notice);
   }
-
   @Transactional(readOnly = true)
   @Override
   public Result searchByKeyword(String keyword, int page, int size,
@@ -104,6 +107,34 @@ public class NoticeServiceImpl implements NoticeService {
     }
     return new Result(page, totalCount, countPage, totalPage, noticeResponses);
   }
+//  @Transactional(readOnly = true)
+//  @Override
+//  public Result searchByKeyword(String keyword, int page, int size,
+//      Direction direction, String properties) {
+//    String title = keyword;
+//    String content = keyword;
+//    List<Notice> noticeList = noticeRepository.findAllByTitleContainingOrContentContaining(title,content);
+//    int totalCount = noticeList.size();
+//
+//    Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(
+//        title, content,
+//        PageRequest.of(page - 1, size, direction, properties));
+//    if (noticeListPage.isEmpty()) {
+//      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+//    }
+//    List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new).collect(
+//        Collectors.toList());
+//    int countList = size;
+//    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+//    int totalPage = totalCount / countList;
+//    if (totalCount % countList > 0) {
+//      totalPage++;
+//    }
+//    if (totalPage < page) {
+//      page = totalPage;
+//    }
+//    return new Result(page, totalCount, countPage, totalPage, noticeResponses);
+//  }
 
   @Transactional
   @Override

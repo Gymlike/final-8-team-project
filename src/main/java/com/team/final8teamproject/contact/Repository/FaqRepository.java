@@ -10,5 +10,4 @@ public interface FaqRepository extends JpaRepository<Faq, Long> {
 
  Page<Faq> findAllByQuestionContainingOrAnswerContaining(String question, String answer, PageRequest of);
 
- List<Faq> findAllByTitleContainingOrContentContaining(String question, String answer);
 }

@@ -38,8 +38,6 @@ public class FaqServiceImpl implements FaqService {
   @Override
   @Transactional(readOnly = true)
   public Result getFaqList(int page, int size, Direction direction, String properties) {
-    List<Faq> faqList = faqRepository.findAll();
-    int totalCount = faqList.size();
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
     if(faqListPage.isEmpty()){
@@ -48,16 +46,8 @@ public class FaqServiceImpl implements FaqService {
 
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
         .collect(Collectors.toList());
-    int countList = size;
-    int countPage = 5;//todo 리팩토링때  10으로 변경예정
-    int totalPage = totalCount / countList;
-    if (totalCount % countList > 0) {
-      totalPage++;
-    }
-    if (totalPage < page) {
-      page = totalPage;
-    }
-    return new Result(page, totalCount, countPage, totalPage, faqResponses);
+
+    return new Result(faqResponses.size(),faqResponses);
   }
 
   //FAQ 해당 글 조회 (보기,가져오기)
@@ -76,24 +66,14 @@ public class FaqServiceImpl implements FaqService {
       Direction direction, String properties) {
     String question = keyword;
     String answer = keyword;
-    List<Faq> inquiryList = faqRepository.findAllByTitleContainingOrContentContaining(question,answer);
-    int totalCount = inquiryList.size();
     Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
         answer, PageRequest.of(page - 1, size, direction, properties));
     if(faqListPage.isEmpty()){
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
-    int countList = size;
-    int countPage = 5;//todo 리팩토링때  10으로 변경예정
-    int totalPage = totalCount / countList;
-    if (totalCount % countList > 0) {
-      totalPage++;
-    }
-    if (totalPage < page) {
-      page = totalPage;
-    }
-    return new Result(page, totalCount, countPage, totalPage, faqResponses);
+
+    return new Result(faqResponses.size(),faqResponses);
   }
 
   @Transactional
