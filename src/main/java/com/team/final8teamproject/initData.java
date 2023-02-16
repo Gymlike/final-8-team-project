@@ -37,6 +37,11 @@ public class initData implements ApplicationRunner {
                 .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
                 .username("manager").role(UserRoleEnum.MANAGER).experience(0L)
                 .build();
+        User manager2 = User.builder()
+                .nickName("manager").email("manager2@nvaer.com")
+                .phoneNumber("01011122222").password(passwordEncoder.encode("manager1234"))
+                .username("manager2").role(UserRoleEnum.MANAGER).experience(0L)
+                .build();
         User owner =User.builder()
                 .nickName("owner").email("owner@google.com")
                 .phoneNumber("01022223333").password(passwordEncoder.encode("owner1234"))
@@ -60,6 +65,7 @@ public class initData implements ApplicationRunner {
                 .build();
 
         userRepository.save(manager);
+        userRepository.save(manager2);
         userRepository.save(member);
         userRepository.save(member1);
         userRepository.save(owner);
