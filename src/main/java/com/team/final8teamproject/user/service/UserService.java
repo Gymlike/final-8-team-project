@@ -51,13 +51,6 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-//        UserRoleEnum role = UserRoleEnum.OWNER;
-//        if (requestDto.isAdmin()) {
-//            if (!requestDto.getAdminToken().equals(MANAGER_TOKEN)) {
-//                throw new SecurityException("관리자 암호가 틀렸습니다.");
-//            }
-//            role = UserRoleEnum.MANAGER;
-//        }
 
         UserRoleEnum role = UserRoleEnum.MEMBER;
         User user = User.builder()

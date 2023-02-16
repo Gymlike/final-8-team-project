@@ -1,6 +1,5 @@
 package com.team.final8teamproject.user.entity;
 
-import com.team.final8teamproject.manager.entity.ManagerRoleEnum;
 
 public enum UserRoleEnum {
     OWNER(Authority.OWNER),  // 사업자 권한

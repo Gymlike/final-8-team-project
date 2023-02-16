@@ -16,7 +16,8 @@ public class Owner extends BaseEntity {
 
     private String profileImage;
 
-
+    @Column(nullable = false)
+    private String storeName;
     @Column(nullable = false)
     private String ownerNumber;
 
@@ -32,11 +33,13 @@ public class Owner extends BaseEntity {
     @Builder
     public Owner(String username, String password, UserRoleEnum role,
                 String nickName, String phoneNumber, String email,
-                Long experience){
+                Long experience, String storeName, String ownerNumber){
         super(username, password, email, role);
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
         this.experience = experience;
+        this.storeName= storeName;
+        this.ownerNumber = ownerNumber;
     }
 
     //프로필이미지 수정

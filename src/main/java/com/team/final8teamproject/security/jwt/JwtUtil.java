@@ -1,8 +1,5 @@
 package com.team.final8teamproject.security.jwt;
 
-
-import com.team.final8teamproject.manager.entity.ManagerRoleEnum;
-import com.team.final8teamproject.security.mamagerservice.*;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.security.userservice.UserDetailsServiceImpl;
@@ -35,8 +32,6 @@ public class JwtUtil {
     private static final long ACCESS_TOKEN_TIME = 60 * 30 * 1000L;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 2 * 24 * 60 * 60 * 1000L; //2일
     private final UserDetailsServiceImpl userDetailsService;
-    private final ManagerDetailsServiceImpl managerDetailsService;
-    private final GeneralManagerDetailsServiceImpl generalManagerDetailsService;
     @Value("${jwt.secret.key}")
     private String secretKey;
     private Key key;
@@ -75,7 +70,7 @@ public class JwtUtil {
 
 
     // 총관리자, 관리자 가지고 AccessToken, RefreshToken 을 반환해주는 메서드
-    public LoginResponseDto createManagerToken(String general, ManagerRoleEnum role) {
+    public LoginResponseDto createManagerToken(String general, UserRoleEnum role) {
         Date date = new Date();
         //권한 가져오기
         // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
@@ -118,21 +113,6 @@ public class JwtUtil {
     }
     //오너 유저 인증 객체 생성
 
-    //총 관리자 인증 객체 생성
-    public Authentication createGeneralManagerAuthentication(String general) {
-        //
-        GeneralManagerDetails generalManager = generalManagerDetailsService.loadManagerByGeneralName(general);
-
-        return new UsernamePasswordAuthenticationToken(generalManager, null, generalManager.getAuthorities());
-    }
-
-    //관리자 인증 객체 생성
-    public Authentication createManagerAuthentication(String manager) {
-        //
-        ManagerDetails managerDetails = managerDetailsService.loadManagerByManagerName(manager);
-
-        return new UsernamePasswordAuthenticationToken(managerDetails, null, managerDetails.getAuthorities());
-    }
 
 
     /**
