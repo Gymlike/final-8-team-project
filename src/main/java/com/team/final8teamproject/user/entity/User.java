@@ -16,11 +16,6 @@ public class User extends BaseEntity {
     private String profileImage;
     @Column(nullable = false)
     private String nickName;
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
-
     @Column(nullable = false)
     private String phoneNumber;
     @Column(nullable = false)
