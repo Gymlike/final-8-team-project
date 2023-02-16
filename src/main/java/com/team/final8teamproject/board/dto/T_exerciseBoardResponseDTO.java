@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
 import lombok.Getter;
@@ -20,6 +21,11 @@ public class T_exerciseBoardResponseDTO {
 
     private final String image;
 
+    private final String userName;
+
+    private final String userNickname;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
     private final LocalDateTime createdDate;
 
     private  List<T_exerciseCommentResponseDTO> commentList;
@@ -32,6 +38,8 @@ public class T_exerciseBoardResponseDTO {
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
         this.createdDate =t_exercise.getCreatedDate();
+        this.userName = t_exercise.getUser().getUsername();
+        this.userNickname = t_exercise.getUser().getNickName();
         this.commentList = commentList;
     }
     public T_exerciseBoardResponseDTO(T_exercise t_exercise) {
@@ -40,5 +48,7 @@ public class T_exerciseBoardResponseDTO {
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
         this.createdDate =t_exercise.getCreatedDate();
+        this.userName = t_exercise.getUser().getUsername();
+        this.userNickname = t_exercise.getUser().getNickName();
     }
 }

@@ -27,10 +27,10 @@ public class T_exerciseCommentReplyServiceImple implements T_exerciseCommentRepl
     private final T_exerciseCommentReplyRepository tExerciseCommentReplyRepository;
     @Override
     @Transactional
-    public ResponseEntity<String> creatCommentRely(Long commentId, String commentContent, String username) {
+    public ResponseEntity<String> creatCommentRely(Long commentId, String commentContent, String username,String nickname) {
         if(tExerciseCommentRepository.existsById(commentId)){
             T_exerciseComment comment = tExerciseCommentRepository.findById((commentId)).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
-            T_exerciseCommentReply t_exerciseCommentReply = new T_exerciseCommentReply(commentContent,username,comment);
+            T_exerciseCommentReply t_exerciseCommentReply = new T_exerciseCommentReply(commentContent,username,comment,nickname);
             tExerciseCommentReplyRepository.save(t_exerciseCommentReply);
         return new ResponseEntity<>("대댓글 작성완료", HttpStatus.OK);
         }throw new CustomException(ExceptionStatus.COMMENT_NOT_EXIST);

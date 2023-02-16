@@ -26,4 +26,12 @@ public interface T_exerciseService {
 
 
     T_exercise findT_exerciseBoardById(Long id);
+
+   /* 파일서비스 인터페이스 만들어서～
+    이거통해서。。。 갈아끼우자...
+    아니면 다운하는 api만들기~!
+
+     S3 ->주소생김
+    */
+
 }

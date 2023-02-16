@@ -20,8 +20,9 @@ public class T_exerciseCommentReplyController {
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                     @RequestBody CreatCommentReplyRequestDTO requestDTO){
         String username = userDetails.getUser().getUsername();
+        String userNickname = userDetails.getUser().getNickName();
         String comment = requestDTO.getComment();
-        return t_exerciseCommentReplyService.creatCommentRely(commentId,comment,username);
+        return t_exerciseCommentReplyService.creatCommentRely(commentId,comment,username,userNickname);
     }
 
     //대댓글 수정

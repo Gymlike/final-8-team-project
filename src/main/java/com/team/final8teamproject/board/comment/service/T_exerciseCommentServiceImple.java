@@ -30,10 +30,10 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> createComment(String comment, Long boardId, String userName) {
+    public ResponseEntity<String> createComment(String comment, Long boardId, String userName, String userNickname) {
 //        t_exerciseService.findT_exerciseBoardById(boardId);
        if (tExerciseRepository.existsById(boardId)) {
-           T_exerciseComment t_exerciseComment = new T_exerciseComment(comment, userName, boardId);
+           T_exerciseComment t_exerciseComment = new T_exerciseComment(comment, userName, boardId,userNickname);
            commentRepository.save(t_exerciseComment);
            return new ResponseEntity<>("댓글 작성완료", HttpStatus.OK);
        }throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);

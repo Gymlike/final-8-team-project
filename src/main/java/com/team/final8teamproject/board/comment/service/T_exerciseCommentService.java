@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface T_exerciseCommentService {
-    ResponseEntity<String> createComment(String comment, Long id, String userName);
+    ResponseEntity<String> createComment(String comment, Long id, String userName,String userNickname);
 
     ResponseEntity<String> deleteComment(User user, Long commentId);
 

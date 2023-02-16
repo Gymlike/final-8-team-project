@@ -19,7 +19,8 @@ public class T_exerciseCommentController {
     public ResponseEntity<String> createComment(@RequestBody CreatCommentRequestDTO requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long boardId) {
         String comment = requestDto.getComment();
         String userName = userDetails.getUser().getUsername();
-        return tExerciseCommentService.createComment(comment, boardId,userName);
+        String userNickname = userDetails.getUser().getNickName();
+        return tExerciseCommentService.createComment(comment, boardId,userName,userNickname);
     }
 
     //댓글삭제 //

@@ -72,7 +72,6 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     @Override
     public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search) {
         List<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
-
         return tExerciseList.stream()
                 .map(T_exerciseBoardResponseDTO::new)
                 .toList();
@@ -98,9 +97,10 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
             List<T_exerciseCommentReplyResponseDTO> toList = commentReplyList.stream().map(T_exerciseCommentReplyResponseDTO::new).toList();
             String commentContent = comment.getComment();
             String username = comment.getUsername();
-            Long id = comment.getId();
+            Long id = comment.getId();  //대글에 대댓글을 넣어주고 게시글에 대글을 넣어주고 ... 게시글조회...
+            String nickname = comment.getUserNickname();
             LocalDateTime createdAt = comment.getCreatedDate();
-            T_exerciseCommentResponseDTO dto = new T_exerciseCommentResponseDTO(id,commentContent,username,createdAt,toList);
+            T_exerciseCommentResponseDTO dto = new T_exerciseCommentResponseDTO(id,commentContent,username,createdAt,toList,nickname);
             commentFilter.add(dto);
         }
 
