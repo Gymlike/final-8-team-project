@@ -33,7 +33,7 @@ public class T_exerciseController {
 
         String content = creatTExerciseBordRequestDTO.getContent();
         String title = creatTExerciseBordRequestDTO.getTitle();
-        User user = userDetails.getUser();
+        User user = (User) userDetails.getBase();
 
         return t_exerciseService.creatTExerciseBord(title,content,file,user);
     }
@@ -61,7 +61,7 @@ public class T_exerciseController {
     //오운완 게시물 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteT_exerciseBoard(@PathVariable Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return t_exerciseService.deleteSalePost(boardId,userDetails.getUser()); //인증은 앞단에서..했다고 가정하니까....
+        return t_exerciseService.deleteSalePost(boardId,(User)userDetails.getBase()); //인증은 앞단에서..했다고 가정하니까....
     }
 
 
@@ -72,7 +72,7 @@ public class T_exerciseController {
                                                       @RequestPart("file") MultipartFile file,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
-        User user = userDetails.getUser();
+        User user = (User)userDetails.getBase();
 
         return t_exerciseService.editSalePost(boardId,creatTExerciseBordRequestDTO,user,file);
     }

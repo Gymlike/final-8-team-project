@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GymBoardRepository extends JpaRepository<GymBoard, Long> {
-    List<GymBoard> findAllByUserName(String userName);
-    Optional<GymBoard> findByIdAndUserName(Long id, String userName);
+    List<GymBoard> findAllByUsername(String username);
+    Optional<GymBoard> findByIdAndUsername(Long id, String username);
     Page<GymBoard> findAll(Pageable pageable);
-    Page<GymBoard> findByUserName(Pageable pageable, String userName);
+    Page<GymBoard> findByUsername(Pageable pageable, String username);
     void deleteById(Long id);
 
 }

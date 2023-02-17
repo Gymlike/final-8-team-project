@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OwnerSignupRequestDto {
 
-
     //정규식이 틀렸을때 발생하는 예외 MethodArgumentNotValidException
     @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)")
     private String username;
@@ -21,8 +20,6 @@ public class OwnerSignupRequestDto {
     @Pattern(regexp = "(?=.*[0-9])^[0-9]{11}$", message = "11122223333형식으로 -를 빼고 입력해주시기 바랍니다.")
     private String phoneNumber;
     private String email;
-    private boolean admin = false;
-    private String adminToken = "";
     private String storeName;
-    private String storeNumber;
+    private String ownerNumber;
 }

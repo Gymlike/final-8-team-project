@@ -9,6 +9,9 @@ jQuery(document).ready(function($) {
 	getUserMe();
 	"use strict";
 
+	getOwnerMe();
+	"use strict";
+
 	var preloader = function() {
 
 		var loader = document.querySelector('.loader');
@@ -140,8 +143,64 @@ function getUserMe() {
 		}
 		console.log(response.nickName);
 		$('#loginUser').empty();
-		$('#MainLogin').empty();
-		$('#MainSignUp').empty();
 		$('#loginUser').append(response.nickName + "님 환영합니다.");
+		$('#mypage').show();
+		$('#MainLogout').show();
+		$('#MainLogin').hide();
+		$('#MainSignUp').hide();
+	  });
+}
+
+function getOwnerMe() {
+	var settings = {
+		"url": "http://localhost:8080/api/profile/owner",
+		"method": "GET",
+		"timeout": 0,
+		"headers": {
+		  "Authorization": localStorage.getItem('accessToken')
+		},
+	  };
+	  
+	  $.ajax(settings).done(function (response, status, xhr) {
+		console.log(response);
+		console.log(status)
+		if (status === 403) {
+			window.location = "/login.html"
+		}
+		console.log(response.nickName);
+		$('#loginUser').show();
+		$('#loginUser').append(response.nickName + "님 환영합니다.");
+		$('#mypage').show();
+		$('#MainLogout').show();
+		$('#MainLogin').hide();
+		$('#MainSignUp').hide();
+	  });
+}
+
+
+//로그아웃
+function logout() {
+	var settings = {
+		"url": "http://localhost:8080/api/user/logout",
+		"method": "DELETE",
+		"timeout": 0,
+		"headers": {
+		  "Authorization": localStorage.clear('accessToken')
+		},
+	  };
+	  
+	  $.ajax(settings).done(function (response, status, xhr) {
+		console.log(response);
+		console.log(status)
+		if (status === 403) {
+			window.location = "/index.html"
+		}
+		console.log(response.nickName);
+		$('#loginUser').hide();
+		$('#mypage').hide();
+		$('#MainLogout').hide();
+		$('#MainLogin').show();
+		$('#MainSignUp').show();
+		$('#loginUser').clear(response.nickName + "님 환영합니다.");
 	  });
 }

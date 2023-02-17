@@ -1,7 +1,6 @@
 package com.team.final8teamproject.contact.service;
 
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
-
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.entity.Inquiry;

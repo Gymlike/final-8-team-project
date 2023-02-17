@@ -3,6 +3,8 @@ package com.team.final8teamproject.user.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.user.dto.KakaoUserInfoDto;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
@@ -30,6 +32,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class KakaoService {
+    private final BaseRepository baseRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
@@ -51,7 +54,7 @@ public class KakaoService {
 //        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, createToken);
 
 
-        return jwtUtil.createToken(kakaoUser.getUsername(), kakaoUser.getRole());
+        return jwtUtil.createUserToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
     }
 
@@ -121,7 +124,7 @@ public class KakaoService {
         // DB 에 중복된 Kakao Id 가 있는지 확인
         String kakaoId = kakaoUserInfo.getId();
         Long id = kakaoUserInfo.getKakaoId();
-        User kakaoUser = userRepository.findByUsername(kakaoId)
+        BaseEntity kakaoUser = userRepository.findByUsername(kakaoId)
                 .orElse(null);
         if (kakaoUser == null) {
             // 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인
@@ -140,12 +143,12 @@ public class KakaoService {
                 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
 
-                kakaoUser = new User(kakaoUserInfo.getNickname(), id, kakaoId, encodedPassword, email, 0L,UserRoleEnum.MEMBER);
+                kakaoUser = new User(kakaoUserInfo.getNickname(), encodedPassword, UserRoleEnum.MEMBER, kakaoUserInfo.getNickname(),email, kakaoId,0L);
             }
 
-            userRepository.save(kakaoUser);
+            baseRepository.save(kakaoUser);
         }
-        return kakaoUser;
+        return (User) kakaoUser;
     }
 
 }
