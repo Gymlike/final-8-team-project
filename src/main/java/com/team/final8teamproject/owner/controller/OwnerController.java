@@ -32,10 +32,4 @@ public class OwnerController {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
         return new MessageResponseDto("로그인 되었습니다.");
     }
-    //3.로그아웃
-    @DeleteMapping("/logout")
-    public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
-            , @RequestBody TokenRequestDto tokenRequestDto){
-        return new MessageResponseDto(ownerService.logout(tokenRequestDto.getAccessToken(), userDetails.getUsername()));
-    }
 }

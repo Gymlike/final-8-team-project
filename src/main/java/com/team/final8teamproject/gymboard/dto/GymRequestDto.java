@@ -1,10 +1,10 @@
-package com.team.final8teamproject.owner.dto;
+package com.team.final8teamproject.gymboard.dto;
 
-import com.team.final8teamproject.owner.entity.GymReview;
+import jakarta.persistence.Column;
+import lombok.Getter;
 
-import java.util.List;
-
-public class GymResponseDto {
+@Getter
+public class GymRequestDto {
     private String username;
     private String ownerNumber;
     private String gymName;
@@ -16,5 +16,4 @@ public class GymResponseDto {
     private String phoneNumber;
     private String address;
     private String gymPhoto;
-    private List<GymReview> reviews;
 }

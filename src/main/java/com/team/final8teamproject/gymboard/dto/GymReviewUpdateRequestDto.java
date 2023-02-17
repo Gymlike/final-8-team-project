@@ -1,4 +1,4 @@
-package com.team.final8teamproject.owner.dto;
+package com.team.final8teamproject.gymboard.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

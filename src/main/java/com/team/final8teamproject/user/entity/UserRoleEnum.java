@@ -5,8 +5,8 @@ public enum UserRoleEnum {
     OWNER(Authority.OWNER),  // 사업자 권한
     MEMBER(Authority.MEMBER),  // 회원 권한
     GENERAL_MANAGER(Authority.GENERAL_MANAGER),  // 총관리자 권한
-    MANAGER(Authority.MANAGER),
-    WAIT(Authority.WAIT);  // 관리자 권한;  // 관리자 권한
+    MANAGER(Authority.MANAGER),// 관리자 권한
+    WAIT(Authority.WAIT);  // 관리자 권한 요청중;
 
     private final String authority;
 

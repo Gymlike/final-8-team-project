@@ -82,17 +82,4 @@ public class OwnerService {
 
         return loginResponseDto;
     }
-    //3. 로그아웃
-
-    public String logout(String accessToken, String username) {
-
-        // refreshToken 테이블의 refreshToken 삭제
-        redisUtil.deleteRefreshToken("RT:" + username);
-//        refreshTokenRepository.deleteRefreshTokenByEmail(users.getEmail());
-
-        // 레디스에 accessToken 사용못하도록 등록
-        redisUtil.setBlackList("RT:"+accessToken, "accessToken", 5L);
-
-        return "로그아웃 완료";
-    }
 }

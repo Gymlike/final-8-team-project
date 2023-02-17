@@ -1,7 +1,6 @@
-package com.team.final8teamproject.owner.repository;
+package com.team.final8teamproject.gymboard.repository;
 
-import com.team.final8teamproject.owner.entity.GymBoard;
-import com.team.final8teamproject.owner.entity.GymReview;
+import com.team.final8teamproject.gymboard.entity.GymReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

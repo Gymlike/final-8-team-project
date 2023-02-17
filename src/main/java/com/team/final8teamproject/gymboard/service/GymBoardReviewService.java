@@ -1,15 +1,12 @@
-package com.team.final8teamproject.owner.service;
+package com.team.final8teamproject.gymboard.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
-import com.team.final8teamproject.owner.dto.GymBoardReviewRequestDto;
-import com.team.final8teamproject.owner.dto.GymBoardReviewResponseDto;
-import com.team.final8teamproject.owner.dto.GymPostResponseDto;
-import com.team.final8teamproject.owner.dto.GymReviewUpdateRequestDto;
-import com.team.final8teamproject.owner.entity.GymBoard;
-import com.team.final8teamproject.owner.entity.GymReview;
-import com.team.final8teamproject.owner.entity.Owner;
-import com.team.final8teamproject.owner.repository.GymReviewRepository;
+import com.team.final8teamproject.gymboard.dto.GymBoardReviewRequestDto;
+import com.team.final8teamproject.gymboard.dto.GymBoardReviewResponseDto;
+import com.team.final8teamproject.gymboard.dto.GymReviewUpdateRequestDto;
+import com.team.final8teamproject.gymboard.entity.GymReview;
+import com.team.final8teamproject.gymboard.repository.GymReviewRepository;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,18 +20,19 @@ import java.util.List;
 public class GymBoardReviewService {
 
     private final OwnerRepository ownerRepository;
+
+    private final BaseRepository baseRepository;
     private final GymReviewRepository gymReviewRepository;
 
     //1. 리뷰 작성
     @Transactional
-    public void writeReview(GymBoardReviewRequestDto requestDto, String username){
+    public void writeReview(Long id,GymBoardReviewRequestDto requestDto, String username){
 
-        Owner owner = ownerRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-        );
+        BaseEntity base = baseRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")        );
         try {
             GymReview gymReview = GymReview.builder()
-                    .gymId(requestDto.getGymId())
+                    .gymId(id)
                     .comment(requestDto.getComment())
                     .username(username)
                     .build();
@@ -64,7 +62,8 @@ public class GymBoardReviewService {
     @Transactional
     public String putReview(GymReviewUpdateRequestDto requestDto, String username, Long id){
 
-        Owner owner = ownerRepository.findByUsername(username).orElseThrow(
+
+        BaseEntity base = baseRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
         );
         GymReview gymReview = gymReviewRepository.findByIdAndUsername(id, username).orElseThrow(
@@ -78,7 +77,8 @@ public class GymBoardReviewService {
     @Transactional
     public String deleteReview(String username, Long id){
 
-        Owner owner = ownerRepository.findByUsername(username).orElseThrow(
+
+        BaseEntity base = baseRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
         );
         GymReview gymReview = gymReviewRepository.findByIdAndUsername(id, username).orElseThrow(
