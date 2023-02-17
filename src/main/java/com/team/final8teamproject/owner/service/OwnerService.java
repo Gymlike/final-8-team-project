@@ -36,7 +36,6 @@ public class OwnerService {
         String nickName = requestDto.getNickName();
         String email = requestDto.getEmail();
         String phoneNumber =requestDto.getPhoneNumber();
-        String storeName = requestDto.getStoreName();
         String ownerNumber = requestDto.getOwnerNumber();
 
         Optional<BaseEntity> found = baseRepository.findByUsername(ownerName);
@@ -54,7 +53,7 @@ public class OwnerService {
                 .nickName(nickName).email(email)
                 .phoneNumber(phoneNumber).password(password)
                 .username(ownerName).role(role)
-                .storeName(storeName).ownerNumber(ownerNumber)
+                .ownerNumber(ownerNumber)
                 .experience(0L)
                 .build();
         ownerRepository.save(owner);
