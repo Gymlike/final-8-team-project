@@ -47,11 +47,10 @@ public class NoticeServiceImpl implements NoticeService {
   public Result getNoticeList(int page, int size, Direction direction,
       String properties) {
 
-    List<Notice> noticeList = noticeRepository.findAll();
-    int totalCount = noticeList.size();
     Page<Notice> noticeListPage = noticeRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
-
+    int totalCount = (int) noticeListPage.getTotalElements();
+    System.out.println("totalCount:"+totalCount);
 
     if (noticeListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
@@ -85,12 +84,13 @@ public class NoticeServiceImpl implements NoticeService {
       Direction direction, String properties) {
     String title = keyword;
     String content = keyword;
-    List<Notice> noticeList = noticeRepository.findAllByTitleContainingOrContentContaining(title,content);
-    int totalCount = noticeList.size();
+//    List<Notice> noticeList = noticeRepository.findAllByTitleContainingOrContentContaining(title,content);
+//    int totalCount = noticeList.size();
 
     Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(
         title, content,
         PageRequest.of(page - 1, size, direction, properties));
+    int totalCount = (int) noticeListPage.getTotalElements();
     if (noticeListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }

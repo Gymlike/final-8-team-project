@@ -60,10 +60,9 @@ public class InquiryServiceImpl implements InquiryService {
   @Override
   public Result getInquiry(int page, int size, Direction direction,
       String properties) {
-    List<Inquiry> inquiryList = inquiryRepository.findAll();
-    int totalCount = inquiryList.size();
     Page<Inquiry> inquiryListPage = inquiryRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
+    int totalCount = (int) inquiryListPage.getTotalElements();
     if(inquiryListPage.isEmpty()){
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
@@ -93,7 +92,6 @@ public class InquiryServiceImpl implements InquiryService {
   public InquiryResponse getSelectedInquiry(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-    // List<ContactComment> comments = contactCommentRepository.findAllByInquiryId(id);
     List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
         id);
     return new InquiryResponse(inquiry, parentComments);
@@ -105,10 +103,10 @@ public class InquiryServiceImpl implements InquiryService {
       Direction direction, String properties) {
       String title = keyword;
       String content = keyword;
-      List<Inquiry> inquiryList = inquiryRepository.findAllByTitleContainingOrContentContaining(title,content);
-      int totalCount = inquiryList.size();
+
     Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(
         title, content, PageRequest.of(page - 1, size, direction, properties));
+    int totalCount = (int) inquiryListPage.getTotalElements();
     if(inquiryListPage.isEmpty()){
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }

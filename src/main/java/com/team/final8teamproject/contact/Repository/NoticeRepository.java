@@ -13,5 +13,4 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
   Page<Notice> findAllByTitleContainingOrContentContaining(String title, String content, PageRequest of);
 
 
-  List<Notice> findAllByTitleContainingOrContentContaining(String title, String content);
 }

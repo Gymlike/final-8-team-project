@@ -40,14 +40,23 @@ public class FaqServiceImpl implements FaqService {
   public Result getFaqList(int page, int size, Direction direction, String properties) {
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
-    if(faqListPage.isEmpty()){
+    int totalCount = (int) faqListPage.getTotalElements();
+    if (faqListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
 
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
         .collect(Collectors.toList());
-
-    return new Result(faqResponses.size(),faqResponses);
+    int countList = size;
+    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int totalPage = totalCount / countList;
+    if (totalCount % countList > 0) {
+      totalPage++;
+    }
+    if (totalPage < page) {
+      page = totalPage;
+    }
+    return new Result(page, totalCount, countPage, totalPage, faqResponses);
   }
 
   //FAQ 해당 글 조회 (보기,가져오기)
@@ -68,12 +77,22 @@ public class FaqServiceImpl implements FaqService {
     String answer = keyword;
     Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
         answer, PageRequest.of(page - 1, size, direction, properties));
-    if(faqListPage.isEmpty()){
+    int totalCount = (int) faqListPage.getTotalElements();
+    if (faqListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
     List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
 
-    return new Result(faqResponses.size(),faqResponses);
+    int countList = size;
+    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int totalPage = totalCount / countList;
+    if (totalCount % countList > 0) {
+      totalPage++;
+    }
+    if (totalPage < page) {
+      page = totalPage;
+    }
+    return new Result(page, totalCount, countPage, totalPage, faqResponses);
   }
 
   @Transactional
@@ -86,7 +105,7 @@ public class FaqServiceImpl implements FaqService {
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (faq.getManagerId().equals(managerId)) {
-      faq.update(question,answer);
+      faq.update(question, answer);
       faqRepository.save(faq);
     } else {
       throw new CustomException(ExceptionStatus.ACCESS_DENINED);
