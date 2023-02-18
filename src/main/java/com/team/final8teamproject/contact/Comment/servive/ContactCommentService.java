@@ -10,10 +10,10 @@ import java.util.List;
 public interface ContactCommentService {
 
 
-  void saveInquiryComment(Long id, CreateContactCommentRequest createContactCommentRequest, String username);
+  void saveInquiryComment(Long id, CreateContactCommentRequest createContactCommentRequest, String username, String nickName);
 
   void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
-      String username);
+      String username,String nickName);
   void deleteInquiryComment(Long commentId, String username);
 
   List<ContactComment> findAllByInquiryIdAndParentIsNull(Long inquiryId);

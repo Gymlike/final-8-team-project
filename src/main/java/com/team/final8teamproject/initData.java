@@ -46,24 +46,24 @@ private final NoticeRepository noticeRepository;
 
     // -------------------고객 센터 관련
 
-    Inquiry ownerInquiry = new Inquiry("owner","사업자 문의","입점가능?",false);
-    Inquiry memberInquiry = new Inquiry("member","회원 문의","회원가입?",true); // 문의글 비밀상태
-    Inquiry ownerInquiry1 = new Inquiry("owner","아무거나 문의","입점가능?",false);
-    Inquiry memberInquiry2 = new Inquiry("member","이것도 문의","회원가입?",true); // 문의글 비밀상태
+    Inquiry ownerInquiry = new Inquiry("owner","오너 ","사업자 문의","입점가능?",false);
+    Inquiry memberInquiry = new Inquiry("member","멤버","회원 문의","회원가입?",true); // 문의글 비밀상태
+    Inquiry ownerInquiry1 = new Inquiry("owner","오너1","아무거나 문의","입점가능?",false);
+    Inquiry memberInquiry2 = new Inquiry("member","멤버1","이것도 문의","회원가입?",true); // 문의글 비밀상태
     inquiryRepository.save(ownerInquiry);
     inquiryRepository.save(memberInquiry);
     inquiryRepository.save(ownerInquiry1);
     inquiryRepository.save(memberInquiry2);
 
-    ContactComment parentComment = new ContactComment("부모댓글",1L,"member",null);
-    ContactComment parentComment1 = new ContactComment("부모댓글",1L,"member",null);
+    ContactComment parentComment = new ContactComment("부모댓글","member",1L,"멤버",null);
+    ContactComment parentComment1 = new ContactComment("부모댓글","member",1L,"멤버",parentComment );
     contactCommentRepository.save(parentComment);
     contactCommentRepository.save(parentComment1);
-    ContactComment childrenComment = new ContactComment("댓글",1L,"member",parentComment);
+    ContactComment childrenComment = new ContactComment("댓글","member",1L,"멤버",parentComment);
     contactCommentRepository.save(childrenComment);
-    ContactComment childrenComment1 = new ContactComment("대댓글",1L,"member",childrenComment);
+    ContactComment childrenComment1 = new ContactComment("대댓글","member",1L,"멤버",childrenComment);
     contactCommentRepository.save(childrenComment1);
-    ContactComment childrenComment2 = new ContactComment("댓글",1L,"member",parentComment1);
+    ContactComment childrenComment2 = new ContactComment("댓글","member",1L,"멤버",parentComment1);
     contactCommentRepository.save(childrenComment2);
 
     Notice notice = new Notice(1L,"공지사항","공지사항입니다.");

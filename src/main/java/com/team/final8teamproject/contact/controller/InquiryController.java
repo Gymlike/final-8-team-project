@@ -35,7 +35,7 @@ public class InquiryController {
   @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    inquiryServiceImpl.createInquiry(inquiryRequest, userDetails.getUser().getUsername());
+    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getUser().getUsername() ,userDetails.getUser().getNickName());
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -70,7 +70,7 @@ public class InquiryController {
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateInquiryRequest updateInquiryRequest){
-    inquiryServiceImpl.updateInquiry(id,userDetails.getUser().getUsername(),updateInquiryRequest);
+    inquiryServiceImpl.updateInquiry(id,userDetails.getUser().getUsername(),userDetails.getUser().getNickName(),updateInquiryRequest);
     return ResponseEntity.ok("수정 완료");
   }
   //todo 관리자가 유저 문의글 삭제 가능

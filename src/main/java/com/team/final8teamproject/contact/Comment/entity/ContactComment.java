@@ -39,23 +39,31 @@ public class ContactComment extends Timestamped {
 
   @Column(nullable = false)
   private String username;
+
+
   @Column(nullable = false)
   private Long inquiryId;
-
+  @Column(nullable = false)
+  private String nickName;
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")
   private ContactComment parent;
 
   @OneToMany(mappedBy = "parent", orphanRemoval = true)
   private List<ContactComment> children = new ArrayList<>();
-
   @Builder
-  public ContactComment(String comments, Long inquiryId, String username, ContactComment parent) {
+  public ContactComment(String comments, String username, Long inquiryId, String nickName,
+      ContactComment parent) {
     this.comments = comments;
     this.username = username;
     this.inquiryId = inquiryId;
+    this.nickName = nickName;
     this.parent = parent;
+
   }
+
+
+
 
   public void update(String comments) {
     this.comments = comments;

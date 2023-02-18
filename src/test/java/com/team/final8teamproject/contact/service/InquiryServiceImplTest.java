@@ -81,7 +81,7 @@ class InquiryServiceImplTest {
 //    when((Publisher<?>) inquiryRepository.save(any(Inquiry.class)))
 //        .thenReturn(inquiryRequest.toEntity(username));
     //when
-    inquiryService.createInquiry(inquiryRequest, username);
+    inquiryService.createInquiry(inquiryRequest, username, user.getNickName());
     //then
     verify(inquiryRepository, times(1)).save(any(Inquiry.class));
   }
@@ -99,7 +99,7 @@ class InquiryServiceImplTest {
         .thenReturn(Optional.of(inquiry));
 
     //when
-    inquiryService.updateInquiry(anyLong(), username, updateInquiryRequest);
+    inquiryService.updateInquiry(anyLong(), username, inquiry.getNickName(), updateInquiryRequest);
     //then
     verify(inquiryRepository,times(1)).save(inquiry);
   }

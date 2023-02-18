@@ -34,7 +34,7 @@ public class ContactCommentController {
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     System.out.println(createContactCommentRequest.getComments());
     contactCommentServiceIml.saveInquiryComment(id, createContactCommentRequest,
-        userDetails.getUser().getUsername());
+        userDetails.getUser().getUsername(),userDetails.getUser().getNickName());
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -45,7 +45,8 @@ public class ContactCommentController {
       @PathVariable Long commentId,
       @RequestBody UpdateContactCommentRequest updateCommentRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    contactCommentServiceIml.updateInquiryComment(commentId,updateCommentRequest,userDetails.getUser().getUsername());
+    contactCommentServiceIml.updateInquiryComment(commentId,
+        updateCommentRequest,userDetails.getUser().getUsername(),userDetails.getUser().getNickName());
     return ResponseEntity.ok("수정 완료");
   }
 

@@ -14,7 +14,9 @@ public class ContactCommentResponse {
 
   private final Long id;
   private final String username;
+  private final String nickName;
   private final String comments;
+
 
   @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
   private final LocalDateTime createdDate;
@@ -23,9 +25,9 @@ public class ContactCommentResponse {
   public ContactCommentResponse(ContactComment contactComment) {
     this.id = contactComment.getId();
     this.username = contactComment.getUsername();
+    this.nickName = contactComment.getNickName();
     this.comments = contactComment.getComments();
     this.createdDate = contactComment.getCreatedDate();
-    //this.modifiedDate = contactComment.getModifiedDate();
     this.children = contactComment.getChildren().stream().map(ContactCommentResponse::new)
         .sorted(Comparator.comparing(ContactCommentResponse::getCreatedDate)).collect(Collectors.toList());
 

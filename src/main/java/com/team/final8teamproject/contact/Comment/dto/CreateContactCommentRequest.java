@@ -20,11 +20,11 @@ public class CreateContactCommentRequest {
     this.parentId = parentId;
   }
 
-  public ContactComment toEntity(Long inquiryId, String username, ContactComment parent) {
-    System.out.println(comments+"aa");
+  public ContactComment toEntity(Long inquiryId, String username,String nickName, ContactComment parent) {
     return ContactComment.builder()
         .comments(comments)
         .username(username)
+        .nickName(nickName)
         .inquiryId(inquiryId)
         .parent(parent)
         .build();

@@ -31,7 +31,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   @Override
   public void saveInquiryComment(Long inquiryId,
       CreateContactCommentRequest createContactCommentRequest,
-      String username) {
+      String username,String nickName) {
     if (!inquiryRepository.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
@@ -48,7 +48,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
           throw new CustomException(ExceptionStatus.WRONG_POST_ID);
         }
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
-            parent);
+            nickName, parent);
         // ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         contactComment.getParent().setId(createContactCommentRequest.getParentId());
         contactCommentRepository.save(contactComment);
@@ -57,7 +57,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
       } else {
         //   ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
-            parent);
+           nickName, parent);
         contactCommentRepository.save(contactComment);
       }
     }
@@ -66,7 +66,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   @Override
   @Transactional
   public void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
-      String username) {
+      String username,String nickName) {
     String comments = updateCommentRequest.getComments();
     ContactComment comment = contactCommentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)

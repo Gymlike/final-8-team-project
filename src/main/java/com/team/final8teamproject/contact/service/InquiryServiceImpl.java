@@ -32,15 +32,15 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void createInquiry(InquiryRequest inquiryRequest, String username) {
-    Inquiry inquiry = inquiryRequest.toEntity(username);
+  public void createInquiry(InquiryRequest inquiryRequest, String username, String nickName) {
+    Inquiry inquiry = inquiryRequest.toEntity(username,nickName);
     inquiryRepository.save(inquiry);
   }
 
 
   @Transactional
   @Override
-  public void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest) {
+  public void updateInquiry(Long id, String username, String nickName, UpdateInquiryRequest updateInquiryRequest) {
     String title = updateInquiryRequest.getTitle();
     String content = updateInquiryRequest.getContent();
 

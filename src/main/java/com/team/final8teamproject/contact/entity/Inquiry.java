@@ -25,6 +25,9 @@ public class Inquiry extends Timestamped {
   private String username;
 
   @Column(nullable = false)
+  private String nickName;
+
+  @Column(nullable = false)
   private String title;
 
   @Column(nullable = false)
@@ -32,14 +35,17 @@ public class Inquiry extends Timestamped {
 
   private Boolean secretCheckBox; // todo ** 관리자만 보기 와 모두 보기 선택지 - 관리자만 보기시 관리지만 볼 수 있음
 
+
+
   @Builder
-  public Inquiry(String username, String title, String content, Boolean secretCheckBox) {
+  public Inquiry( String username, String nickName, String title, String content,
+      Boolean secretCheckBox) {
     this.username = username;
+    this.nickName = nickName;
     this.title = title;
     this.content = content;
     this.secretCheckBox = secretCheckBox;
   }
-
 
   public void update(String title, String content) {
     this.title = title;
