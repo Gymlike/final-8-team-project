@@ -27,7 +27,7 @@ public class ContactCommentController {
 
   private final ContactCommentServiceImpl contactCommentServiceIml;
 
-  @PostMapping("/inquiries/{id}")
+  @PostMapping("/inquiry/{id}")
   public ResponseEntity savaInquiryComment(
       @PathVariable Long id,
       @RequestBody CreateContactCommentRequest createContactCommentRequest,
@@ -40,22 +40,22 @@ public class ContactCommentController {
 
 
   //댓글 수정
-  @PutMapping("/{id}/inquiries")
+  @PutMapping("/{id}/inquiry")
   public ResponseEntity updateInquiryComment(
-      @PathVariable Long commentId,
+      @PathVariable Long id,
       @RequestBody UpdateContactCommentRequest updateCommentRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    contactCommentServiceIml.updateInquiryComment(commentId,
+    contactCommentServiceIml.updateInquiryComment(id,
         updateCommentRequest,userDetails.getUser().getUsername(),userDetails.getUser().getNickName());
     return ResponseEntity.ok("수정 완료");
   }
 
   //댓글 삭제
- @DeleteMapping("/{id}/inquiries")
+ @DeleteMapping("/{id}/inquiry")
   public ResponseEntity deleteInquiryComment(
-      @PathVariable Long commentId,
+      @PathVariable Long id,
      @AuthenticationPrincipal UserDetailsImpl userDetails){
-    contactCommentServiceIml.deleteInquiryComment(commentId,userDetails.getUser().getUsername());
+    contactCommentServiceIml.deleteInquiryComment(id,userDetails.getUser().getUsername());
     return ResponseEntity.ok("삭제 완료");
  }
 
