@@ -55,15 +55,17 @@ private final NoticeRepository noticeRepository;
     inquiryRepository.save(ownerInquiry1);
     inquiryRepository.save(memberInquiry2);
 
-    ContactComment parentComment = new ContactComment("부모댓글","member",1L,"멤버",null);
-    ContactComment parentComment1 = new ContactComment("부모댓글","member",1L,"멤버",parentComment );
+    ContactComment parentComment = new ContactComment("부모댓글","member",4L,"멤버",null,0);
+    ContactComment parentComment1 = new ContactComment("부모댓글","member",4L,"멤버",parentComment ,0);
     contactCommentRepository.save(parentComment);
     contactCommentRepository.save(parentComment1);
-    ContactComment childrenComment = new ContactComment("댓글","member",1L,"멤버",parentComment);
+    ContactComment childrenComment = new ContactComment("댓글","member",4L,"멤버",parentComment,1);
     contactCommentRepository.save(childrenComment);
-    ContactComment childrenComment1 = new ContactComment("대댓글","member",1L,"멤버",childrenComment);
+    ContactComment childrenComment1 = new ContactComment("대댓글","member",4L,"멤버",childrenComment,2);
     contactCommentRepository.save(childrenComment1);
-    ContactComment childrenComment2 = new ContactComment("댓글","member",1L,"멤버",parentComment1);
+    ContactComment childrenComment3 = new ContactComment("대대댓글","member",4L,"멤버",childrenComment,3);
+    contactCommentRepository.save(childrenComment3);
+    ContactComment childrenComment2 = new ContactComment("댓글","member",4L,"멤버",parentComment1,1);
     contactCommentRepository.save(childrenComment2);
 
     Notice notice = new Notice(1L,"공지사항","공지사항입니다.");

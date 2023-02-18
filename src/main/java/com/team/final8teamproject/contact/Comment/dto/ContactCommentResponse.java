@@ -22,6 +22,7 @@ public class ContactCommentResponse {
   private final LocalDateTime createdDate;
   //private final LocalDateTime modifiedDate;
   private final List<ContactCommentResponse> children;
+  private final int depth;
   public ContactCommentResponse(ContactComment contactComment) {
     this.id = contactComment.getId();
     this.username = contactComment.getUsername();
@@ -30,6 +31,7 @@ public class ContactCommentResponse {
     this.createdDate = contactComment.getCreatedDate();
     this.children = contactComment.getChildren().stream().map(ContactCommentResponse::new)
         .sorted(Comparator.comparing(ContactCommentResponse::getCreatedDate)).collect(Collectors.toList());
+    this.depth = contactComment.getDepth();
 
 
   }

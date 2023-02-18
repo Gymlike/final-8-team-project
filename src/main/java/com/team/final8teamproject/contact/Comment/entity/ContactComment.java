@@ -51,18 +51,18 @@ public class ContactComment extends Timestamped {
 
   @OneToMany(mappedBy = "parent", orphanRemoval = true)
   private List<ContactComment> children = new ArrayList<>();
+
+  private int depth;
   @Builder
   public ContactComment(String comments, String username, Long inquiryId, String nickName,
-      ContactComment parent) {
+      ContactComment parent, int depth) {
     this.comments = comments;
     this.username = username;
     this.inquiryId = inquiryId;
     this.nickName = nickName;
     this.parent = parent;
-
+    this.depth = depth;
   }
-
-
 
 
   public void update(String comments) {

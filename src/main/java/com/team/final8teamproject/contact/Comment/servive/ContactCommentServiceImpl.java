@@ -32,11 +32,13 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   public void saveInquiryComment(Long inquiryId,
       CreateContactCommentRequest createContactCommentRequest,
       String username,String nickName) {
+
     if (!inquiryRepository.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
       /**부모댓글이 있는 경우 - 대댓글 등록. 즉 자식 댓글이 됨 */
       ContactComment parent = null;
+      int depth = 0;
       if (createContactCommentRequest.getParentId() != null) {
         parent = contactCommentRepository.findById(createContactCommentRequest.getParentId())
             .orElseThrow(
@@ -50,11 +52,14 @@ public class ContactCommentServiceImpl implements ContactCommentService {
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
             nickName, parent);
         // ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
+        depth = contactComment.getDepth()+1;
         contactComment.getParent().setId(createContactCommentRequest.getParentId());
+        contactComment.setDepth(depth);
         contactCommentRepository.save(contactComment);
 
         /**부모댓글이 없는 경우 - 댓글 등록*/
       } else {
+        depth = 1;
         //   ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
            nickName, parent);
