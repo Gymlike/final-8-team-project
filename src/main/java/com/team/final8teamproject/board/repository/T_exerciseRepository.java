@@ -12,4 +12,5 @@ public interface T_exerciseRepository extends JpaRepository<T_exercise,Long> {
             String content,
             Pageable pageable
     );
+
 }

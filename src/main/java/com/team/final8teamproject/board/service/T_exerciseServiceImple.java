@@ -14,6 +14,9 @@ import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -70,9 +73,23 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
      * @return 리스트로 반환
      */
     @Override
-    public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search) {
+    public Result getAllT_exerciseBoards(Pageable pageRequest, String search,Integer size,Integer page) {
         List<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+        int totalCount = Math.toIntExact(t_exerciseRepository.count());
+        Long countList = size.longValue();
+        int countPage = 5;//리펙토링때 10으로변경합세!
+
+        int totalPage = (int) (totalCount / countList);
+
+        if (totalCount % countList > 0) {
+            totalPage++;
+        }
+        if (totalPage < page) {
+            page = totalPage;
+        }
+
         List<T_exerciseBoardResponseDTO> boardResponseDTO = new ArrayList<>();
+
         for (T_exercise t_exercise : tExerciseList) {
             Long boardId = t_exercise.returnPostId();
             Long countLike = tExerciseLikeService.countLike(boardId);
@@ -86,7 +103,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
             T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike,boardId,title,content,filepath,modifiedDate,username,nickName);
              boardResponseDTO.add(dto);
         }
-        return boardResponseDTO;
+        return new Result(page,totalCount,countPage,totalPage,boardResponseDTO);
     }
 
     /**
@@ -102,6 +119,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
         List<T_exerciseCommentResponseDTO> commentFilter = new ArrayList<>();
+
         Long countLike = tExerciseLikeService.countLike(boardId);
 
         for (T_exerciseComment comment : comments) {
@@ -181,4 +199,21 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         return t_exerciseRepository.findById(id).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
     }
 
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Result<T> {
+        private int page ;
+        private int totalCount;
+        private int countPage;
+        private int totalPage;
+        private T data;
+
+        public Result(int page, int totalCount, int countPage, int totalPage, T data) {
+            this.page = page;
+            this.totalCount = totalCount;
+            this.countPage = countPage;
+            this.totalPage = totalPage;
+            this.data = data;
+        }
+    }
 }

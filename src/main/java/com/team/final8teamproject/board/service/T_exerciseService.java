@@ -16,7 +16,7 @@ public interface T_exerciseService {
     @Transactional
     ResponseEntity<String> creatTodayMealBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException;
 
-    List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(Pageable pageRequest, String search);
+    T_exerciseServiceImple.Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);
 
     T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
 
