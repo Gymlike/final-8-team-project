@@ -47,7 +47,7 @@ public class NoticeController {
   @GetMapping("/check")
   public Result getNoticeList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
+      @RequestParam(value = "size", required = false, defaultValue = "2") int size, //todo 리팩토링시 10 설정 하기
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return noticeServiceImpl.getNoticeList(page, size, direction, properties);

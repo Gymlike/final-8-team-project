@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class InquiryResponse {
-
+  private final Long id;
   private final String title;
   private final String content;
   private final String username;
@@ -25,6 +25,7 @@ public class InquiryResponse {
   private List<ContactCommentResponse> comments;
 
   public InquiryResponse(Inquiry inquiry, List<ContactComment> comments) {
+    this.id = inquiry.getId();
     this.title = inquiry.getTitle();
     this.content = inquiry.getContent();
     this.username = inquiry.getUsername();
@@ -37,6 +38,7 @@ public class InquiryResponse {
   }
 
   public InquiryResponse(Inquiry inquiry) {
+    this.id = inquiry.getId();
     this.title = inquiry.getTitle();
     this.content = inquiry.getContent();
     this.username = inquiry.getUsername();

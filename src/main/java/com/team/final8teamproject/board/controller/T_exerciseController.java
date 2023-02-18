@@ -49,6 +49,7 @@ public class T_exerciseController {
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
 
+
         return t_exerciseService.getAllT_exerciseBoards(pageRequest,search);
     }
 
