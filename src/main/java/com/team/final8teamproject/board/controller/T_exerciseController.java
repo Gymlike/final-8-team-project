@@ -3,6 +3,7 @@ package com.team.final8teamproject.board.controller;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
+import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.validation.Valid;
@@ -38,9 +39,10 @@ public class T_exerciseController {
         return t_exerciseService.creatTodayMealBord(title,content,file,user);
     }
 
+
     //오운완 전체 게시물 조회
     @GetMapping ("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
-    public List<T_exerciseBoardResponseDTO> getAllT_exerciseBoards(
+    public T_exerciseServiceImple.Result getAllT_exerciseBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
             @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
@@ -49,7 +51,7 @@ public class T_exerciseController {
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
 
-        return t_exerciseService.getAllT_exerciseBoards(pageRequest,search);
+        return t_exerciseService.getAllT_exerciseBoards(pageRequest,search,size,page);
     }
 
     //오운완 선택 게시물 조회
@@ -77,12 +79,17 @@ public class T_exerciseController {
         return t_exerciseService.editPost(boardId,creatTExerciseBordRequestDTO,user,file);
     }
 
+    @GetMapping("/selectboard/checkwriter")
+    public String checkwriter(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userDetails.getUser().getUsername();
+    }
+
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC:Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         if (page<0){
             page=1;
         }
-        return PageRequest.of(page -1, size,sort);
+        return PageRequest.of(page-1, size,sort);
     }
 }
