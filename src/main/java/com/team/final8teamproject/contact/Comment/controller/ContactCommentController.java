@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 /**
  * todo  관리자,총관리자, 작성한 유저(유저,사업자) 댓글 등록 ,수정,삭제
+ * todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
  */
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class ContactCommentController {
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     System.out.println(createContactCommentRequest.getComments());
     contactCommentServiceIml.saveInquiryComment(id, createContactCommentRequest,
-        userDetails.getUser().getUsername(),userDetails.getUser().getNickName());
+        userDetails.getBase().getUsername(),userDetails.getBase().getWriterName());
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -46,7 +47,7 @@ public class ContactCommentController {
       @RequestBody UpdateContactCommentRequest updateCommentRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
     contactCommentServiceIml.updateInquiryComment(id,
-        updateCommentRequest,userDetails.getUser().getUsername(),userDetails.getUser().getNickName());
+        updateCommentRequest,userDetails.getBase().getUsername(),userDetails.getBase().getWriterName());
     return ResponseEntity.ok("수정 완료");
   }
 
@@ -55,7 +56,7 @@ public class ContactCommentController {
   public ResponseEntity deleteInquiryComment(
       @PathVariable Long id,
      @AuthenticationPrincipal UserDetailsImpl userDetails){
-    contactCommentServiceIml.deleteInquiryComment(id,userDetails.getUser().getUsername());
+    contactCommentServiceIml.deleteInquiryComment(id,userDetails.getBase().getUsername());
     return ResponseEntity.ok("삭제 완료");
  }
 
