@@ -13,16 +13,16 @@ public class RedisUtil {
     private final RedisTemplate<String, Object> redisTemplate;
     private final RedisTemplate<String, Object> redisBlackListTemplate;
 
-    public void set(String key, Object o, Long minutes) {
+    public void setRefreshToken(String key, Object o, Long minutes) {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(o.getClass()));
         redisTemplate.opsForValue().set(key, o, minutes, TimeUnit.MINUTES);
     }
 
-    public Object get(String key) {
+    public Object getRefreshToken(String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
-    public boolean delete(String key) {
+    public boolean deleteRefreshToken(String key) {
         return Boolean.TRUE.equals(redisTemplate.delete(key));
     }
 

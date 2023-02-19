@@ -33,6 +33,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   private final RedisUtil redisUtil;
   private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
   private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -46,18 +47,25 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers(PathRequest.toH2Console())
         .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
   }
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf().disable();
     // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.authorizeRequests()
+
     http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.
-        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-        .requestMatchers("/api/users/**").permitAll()
+        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        .requestMatchers("/api/**").permitAll()
+        .requestMatchers("/api/owner/**").permitAll()
+        .requestMatchers("/api/manager/**").hasAnyRole("Manager", "GeneralManager")
+        .requestMatchers("/owner/**").hasAnyRole("Owner", "Manager", "GeneralManager")
+        .requestMatchers("/api/general/**").hasRole("GeneralManager")
         .requestMatchers("/h2-console").permitAll()
         .requestMatchers("/t-exercise/allboard").permitAll()
         .requestMatchers("/t-exercise/selectboard/**").permitAll()
+        .requestMatchers("/api/find/**").permitAll()
         .requestMatchers("/todaymeal/allboard").permitAll()
         .requestMatchers("/todaymeal/selectboard/**").permitAll()
         .requestMatchers("/api/faqs/check/**").permitAll()
@@ -66,7 +74,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
         // JWT 인증/인가를 사용하기 위한 설정
-        .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        .and().addFilterBefore(new JwtAuthFilter(jwtUtil, redisUtil),
+            UsernamePasswordAuthenticationFilter.class);
     // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
     http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
     // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
@@ -80,11 +89,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 //        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
     return http.build();
   }
+
   @Override
-  public void addCorsMappings(CorsRegistry registry){
+  public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-        .allowedMethods("GET","POST","PUT","DELETE","OPTIONS","HEAD")
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
         .exposedHeaders("Authorization");
   }
+
 
 }

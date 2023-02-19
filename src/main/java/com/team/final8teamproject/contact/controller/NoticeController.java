@@ -38,7 +38,7 @@ public class NoticeController {
   @PostMapping("")
   public ResponseEntity saveNotice(@RequestBody NoticeRequest noticeRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    noticeServiceImpl.saveNotice(noticeRequest, userDetails.getUser().getId());
+    noticeServiceImpl.saveNotice(noticeRequest, userDetails.getBase().getId());
     return ResponseEntity.ok("등록 완료");
     //new ResponseEntity<>("등록완료",HttpStatus.CREATED);
   }
@@ -73,7 +73,7 @@ public class NoticeController {
   public ResponseEntity updateNotice(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateNoticeRequest updateNoticeRequest) {
-    noticeServiceImpl.updateNotice(id, userDetails.getUser().getId(),updateNoticeRequest);
+    noticeServiceImpl.updateNotice(id, userDetails.getBase().getId(),updateNoticeRequest);
     return ResponseEntity.ok("수정 완료");
   }
 
@@ -82,7 +82,7 @@ public class NoticeController {
   @DeleteMapping("/{id}")
   public ResponseEntity deleteNotice(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    noticeServiceImpl.deleteNotice(id, userDetails.getUser().getId());
+    noticeServiceImpl.deleteNotice(id, userDetails.getBase().getId());
     return ResponseEntity.ok("삭제 완료");
 
   }

@@ -26,11 +26,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    //편의를 위한 lombok 의존성
     annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     //jsonwebtoken을 사용하기 위한 의존성
@@ -41,11 +46,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     //redis를 사용하기 위한 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
+
     //mysql전 h2콘솔을 사용하기위해서 사용
     runtimeOnly 'com.h2database:h2'
-
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
     //이메일 인증
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //websocket사용을 위한 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 }
 
 tasks.named('test') {

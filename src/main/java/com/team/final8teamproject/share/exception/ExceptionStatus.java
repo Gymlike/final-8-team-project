@@ -18,9 +18,9 @@ public enum ExceptionStatus {
     WRONG_ADMINTOKEN(400, "잘못된 관리자 비밀번호 입니다."),
     ACCESS_DENINED(500, "접근 권한이 없습니다."),
     AUTHENTICATION(500, "인증 실패"),
-    BOARD_NOT_EXIST(404, "해당하는 아이디의 게시물이 없습니다."),
-    COMMENT_NOT_EXIST(404, "해당하는 아이디의 댓글이 없습니다."),
-    COMMENT_REPLY_NOT_EXIST(404, "해당하는 아이디의 대댓글이 없습니다."),
+    BOARD_NOT_EXIST(404, "게시물이 삭제되어 존재하지 않습니다."),
+    COMMENT_NOT_EXIST(404, "해당 댓글이 삭제되어 존재 하지 않습니다."),
+    COMMENT_REPLY_NOT_EXIST(404, "해당하는 댓글이 삭제되어 존재 하지 않습니다."),
     REQUEST_NOT_EXIST(404,"해당하는 요청이 존재하지 않습니다."),
     WRONG_POST_ID(404,"게시글 번호가 일치하지 않습니다."),
     POST_IS_EMPTY(404,"해당 페이지는 게시글이 존재하지 않습니다."),
@@ -28,8 +28,6 @@ public enum ExceptionStatus {
     WRONG_USER_T0_COMMENT(403,"다른 유저의 댓글에는 접근 할 수 없습니다."),
     WRONG_USER_T0_COMMENT_REPLY(403,"다른 유저의 대댓글에는 접근 할 수 없습니다."),
     WRONG_SELLER_ID_TO_USER_REQUEST(403,"다른 판매자의 요청목록에는 접근 할 수 없습니다.");
-
-
 
     private final int statusCode;
     private final String message;

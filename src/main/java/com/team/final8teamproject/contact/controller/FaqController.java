@@ -39,7 +39,7 @@ public class FaqController {
   @PostMapping("")
   public ResponseEntity saveFaq(@RequestBody FaqRequest faqRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    faqServiceImpl.saveFaq(faqRequest, userDetails.getUser().getId());
+    faqServiceImpl.saveFaq(faqRequest, userDetails.getBase().getId());
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -74,14 +74,14 @@ public class FaqController {
   public ResponseEntity updateFaq(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateFaqRequest updateFaqRequest){
-    faqServiceImpl.updateFaq(id,userDetails.getUser().getId(),updateFaqRequest);
+    faqServiceImpl.updateFaq(id,userDetails.getBase().getId(),updateFaqRequest);
     return ResponseEntity.ok("수정 완료");
   }
   //todo 권한 :관리자
   @DeleteMapping("/{id}")
   public ResponseEntity deleteFaq(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    faqServiceImpl.deleteFaq(id, userDetails.getUser().getId());
+    faqServiceImpl.deleteFaq(id, userDetails.getBase().getId());
     return ResponseEntity.ok("삭제 완료");
   }
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** 웹컨피그.requestMatchers("/api/contact/inquiries/**").permitAll()
  * todo  메서드 마다 권한 설정
+ * todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
  */
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -35,7 +36,8 @@ public class InquiryController {
   @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getUser().getUsername() ,userDetails.getUser().getNickName());
+    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername() ,userDetails.getBase()
+        .getWriterName());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -70,14 +72,16 @@ public class InquiryController {
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateInquiryRequest updateInquiryRequest){
-    inquiryServiceImpl.updateInquiry(id,userDetails.getUser().getUsername(),userDetails.getUser().getNickName(),updateInquiryRequest);
+    inquiryServiceImpl.updateInquiry(id,userDetails.getBase().getUsername(),userDetails.getBase()
+        .getWriterName(), updateInquiryRequest);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+
     return ResponseEntity.ok("수정 완료");
   }
   //todo 관리자가 유저 문의글 삭제 가능
   @DeleteMapping("/users/contact/inquiries/{id}")
   public ResponseEntity deleteInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    inquiryServiceImpl.deleteInquiry(id,userDetails.getUser().getUsername());
+    inquiryServiceImpl.deleteInquiry(id,userDetails.getBase().getUsername());
     return ResponseEntity.ok("삭제 완료");
   }
   //todo 권한 : 관리자만

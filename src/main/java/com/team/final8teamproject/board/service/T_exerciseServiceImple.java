@@ -1,6 +1,8 @@
 package com.team.final8teamproject.board.service;
 
 
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.board.comment.commentReply.dto.CommentReplyResponseDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
@@ -11,10 +13,10 @@ import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.board.comment.dto.CommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
-import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
+import com.team.final8teamproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,29 +37,33 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class T_exerciseServiceImple  implements  T_exerciseService{
     private final T_exerciseRepository t_exerciseRepository;
-
     private final T_exerciseCommentService tExerciseCommentService;
     private final T_exerciseLikeService tExerciseLikeService;
+    private final UserRepository userRepository;
+    private final BaseRepository baseRepository;
+
     /**
      * 오운완 게시물 생성
      * @param title  제목
      * @param content  내용
      * @param file   이게 올릴 이미지임..!
-     * @param user   관계를 맺기 위해 ~ 인증된 객체 꺼내옴
+     * @param base   관계를 맺기 위해 ~ 인증된 객체 꺼내옴
      * @return    http status
      * @throws NullPointerException  ?
      * @throws IOException ?
      */
     @Transactional
     @Override
-    public ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException {
+    public ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, BaseEntity base) throws NullPointerException, IOException {
         UUID uuid = UUID.randomUUID();
-        String filename = uuid+"_"+file.getOriginalFilename();
+        String filename = uuid+"_"+file.getOriginalFilename()+".jpeg";
         String filepath = System.getProperty("user.dir")+"/src/main/resources/static/files";
         File savefile = new File(filepath, filename);
         file.transferTo(savefile);
-
-        T_exercise t_exercise = new T_exercise(title,content,filename,filepath,user);
+        BaseEntity baseEntity = baseRepository.findByUsername(base.getUsername()).orElseThrow(
+                ()-> new IllegalArgumentException("사용자를 찾을수 없습니다.")
+        );
+        T_exercise t_exercise = new T_exercise(title,content,filename,filepath, baseEntity);
         t_exerciseRepository.save(t_exercise);
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
@@ -112,16 +118,16 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
     /**
      * 작성자만 오운완 게시글 삭제가능!
      * @param boardId 게시글아이디ㅣ
-     * @param user  삭제요청을한 유저
+     * @param base  삭제요청을한 유저
      * @return  status
      */
     @Override
     @Transactional
-    public ResponseEntity<String> deleteSalePost(Long boardId, User user) {
+    public ResponseEntity<String> deleteSalePost(Long boardId, BaseEntity base) {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
 
-        if (t_exercise.isWriter(user.getId())) {
+        if (t_exercise.isWriter(base.getId())) {
             t_exerciseRepository.deleteById(boardId);
             tExerciseCommentService.deleteByBoardId(boardId);
             return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);

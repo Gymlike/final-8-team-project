@@ -26,7 +26,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   /**
    * 부모댓글이 있는 경우 . 자식댓글인 경우 (대댓글) 댓글에 댓글을 저장
    * 부모댓글이 없는 경우. 포스트에 댓글을 저장
-   * 프론트 단 고려하여 depth 로 계층구조 나눔 
+   * 프론트 단 고려하여 depth 로 계층구조 나눔
    */
 
   @Override
