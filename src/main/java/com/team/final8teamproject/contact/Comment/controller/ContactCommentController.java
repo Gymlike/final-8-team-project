@@ -59,5 +59,14 @@ public class ContactCommentController {
     return ResponseEntity.ok("삭제 완료");
  }
 
+  //todo 권한 : 관리자만
+  // 관리자의 댓글 삭제 기능
+  @DeleteMapping("/{id}/inquiry/managers")
+  public ResponseEntity deleteManager(@PathVariable Long id){
+    contactCommentServiceIml.deleteManager(id);
+    return ResponseEntity.ok("삭제 완료");
+  }
+
+
 
 }

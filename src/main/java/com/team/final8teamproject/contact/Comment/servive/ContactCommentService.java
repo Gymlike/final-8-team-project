@@ -15,7 +15,7 @@ public interface ContactCommentService {
   void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
       String username,String nickName);
   void deleteInquiryComment(Long commentId, String username);
-
+  void deleteManager(Long id);
   List<ContactComment> findAllByInquiryIdAndParentIsNull(Long inquiryId);
 
 }

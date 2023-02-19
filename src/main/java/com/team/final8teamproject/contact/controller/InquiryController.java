@@ -81,7 +81,7 @@ public class InquiryController {
     return ResponseEntity.ok("삭제 완료");
   }
   //todo 권한 : 관리자만
-  // 관리자의 문의사항 삭제 기능
+  // 관리자의 삭제 기능
   @DeleteMapping("/managers/contact/inquiries/{id}")
   public ResponseEntity deleteManager(@PathVariable Long id){
     inquiryServiceImpl.deleteManager(id);

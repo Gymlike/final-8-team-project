@@ -6,6 +6,7 @@ import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentReques
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
+import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
@@ -24,8 +25,8 @@ public class ContactCommentServiceImpl implements ContactCommentService {
 
   /**
    * 부모댓글이 있는 경우 . 자식댓글인 경우 (대댓글) 댓글에 댓글을 저장
-   * <p>
-   * 부모댓글이 없는 경우. 포스트에 댓글을 저장 // todo  문의사항에 관리자가 답변글 남기면 - > 답변글에  해당 글 주인이 다시 답글 할수 있어야해 .. 음 ..
+   * 부모댓글이 없는 경우. 포스트에 댓글을 저장
+   * 프론트 단 고려하여 depth 로 계층구조 나눔 
    */
 
   @Override
@@ -92,11 +93,21 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     );
     //if (comment.getUsername().equals(username)) {
     if(comment.isWriter(username)){
-      contactCommentRepository.deleteByUsername(username);
+      contactCommentRepository.deleteById(commentId);
     } else {
       throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
+  @Transactional
+  @Override
+  public void deleteManager(Long id) {
+    ContactComment contactComment = contactCommentRepository.findById(id).orElseThrow(
+        () -> new CustomException(ExceptionStatus.ACCESS_DENINED)
+    );
+    contactCommentRepository.delete(contactComment);
+  }
+
+
   /** 해당 문의글 의 댓글 삭제하는 서비스 호출 */
 
   public void deleteAllByInquiryId(Long inquiryId){
