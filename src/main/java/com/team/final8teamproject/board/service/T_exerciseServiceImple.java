@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,7 +114,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
      * @param boardId  보드고유아이디
      * @return DTO에 담아서 반환
      */
-    @Override
+  /*  @Override
     public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
@@ -135,7 +136,32 @@ public class T_exerciseServiceImple  implements  T_exerciseService{
         }
 
         return new T_exerciseBoardResponseDTO(countLike,t_exercise,commentFilter);
+    }*/
+    @Override
+    public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
+        T_exercise t_exercise = t_exerciseRepository.findById(boardId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+
+        List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
+
+        List<T_exerciseCommentResponseDTO> commentFilter = comments.stream()
+                .map(comment -> {
+                    List<T_exerciseCommentReplyResponseDTO> toList = comment.getCommentReplyList().stream()
+                            .map(T_exerciseCommentReplyResponseDTO::new)
+                            .collect(Collectors.toList());
+                    return new T_exerciseCommentResponseDTO(comment.getId(), comment.getComment(), comment.getUsername(),
+                            comment.getCreatedDate(), toList, comment.getUserNickname());
+                })
+                .collect(Collectors.toList());
+
+
+        Long countLike = tExerciseLikeService.countLike(boardId);
+
+        return new T_exerciseBoardResponseDTO(countLike, t_exercise, commentFilter);
     }
+
+
+
 
 
     /**
