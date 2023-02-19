@@ -35,19 +35,6 @@ public class initData implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) throws Exception {
 
-//    User manager = new User( "manager", passwordEncoder.encode("manager1234"), "01011112222","manager@nvaer.com","manager",UserRoleEnum.MANAGER );
-//    User owner = new User("owner", passwordEncoder.encode("owner1234") ,"01022223333","owner@google.com","owner",UserRoleEnum.OWNER );
-//    User owner1 = new User("owner1", passwordEncoder.encode("owner11234") ,"01022223333","owner@google.com","owner1",UserRoleEnum.OWNER );
-//    User member = new User("member", passwordEncoder.encode("member1234"),"01033334444","member@kakao.com","memeber",UserRoleEnum.MEMBER );
-//    User member1 = new User("member1", passwordEncoder.encode("member11234"),"01033334444","member@kakao.com","memeber1",UserRoleEnum.MEMBER );
-//    User member2 = new User("aaaa1111", passwordEncoder.encode("aaaa1111"),"01033334444","member@kakao.com","aaaa1111",UserRoleEnum.MEMBER );
-//    userRepository.save(manager);
-//    userRepository.save(member);
-//    userRepository.save(member1);
-//    userRepository.save(owner);
-//    userRepository.save(owner1);
-//    userRepository.save(member2);
-
       User manager = User.builder()
           .nickName("manager").email("manager@nvaer.com")
           .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))

@@ -4,6 +4,7 @@ import com.team.final8teamproject.contact.Comment.dto.CreateContactCommentReques
 import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContactCommentController {
 
   private final ContactCommentServiceImpl contactCommentServiceIml;
+
 
   @PostMapping("/inquiry/{id}")
   public ResponseEntity savaInquiryComment(

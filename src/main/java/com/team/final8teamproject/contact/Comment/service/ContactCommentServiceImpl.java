@@ -35,19 +35,19 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     } else {
       /**부모댓글이 있는 경우 - 대댓글 등록. 즉 자식 댓글이 됨 */
       ContactComment parent = null;
-      int depth;
+
       if (createContactCommentRequest.getParentId() != null) {
         parent = contactCommentRepository.findById(createContactCommentRequest.getParentId())
             .orElseThrow(
-                () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
+                () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
             );
-
         /** 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인*/
         if (!parent.getInquiryId().equals(inquiryId)) {
           throw new CustomException(ExceptionStatus.WRONG_POST_ID);
         }
+        int depth = parent.getDepth();
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
-            nickName, parent);
+            nickName, parent,depth);
         // ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         depth = contactComment.getDepth()+1;
         contactComment.getParent().setId(createContactCommentRequest.getParentId());
@@ -56,10 +56,10 @@ public class ContactCommentServiceImpl implements ContactCommentService {
 
         /**부모댓글이 없는 경우 - 댓글 등록*/
       } else {
-        depth = 1;
+        int depth = 1;
         //   ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
-           nickName, parent);
+           nickName, parent, depth);
         contactCommentRepository.save(contactComment);
       }
     }
