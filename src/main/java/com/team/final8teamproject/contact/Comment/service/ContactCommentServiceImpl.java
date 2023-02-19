@@ -1,18 +1,14 @@
-package com.team.final8teamproject.contact.Comment.servive;
+package com.team.final8teamproject.contact.Comment.service;
 
-import com.team.final8teamproject.contact.Comment.dto.ContactCommentResponse;
 import com.team.final8teamproject.contact.Comment.dto.CreateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
-import com.team.final8teamproject.contact.entity.Inquiry;
-import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.attoparser.dom.Comment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +35,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     } else {
       /**부모댓글이 있는 경우 - 대댓글 등록. 즉 자식 댓글이 됨 */
       ContactComment parent = null;
-      int depth = 0;
+      int depth;
       if (createContactCommentRequest.getParentId() != null) {
         parent = contactCommentRepository.findById(createContactCommentRequest.getParentId())
             .orElseThrow(

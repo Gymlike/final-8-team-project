@@ -1,7 +1,6 @@
-package com.team.final8teamproject.contact.Comment.servive;
+package com.team.final8teamproject.contact.Comment.service;
 
 
-import com.team.final8teamproject.contact.Comment.dto.ContactCommentResponse;
 import com.team.final8teamproject.contact.Comment.dto.CreateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;

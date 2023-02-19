@@ -1,14 +1,12 @@
 package com.team.final8teamproject.contact.service;
 
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
-import com.team.final8teamproject.contact.Comment.servive.ContactCommentServiceImpl;
+import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
-import com.team.final8teamproject.contact.entity.Notice;
-import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import java.util.List;

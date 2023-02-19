@@ -1,16 +1,13 @@
 package com.team.final8teamproject.contact.Comment.controller;
 
-import com.team.final8teamproject.contact.Comment.dto.ContactCommentResponse;
 import com.team.final8teamproject.contact.Comment.dto.CreateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentRequest;
-import com.team.final8teamproject.contact.Comment.servive.ContactCommentServiceImpl;
+import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;

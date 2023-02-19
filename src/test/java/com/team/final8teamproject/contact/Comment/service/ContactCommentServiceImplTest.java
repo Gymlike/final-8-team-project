@@ -1,8 +1,5 @@
-package com.team.final8teamproject.contact.Comment.servive;
+package com.team.final8teamproject.contact.Comment.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.team.final8teamproject.contact.Comment.dto.CreateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import org.junit.jupiter.api.DisplayName;
