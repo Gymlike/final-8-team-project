@@ -64,8 +64,8 @@ public class T_exerciseController {
             @RequestParam(value = "search",required = false,defaultValue = "") String search
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
-
         return t_exerciseService.getAllT_exerciseBoards(pageRequest,search,size,page);
+
     }
 
     //오운완 선택 게시물 조회

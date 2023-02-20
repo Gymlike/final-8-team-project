@@ -3,8 +3,11 @@ package com.team.final8teamproject.contact.controller;
 
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
+import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
+import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
@@ -20,66 +23,71 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/** 웹컨피그.requestMatchers("/api/contact/inquiries/**").permitAll()
+ * todo  메서드 마다 권한 설정
+ * todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+ */
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
-public class InquiryController {// todo  메서드 마다 권한 설정
+public class InquiryController {
 
   private final InquiryServiceImpl inquiryServiceImpl;
+  private final UserService userService;
 
-  @PostMapping("/user/contact/inquiry")
+  @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    inquiryServiceImpl.createInquiry(inquiryRequest, userDetails.getBase().getUsername());
+    String nickName = userService.getUserNickname(userDetails.getBase());
+    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),nickName);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
     return ResponseEntity.ok("등록 완료");
   }
 
- // todo 풀받은 후  웹컨피그 . permitAll()/api/contact/inquiry/**
-  @GetMapping("/contact/inquiry")
-  public List<InquiryResponse>  getInquiry(
+  @GetMapping("/contact/inquiries")
+  public Result getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-      @RequestParam(value = "direction", required = false, defaultValue = "desc") Direction direction,
+      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
+      @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return inquiryServiceImpl.getInquiry(page,size,direction,properties);
   }
 
-  @GetMapping("/contact/inquiry/{id}")
+  @GetMapping("/contact/inquiries/{id}")
   public InquiryResponse getSelectedInquiry(@PathVariable Long  id){
     return inquiryServiceImpl.getSelectedInquiry(id);
   }
 
 
 
-  @GetMapping("/contact/inquiry/keyword")
-  public List<InquiryResponse> searchByKeyword(
+  @GetMapping("/contact/inquiries/keywords")
+  public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return inquiryServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
   }
 
   //todo 모든 put매핑에 , 입력값만 최신화 되도록 하기 patch 안됨
-  @PutMapping("/user/contact/inquiry/{id}")
+  @PutMapping("/users/contact/inquiries/{id}")
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @RequestBody InquiryRequest inquiryRequest){
-    inquiryServiceImpl.updateInquiry(id,userDetails.getBase().getUsername(),inquiryRequest);
+      @RequestBody UpdateInquiryRequest updateInquiryRequest){
+    inquiryServiceImpl.updateInquiry(id,userDetails.getBase().getUsername(), updateInquiryRequest);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+
     return ResponseEntity.ok("수정 완료");
   }
   //todo 관리자가 유저 문의글 삭제 가능
-  @DeleteMapping("/user/contact/inquiry/{id}")
+  @DeleteMapping("/users/contact/inquiries/{id}")
   public ResponseEntity deleteInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
     inquiryServiceImpl.deleteInquiry(id,userDetails.getBase().getUsername());
     return ResponseEntity.ok("삭제 완료");
   }
   //todo 권한 : 관리자만
-  // 관리자의 문의사항 삭제 기능
-  @DeleteMapping("/manager/contact/inquiry/{id}")
+  // 관리자의 삭제 기능
+  @DeleteMapping("/managers/contact/inquiries/{id}")
   public ResponseEntity deleteManager(@PathVariable Long id){
     inquiryServiceImpl.deleteManager(id);
     return ResponseEntity.ok("삭제 완료");

@@ -1,6 +1,5 @@
 package com.team.final8teamproject.contact.entity;
 
-import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,9 +36,9 @@ public class Notice extends Timestamped {
     }
 
 
-    public void update(UpdateNoticeRequest updateNoticeRequest){
-        this.title = updateNoticeRequest.getTitle();
-        this.content = updateNoticeRequest.getContent();
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
     }
 
 
