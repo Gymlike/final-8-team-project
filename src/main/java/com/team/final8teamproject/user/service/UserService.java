@@ -172,6 +172,7 @@ public class UserService {
     }
 
     public String getUserNickname(BaseEntity base){
+
         String username = base.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException(ExceptionStatus.WRONG_USERNAME));
 

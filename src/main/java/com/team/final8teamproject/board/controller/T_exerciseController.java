@@ -58,7 +58,7 @@ public class T_exerciseController {
     @GetMapping ("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
     public T_exerciseServiceImple.Result getAllT_exerciseBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
-            @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
+            @RequestParam(value = "size",required = false,defaultValue = "3") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
             @RequestParam(value = "sortBy",required = false,defaultValue = "createdDate")String sortBy,
             @RequestParam(value = "search",required = false,defaultValue = "") String search
