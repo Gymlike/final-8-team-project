@@ -1,11 +1,9 @@
 package com.team.final8teamproject.base.entity;
 
 import com.team.final8teamproject.user.entity.Timestamped;
-import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
@@ -59,13 +57,8 @@ public class BaseEntity extends Timestamped {
         return this.username;
     }
 
-    public void approvalManager(UserRoleEnum role) {
+    public void changeRole1(UserRoleEnum role) {
         this.role = role;
     }
 
-    //    카카오 사용자
-    public BaseEntity KakaoIdUpdate(String username) {
-        this.username = username;
-        return this;
-    }
 }

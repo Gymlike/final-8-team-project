@@ -17,9 +17,25 @@ import lombok.NoArgsConstructor;
 public class KaKao extends BaseEntity {
 
     @Column(nullable = false)
-    private Long id;
+    private Long kakaoId;
     private String profileImage;
     private String nickName;
     private Long experience = 0L;
+
+    @Builder
+    public KaKao(Long kakaoId, String username, String password, UserRoleEnum role,
+                String nickName, String email,
+                Long experience){
+        super(username, password, email, role);
+        this.kakaoId = kakaoId;
+        this.nickName = nickName;
+        this.experience = experience;
+    }
+
+    //    카카오 사용자
+    public KaKao KakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
+    }
 
 }

@@ -61,10 +61,6 @@
                 <span>이메일</span>
                 <input type="email" id="email"/>
             </label>
-            <label>
-                <span>관리자 암호</span>
-                <input type="password" id="adminToken"/>
-            </label>
             <button type="button" class="submit" onclick="signUp()">가입하기</button>
         </div>
     </div>
@@ -78,7 +74,7 @@
     // 회원가입
     function signUp() {
         var settings = {
-            "url": "http://localhost:8080/api/user/signup",
+            "url": "http://localhost:8080/api/manager/signup",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -106,7 +102,7 @@
     // 로그인
     function logIn() {
         var settings = {
-            "url": "http://localhost:8080/api/user/login",
+            "url": "http://localhost:8080/api/manager/login",
             "method": "POST",
             "timeout": 0,
             "headers": {

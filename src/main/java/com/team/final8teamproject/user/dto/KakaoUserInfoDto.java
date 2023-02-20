@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class KakaoUserInfoDto {
-    private String id;
-    private Long kakaoId;
+    private Long id;
+    private String username;
     private String email;
     private String nickname;
 
     public KakaoUserInfoDto(Long id, String nickname, String email) {
-        this.id = "kakao" + id;
-        this.kakaoId = id;
+        this.id = id;
+        this.username = "kakao" + id;
         this.nickname = nickname;
         this.email = email;
     }

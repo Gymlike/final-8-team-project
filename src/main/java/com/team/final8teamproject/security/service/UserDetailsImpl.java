@@ -22,10 +22,6 @@ public class UserDetailsImpl implements UserDetails {
         return base;
     }
 
-    public BaseEntity getKakaoUser() {
-        return base;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         UserRoleEnum role = base.getRole();

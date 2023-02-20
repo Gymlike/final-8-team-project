@@ -1,9 +1,7 @@
 package com.team.final8teamproject.user.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.user.dto.*;
-import com.team.final8teamproject.user.service.KakaoService;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 
 @RestController

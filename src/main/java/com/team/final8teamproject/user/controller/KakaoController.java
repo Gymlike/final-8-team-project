@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.user.dto.KakaoUserInfoDto;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
-import com.team.final8teamproject.user.dto.MessageResponseDto;
 import com.team.final8teamproject.user.service.KakaoService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +36,11 @@ public class KakaoController {
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response, KakaoUserInfoDto kakaoUserInfoDto) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
+
         LoginResponseDto createToken = kakaoService.kakaoLogin(code, response, kakaoUserInfoDto);
 
         String token = createToken.getAccessToken();
 
-        // Cookie 생성 및 직접 브라우저에 Set
-//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
-//        cookie.setPath("/");
-//        response.addCookie(cookie);
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 

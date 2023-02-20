@@ -12,6 +12,9 @@ jQuery(document).ready(function($) {
 	getOwnerMe();
 	"use strict";
 
+	getManagerMe();
+	"use strict";
+
 	var preloader = function() {
 
 		var loader = document.querySelector('.loader');
@@ -177,11 +180,91 @@ function getOwnerMe() {
 	  });
 }
 
+function getManagerMe() {
+	var settings = {
+		"url": "http://localhost:8080/api/profile/manager",
+		"method": "GET",
+		"timeout": 0,
+		"headers": {
+		  "Authorization": localStorage.getItem('accessToken')
+		},
+	  };
+	  
+	  $.ajax(settings).done(function (response, status, xhr) {
+		console.log(response);
+		console.log(status)
+		if (status === 403) {
+			window.location = "/login.html"
+		}
+		console.log(response.nickName);
+		$('#loginUser').show();
+		$('#loginUser').append(response.nickName + "님 환영합니다.");
+		$('#mypage').show();
+		$('#MainLogout').show();
+		$('#MainLogin').hide();
+		$('#MainSignUp').hide();
+	  });
+}
 
-//로그아웃
+
+//유저 로그아웃
 function logout() {
 	var settings = {
 		"url": "http://localhost:8080/api/user/logout",
+		"method": "DELETE",
+		"timeout": 0,
+		"headers": {
+		  "Authorization": localStorage.clear('accessToken')
+		},
+	  };
+	  
+	  $.ajax(settings).done(function (response, status, xhr) {
+		console.log(response);
+		console.log(status)
+		if (status === 403) {
+			window.location = "/index.html"
+		}
+		console.log(response.nickName);
+		$('#loginUser').hide();
+		$('#mypage').hide();
+		$('#MainLogout').hide();
+		$('#MainLogin').show();
+		$('#MainSignUp').show();
+		$('#loginUser').clear(response.nickName + "님 환영합니다.");
+	  });
+}
+
+//사업자 로그아웃
+function logout() {
+	var settings = {
+		"url": "http://localhost:8080/api/owner/logout",
+		"method": "DELETE",
+		"timeout": 0,
+		"headers": {
+		  "Authorization": localStorage.clear('accessToken')
+		},
+	  };
+	  
+	  $.ajax(settings).done(function (response, status, xhr) {
+		console.log(response);
+		console.log(status)
+		if (status === 403) {
+			window.location = "/index.html"
+		}
+		console.log(response.nickName);
+		$('#loginUser').hide();
+		$('#mypage').hide();
+		$('#MainLogout').hide();
+		$('#MainLogin').show();
+		$('#MainSignUp').show();
+		$('#loginUser').clear(response.nickName + "님 환영합니다.");
+	  });
+}
+
+//관리자 로그아웃
+function logout() {
+	var settings = {
+		"url": "http://localhost:8080/api/manager/logout",
 		"method": "DELETE",
 		"timeout": 0,
 		"headers": {
