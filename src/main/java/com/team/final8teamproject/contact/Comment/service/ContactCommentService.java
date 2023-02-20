@@ -8,13 +8,17 @@ import java.util.List;
 
 public interface ContactCommentService {
 
-
-  void saveInquiryComment(Long id, CreateContactCommentRequest createContactCommentRequest, String username, String nickName);
+  void saveInquiryComment(Long inquiryId,
+      CreateContactCommentRequest createContactCommentRequest,
+      String username);
 
   void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
-      String username,String nickName);
+      String username);
+
   void deleteInquiryComment(Long commentId, String username);
+
   void deleteManager(Long id);
+
   List<ContactComment> findAllByInquiryIdAndParentIsNull(Long inquiryId);
 
 }

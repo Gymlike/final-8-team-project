@@ -36,8 +36,7 @@ public class InquiryController {
   @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername() ,userDetails.getBase()
-        .getWriterName());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -72,8 +71,7 @@ public class InquiryController {
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateInquiryRequest updateInquiryRequest){
-    inquiryServiceImpl.updateInquiry(id,userDetails.getBase().getUsername(),userDetails.getBase()
-        .getWriterName(), updateInquiryRequest);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    inquiryServiceImpl.updateInquiry(id,userDetails.getBase().getUsername(), updateInquiryRequest);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
 
     return ResponseEntity.ok("수정 완료");
   }

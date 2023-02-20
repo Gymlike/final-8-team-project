@@ -7,6 +7,7 @@ import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepos
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
 
   private final ContactCommentRepository contactCommentRepository;
   private final InquiryRepository inquiryRepository;
-
+  private final UserService userService;
   /**
    * 부모댓글이 있는 경우 . 자식댓글인 경우 (대댓글) 댓글에 댓글을 저장
    * 부모댓글이 없는 경우. 포스트에 댓글을 저장
@@ -28,8 +29,8 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   @Override
   public void saveInquiryComment(Long inquiryId,
       CreateContactCommentRequest createContactCommentRequest,
-      String username,String nickName) {
-
+      String username) {
+    String nickName = userService.nickNameFindByUsername(username);
     if (!inquiryRepository.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
@@ -68,7 +69,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   @Override
   @Transactional
   public void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
-      String username,String nickName) {
+      String username) {
     String comments = updateCommentRequest.getComments();
     ContactComment comment = contactCommentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)

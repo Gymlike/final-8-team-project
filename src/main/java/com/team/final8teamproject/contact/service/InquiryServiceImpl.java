@@ -9,6 +9,7 @@ import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.service.UserService;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,11 +27,13 @@ public class InquiryServiceImpl implements InquiryService {
 
   private final InquiryRepository inquiryRepository;
   private final ContactCommentServiceImpl contactCommentService;
+  private final UserService userService;
 
 
   @Transactional
   @Override
-  public void createInquiry(InquiryRequest inquiryRequest, String username, String nickName) {
+  public void createInquiry(InquiryRequest inquiryRequest, String username) {
+    String nickName = userService.nickNameFindByUsername(username);
     Inquiry inquiry = inquiryRequest.toEntity(username,nickName);
     inquiryRepository.save(inquiry);
   }
@@ -38,7 +41,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void updateInquiry(Long id, String username, String nickName, UpdateInquiryRequest updateInquiryRequest) {
+  public void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest) {
     String title = updateInquiryRequest.getTitle();
     String content = updateInquiryRequest.getContent();
 

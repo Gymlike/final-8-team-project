@@ -5,6 +5,7 @@ import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentReques
 import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 
+import com.team.final8teamproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,7 +35,7 @@ public class ContactCommentController {
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     System.out.println(createContactCommentRequest.getComments());
     contactCommentServiceIml.saveInquiryComment(id, createContactCommentRequest,
-        userDetails.getBase().getUsername(),userDetails.getBase().getWriterName());
+        userDetails.getBase().getUsername());// 유저닉네임으로 디비에서 찾기
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -46,7 +47,7 @@ public class ContactCommentController {
       @RequestBody UpdateContactCommentRequest updateCommentRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
     contactCommentServiceIml.updateInquiryComment(id,
-        updateCommentRequest,userDetails.getBase().getUsername(),userDetails.getBase().getWriterName());
+        updateCommentRequest,userDetails.getBase().getUsername());
     return ResponseEntity.ok("수정 완료");
   }
 
