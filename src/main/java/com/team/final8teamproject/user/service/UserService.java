@@ -10,10 +10,10 @@ import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.RefreshTokenRepository;
 import com.team.final8teamproject.user.repository.UserRepository;
-import io.jsonwebtoken.security.SecurityException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.team.final8teamproject.security.jwt.JwtUtil;
+
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -29,7 +30,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private static final String MANAGER_TOKEN = "D1d@A$5dm4&4D1d1i34n%7";
     private final JavaMailSender mailSender;
     private final UserRepository userRepository;
     private final BaseRepository baseRepository;
@@ -40,14 +40,14 @@ public class UserService {
 
     //1. 회원가입
     @Transactional
-    public MessageResponseDto signUp(SignupRequestDto requestDto) {
+    public MessageResponseDto signUp(@Valid SignupRequestDto requestDto) {
 
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 //        String password2 = passwordEncoder.encode(requestDto.getPassword2());
         String nickName = requestDto.getNickName();
         String email = requestDto.getEmail();
-        String phoneNumber =requestDto.getPhoneNumber();
+        String phoneNumber = requestDto.getPhoneNumber();
         Long experience = requestDto.getExperience();
 
         Optional<User> found = userRepository.findByUsername(username);
@@ -74,20 +74,21 @@ public class UserService {
         String password = requestDto.getPassword();
 
         BaseEntity user = baseRepository.findByUsername(username).orElseThrow(
-                () -> new SecurityException("사용자를 찾을수 없습니다.")
+                () -> new CustomException(ExceptionStatus.WRONG_USERNAME)
         );
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new SecurityException("사용자를 찾을수 없습니다.");
+            throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
-        LoginResponseDto loginResponseDto =jwtUtil.createUserToken(user.getUsername(), user.getRole());
+        LoginResponseDto loginResponseDto = jwtUtil.createUserToken(user.getUsername(), user.getRole());
 
 //        if(redisUtil.hasKey("RT:" +user.getUsername())){
 //            throw new SecurityException("이미 접속중인 사용자 입니다.");
 //        }
-        redisUtil.setRefreshToken("RT:" +user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+        redisUtil.setRefreshToken("RT:" + user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
 
         return loginResponseDto;
     }
+
 
     //3. 로그아웃
     @Transactional
@@ -97,7 +98,7 @@ public class UserService {
         Long expiration = jwtUtil.getExpiration(accessToken);
         redisUtil.setBlackList(accessToken, "logout", expiration);
 
-        if(redisUtil.hasKey("RT:" + username)){
+        if (redisUtil.hasKey("RT:" + username)) {
             redisUtil.deleteRefreshToken("RT:" + username);
         } else {
             throw new IllegalArgumentException("이미 로그아웃한 유저입니다.");

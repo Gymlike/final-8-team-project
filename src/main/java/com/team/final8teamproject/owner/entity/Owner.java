@@ -8,8 +8,10 @@ import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity(name = "owner")
 @DiscriminatorValue(value = "Owner")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +24,7 @@ public class Owner extends BaseEntity {
 
     @Column(nullable = false)
     private String nickName;
+
     @Column(nullable = false)
     private String phoneNumber;
 

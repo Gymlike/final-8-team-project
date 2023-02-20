@@ -13,12 +13,16 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue(value = "Users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "users")
+
 public class User extends BaseEntity {
     private String profileImage;
+
     @Column(nullable = false)
     private String nickName;
+
     @Column(nullable = false)
     private String phoneNumber;
+
     @Column(nullable = false)
     private Long experience;
 

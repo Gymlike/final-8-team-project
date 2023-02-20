@@ -1,5 +1,6 @@
 package com.team.final8teamproject.user.controller;
 
+import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,11 +11,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+
 @RestController
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -51,7 +52,7 @@ public class UserController {
     }
 
     //4. 이메일 인증
-    @PostMapping("/emailcconfirm")
+    @PostMapping("/emailConfirm")
     public String emailConfirm(@RequestParam String email) throws Exception {
         return emailService.sendSimpleMessage(email);
     }
@@ -63,9 +64,5 @@ public class UserController {
     public FindByResponseDto getfindByUsername(@RequestParam("email") String email){
         return userService.findByUsername(email);
     }
-    //6.Password찾기
-    @PostMapping("/find/password")
-    public FindByResponseDto findPassword(@RequestBody FindPasswordRequestDto responseDto) {
-        return userService.userFindPassword(responseDto);
-    }
+
 }

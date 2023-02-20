@@ -18,13 +18,17 @@ public class BaseEntity extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "User_ID")
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String username;
+
     @JsonIgnore
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
@@ -53,7 +57,8 @@ public class BaseEntity extends Timestamped {
         return this.username;
     }
 
-    public void approvalManager(UserRoleEnum role) {
+    public void changeRole1(UserRoleEnum role) {
         this.role = role;
     }
+
 }
