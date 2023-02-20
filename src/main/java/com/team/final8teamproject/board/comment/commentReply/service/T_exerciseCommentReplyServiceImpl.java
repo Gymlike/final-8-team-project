@@ -1,6 +1,6 @@
 package com.team.final8teamproject.board.comment.commentReply.service;
 
-import com.team.final8teamproject.board.comment.commentReply.dto.CreatT_exerciseCommentReplyRequestDTO;
+import com.team.final8teamproject.board.comment.commentReply.dto.CreatCommentReplyRequestDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.commentReply.repository.T_exerciseCommentReplyRepository;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
@@ -25,10 +25,10 @@ public class T_exerciseCommentReplyServiceImpl implements T_exerciseCommentReply
     private final T_exerciseCommentReplyRepository tExerciseCommentReplyRepository;
     @Override
     @Transactional
-    public ResponseEntity<String> creatCommentRely(Long commentId, String commentContent, String username) {
+    public ResponseEntity<String> creatCommentRely(Long commentId, String commentContent, String username,String nickname) {
         if(tExerciseCommentRepository.existsById(commentId)){
             T_exerciseComment comment = tExerciseCommentRepository.findById((commentId)).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
-            T_exerciseCommentReply t_exerciseCommentReply = new T_exerciseCommentReply(commentContent,username,comment);
+            T_exerciseCommentReply t_exerciseCommentReply = new T_exerciseCommentReply(commentContent,username,comment,nickname);
             tExerciseCommentReplyRepository.save(t_exerciseCommentReply);
         return new ResponseEntity<>("대댓글 작성완료", HttpStatus.OK);
         }throw new CustomException(ExceptionStatus.COMMENT_NOT_EXIST);
@@ -36,7 +36,7 @@ public class T_exerciseCommentReplyServiceImpl implements T_exerciseCommentReply
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateCommentReply(CreatT_exerciseCommentReplyRequestDTO requestDTO, String username, Long commentID) {
+    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, String username, Long commentID) {
         T_exerciseCommentReply commentReply = tExerciseCommentReplyRepository.findById(commentID).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
         String comment = requestDTO.getComment();
         if (commentReply.isWriter(username)) {

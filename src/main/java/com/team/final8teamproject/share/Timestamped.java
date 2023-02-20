@@ -1,4 +1,5 @@
-package com.team.final8teamproject.share.exception;
+
+package com.team.final8teamproject.share;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter             //get함수를 자동으로 생성한다.
 @MappedSuperclass   //멤버 변수가 컬럼이 되도록합니다.
 @EntityListeners(AuditingEntityListener.class)//변경 되었을때 자동으로 기록합니다.
-public class TimeStamped {
+public class Timestamped {
 
     @CreatedDate//최소 생성시점
     private LocalDateTime createdDate;

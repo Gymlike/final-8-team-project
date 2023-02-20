@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
-public class CreatT_exerciseCommentReplyRequestDTO {
+public class CreatCommentReplyRequestDTO {
 
     private final String comment;
 
-    public CreatT_exerciseCommentReplyRequestDTO(String comment) {
+    public CreatCommentReplyRequestDTO(String comment) {
         this.comment = comment;
     }
 }

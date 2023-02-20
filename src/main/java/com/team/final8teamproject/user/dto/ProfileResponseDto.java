@@ -7,8 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ProfileResponseDto {
 
-    private Long id;
-
     private String username;
 
     private String nickName;

@@ -27,12 +27,15 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
+
+    private final UserDetailsServiceImpl userDetailsService;
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
     private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L; //7일
-    private final UserDetailsServiceImpl userDetailsService;
+
     @Value("${jwt.secret.key}")
     private String secretKey;
     private Key key;

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableScheduling // @Scheduled 어노테이션 활성화
 public class WebSecurityConfig implements WebMvcConfigurer {
 
+
   private final JwtUtil jwtUtil;
   private final RedisUtil redisUtil;
   private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -38,6 +40,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
+
 
   // 가장 먼저 시큐리티를 사용하기 위해선 선언해준다.
   @Bean
@@ -58,6 +61,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.
         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
         .requestMatchers("/api/**").permitAll()
+        .requestMatchers("/api/user/**").permitAll()
         .requestMatchers("/api/owner/**").permitAll()
         .requestMatchers("/api/manager/**").hasAnyRole("Manager", "GeneralManager")
         .requestMatchers("/owner/**").hasAnyRole("Owner", "Manager", "GeneralManager")
@@ -65,12 +69,17 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/h2-console").permitAll()
         .requestMatchers("/t-exercise/allboard").permitAll()
         .requestMatchers("/t-exercise/selectboard/**").permitAll()
-        .requestMatchers("/api/find/**").permitAll()
+        .requestMatchers("/api/user/kakao/callback").permitAll()
+        .requestMatchers("/api/profile/kakao").permitAll()
+        .requestMatchers("/api/home").permitAll()
+        .requestMatchers("/api/company/**").permitAll()
         .requestMatchers("/todaymeal/allboard").permitAll()
         .requestMatchers("/todaymeal/selectboard/**").permitAll()
+        .requestMatchers("/api/find/**").permitAll()
         .requestMatchers("/api/faqs/check/**").permitAll()
         .requestMatchers("/api/contact/inquiries/**").permitAll()
         .requestMatchers("/api/managers/notices/check/**").permitAll()
+
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
         // JWT 인증/인가를 사용하기 위한 설정
@@ -87,15 +96,16 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     // 이 부분에서 login 관련 문제 발생
     // jwt 로그인 방식에서는 세션 로그인 방식을 막아줘야 한다.
 //        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
+
     return http.build();
   }
 
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
+
+        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
         .exposedHeaders("Authorization");
   }
-
 
 }

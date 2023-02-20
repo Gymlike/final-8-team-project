@@ -1,6 +1,6 @@
 package com.team.final8teamproject.contact.entity;
 
-import com.team.final8teamproject.share.exception.TimeStamped;
+import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Notice extends TimeStamped {
+public class Notice extends Timestamped {
 
 
     @Id

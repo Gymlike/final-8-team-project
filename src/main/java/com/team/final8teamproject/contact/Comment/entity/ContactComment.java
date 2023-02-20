@@ -1,8 +1,6 @@
 package com.team.final8teamproject.contact.Comment.entity;
 
-
-
-import com.team.final8teamproject.share.exception.TimeStamped;
+import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,7 +26,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ContactComment extends TimeStamped {
+public class ContactComment extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

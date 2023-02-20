@@ -3,6 +3,9 @@ package com.team.final8teamproject;
 
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
+import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.repository.T_exerciseRepository;
+
 import com.team.final8teamproject.contact.Repository.FaqRepository;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.Repository.NoticeRepository;
@@ -24,13 +27,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class initData implements ApplicationRunner {
 
-  private final PasswordEncoder passwordEncoder;
-  private final UserRepository userRepository;
-  private final InquiryRepository inquiryRepository;
-  private final FaqRepository faqRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final OwnerRepository ownerRepository;
+    private final InquiryRepository inquiryRepository;
+    private final FaqRepository faqRepository;
+//    private final ContactCommentRepository contactCommentRepository;
+    private final NoticeRepository noticeRepository;
+
+    private final T_exerciseRepository tExerciseRepository;
+
   private final ContactCommentRepository contactCommentRepository;
-  private final NoticeRepository noticeRepository;
-  private final OwnerRepository ownerRepository;
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
@@ -151,6 +158,28 @@ public class initData implements ApplicationRunner {
       faqRepository.save(faq2);
       // -----------------------------------
 
+
+        T_exercise t_exercise1 = new T_exercise("1번제목","내용","파일이름","경로",member1);
+        T_exercise t_exercise2 = new T_exercise("2번제목","내용","파일이름","경로",member1);
+        T_exercise t_exercise3 = new T_exercise("3번제목","내용","파일이름","경로",member1);
+        T_exercise t_exercise4 = new T_exercise("4번제목","검색","파일이름","경로",member1);
+        T_exercise t_exercise5 = new T_exercise("5번제목","내용","파일이름","경로",member1);
+        T_exercise t_exercise6 = new T_exercise("6번제목","내용","파일이름","경로",member1);
+        T_exercise t_exercise7 = new T_exercise("7번제목","검색","파일이름","경로",member1);
+        T_exercise t_exercise8 = new T_exercise("8번제목","내용","파일이름","경로",member1);
+        T_exercise t_exercise9 = new T_exercise("9번제목","검","파일이름","경로",member1);
+        T_exercise t_exercise10 = new T_exercise("10번제목검색","내용","파일이름","경로",member1);
+
+        tExerciseRepository.save(t_exercise1);
+        tExerciseRepository.save(t_exercise2);
+        tExerciseRepository.save(t_exercise3);
+        tExerciseRepository.save(t_exercise4);
+        tExerciseRepository.save(t_exercise5);
+        tExerciseRepository.save(t_exercise6);
+        tExerciseRepository.save(t_exercise7);
+        tExerciseRepository.save(t_exercise8);
+        tExerciseRepository.save(t_exercise9);
+        tExerciseRepository.save(t_exercise10);
     }
   }
 
