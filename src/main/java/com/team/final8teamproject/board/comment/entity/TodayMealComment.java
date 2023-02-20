@@ -26,12 +26,15 @@ public class TodayMealComment extends Timestamped {
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    private String userNickname;
     private Long boardId;
 
-    public TodayMealComment(String comment, String username, Long boardId) {
+    public TodayMealComment(String comment, String username, Long boardId,String userNickname) {
         this.comment = comment;
         this.username = username;
         this.boardId =boardId;
+        this.userNickname = userNickname;
     }
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "comments" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TodayMealCommentReply> commentReplyList = new ArrayList<>();

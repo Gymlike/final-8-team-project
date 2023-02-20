@@ -20,7 +20,6 @@ public class T_exerciseCommentController {
     @PostMapping("/{boardId}/comment")
     public ResponseEntity<String> createComment(@RequestBody CreatCommentRequestDTO requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long boardId) {
         String comment = requestDto.getComment();
-
         String userName = userDetails.getUsername();
         String userNickname = userService.getUserNickname(userDetails.getBase());
         return tExerciseCommentService.createComment(comment, boardId,userName,userNickname);

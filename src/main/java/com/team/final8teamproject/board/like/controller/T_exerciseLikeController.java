@@ -30,7 +30,7 @@ public class T_exerciseLikeController {
     @GetMapping("/{boardId}/checklike")
     private Long checkLike(@PathVariable Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        return tExerciseLikeService.checkLike(userDetails.getUser(),boardId);
+        return tExerciseLikeService.checkLike((User) userDetails.getBase(),boardId);
     }
 
 

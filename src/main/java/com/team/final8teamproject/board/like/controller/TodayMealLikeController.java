@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.like.controller;
 
 import com.team.final8teamproject.board.like.service.TodayMealLikeService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,6 @@ public class TodayMealLikeController {
     @PostMapping("/{boardId}/like")
     public ResponseEntity<String> likeBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails ){
 
-            return todayMealLikeService.likeBoard(userDetails.getUser(),boardId);
+            return todayMealLikeService.likeBoard((User) userDetails.getBase(),boardId);
     }
 }

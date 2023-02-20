@@ -31,7 +31,7 @@ public class T_exerciseBoardResponseDTO {
     private  List<T_exerciseCommentResponseDTO> commentList;
 
 
-    public T_exerciseBoardResponseDTO(Long like, T_exercise t_exercise, List<T_exerciseCommentResponseDTO> commentList) {
+    public T_exerciseBoardResponseDTO(Long like, T_exercise t_exercise, List<T_exerciseCommentResponseDTO> commentList,String nickname) {
         this.like= like;
         this.id = t_exercise.getId();
         this.title = t_exercise.getTitle();
@@ -39,7 +39,7 @@ public class T_exerciseBoardResponseDTO {
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
         this.modifiedDate =t_exercise.getModifiedDate();
         this.userName = t_exercise.getUser().getUsername();
-        this.userNickname = t_exercise.getUser().getNickName();
+        this.userNickname = nickname;
         this.commentList = commentList;
     }
     public T_exerciseBoardResponseDTO(Long like,Long postID,String title,String content,String filepath,LocalDateTime modifiedDate,String userName,String nickname) {

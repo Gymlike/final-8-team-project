@@ -18,14 +18,16 @@ public class TodayMealCommentResponseDTO {
 
     private final String writerName;
 
+    private final String nickname;
     private final LocalDateTime creatDate;
     private final List<TodayMealCommentReplyResponseDTO> commentReplyList;
 
-    public TodayMealCommentResponseDTO(Long id, String content, String writerName, LocalDateTime creatDate, List<TodayMealCommentReplyResponseDTO> commentReplyList) {
+    public TodayMealCommentResponseDTO(Long id, String content, String writerName, LocalDateTime creatDate, List<TodayMealCommentReplyResponseDTO> commentReplyList,String nickname) {
         this.id = id;
         this.content = content;
         this.writerName = writerName;
         this.creatDate = creatDate;
         this.commentReplyList = commentReplyList;
+        this.nickname = nickname;
     }
 }

@@ -27,10 +27,10 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
 
     @Override
     @Transactional
-    public ResponseEntity<String> creatCommentRely(Long commentId, String commentContent, String username) {
+    public ResponseEntity<String> creatCommentRely(Long commentId, String commentContent, String username,String userNickname) {
         if(todayMealCommentRepository.existsById(commentId)){
             TodayMealComment comment = todayMealCommentRepository.findById((commentId)).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
-            TodayMealCommentReply t_exerciseCommentReply = new TodayMealCommentReply(commentContent,username,comment);
+            TodayMealCommentReply t_exerciseCommentReply = new TodayMealCommentReply(commentContent,username,comment,userNickname);
             todayMealCommentReplyRepository.save(t_exerciseCommentReply);
         return new ResponseEntity<>("대댓글 작성완료", HttpStatus.OK);
         }throw new CustomException(ExceptionStatus.COMMENT_NOT_EXIST);

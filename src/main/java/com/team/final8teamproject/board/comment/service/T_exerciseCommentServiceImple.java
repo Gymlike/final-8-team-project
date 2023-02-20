@@ -21,10 +21,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
 
-//   private final T_exerciseService t_exerciseService;
     private final T_exerciseRepository tExerciseRepository;
 
-    private final T_exerciseCommentReplyService tExerciseCommentReplyService;
     private final T_exerciseCommentRepository commentRepository;
 
 

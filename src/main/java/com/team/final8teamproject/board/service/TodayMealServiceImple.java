@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.service;
 
 
 import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
 import com.team.final8teamproject.board.comment.commentReply.dto.TodayMealCommentReplyResponseDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
 import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
@@ -16,6 +17,7 @@ import com.team.final8teamproject.board.repository.TodayMealRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
+import com.team.final8teamproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +42,8 @@ public class TodayMealServiceImple implements  TodayMealService{
 
     private final TodayMealCommentService todayMealCommentService;
     private final TodayMealLikeService todayMealLikeService;
+
+    private final UserService userService;
 
 
     /**
@@ -93,22 +98,17 @@ public class TodayMealServiceImple implements  TodayMealService{
     @Override
     public TodayMealBoardResponseDTO getTodayMealBoard(Long boardId) {
         TodayMeal todayMeal = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-
         List<TodayMealComment> comments = todayMealCommentService.findCommentByBoardId(boardId);
-
-        List<TodayMealCommentResponseDTO> commentFilter = new ArrayList<>();
+        List<TodayMealCommentResponseDTO> commentFilter = comments.stream()
+                .map(comment -> {
+                    List<TodayMealCommentReplyResponseDTO> toList = comment.getCommentReplyList().stream()
+                            .map(TodayMealCommentReplyResponseDTO::new)
+                            .collect(Collectors.toList());
+                    return new TodayMealCommentResponseDTO(comment.getId(), comment.getComment(), comment.getUsername(),
+                            comment.getCreatedDate(), toList, comment.getUserNickname());
+                })
+                .collect(Collectors.toList());
         Long countLike = todayMealLikeService.countLike(boardId);
-
-        for (TodayMealComment comment : comments) {
-            List<TodayMealCommentReply> commentReplyList = comment.getCommentReplyList(); //수정해야되는 부분..!
-            List<TodayMealCommentReplyResponseDTO> toList = commentReplyList.stream().map(TodayMealCommentReplyResponseDTO::new).toList();
-            String commentContent = comment.getComment();
-            String username = comment.getUsername();
-            Long id = comment.getId();
-            LocalDateTime createdAt = comment.getCreatedDate();
-            TodayMealCommentResponseDTO dto = new TodayMealCommentResponseDTO(id,commentContent,username,createdAt,toList);
-            commentFilter.add(dto);
-        }
 
         return new TodayMealBoardResponseDTO(countLike,todayMeal,commentFilter);
     }

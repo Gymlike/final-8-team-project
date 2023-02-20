@@ -143,8 +143,9 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
 
 
         Long countLike = tExerciseLikeService.countLike(boardId);
+        String userNickname = userService.getUserNickname(t_exercise.getUser());
 
-        return new T_exerciseBoardResponseDTO(countLike, t_exercise, commentFilter);
+        return new T_exerciseBoardResponseDTO(countLike, t_exercise, commentFilter,userNickname);
     }
 
 

@@ -3,6 +3,7 @@ package com.team.final8teamproject.board.comment.commentReply.controller;
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatCommentReplyRequestDTO;
 import com.team.final8teamproject.board.comment.commentReply.service.TodayMealCommentReplyService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class TodayMealCommentReplyController {
 
     private final TodayMealCommentReplyService todayMealCommentReplyService;
+    private final UserService userService;
     //대댓글 생성
     @PostMapping("/comment/{commentId}")
     public ResponseEntity<String> creatCommentReply(@PathVariable Long commentId,
@@ -21,7 +23,9 @@ public class TodayMealCommentReplyController {
                                                     @RequestBody CreatCommentReplyRequestDTO requestDTO){
         String username = userDetails.getUsername();
         String comment = requestDTO.getComment();
-        return todayMealCommentReplyService.creatCommentRely(commentId,comment,username);
+        String userNickname = userService.getUserNickname(userDetails.getBase());
+
+        return todayMealCommentReplyService.creatCommentRely(commentId,comment,username,userNickname);
     }
 
     //대댓글 수정

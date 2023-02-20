@@ -26,16 +26,15 @@ public class TodayMealCommentServiceImple implements TodayMealCommentService {
 //   private final T_exerciseService t_exerciseService;
     private final TodayMealRepository todayMealRepository;
 
-    private final T_exerciseCommentReplyService tExerciseCommentReplyService;
     private final TodayMealCommentRepository commentRepository;
 
 
 
     @Override
     @Transactional
-    public ResponseEntity<String> createComment(String comment, Long boardId, String userName) {
+    public ResponseEntity<String> createComment(String comment, Long boardId, String userName,String userNickname) {
        if (todayMealRepository.existsById(boardId)) {
-           TodayMealComment todayMealComment = new TodayMealComment(comment, userName, boardId);
+           TodayMealComment todayMealComment = new TodayMealComment(comment, userName, boardId,userNickname);
            commentRepository.save(todayMealComment);
            return new ResponseEntity<>("댓글 작성완료", HttpStatus.OK);
        }throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);

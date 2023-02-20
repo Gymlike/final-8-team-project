@@ -22,16 +22,18 @@ public class TodayMealCommentReply extends Timestamped {
 
     @Column(nullable = false)
     private String username;
-
+    @Column(nullable = false)
+    private String userNickname;
 
     @ManyToOne
     @JoinColumn(name ="COMMENT_ID")
     private TodayMealComment comments;
 
-    public TodayMealCommentReply(String commentContent, String username, TodayMealComment comments) {
+    public TodayMealCommentReply(String commentContent, String username, TodayMealComment comments,String userNickname) {
         this.commentContent = commentContent;
         this.username = username;
         this.comments = comments;
+        this.userNickname=userNickname;
         comments.getCommentReplyList().add(this);
     }
 

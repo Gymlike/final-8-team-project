@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface TodayMealCommentReplyService {
-    ResponseEntity<String> creatCommentRely(Long commentId, String comment, String username);
+    ResponseEntity<String> creatCommentRely(Long commentId, String comment, String username,String userNickname);
 
     ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, BaseEntity user, Long commentID);
 

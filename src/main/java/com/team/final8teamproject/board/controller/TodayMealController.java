@@ -1,9 +1,12 @@
 package com.team.final8teamproject.board.controller;
 
+import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.service.TodayMealService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +27,7 @@ import java.util.List;
 public class TodayMealController {
 
     private final TodayMealService todayMealService;
-
+    private final BaseService baseService;
 
     //오먹 게시판 생성
     @PostMapping
@@ -34,9 +37,15 @@ public class TodayMealController {
 
         String content = creatBordRequestDTO.getContent();
         String title = creatBordRequestDTO.getTitle();
-        User user = userDetails.getUser();
+        User user = (User) userDetails.getBase();
 
-        return todayMealService.creatTodayMealBord(title,content,file,user);
+        boolean checkUser = baseService.checkUser(user.getUsername());
+
+        if(checkUser){
+            return todayMealService.creatTodayMealBord(title,content,file,user);
+        }else {
+            throw new CustomException(ExceptionStatus.WRONG_USERNAME);
+        }
     }
 
     //오먹 전체 게시물 조회
@@ -73,7 +82,7 @@ public class TodayMealController {
                                            @RequestPart("file") MultipartFile file,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
-        User user = userDetails.getUser();
+        User user = (User)userDetails.getBase();
 
         return todayMealService.editPost(boardId,creatTExerciseBordRequestDTO,user,file);
     }
