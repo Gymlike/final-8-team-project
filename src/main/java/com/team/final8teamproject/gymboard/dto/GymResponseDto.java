@@ -1,6 +1,6 @@
 package com.team.final8teamproject.gymboard.dto;
 
-import com.team.final8teamproject.gymboard.entity.GymReview;
+import com.team.final8teamproject.gymboardreview.entity.GymReview;
 
 import java.util.List;
 

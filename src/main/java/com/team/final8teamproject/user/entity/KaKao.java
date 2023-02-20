@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class KaKao extends BaseEntity {
     @Column(nullable = false)
-    private Long id;
+    private Long kakaoId;
     private String profileImage;
     private String nickName;
     private Long experience = 0L;

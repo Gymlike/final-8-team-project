@@ -1,6 +1,5 @@
 package com.team.final8teamproject.share;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -13,13 +12,11 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class TimeStamp {
+public class Timestamped {
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+    @CreatedDate//최소 생성시점
+    private LocalDateTime createdDate;
 
-    @LastModifiedDate
-    @Column
-    private LocalDateTime modifiedAt;
+    @LastModifiedDate//마지막 변경시점
+    private LocalDateTime modifiedDate;
 }

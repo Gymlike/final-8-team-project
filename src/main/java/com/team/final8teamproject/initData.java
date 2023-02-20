@@ -9,6 +9,10 @@ import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.entity.Notice;
 import com.team.final8teamproject.contact.service.FaqService;
+import com.team.final8teamproject.gymboard.entity.GymBoard;
+import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
+import com.team.final8teamproject.gymboardreview.entity.GymReview;
+import com.team.final8teamproject.gymboardreview.repository.GymReviewRepository;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import com.team.final8teamproject.user.entity.User;
@@ -31,6 +35,8 @@ public class initData implements ApplicationRunner {
 //    private final ContactCommentRepository contactCommentRepository;
     private final NoticeRepository noticeRepository;
 
+    private final GymBoardRepository gymBoardRepository;
+    private final GymReviewRepository gymReviewRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -111,5 +117,66 @@ public class initData implements ApplicationRunner {
         faqRepository.save(faq2);
         // -----------------------------------
 
+
+        // 운동시설 등록
+
+        GymBoard gymBoard1 = GymBoard.GymBoard()
+                .title("마평동 뒷동산의 좋은 헬스장")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 헬스장이에여" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner1")
+                .image("images\\img_5.jpg")
+                .gymName("모두가 좋아하는 헬스장")
+                .ownerNumber("112A23B1")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .region("제주특별자치도 제주시 첨단로 242 (영평동)")
+                .build();
+
+        GymBoard gymBoard2 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner2")
+                .image("images\\img_4.jpg")
+                .gymName("피트니스탑")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("경기 성남시 분당구 판교역로 235 (삼평동)")
+                .build();
+
+        gymBoardRepository.save(gymBoard2);
+        gymBoardRepository.save(gymBoard1);
+        // ----------------
+
+
+        //운동시설 후기 등록
+        GymReview gymReview1 = GymReview.builder()
+                .gymId(1L)
+                .comment("여기 정말 별로에여")
+                .username("member2")
+                .rating(1L)
+                .build();
+
+        GymReview gymReview2 = GymReview.builder()
+                .gymId(2L)
+                .comment("여기 정말 트레이너분도 친절하고 좋네요")
+                .username("member2")
+                .rating(5L)
+                .build();
+
+        GymReview gymReview3 = GymReview.builder()
+                .gymId(2L)
+                .comment("여기 정말좋아여 많이들 오세요")
+                .username("member1")
+                .rating(5L)
+                .build();
+        gymReviewRepository.save(gymReview1);
+        gymReviewRepository.save(gymReview2);
+        gymReviewRepository.save(gymReview3);
+        //----------------
     }
 }
