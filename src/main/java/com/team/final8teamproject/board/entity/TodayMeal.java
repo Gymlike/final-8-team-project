@@ -1,12 +1,8 @@
 package com.team.final8teamproject.board.entity;
 
 
-
 import com.team.final8teamproject.share.Timestamped;
-
-import com.team.final8teamproject.base.entity.BaseEntity;
-
-
+import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class T_exercise extends Timestamped {
+public class TodayMeal extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,9 +30,9 @@ public class T_exercise extends Timestamped {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private BaseEntity user;
+    private User user;
 
-    public T_exercise(String title, String content, String filename, String filepath,BaseEntity user) {
+    public TodayMeal(String title, String content, String filename, String filepath, User user) {
         this.title = title;
         this.content = content;
         this.filename = filename;
@@ -56,9 +52,4 @@ public class T_exercise extends Timestamped {
         this.filename = filename;
         this.filepath = filepath;
     }
-
-    public Long returnPostId(){
-        return id;
-    }
-
 }

@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
-public class CreatT_exerciseCommentRequestDTO {
+public class CreatCommentRequestDTO {
     private final String comment;
-    public CreatT_exerciseCommentRequestDTO(String comment) {
+    public CreatCommentRequestDTO(String comment) {
         this.comment = comment;
     }
 }

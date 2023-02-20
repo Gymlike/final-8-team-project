@@ -4,10 +4,8 @@ package com.team.final8teamproject.board.like.service;
 import com.team.final8teamproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
 
-public interface T_exerciseLikeService {
+public interface TodayMealLikeService {
     ResponseEntity<String> likeBoard(User user, Long boardId);
 
     Long countLike(Long boardId);
-
-    Long checkLike(User user, Long boardId);
 }

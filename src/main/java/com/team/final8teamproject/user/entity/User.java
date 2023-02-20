@@ -1,6 +1,7 @@
 package com.team.final8teamproject.user.entity;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
+
 import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

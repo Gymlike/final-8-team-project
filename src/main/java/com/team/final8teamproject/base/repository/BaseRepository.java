@@ -9,4 +9,7 @@ public interface BaseRepository extends JpaRepository<BaseEntity, Long> {
 
     Optional<BaseEntity> findByUsername(String username);
     Optional<BaseEntity> findByEmail(String email);
+
+
+    boolean existsByUsername(String username);
 }

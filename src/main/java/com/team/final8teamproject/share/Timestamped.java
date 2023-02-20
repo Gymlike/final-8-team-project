@@ -1,4 +1,4 @@
-package com.team.final8teamproject.user.entity;
+package com.team.final8teamproject.share;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

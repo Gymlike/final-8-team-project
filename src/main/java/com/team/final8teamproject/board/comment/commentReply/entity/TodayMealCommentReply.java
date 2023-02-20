@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.comment.commentReply.entity;
 
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class T_exerciseCommentReply extends Timestamped {
+public class TodayMealCommentReply extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_REPLY_ID")
@@ -21,19 +22,19 @@ public class T_exerciseCommentReply extends Timestamped {
 
     @Column(nullable = false)
     private String username;
-
+    @Column(nullable = false)
     private String userNickname;
 
     @ManyToOne
     @JoinColumn(name ="COMMENT_ID")
-    private T_exerciseComment comments;
+    private TodayMealComment comments;
 
-    public T_exerciseCommentReply(String commentContent, String username, T_exerciseComment comments,String userNickname) {
+    public TodayMealCommentReply(String commentContent, String username, TodayMealComment comments,String userNickname) {
         this.commentContent = commentContent;
         this.username = username;
         this.comments = comments;
+        this.userNickname=userNickname;
         comments.getCommentReplyList().add(this);
-        this.userNickname = userNickname;
     }
 
     public boolean isWriter(String username) {

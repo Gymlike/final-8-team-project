@@ -3,6 +3,8 @@ package com.team.final8teamproject.user.service;
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
@@ -168,4 +170,13 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+    public String getUserNickname(BaseEntity base){
+
+        String username = base.getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException(ExceptionStatus.WRONG_USERNAME));
+
+        return user.getNickName();
+    }
+
 }

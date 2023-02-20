@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.comment.entity;
 
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
+import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
 import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class T_exerciseComment extends Timestamped {
+public class TodayMealComment extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_ID")
@@ -25,18 +26,18 @@ public class T_exerciseComment extends Timestamped {
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    private String userNickname;
     private Long boardId;
 
-    private String userNickname;
-
-    public T_exerciseComment(String comment, String username,Long boardId,String nickname) {
+    public TodayMealComment(String comment, String username, Long boardId,String userNickname) {
         this.comment = comment;
         this.username = username;
         this.boardId =boardId;
-        this.userNickname = nickname;
+        this.userNickname = userNickname;
     }
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "comments" , cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<T_exerciseCommentReply> commentReplyList = new ArrayList<>();
+    private List<TodayMealCommentReply> commentReplyList = new ArrayList<>();
 
 
     public boolean isWriter(String username) {
