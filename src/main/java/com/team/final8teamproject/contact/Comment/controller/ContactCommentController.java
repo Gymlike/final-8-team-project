@@ -37,7 +37,7 @@ public class ContactCommentController {
     System.out.println(createContactCommentRequest.getComments());
     String nickName = userService.getUserNickname(userDetails.getBase());
     contactCommentServiceIml.saveInquiryComment(id, createContactCommentRequest,
-        userDetails.getBase().getUsername(), nickName);
+        userDetails.getBase().getUsername(), nickName);//
     return ResponseEntity.ok("등록 완료");
   }
 
