@@ -3,8 +3,10 @@ package com.team.final8teamproject.board.comment.service;
 import com.team.final8teamproject.board.comment.commentReply.service.T_exerciseCommentReplyService;
 import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
-import com.team.final8teamproject.board.repository.T_exerciseRepository;
+import com.team.final8teamproject.board.comment.repository.TodayMealCommentRepository;
+import com.team.final8teamproject.board.repository.TodayMealRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -19,20 +21,21 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
+public class TodayMealCommentServiceImple implements TodayMealCommentService {
 
-    private final T_exerciseRepository tExerciseRepository;
+//   private final T_exerciseService t_exerciseService;
+    private final TodayMealRepository todayMealRepository;
 
-    private final T_exerciseCommentRepository commentRepository;
+    private final TodayMealCommentRepository commentRepository;
+
 
 
     @Override
     @Transactional
-    public ResponseEntity<String> createComment(String comment, Long boardId, String userName, String userNickname) {
-//        t_exerciseService.findT_exerciseBoardById(boardId);
-       if (tExerciseRepository.existsById(boardId)) {
-           T_exerciseComment t_exerciseComment = new T_exerciseComment(comment, userName, boardId,userNickname);
-           commentRepository.save(t_exerciseComment);
+    public ResponseEntity<String> createComment(String comment, Long boardId, String userName,String userNickname) {
+       if (todayMealRepository.existsById(boardId)) {
+           TodayMealComment todayMealComment = new TodayMealComment(comment, userName, boardId,userNickname);
+           commentRepository.save(todayMealComment);
            return new ResponseEntity<>("댓글 작성완료", HttpStatus.OK);
        }throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     }
@@ -41,7 +44,7 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
     @Transactional
     public ResponseEntity<String> deleteComment(User user, Long commentId) {
         String username = user.getUsername();
-        T_exerciseComment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
+        TodayMealComment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
         if(comment.isWriter(username)){
                 commentRepository.deleteById(commentId);
           return new ResponseEntity<>("댓글 삭제완료",HttpStatus.OK);
@@ -50,7 +53,7 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
     }
 
     @Override
-    public List<T_exerciseComment> findCommentByBoardId(Long boardId){
+    public List<TodayMealComment> findCommentByBoardId(Long boardId){
 
         return commentRepository.findByBoardId(boardId);
     }
@@ -64,7 +67,7 @@ public class T_exerciseCommentServiceImple implements T_exerciseCommentService {
     @Override
     @Transactional
     public ResponseEntity<String> updateComment(CreatCommentRequestDTO requestDto, User user, Long commentId) {
-        T_exerciseComment comment =  commentRepository.findById(commentId).orElseThrow(()-> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
+        TodayMealComment comment =  commentRepository.findById(commentId).orElseThrow(()-> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
 
         String username = user.getUsername();
 

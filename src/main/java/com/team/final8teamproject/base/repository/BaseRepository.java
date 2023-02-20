@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BaseRepository extends JpaRepository<BaseEntity, Long> {
-    Optional<BaseEntity> findByUsername(String username);
 
+    Optional<BaseEntity> findByUsername(String username);
     Optional<BaseEntity> findByEmail(String email);
 
     List<BaseEntity> findByRole(UserRoleEnum userRoleEnum);
 
+    boolean existsByUsername(String username);
 }

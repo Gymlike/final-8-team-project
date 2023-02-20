@@ -1,7 +1,7 @@
 package com.team.final8teamproject.contact.entity;
 
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
-import com.team.final8teamproject.user.entity.Timestamped;
+import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

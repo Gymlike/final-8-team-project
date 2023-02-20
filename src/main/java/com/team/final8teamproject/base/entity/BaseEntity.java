@@ -1,6 +1,6 @@
 package com.team.final8teamproject.base.entity;
 
-import com.team.final8teamproject.user.entity.Timestamped;
+import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

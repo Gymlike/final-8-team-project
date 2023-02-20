@@ -69,7 +69,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/profile/kakao").permitAll()
                 .requestMatchers("/api/home").permitAll()
                 .requestMatchers("/api/company/**").permitAll()
+                .requestMatchers("/todaymeal/allboard").permitAll()
+                .requestMatchers("/todaymeal/selectboard/**").permitAll()
                 .requestMatchers("/api/find/**").permitAll()
+
                 .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
                 //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
                 // JWT 인증/인가를 사용하기 위한 설정
@@ -90,7 +93,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedMethods("GET","POST","PUT","DELETE","OPTIONS", "HEAD")
+
+                .allowedMethods("GET","POST","PUT","PATCH","DELETE","OPTIONS","HEAD")
                 .exposedHeaders("Authorization");
     }
 }
