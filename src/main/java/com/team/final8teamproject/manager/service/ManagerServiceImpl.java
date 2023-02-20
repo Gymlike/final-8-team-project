@@ -107,7 +107,7 @@ public class ManagerServiceImpl implements ManagerService {
     //4. 매니저 가입대기자 조회
     @Override
     @Transactional
-    public List<ManagerResponseDto> getStadByList(UserRoleEnum userRoleEnum) {
+    public List<ManagerResponseDto> getStandByList(UserRoleEnum userRoleEnum) {
 
         List<BaseEntity> list = baseRepository.findByRole(UserRoleEnum.WAIT);
         List<ManagerResponseDto> managerResponseDtoList = new ArrayList<>();
