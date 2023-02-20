@@ -10,7 +10,7 @@ public interface ContactCommentService {
 
   void saveInquiryComment(Long inquiryId,
       CreateContactCommentRequest createContactCommentRequest,
-      String username);
+      String username,String nickName);
 
   void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
       String username);

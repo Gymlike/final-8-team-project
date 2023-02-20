@@ -2,8 +2,6 @@ package com.team.final8teamproject.board.entity;
 
 
 import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.share.TimeStamp;
-import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

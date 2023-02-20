@@ -1,6 +1,6 @@
 package com.team.final8teamproject.base.entity;
 
-import com.team.final8teamproject.user.entity.Timestamped;
+import com.team.final8teamproject.share.exception.TimeStamped;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +13,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
-public class BaseEntity extends Timestamped {
+public class BaseEntity extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "User_ID")

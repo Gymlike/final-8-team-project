@@ -1,7 +1,6 @@
 package com.team.final8teamproject.board.comment.commentReply.entity;
 
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
-import com.team.final8teamproject.share.TimeStamp;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

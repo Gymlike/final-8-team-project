@@ -27,13 +27,11 @@ public class InquiryServiceImpl implements InquiryService {
 
   private final InquiryRepository inquiryRepository;
   private final ContactCommentServiceImpl contactCommentService;
-  private final UserService userService;
 
 
   @Transactional
   @Override
-  public void createInquiry(InquiryRequest inquiryRequest, String username) {
-    String nickName = userService.nickNameFindByUsername(username);
+  public void createInquiry(InquiryRequest inquiryRequest, String username, String nickName) {
     Inquiry inquiry = inquiryRequest.toEntity(username,nickName);
     inquiryRepository.save(inquiry);
   }

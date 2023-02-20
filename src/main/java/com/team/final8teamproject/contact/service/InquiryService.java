@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 
 public interface InquiryService {
 
-  void createInquiry(InquiryRequest inquiryRequest, String username);
+  void createInquiry(InquiryRequest inquiryRequest, String username, String nickName);
   void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest);
 
   void deleteInquiry(Long id, String username);

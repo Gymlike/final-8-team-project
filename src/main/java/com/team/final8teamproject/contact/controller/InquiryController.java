@@ -7,6 +7,7 @@ import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
@@ -32,11 +33,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController {
 
   private final InquiryServiceImpl inquiryServiceImpl;
+  private final UserService userService;
 
   @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    String nickName = userService.getUserNickname(userDetails.getBase());
+    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),nickName);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
     return ResponseEntity.ok("등록 완료");
   }
 

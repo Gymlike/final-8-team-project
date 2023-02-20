@@ -2,7 +2,7 @@ package com.team.final8teamproject.contact.entity;
 
 
 //import com.team.final8teamproject.contact.contactComment.entity.ContactComment;
-import com.team.final8teamproject.user.entity.Timestamped;
+import com.team.final8teamproject.share.exception.TimeStamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Inquiry extends Timestamped {
+public class Inquiry extends TimeStamped {
 
 
   @Id
