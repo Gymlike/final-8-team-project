@@ -1,6 +1,6 @@
 package com.team.final8teamproject.gymboardreview.entity;
 
-import com.team.final8teamproject.share.TimeStamp;
+import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GymReview extends TimeStamp {
+public class GymReview extends Timestamped {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
