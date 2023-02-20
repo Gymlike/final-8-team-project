@@ -19,7 +19,7 @@ public class TodayMealCommentReplyController {
     public ResponseEntity<String> creatCommentReply(@PathVariable Long commentId,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                     @RequestBody CreatCommentReplyRequestDTO requestDTO){
-        String username = userDetails.getUser().getUsername();
+        String username = userDetails.getUsername();
         String comment = requestDTO.getComment();
         return todayMealCommentReplyService.creatCommentRely(commentId,comment,username);
     }
@@ -29,13 +29,14 @@ public class TodayMealCommentReplyController {
     public ResponseEntity<String> updateCommentReply(@RequestBody CreatCommentReplyRequestDTO requestDTO,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId){
-        return todayMealCommentReplyService.updateCommentReply(requestDTO,userDetails.getUser(),commentId);
+
+        return todayMealCommentReplyService.updateCommentReply(requestDTO,userDetails.getBase(),commentId);
     }
 
     //대댓글 삭제
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<String> deleteCommentReply(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId) {
-        return todayMealCommentReplyService.deleteCommentReply(userDetails.getUser(),commentId);
+        return todayMealCommentReplyService.deleteCommentReply(userDetails.getBase(),commentId);
     }
 }

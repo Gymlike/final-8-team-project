@@ -3,6 +3,7 @@ package com.team.final8teamproject.user.controller;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import com.team.final8teamproject.user.dto.ProfileResponseDto;
+import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,15 @@ public class ProfileController {
     //1. 프로필 조회
     @GetMapping()
     public ProfileResponseDto getProfile(@Valid @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        return profileService.getProfile(userDetailsImpl.getUser());
+
+        return profileService.getProfile((User) userDetailsImpl.getBase());
     }
 
     //2. 프로필 수정
     @PostMapping()
     public void modifyProfile(@Valid @RequestBody ProfileModifyRequestDto profileModifyRequestDto
             , @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-        profileService.modifyProfile(profileModifyRequestDto, userDetailsImpl.getUser());
+        profileService.modifyProfile(profileModifyRequestDto, (User) userDetailsImpl.getBase());
     }
 
 }

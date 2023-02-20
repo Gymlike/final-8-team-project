@@ -1,7 +1,9 @@
 package com.team.final8teamproject.board.like.controller;
 
+
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +19,7 @@ public class T_exerciseLikeController {
     @PostMapping("/{boardId}/like")
     public ResponseEntity<String> likeBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails ){
 
-            return tExerciseLikeService.likeBoard(userDetails.getUser(),boardId);
+            return tExerciseLikeService.likeBoard((User)userDetails.getBase(),boardId);
     }
 
     @GetMapping("/{boardId}/like")

@@ -7,7 +7,6 @@ import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.repository.T_exerciseCommentRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class T_exerciseCommentReplyServiceImple implements T_exerciseCommentReplyService {
-
+public class T_exerciseCommentReplyServiceImpl implements T_exerciseCommentReplyService {
     private final T_exerciseCommentRepository tExerciseCommentRepository;
 
     private final T_exerciseCommentReplyRepository tExerciseCommentReplyRepository;
@@ -38,9 +36,8 @@ public class T_exerciseCommentReplyServiceImple implements T_exerciseCommentRepl
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, User user, Long commentID) {
+    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, String username, Long commentID) {
         T_exerciseCommentReply commentReply = tExerciseCommentReplyRepository.findById(commentID).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
-        String username = user.getUsername();
         String comment = requestDTO.getComment();
         if (commentReply.isWriter(username)) {
            commentReply.update(comment);
@@ -51,12 +48,10 @@ public class T_exerciseCommentReplyServiceImple implements T_exerciseCommentRepl
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteCommentReply(User user, Long commentId) {
-        String username = user.getUsername();
+    public ResponseEntity<String> deleteCommentReply(String username, Long commentId) {
         T_exerciseCommentReply commentReply = tExerciseCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
         if(commentReply.isWriter(username)){
             tExerciseCommentReplyRepository.deleteById(commentId);
-
             return new ResponseEntity<>("대댓글 삭제완료",HttpStatus.OK);
         }
         throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT_REPLY);

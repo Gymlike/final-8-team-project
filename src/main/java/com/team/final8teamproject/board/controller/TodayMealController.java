@@ -62,7 +62,7 @@ public class TodayMealController {
     //오먹 게시물 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteT_exerciseBoard(@PathVariable Long boardId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return todayMealService.deletePost(boardId,userDetails.getUser()); //인증은 앞단에서..했다고 가정하니까....
+        return todayMealService.deletePost(boardId,userDetails.getBase()); //인증은 앞단에서..했다고 가정하니까....
     }
 
 

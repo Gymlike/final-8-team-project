@@ -1,26 +1,32 @@
 package com.team.final8teamproject.board.service;
 
+
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+
+import com.team.final8teamproject.base.entity.BaseEntity;
+
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface T_exerciseService {
-    @Transactional
-    ResponseEntity<String> creatTodayMealBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException;
+
+
+    ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, BaseEntity base) throws NullPointerException, IOException;
+
 
     T_exerciseServiceImple.Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);
 
     T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
 
-    ResponseEntity<String> deletePost(Long boardId, User user);
+
+    ResponseEntity<String> deletePost(Long boardId, BaseEntity base);
+
 
     ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatTExerciseBordRequestDTO, User user, MultipartFile file) throws IOException;
 

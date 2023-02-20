@@ -1,8 +1,9 @@
 package com.team.final8teamproject.board.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
-import com.team.final8teamproject.board.entity.T_exercise;
+
 import com.team.final8teamproject.board.entity.TodayMeal;
 import com.team.final8teamproject.user.entity.User;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ public interface TodayMealService {
 
     TodayMealBoardResponseDTO getTodayMealBoard(Long boardId);
 
-    ResponseEntity<String> deletePost(Long boardId, User user);
+    ResponseEntity<String> deletePost(Long boardId, BaseEntity user);
 
     ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatBordRequestDTO, User user, MultipartFile file) throws IOException;
 

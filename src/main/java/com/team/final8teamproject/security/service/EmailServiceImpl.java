@@ -3,7 +3,7 @@ package com.team.final8teamproject.security.service;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
-
-    @Autowired
-    JavaMailSender emailSender;
-
+    private final JavaMailSender emailSender;
     public static String ePw;
 
     private MimeMessage createMessage(String to)throws Exception{

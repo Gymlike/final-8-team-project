@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.service;
 
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.comment.commentReply.dto.TodayMealCommentReplyResponseDTO;
 import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
 import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
@@ -121,7 +122,7 @@ public class TodayMealServiceImple implements  TodayMealService{
      */
     @Override
     @Transactional
-    public ResponseEntity<String> deletePost(Long boardId, User user) {
+    public ResponseEntity<String> deletePost(Long boardId, BaseEntity user) {
         TodayMeal todayMeal = todayMealRepository.findById(boardId).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
 

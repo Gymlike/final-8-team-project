@@ -1,12 +1,11 @@
 package com.team.final8teamproject.board.comment.commentReply.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatCommentReplyRequestDTO;
-import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
 import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
 import com.team.final8teamproject.board.comment.commentReply.repository.TodayMealCommentReplyRepository;
 import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.board.comment.repository.TodayMealCommentRepository;
-import com.team.final8teamproject.board.entity.TodayMeal;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -39,7 +38,7 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, User user, Long commentID) {
+    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, BaseEntity user, Long commentID) {
         TodayMealCommentReply commentReply = todayMealCommentReplyRepository.findById(commentID).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
         String username = user.getUsername();
         String comment = requestDTO.getComment();
@@ -52,7 +51,7 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteCommentReply(User user, Long commentId) {
+    public ResponseEntity<String> deleteCommentReply(BaseEntity user, Long commentId) {
         String username = user.getUsername();
         TodayMealCommentReply commentReply = todayMealCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
         if(commentReply.isWriter(username)){

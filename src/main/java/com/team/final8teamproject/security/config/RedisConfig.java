@@ -1,4 +1,4 @@
-package com.team.final8teamproject.security.redis;
+package com.team.final8teamproject.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
