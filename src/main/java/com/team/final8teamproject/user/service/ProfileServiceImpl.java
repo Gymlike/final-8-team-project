@@ -2,7 +2,6 @@ package com.team.final8teamproject.user.service;
 
 import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.manager.repository.ManagerRepository;
-import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import com.team.final8teamproject.user.dto.ProfileResponseDto;
@@ -35,13 +34,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
 
-    //사업자
-    //1. 프로필 조회
-    @Transactional
-    public ProfileResponseDto getOwnerProfile(Owner owner) {
-        return new ProfileResponseDto(owner.getUsername(), owner.getNickName(), owner.getEmail(), owner.getProfileImage(), owner.getPhoneNumber());
-    }
-}
+//    //사업자
+//    //1. 프로필 조회
+//    @Transactional
+//    public ProfileResponseDto getOwnerProfile(Owner owner) {
+//        return new ProfileResponseDto(owner.getId(),owner.getUsername(), owner.getNickName(), owner.getEmail(), owner.getProfileImage(), owner.getPhoneNumber());
+//    }
+//
 //    //2. 프로필 수정
 //    @Override
 //    @Transactional
@@ -49,20 +48,20 @@ public class ProfileServiceImpl implements ProfileService {
 //        owner.changeOwnerProfile(profileModifyRequestDto);
 //        ownerRepository.save(owner);
 //    }
-//
-//    //관리자
-//    //1. 프로필 조회
-//    @Transactional
-//    public ProfileResponseDto getManagerProfile(Manager manager) {
-//        return new ProfileResponseDto(manager.getUsername(), manager.getNickName(), manager.getEmail() ,manager.getProfileImage(), manager.getPhoneNumber());
-//    }
-//
-//    //2. 프로필 수정
-//    @Override
-//    @Transactional
-//    public void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Manager manager) {
-//        manager.changeManagerProfile(profileModifyRequestDto);
-//        managerRepository.save(manager);
-//    }
-//
-//}
+
+    //관리자
+    //1. 프로필 조회
+    @Transactional
+    public ProfileResponseDto getManagerProfile(Manager manager) {
+        return new ProfileResponseDto(manager.getId(),manager.getUsername(), manager.getNickName(), manager.getEmail() ,manager.getProfileImage(), manager.getPhoneNumber());
+    }
+
+    //2. 프로필 수정
+    @Override
+    @Transactional
+    public void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Manager manager) {
+        manager.changeManagerProfile(profileModifyRequestDto);
+        managerRepository.save(manager);
+    }
+
+}

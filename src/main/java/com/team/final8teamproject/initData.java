@@ -53,6 +53,7 @@ public class initData implements ApplicationRunner {
           .ownerNumber("owner2")
           .password(passwordEncoder.encode("owner1234"))
           .username("owner1").role(UserRoleEnum.OWNER).experience(0L)
+          .storeName("짐")
           .build();
       Owner owner1 = Owner.builder()
           .nickName("owner2").email("owner2@google.com")
@@ -60,6 +61,7 @@ public class initData implements ApplicationRunner {
           .phoneNumber("01022233333")
           .password(passwordEncoder.encode("owner1234"))
           .username("owner2").role(UserRoleEnum.OWNER).experience(0L)
+          .storeName("짐짐")
           .build();
       User member = User.builder()
           .nickName("member").email("member1@google.com")
