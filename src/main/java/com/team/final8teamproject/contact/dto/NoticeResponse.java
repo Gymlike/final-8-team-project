@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.team.final8teamproject.contact.entity.Notice;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -14,8 +15,9 @@ public class NoticeResponse {
   private final Long managerId;
   private final String title;
   private final String content;
+  @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
   private final LocalDateTime createdDate;
-  private final LocalDateTime modifiedDate;
+  //private final LocalDateTime modifiedDate;
 
 
 
@@ -25,6 +27,6 @@ public class NoticeResponse {
     this.title = notice.getTitle();
     this.content = notice.getContent();
     this.createdDate = notice.getCreatedDate();
-    this.modifiedDate = notice.getModifiedDate();
+  //  this.modifiedDate = notice.getModifiedDate();
   }
 }

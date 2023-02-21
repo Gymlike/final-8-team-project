@@ -1,14 +1,16 @@
 package com.team.final8teamproject.manager.service;
 
-import com.team.final8teamproject.manager.dto.ManagerLoginRequestDto;
-import com.team.final8teamproject.manager.dto.ManagerLoginResponseDto;
-import com.team.final8teamproject.manager.dto.ManagerSignupRequestDto;
-import com.team.final8teamproject.manager.dto.ManagerSignupResponseDto;
-import com.team.final8teamproject.user.dto.LoginResponseDto;
+import com.team.final8teamproject.manager.dto.ManagerResponseDto;
+import com.team.final8teamproject.user.entity.UserRoleEnum;
+
+import java.util.List;
 
 public interface ManagerService {
-    ManagerSignupResponseDto signup(ManagerSignupRequestDto managerSignupRequestDto);
-    LoginResponseDto login(ManagerLoginRequestDto managerLoginRequestDto);
-    void logout(String accessToken, String manager);
+
+    List<ManagerResponseDto> getStandByList(UserRoleEnum userRoleEnum);
+
+    void allowStandBy(Long id);
+
+    void refuseStandBy(Long id);
 
 }

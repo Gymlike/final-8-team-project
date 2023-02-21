@@ -22,16 +22,18 @@ public class T_exerciseCommentReply extends Timestamped {
     @Column(nullable = false)
     private String username;
 
+    private String userNickname;
 
     @ManyToOne
     @JoinColumn(name ="COMMENT_ID")
     private T_exerciseComment comments;
 
-    public T_exerciseCommentReply(String commentContent, String username, T_exerciseComment comments) {
+    public T_exerciseCommentReply(String commentContent, String username, T_exerciseComment comments,String userNickname) {
         this.commentContent = commentContent;
         this.username = username;
         this.comments = comments;
         comments.getCommentReplyList().add(this);
+        this.userNickname = userNickname;
     }
 
     public boolean isWriter(String username) {

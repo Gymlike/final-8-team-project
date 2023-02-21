@@ -25,11 +25,13 @@ public class InquiryRequest {
 
   }
 
-  public Inquiry toEntity(String username) {
+
+  public Inquiry toEntity(String username,String nickName) {
     return Inquiry.builder()
         .title(title)
         .content(content)
         .username(username)
+        .nickName(nickName)
         .secretCheckBox(secretCheckBox) //defalt = false, true 이면 비밀글 처리됨
         .build();
   }

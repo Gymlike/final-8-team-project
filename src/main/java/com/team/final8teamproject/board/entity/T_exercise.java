@@ -1,8 +1,9 @@
 package com.team.final8teamproject.board.entity;
 
 
-import com.team.final8teamproject.base.entity.BaseEntity;
+
 import com.team.final8teamproject.share.Timestamped;
+import com.team.final8teamproject.base.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,4 +53,9 @@ public class T_exercise extends Timestamped {
         this.filename = filename;
         this.filepath = filepath;
     }
+
+    public Long returnPostId(){
+        return id;
+    }
+
 }

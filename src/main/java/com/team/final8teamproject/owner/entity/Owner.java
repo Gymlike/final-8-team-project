@@ -1,15 +1,15 @@
 package com.team.final8teamproject.owner.entity;
 
+
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
-import com.team.final8teamproject.user.entity.User;
+
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Getter
 @Entity(name = "owner")
@@ -23,6 +23,8 @@ public class Owner extends BaseEntity {
 
     @Column(nullable = false)
     private String nickName;
+
+    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)

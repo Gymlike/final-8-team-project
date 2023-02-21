@@ -1,10 +1,19 @@
 package com.team.final8teamproject.contact.service;
 
+import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
+import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.service.UserService;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,93 +26,161 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryServiceImpl implements InquiryService {
 
   private final InquiryRepository inquiryRepository;
-
+  private final ContactCommentServiceImpl contactCommentService;
 
 
   @Transactional
   @Override
-  public void createInquiry(InquiryRequest inquiryRequest, String username) {
-    Inquiry inquiry = inquiryRequest.toEntity(username);
+  public void createInquiry(InquiryRequest inquiryRequest, String username, String nickName) {
+    Inquiry inquiry = inquiryRequest.toEntity(username,nickName);
     inquiryRepository.save(inquiry);
   }
 
 
   @Transactional
   @Override
-  public void updateInquiry(Long id, String username, InquiryRequest inquiryRequest) {
+  public void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest) {
+    String title = updateInquiryRequest.getTitle();
+    String content = updateInquiryRequest.getContent();
+
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (inquiry.getUsername().equals(username)) {
-      inquiry.update(inquiryRequest);
+    if(inquiry.isWriter(username)){
+      inquiry.update(title, content);
       inquiryRepository.save(inquiry);
     } else {
-      throw new IllegalArgumentException("접근 할 수 있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
 
   @Transactional(readOnly = true)
   @Override
-  public List<InquiryResponse> getInquiry(int page, int size, Direction direction,
+  public Result getInquiry(int page, int size, Direction direction,
       String properties) {
-    Page<Inquiry> inquiryListPage = inquiryRepository.findAll(PageRequest.of(page-1,size,direction,properties));
+    Page<Inquiry> inquiryListPage = inquiryRepository.findAll(
+        PageRequest.of(page - 1, size, direction, properties));
+    int totalCount = (int) inquiryListPage.getTotalElements();
+    if(inquiryListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
-   return inquiryResponses;
+    int countList = size;
+    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int totalPage = totalCount / countList;
+    if (totalCount % countList > 0) {
+      totalPage++;
+    }
+    if (totalPage < page) {
+      page = totalPage;
+    }
+    return new Result(page, totalCount, countPage, totalPage, inquiryResponses);
   }
 
+
+  /**
+   * 건당 문의 글 조회 시
+   *
+   * @param id 문의글 아이디
+   * @return 문의글 , 글에 해당하는 댓글, 대댓글
+   */
   @Transactional(readOnly = true)
   @Override
-  public  InquiryResponse getSelectedInquiry(Long id) {
+  public InquiryResponse getSelectedInquiry(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        ()-> new IllegalArgumentException("해당 문의 글이 존재하지 않습니다.")
-    );
-    return new InquiryResponse(inquiry);
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+    List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
+        id);
+    return new InquiryResponse(inquiry, parentComments);
   }
 
   @Transactional(readOnly = true)
   @Override
-  public List<InquiryResponse> searchByKeyword(String keyword, int page, int size, Direction direction,
-      String properties) {
+  public Result searchByKeyword(String keyword, int page, int size,
+      Direction direction, String properties) {
       String title = keyword;
       String content = keyword;
-      Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(title,content,PageRequest.of(page-1,size,direction,properties));
-      List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new).toList();
-      return inquiryResponses;
+
+    Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(
+        title, content, PageRequest.of(page - 1, size, direction, properties));
+    int totalCount = (int) inquiryListPage.getTotalElements();
+    if(inquiryListPage.isEmpty()){
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
-
-
+    List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
+        .toList();
+    int countList = size;
+    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int totalPage = totalCount / countList;
+    if (totalCount % countList > 0) {
+      totalPage++;
+    }
+    if (totalPage < page) {
+      page = totalPage;
+    }
+    return new Result(page, totalCount, countPage, totalPage, inquiryResponses);
+  }
 
   @Transactional
   @Override
   public void deleteInquiry(Long id, String username) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재 하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (inquiry.getUsername().equals(username)) {
+    if (inquiry.isWriter(username)) {
       inquiryRepository.delete(inquiry);
+      // 문의글 해당 댓글 삭제
+      contactCommentService.deleteAllByInquiryId(id);
     } else {
-      throw new IllegalArgumentException("접근 할 수  있는 권한이 없습니다.");
+      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
     }
   }
 
-  //todo 관리자따로, 유저따로 삭제 가능하게 하기
 
+  /**
+   * 관리자가 유저 글 삭제 기능
+   */
   @Transactional
   @Override
   public void deleteManager(Long id) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new IllegalArgumentException("해당 문의 글이 존재 하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-      inquiryRepository.delete(inquiry);
+    inquiryRepository.delete(inquiry);
   }
 
-  public Inquiry findById(Long inquiryId){
-      Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(
-          ()-> new IllegalArgumentException(" 해당 문의 글이 존재하지 않습니다.")
-      );
-      return inquiry;
+  @Override
+  public Inquiry findById(Long inquiryId) {
+    Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
+    );
+    return inquiry;
+  }
+
+  @Getter
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  public static class Result<T> {
+
+    private int page;
+    private int totalCount;
+    private int countPage;
+    private int totalPage;
+    private T data;
+
+    public Result(int totalCount, T data) {
+      this.totalCount = totalCount;
+      this.data = data;
+    }
+
+    public Result(int page, int totalCount, int countPage, int totalPage, T data) {
+      this.page = page;
+      this.totalCount = totalCount;
+      this.countPage = countPage;
+      this.totalPage = totalPage;
+      this.data = data;
+    }
   }
 }
 

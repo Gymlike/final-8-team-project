@@ -67,6 +67,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         //누가 인증하였는지에 대한 정보들을 저장한다.
         SecurityContextHolder.setContext(context);
     }
+
+//    public void setAuthentication(String nickname) {
+//        SecurityContext context = SecurityContextHolder.createEmptyContext();
+//        //jwtUtil에서  username에 알맞은 User객체를 가져와서 Authentication에 넣어준다.
+//        Authentication authentication = jwtUtil.createAuthentication(nickname);
+//        //그리고 빈 컨텍스트에 가져온 데이터(User객체와, username) authentication변수를 넣어주고
+//        context.setAuthentication(authentication);
+//        //누가 인증하였는지에 대한 정보들을 저장한다.
+//        SecurityContextHolder.setContext(context);
+//    }
+
     public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
         response.setStatus(statusCode);
         response.setContentType("application/json");
