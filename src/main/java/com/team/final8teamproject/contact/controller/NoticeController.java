@@ -58,7 +58,7 @@ public class NoticeController {
     return noticeServiceImpl.getSelectedNotice(id);
   }
 
-  @GetMapping("/check/keywords")
+  @GetMapping("/check/search")
   public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,

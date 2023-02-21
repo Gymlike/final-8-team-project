@@ -26,6 +26,7 @@ public enum ExceptionStatus {
     POST_IS_EMPTY(404,"해당 페이지는 게시글이 존재하지 않습니다."),
     WRONG_SELLER_ID_T0_BOARD(403,"다른 판매자의 게시물에는 접근 할 수 없습니다."),
     WRONG_USER_T0_COMMENT(403,"다른 유저의 댓글에는 접근 할 수 없습니다."),
+    WRONG_USER_T0_CONTACT(403,"다른 유저의 게시글에는 접근 할 수 없습니다."),
     WRONG_USER_T0_COMMENT_REPLY(403,"다른 유저의 대댓글에는 접근 할 수 없습니다."),
     WRONG_SELLER_ID_TO_USER_REQUEST(403,"다른 판매자의 요청목록에는 접근 할 수 없습니다.");
 

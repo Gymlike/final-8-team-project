@@ -50,7 +50,7 @@ public class InquiryServiceImpl implements InquiryService {
       inquiry.update(title, content);
       inquiryRepository.save(inquiry);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
   }
 
@@ -134,7 +134,7 @@ public class InquiryServiceImpl implements InquiryService {
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
   }
 

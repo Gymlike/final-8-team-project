@@ -76,7 +76,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
       comment.update(comments);
       contactCommentRepository.save(comment);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
     }
   }
 
@@ -90,14 +90,14 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     if(comment.isWriter(username)){
       contactCommentRepository.deleteById(commentId);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
     }
   }
   @Transactional
   @Override
   public void deleteManager(Long id) {
     ContactComment contactComment = contactCommentRepository.findById(id).orElseThrow(
-        () -> new CustomException(ExceptionStatus.ACCESS_DENINED)
+        () -> new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT)
     );
     contactCommentRepository.delete(contactComment);
   }

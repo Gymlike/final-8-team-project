@@ -12,5 +12,4 @@ public interface InquiryRepository extends JpaRepository<Inquiry,Long> {
 
   Page<Inquiry> findAllByTitleContainingOrContentContaining(String title, String content, PageRequest of);
 
-
 }

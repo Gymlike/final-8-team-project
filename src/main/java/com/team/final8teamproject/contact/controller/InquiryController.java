@@ -59,7 +59,7 @@ public class InquiryController {
 
 
 
-  @GetMapping("/contact/inquiries/keywords")
+  @GetMapping("/contact/inquiries/search")
   public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,

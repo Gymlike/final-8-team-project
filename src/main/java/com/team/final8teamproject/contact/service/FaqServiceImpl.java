@@ -108,7 +108,7 @@ public class FaqServiceImpl implements FaqService {
       faq.update(question, answer);
       faqRepository.save(faq);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
   }
 
@@ -121,7 +121,7 @@ public class FaqServiceImpl implements FaqService {
     if (faq.getManagerId().equals(managerId)) {
       faqRepository.delete(faq);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
   }
 
