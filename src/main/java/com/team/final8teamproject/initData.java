@@ -148,6 +148,51 @@ public class initData implements ApplicationRunner {
                 .region("경기 성남시 분당구 판교역로 235 (삼평동)")
                 .build();
 
+        GymBoard gymBoard3 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요<br>" +
+                        "많이 찾아와주시기 바랍니다.~<br>" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요<br>" +
+                        "모두 화이팅<br>")
+                .username("owner2")
+                .image("images\\img_1.jpg")
+                .gymName("피트니스탑")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("서울 용산구 보광로 126")
+                .build();
+
+        GymBoard gymBoard4 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner2")
+                .image("images\\img_3.jpg")
+                .gymName("라쿠치나")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("서울 용산구 회나무로44길 10")
+                .build();
+
+        GymBoard gymBoard5 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner2")
+                .image("images\\img_4.jpg")
+                .gymName("부다스벨리스")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("서울 용산구 녹사평대로40길 48")
+                .build();
+
+        gymBoardRepository.save(gymBoard3);
+        gymBoardRepository.save(gymBoard4);
+        gymBoardRepository.save(gymBoard5);
         gymBoardRepository.save(gymBoard2);
         gymBoardRepository.save(gymBoard1);
         // ----------------
@@ -172,11 +217,27 @@ public class initData implements ApplicationRunner {
                 .gymId(2L)
                 .comment("여기 정말좋아여 많이들 오세요")
                 .username("member1")
-                .rating(5L)
+                .rating(4L)
+                .build();
+
+        GymReview gymReview4 = GymReview.builder()
+                .gymId(2L)
+                .comment("여기 좋은가여 많이들 오지마세여 좋지 못해여")
+                .username("member2")
+                .rating(1L)
+                .build();
+
+        GymReview gymReview5 = GymReview.builder()
+                .gymId(2L)
+                .comment("그냥 평벙함? 그런느낌")
+                .username("member1")
+                .rating(3L)
                 .build();
         gymReviewRepository.save(gymReview1);
         gymReviewRepository.save(gymReview2);
         gymReviewRepository.save(gymReview3);
+        gymReviewRepository.save(gymReview4);
+        gymReviewRepository.save(gymReview5);
         //----------------
     }
 }

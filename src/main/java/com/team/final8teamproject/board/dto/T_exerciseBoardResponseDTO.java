@@ -31,7 +31,7 @@ public class T_exerciseBoardResponseDTO {
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
-        this.createdDate =t_exercise.getCreatedAt();
+        this.createdDate =t_exercise.getCreatedDate();
         this.commentList = commentList;
     }
     public T_exerciseBoardResponseDTO( T_exercise t_exercise) {
@@ -39,6 +39,6 @@ public class T_exerciseBoardResponseDTO {
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();
         this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
-        this.createdDate =t_exercise.getCreatedAt();
+        this.createdDate =t_exercise.getCreatedDate();
     }
 }

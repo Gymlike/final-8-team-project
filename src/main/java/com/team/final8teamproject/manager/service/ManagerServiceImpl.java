@@ -42,7 +42,7 @@ public class ManagerServiceImpl implements ManagerService {
         UserRoleEnum role = UserRoleEnum.WAIT;
         Manager manager = Manager.builder()
                 .username(managerName).password(password)
-                .nickname(nickName).role(role)
+                .nickName(nickName).role(role)
                 .build();
         managerRepository.save(manager);
         return new ManagerSignupResponseDto("신청에 성공했습니다.");

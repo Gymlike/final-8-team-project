@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue(value = "KaKao")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class KaKao extends BaseEntity {
-    @Column(nullable = false)
     private Long kakaoId;
     private String profileImage;
     private String nickName;

@@ -15,6 +15,8 @@ public class GymPostResponseDto {
     private final String image;
     private final String gymName;
     private final String location;
+
+    private final Long rating;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'작성시간'HH:mm:ss", timezone = "Asia/Seoul")
     private final LocalDateTime createdDate;
     public GymPostResponseDto(GymBoard gymBoard) {
@@ -25,5 +27,6 @@ public class GymPostResponseDto {
         this.gymName =gymBoard.getGymName();
         this.location = gymBoard.getRegion();
         this.createdDate =gymBoard.getCreatedDate();
+        this.rating = gymBoard.getRating();
     }
 }

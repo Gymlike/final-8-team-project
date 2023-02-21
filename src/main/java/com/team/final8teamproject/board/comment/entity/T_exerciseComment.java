@@ -1,7 +1,7 @@
 package com.team.final8teamproject.board.comment.entity;
 
 import com.team.final8teamproject.board.comment.commentReply.entity.T_exerciseCommentReply;
-import com.team.final8teamproject.share.TimeStamp;
+import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class T_exerciseComment extends TimeStamp {
+public class T_exerciseComment extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_ID")

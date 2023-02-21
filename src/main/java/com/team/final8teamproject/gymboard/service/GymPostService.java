@@ -4,22 +4,11 @@ import com.team.final8teamproject.gymboard.dto.CreatePostGymRequestDto;
 import com.team.final8teamproject.gymboard.dto.GymPostPutResponseDto;
 import com.team.final8teamproject.gymboard.dto.GymPostResponseDetailDto;
 import com.team.final8teamproject.gymboard.dto.GymPostResponseDto;
-import com.team.final8teamproject.gymboard.entity.GymBoard;
-import com.team.final8teamproject.gymboardreview.dto.GymBoardReviewResponseDto;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardviewResponseDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public interface GymPostService {
 

@@ -11,7 +11,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
 public class BaseEntity extends Timestamped {
     @Id

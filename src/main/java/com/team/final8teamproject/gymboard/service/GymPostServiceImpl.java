@@ -6,6 +6,7 @@ import com.team.final8teamproject.gymboard.entity.GymBoard;
 import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardReviewResponseDto;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardviewResponseDto;
+import com.team.final8teamproject.gymboardreview.entity.GymReview;
 import com.team.final8teamproject.gymboardreview.repository.GymReviewRepository;
 import com.team.final8teamproject.gymboardreview.service.GymBoardReviewServiceImpl;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
@@ -14,15 +15,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -143,4 +143,35 @@ public class GymPostServiceImpl implements GymPostService {
         gymReviewRepository.deleteByGymId(gymBoard.getId());
         return "삭제완료";
     }
+
+    /**
+     * 스레드와 스케쥴러를 이용하여
+     * 일정 주기별로 리뷰 평점점수를 총합하여 데이터베이스를 업데이트 해줌
+     */
+
 }
+
+ /* 참조형 해보기 default를 활용해서 더하기가 안됨
+        List<GymBoard> gymBoards = gymBoardRepository.findAll();
+        if(gymBoards.isEmpty()){
+            throw new IllegalArgumentException("작성된 운동시설이 없습니다.");
+        }
+        List<GymReview> gymReview = gymReviewRepository.findAll();
+        if(gymReview.isEmpty()){
+            throw new IllegalArgumentException("리뷰가 없습니다.");
+        }
+        Map<Long, RatingDto> rating = new HashMap<>();
+        for(GymReview gymReview1 : gymReview){
+            Long key = gymReview1.getGymId();
+            Long value = gymReview1.getRating();
+            RatingDto ratingDto = new RatingDto(value, 1L);
+            rating.put(key , ratingDto);
+        }
+        for (GymBoard gymBoard : gymBoards) {
+            if(rating.get(gymBoard.getId()) == null){
+                continue;
+            }
+            RatingDto ratingDto = rating.get(gymBoard.getId());
+            gymBoard.ratingUpdate(ratingDto.getTotal()/ratingDto.getCount());
+        }
+ */

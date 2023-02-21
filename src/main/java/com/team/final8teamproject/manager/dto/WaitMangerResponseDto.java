@@ -11,6 +11,6 @@ public class WaitMangerResponseDto {
     public WaitMangerResponseDto(Manager manager){
         this.manager = manager.getUsername();
         this.password = manager.getPassword();
-        this.nickname = manager.getNickname();
+        this.nickname = manager.getNickName();
     }
 }

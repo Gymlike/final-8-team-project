@@ -17,12 +17,12 @@ import lombok.NoArgsConstructor;
 public class Manager extends BaseEntity{
     private String profileImage;
     @NotBlank
-    private String nickname;
+    private String nickName;
 
     @Builder
-    public Manager(String username, String password, String nickname, UserRoleEnum role) {
+    public Manager(String username, String password, String nickName, UserRoleEnum role) {
         super(username, password, role);
-        this.nickname = nickname;
+        this.nickName = nickName;
     }
 
 }

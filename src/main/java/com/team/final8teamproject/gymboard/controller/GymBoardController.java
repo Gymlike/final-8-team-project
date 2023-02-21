@@ -56,4 +56,5 @@ public class GymBoardController {
     public String deleteGymPost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return gymPostService.deleteGymPost(id, userDetails.getUsername());
     }
+
 }

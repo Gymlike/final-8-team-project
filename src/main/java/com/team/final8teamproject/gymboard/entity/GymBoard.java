@@ -21,6 +21,7 @@ public class GymBoard extends Timestamped {
      * phoneNumber 전화번호
      * region 주소
      * price 가격
+     * rating 리뷰 점수
      * gymImage 이미지 넣어두는거
      * 운동시설 리뷰, 가격, 트레이너는 다른 테이블에서 연결없이
      * 다 따로 읽어서 불러옴 
@@ -46,6 +47,8 @@ public class GymBoard extends Timestamped {
     private String gymImage;
 
     private String price;
+
+    private Long rating;
     //나중에 트레이너 추가하기
 
     @Builder(builderMethodName = "GymBoard")
@@ -60,6 +63,7 @@ public class GymBoard extends Timestamped {
         this.gymImage = image;
         this.region = region;
         this.price = price;
+        this.rating =0L;
     }
 
  @Builder(builderMethodName = "gymBoardUpdate")
@@ -69,5 +73,8 @@ public class GymBoard extends Timestamped {
         this.content = createPostGymRequestDto.getContents();
         this.gymImage = createPostGymRequestDto.getImage();
         this.region = createPostGymRequestDto.getRegion();
+    }
+    public void ratingUpdate(Long rating){
+        this.rating = rating;
     }
 }

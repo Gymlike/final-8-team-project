@@ -50,9 +50,7 @@ public class GymBoardReviewServiceImpl implements GymBoardReviewService{
     @Transactional(readOnly = true)
     public List<GymBoardReviewResponseDto> getReview(Long gymId){
         List<GymReview> reviews = gymReviewRepository.findByGymId(gymId);
-
         List<GymBoardReviewResponseDto> gymBoards = new ArrayList<>();
-
         for (GymReview gymReview : reviews) {
             GymBoardReviewResponseDto gymBoardReviewResponseDto = new GymBoardReviewResponseDto(gymReview);
             gymBoards.add(gymBoardReviewResponseDto);
@@ -96,6 +94,7 @@ public class GymBoardReviewServiceImpl implements GymBoardReviewService{
                                         .gymId(gymReview.getGymId())
                 .reviewId(gymReview.getId())
                 .build();
+
         gymDeleteReviewRepository.save(gymDeleteReview);
         gymReviewRepository.deleteById(gymReview.getId());
         return "삭제 성공";
