@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TrainerRequestDto {
-    private String trainerName;
-    private String StoreName;
+    private String trainername;
+    private String storeName;
     private String contents;
+    private String image;
 }

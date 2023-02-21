@@ -2,7 +2,6 @@ package com.team.final8teamproject.owner.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
-import com.team.final8teamproject.owner.dto.OwnerLoginRequestDto;
 import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.security.jwt.JwtUtil;
@@ -15,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
@@ -37,6 +36,7 @@ public class OwnerService {
         String email = requestDto.getEmail();
         String phoneNumber =requestDto.getPhoneNumber();
         String ownerNumber = requestDto.getOwnerNumber();
+
 
         Optional<BaseEntity> found = baseRepository.findByUsername(ownerName);
         if (found.isPresent()) {
@@ -61,7 +61,7 @@ public class OwnerService {
     }
     //2.로그인
     @Transactional
-    public LoginResponseDto login(OwnerLoginRequestDto requestDto) {
+    public LoginResponseDto login(LoginRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
 
@@ -80,5 +80,26 @@ public class OwnerService {
         redisUtil.setRefreshToken("RT:" +base.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
 
         return loginResponseDto;
+    }
+    //3. 로그아웃
+
+    public String logout(String accessToken, String username) {
+
+        // refreshToken 테이블의 refreshToken 삭제
+        redisUtil.deleteRefreshToken("RT:" + username);
+//        refreshTokenRepository.deleteRefreshTokenByEmail(users.getEmail());
+
+        // 레디스에 accessToken 사용못하도록 등록
+        redisUtil.setBlackList("RT:"+accessToken, "accessToken", 5L);
+
+        return "로그아웃 완료";
+    }
+
+    public Owner getOwnerById(Long id) {
+        Optional<Owner> optionalOwner = ownerRepository.findById(id);
+        if (optionalOwner.isEmpty()){
+            throw new NoSuchElementException("오너가 존재하지 않습니다.");
+        }
+        return optionalOwner.get();
     }
 }

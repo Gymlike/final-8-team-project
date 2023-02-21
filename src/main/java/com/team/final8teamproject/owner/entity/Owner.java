@@ -1,9 +1,6 @@
 package com.team.final8teamproject.owner.entity;
 
-
 import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
-
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -27,26 +24,33 @@ public class Owner extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
+    private String storeName;
+
     @Column(nullable = false)
     private Long experience;
 
     //오너생성
     @Builder
     public Owner(String username, String password, UserRoleEnum role,
-                String nickName, String phoneNumber, String email,
-                Long experience, String ownerNumber){
+                 String nickName, String phoneNumber, String email,
+                 Long experience, String storeName, String ownerNumber) {
         super(username, password, email, role);
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
         this.experience = experience;
         this.ownerNumber = ownerNumber;
+        this.storeName = storeName;
     }
 
-    //프로필이미지 수정
-    public void changeOwnerProfile(ProfileModifyRequestDto profileModifyRequestDto) {
-        this.nickName = profileModifyRequestDto.getNickname();
-        this.profileImage = profileModifyRequestDto.getImage();
-        this.phoneNumber = profileModifyRequestDto.getPhoneNumber();
+    public void modifyOwnerProfile(String password,
+                                   String nickName, String phoneNumber, String email,
+                                   String storeName, String ownerNumber, String profileImage) {
+        super.modifyBaseProfile(email, password);
+        this.nickName = nickName;
+        this.phoneNumber = phoneNumber;
+        this.ownerNumber = ownerNumber;
+        this.storeName = storeName;
+        this.profileImage = profileImage;
     }
 
 }

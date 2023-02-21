@@ -84,8 +84,6 @@ public class NoticeServiceImpl implements NoticeService {
       Direction direction, String properties) {
     String title = keyword;
     String content = keyword;
-//    List<Notice> noticeList = noticeRepository.findAllByTitleContainingOrContentContaining(title,content);
-//    int totalCount = noticeList.size();
 
     Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(
         title, content,
@@ -107,34 +105,6 @@ public class NoticeServiceImpl implements NoticeService {
     }
     return new Result(page, totalCount, countPage, totalPage, noticeResponses);
   }
-//  @Transactional(readOnly = true)
-//  @Override
-//  public Result searchByKeyword(String keyword, int page, int size,
-//      Direction direction, String properties) {
-//    String title = keyword;
-//    String content = keyword;
-//    List<Notice> noticeList = noticeRepository.findAllByTitleContainingOrContentContaining(title,content);
-//    int totalCount = noticeList.size();
-//
-//    Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(
-//        title, content,
-//        PageRequest.of(page - 1, size, direction, properties));
-//    if (noticeListPage.isEmpty()) {
-//      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
-//    }
-//    List<NoticeResponse> noticeResponses = noticeListPage.stream().map(NoticeResponse::new).collect(
-//        Collectors.toList());
-//    int countList = size;
-//    int countPage = 5;//todo 리팩토링때  10으로 변경예정
-//    int totalPage = totalCount / countList;
-//    if (totalCount % countList > 0) {
-//      totalPage++;
-//    }
-//    if (totalPage < page) {
-//      page = totalPage;
-//    }
-//    return new Result(page, totalCount, countPage, totalPage, noticeResponses);
-//  }
 
   @Transactional
   @Override
@@ -149,7 +119,7 @@ public class NoticeServiceImpl implements NoticeService {
       notice.update(title, content);
       noticeRepository.save(notice);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
 
   }
@@ -163,7 +133,7 @@ public class NoticeServiceImpl implements NoticeService {
     if (notice.getManagerId().equals(managerId)) {
       noticeRepository.delete(notice);
     } else {
-      throw new CustomException(ExceptionStatus.ACCESS_DENINED);
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
 
   }

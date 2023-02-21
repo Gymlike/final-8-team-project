@@ -1,6 +1,7 @@
 package com.team.final8teamproject.base.entity;
 
-import com.team.final8teamproject.user.entity.Timestamped;
+
+import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -18,13 +19,17 @@ public class BaseEntity extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "User_ID")
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String username;
+
     @JsonIgnore
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
@@ -55,5 +60,10 @@ public class BaseEntity extends Timestamped {
 
     public void approvalManager(UserRoleEnum role) {
         this.role = role;
+    }
+
+    public void modifyBaseProfile(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 }

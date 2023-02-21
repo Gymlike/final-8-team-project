@@ -1,11 +1,11 @@
 package com.team.final8teamproject;
 
-
-import com.team.final8teamproject.contact.Comment.entity.ContactComment;
-import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
+//import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+//import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
-
+import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.contact.Repository.FaqRepository;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.Repository.NoticeRepository;
@@ -46,34 +46,36 @@ public class initData implements ApplicationRunner {
     private final GymBoardRepository gymBoardRepository;
     private final GymReviewRepository gymReviewRepository;
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
 
-        User manager = User.builder()
-                .nickName("manager").email("manager@nvaer.com")
-                .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
-                .username("manager").role(UserRoleEnum.MANAGER).experience(0L)
-                .build();
-        Owner owner = Owner.builder()
-                .nickName("owner1").email("owner@google.com")
-                .phoneNumber("01022223333")
-                .ownerNumber("owner2")
-                .password(passwordEncoder.encode("owner1234"))
-                .username("owner1").role(UserRoleEnum.OWNER).experience(0L)
-                .build();
-        Owner owner1 = Owner.builder()
-                .nickName("owner2").email("owner2@google.com")
-                .ownerNumber("owner2")
-                .phoneNumber("01022233333")
-                .password(passwordEncoder.encode("owner1234"))
-                .username("owner2").role(UserRoleEnum.OWNER).experience(0L)
-                .build();
-        User member =User.builder()
-                .nickName("member").email("member1@google.com")
-                .phoneNumber("01033334444")
-                .password(passwordEncoder.encode("member1234"))
-                .username("member1").role(UserRoleEnum.MEMBER).experience(0L)
-                .build();
+      User manager = User.builder()
+          .nickName("manager").email("manager@nvaer.com")
+          .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
+          .username("manager").role(UserRoleEnum.MANAGER).experience(0L)
+          .build();
+      Owner owner = Owner.builder()
+          .nickName("owner1").email("owner@google.com")
+          .phoneNumber("01022223333")
+          .ownerNumber("owner2")
+          .password(passwordEncoder.encode("owner1234"))
+          .username("owner1").role(UserRoleEnum.OWNER).experience(0L)
+          .storeName("짐")
+          .build();
+      Owner owner1 = Owner.builder()
+          .nickName("owner2").email("owner2@google.com")
+          .ownerNumber("owner2")
+          .phoneNumber("01022233333")
+          .password(passwordEncoder.encode("owner1234"))
+          .username("owner2").role(UserRoleEnum.OWNER).experience(0L)
+          .storeName("짐짐")
+          .build();
+      User member = User.builder()
+          .nickName("member").email("member1@google.com")
+          .phoneNumber("01033334444")
+          .password(passwordEncoder.encode("member1234"))
+          .username("member1").role(UserRoleEnum.MEMBER).experience(0L)
+          .build();
 
         User member1 =User.builder()
                 .nickName("member1").email("member2@google.com")
@@ -81,14 +83,13 @@ public class initData implements ApplicationRunner {
                 .username("member2").role(UserRoleEnum.MEMBER).experience(0L)
                 .build();
 
-        userRepository.save(manager);
-        userRepository.save(member);
-        userRepository.save(member1);
-        ownerRepository.save(owner);
-        ownerRepository.save(owner1);
+      userRepository.save(manager);
+      userRepository.save(member);
+      userRepository.save(member1);
+      ownerRepository.save(owner);
+      ownerRepository.save(owner1);
 
-
-        // -------------------고객 센터 관련
+      // -------------------고객 센터 관련
 
       Inquiry ownerInquiry = new Inquiry("owner", "오너 ", "사업자 문의", "입점가능?", false);
       Inquiry memberInquiry = new Inquiry("member", "멤버", "회원 문의", "회원가입?", true); // 문의글 비밀상태
@@ -311,4 +312,5 @@ public class initData implements ApplicationRunner {
         gymReviewRepository.save(gymReview5);
         //----------------
     }
-}
+  }
+
