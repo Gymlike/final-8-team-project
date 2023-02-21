@@ -1,6 +1,8 @@
 package com.team.final8teamproject.owner.entity;
 
+import com.team.final8teamproject.owner.dto.TrainerRequestDto;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,9 +25,26 @@ public class Trainer {
     @Column
     private String contents;
 
-    public Trainer(String trainername, String storeName, String contents) {
+    @Column
+    private String image;
+
+    @ManyToOne
+    private Owner owner;
+
+    @Builder
+    public Trainer(String trainername, String storeName, String contents, String image) {
         this.trainername = trainername;
         this.storeName = storeName;
         this.contents = contents;
+        this.image = image;
+    }
+    public void setOwner(Owner owner){
+        this.owner = owner;
+    }
+    public void updateTrainer(TrainerRequestDto trainerRequestDto) {
+        this.trainername = trainerRequestDto.getTrainername();
+        this.storeName = trainerRequestDto.getStoreName();
+        this.contents = trainerRequestDto.getContents();
+        this.image = trainerRequestDto.getImage();
     }
 }
