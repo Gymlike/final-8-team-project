@@ -62,4 +62,8 @@ public class BaseEntity extends Timestamped {
         this.role = role;
     }
 
+    public void modifyBaseProfile(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

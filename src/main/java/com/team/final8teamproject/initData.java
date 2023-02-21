@@ -1,11 +1,11 @@
 package com.team.final8teamproject;
 
-
-import com.team.final8teamproject.contact.Comment.entity.ContactComment;
-import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
+//import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+//import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
-
+import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.contact.Repository.FaqRepository;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.Repository.NoticeRepository;

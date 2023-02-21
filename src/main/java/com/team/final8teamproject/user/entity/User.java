@@ -36,10 +36,10 @@ public class User extends BaseEntity {
         this.experience = experience;
     }
 
-    public void changeProfile(ProfileModifyRequestDto profileModifyRequestDto) {
-        this.nickName = profileModifyRequestDto.getNickname();
-        this.profileImage = profileModifyRequestDto.getImage();
-        this.phoneNumber = profileModifyRequestDto.getPhoneNumber();
+    public void changeProfile(String nickName, String profileImage, String phoneNumber) {
+        this.nickName = nickName;
+        this.profileImage = profileImage;
+        this.phoneNumber = phoneNumber;
     }
 
 }
