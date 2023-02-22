@@ -14,13 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GeneralManager extends BaseEntity {
     private String profileImage;
-    @NotBlank
-    private String nickName;
-
     @Builder
-    public GeneralManager(String username, String password, String nickName, UserRoleEnum role){
-        super(username, password, role);
-        this.nickName = nickName;
+    public GeneralManager(String username, String password,  UserRoleEnum role, String nickName){
+        super(username, password, role, nickName);
+//        this.nickName = nickName;
     }
 
 }

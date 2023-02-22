@@ -172,14 +172,10 @@ public class UserService {
             e.printStackTrace();
         }
     }
-
     public String getUserNickname(BaseEntity base){
-
         String username = base.getUsername();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException(ExceptionStatus.WRONG_USERNAME));
-
+        BaseEntity user = baseRepository.findByUsername(username).orElseThrow(() -> new CustomException(ExceptionStatus.WRONG_USERNAME));
         return user.getNickName();
     }
-
 }
 

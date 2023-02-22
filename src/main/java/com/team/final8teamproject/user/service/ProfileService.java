@@ -12,15 +12,14 @@ public interface ProfileService {
 
     void modifyProfile(ProfileModifyRequestDto profileModifyRequestDto, User user);
 
+    //관리자
+    ProfileResponseDto getManagerProfile(Manager manager);
+
+    void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Manager manager);
 //
 //    //사업자
 //    ProfileResponseDto getOwnerProfile(Owner owner);
 //
 //    void modifyOwnerProfile(ProfileModifyRequestDto profileModifyRequestDto, Owner owner);
-
-    //관리자
-    ProfileResponseDto getManagerProfile(Manager manager);
-
-    void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Manager manager);
 
 }

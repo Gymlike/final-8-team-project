@@ -127,7 +127,7 @@ public class ManagerServiceImpl implements ManagerService {
         Manager manager = managerRepository.findById(id).orElseThrow();
         BaseEntity base = baseRepository.findById(id).orElseThrow();
         if (manager.isApplyManager() == true) {
-            base.changeRole1(UserRoleEnum.MANAGER);
+            base.approvalManager(UserRoleEnum.MANAGER);
             manager.changeRole(UserRoleEnum.MANAGER);
             manager.changeApplyStatus(false);
         } else {

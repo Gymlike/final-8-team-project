@@ -65,7 +65,6 @@ public class T_exerciseController {
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
         return t_exerciseService.getAllT_exerciseBoards(pageRequest,search,size,page);
-
     }
 
     //오운완 선택 게시물 조회
@@ -97,8 +96,7 @@ public class T_exerciseController {
 
     @GetMapping("/selectboard/checkwriter")
     public String checkwriter(@AuthenticationPrincipal UserDetailsImpl userDetails){
-
-     return   userDetails.getUsername();
+     return userDetails.getUsername();
     }
 
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {

@@ -18,16 +18,15 @@ public class KaKao extends BaseEntity {
 
     private Long kakaoId;
     private String profileImage;
-    private String nickName;
+//    private String nickName;
     private Long experience = 0L;
 
     @Builder
     public KaKao(Long kakaoId, String username, String password, UserRoleEnum role,
                 String nickName, String email,
                 Long experience){
-        super(username, password, email, role);
+        super(username, password, email, role, nickName);
         this.kakaoId = kakaoId;
-        this.nickName = nickName;
         this.experience = experience;
     }
 

@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
-    private final OwnerRepository ownerRepository;
     private final ManagerRepository managerRepository;
 
     //유저
