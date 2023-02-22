@@ -10,6 +10,7 @@ import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.share.aws_s3.S3Uploader;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -32,6 +33,7 @@ public class T_exerciseController {
     private final T_exerciseService t_exerciseService;
     private final BaseService baseService;
 
+    private  final S3Uploader s3Uploader;
 
     //오운완 게시판 생성//
     @PostMapping
@@ -46,6 +48,7 @@ public class T_exerciseController {
         boolean checkUser = baseService.checkUser(base.getUsername());
 
         if(checkUser){
+            String s = s3Uploader.uploadOne(file, "t_exe");
             return t_exerciseService.creatTExerciseBord(title,content,file,base);
         }else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);

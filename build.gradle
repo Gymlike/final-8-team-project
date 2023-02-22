@@ -25,6 +25,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'junit:junit:4.13.1'
