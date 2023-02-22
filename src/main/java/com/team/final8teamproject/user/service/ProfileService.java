@@ -1,9 +1,8 @@
 package com.team.final8teamproject.user.service;
 
-import com.team.final8teamproject.owner.entity.Owner;
+import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import com.team.final8teamproject.user.dto.ProfileResponseDto;
-import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.user.entity.User;
 
 public interface ProfileService {
@@ -13,15 +12,14 @@ public interface ProfileService {
 
     void modifyProfile(ProfileModifyRequestDto profileModifyRequestDto, User user);
 
-
-    //사업자
-    ProfileResponseDto getOwnerProfile(Owner owner);
-
-    void modifyOwnerProfile(ProfileModifyRequestDto profileModifyRequestDto, Owner owner);
-
     //관리자
     ProfileResponseDto getManagerProfile(Manager manager);
 
     void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Manager manager);
+//
+//    //사업자
+//    ProfileResponseDto getOwnerProfile(Owner owner);
+//
+//    void modifyOwnerProfile(ProfileModifyRequestDto profileModifyRequestDto, Owner owner);
 
 }

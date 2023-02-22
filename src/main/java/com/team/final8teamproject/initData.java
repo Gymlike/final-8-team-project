@@ -1,17 +1,22 @@
 package com.team.final8teamproject;
 
-
-import com.team.final8teamproject.contact.Comment.entity.ContactComment;
-import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
+//import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+//import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
-
+import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.contact.Repository.FaqRepository;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.Repository.NoticeRepository;
 import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.entity.Notice;
+import com.team.final8teamproject.contact.service.FaqService;
+import com.team.final8teamproject.gymboard.entity.GymBoard;
+import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
+import com.team.final8teamproject.gymboardreview.entity.GymReview;
+import com.team.final8teamproject.gymboardreview.repository.GymReviewRepository;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import com.team.final8teamproject.user.entity.User;
@@ -38,6 +43,8 @@ public class initData implements ApplicationRunner {
     private final T_exerciseRepository tExerciseRepository;
 
   private final ContactCommentRepository contactCommentRepository;
+    private final GymBoardRepository gymBoardRepository;
+    private final GymReviewRepository gymReviewRepository;
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
@@ -53,6 +60,7 @@ public class initData implements ApplicationRunner {
           .ownerNumber("owner2")
           .password(passwordEncoder.encode("owner1234"))
           .username("owner1").role(UserRoleEnum.OWNER).experience(0L)
+          .storeName("짐")
           .build();
       Owner owner1 = Owner.builder()
           .nickName("owner2").email("owner2@google.com")
@@ -60,6 +68,7 @@ public class initData implements ApplicationRunner {
           .phoneNumber("01022233333")
           .password(passwordEncoder.encode("owner1234"))
           .username("owner2").role(UserRoleEnum.OWNER).experience(0L)
+          .storeName("짐짐")
           .build();
       User member = User.builder()
           .nickName("member").email("member1@google.com")
@@ -68,11 +77,11 @@ public class initData implements ApplicationRunner {
           .username("member1").role(UserRoleEnum.MEMBER).experience(0L)
           .build();
 
-      User member1 = User.builder()
-          .nickName("member1").email("member2@google.com")
-          .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
-          .username("member2").role(UserRoleEnum.MEMBER).experience(0L)
-          .build();
+        User member1 =User.builder()
+                .nickName("member1").email("member2@google.com")
+                .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
+                .username("member2").role(UserRoleEnum.MEMBER).experience(0L)
+                .build();
 
       userRepository.save(manager);
       userRepository.save(member);
@@ -180,6 +189,128 @@ public class initData implements ApplicationRunner {
         tExerciseRepository.save(t_exercise8);
         tExerciseRepository.save(t_exercise9);
         tExerciseRepository.save(t_exercise10);
+
+        // 운동시설 등록
+
+        GymBoard gymBoard1 = GymBoard.GymBoard()
+                .title("마평동 뒷동산의 좋은 헬스장")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 헬스장이에여" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner1")
+                .image("images\\img_5.jpg")
+                .gymName("모두가 좋아하는 헬스장")
+                .ownerNumber("112A23B1")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .region("제주특별자치도 제주시 첨단로 242 (영평동)")
+                .build();
+
+        GymBoard gymBoard2 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner2")
+                .image("images\\img_4.jpg")
+                .gymName("피트니스탑")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("경기 성남시 분당구 판교역로 235 (삼평동)")
+                .build();
+
+        GymBoard gymBoard3 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요<br>" +
+                        "많이 찾아와주시기 바랍니다.~<br>" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요<br>" +
+                        "모두 화이팅<br>")
+                .username("owner2")
+                .image("images\\img_1.jpg")
+                .gymName("피트니스탑")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("서울 용산구 보광로 126")
+                .build();
+
+        GymBoard gymBoard4 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner2")
+                .image("images\\img_3.jpg")
+                .gymName("라쿠치나")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("서울 용산구 회나무로44길 10")
+                .build();
+
+        GymBoard gymBoard5 = GymBoard.GymBoard()
+                .title("마평동 탑 피트니스시설")
+                .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                        "많이 찾아와주시기 바랍니다.~" +
+                        "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                        "모두 화이팅")
+                .username("owner2")
+                .image("images\\img_4.jpg")
+                .gymName("부다스벨리스")
+                .price("1_21000_2_40000_4_80000_5_100000")
+                .ownerNumber("112A23C1")
+                .region("서울 용산구 녹사평대로40길 48")
+                .build();
+
+        gymBoardRepository.save(gymBoard3);
+        gymBoardRepository.save(gymBoard4);
+        gymBoardRepository.save(gymBoard5);
+        gymBoardRepository.save(gymBoard2);
+        gymBoardRepository.save(gymBoard1);
+        // ----------------
+
+
+        //운동시설 후기 등록
+        GymReview gymReview1 = GymReview.builder()
+                .gymId(1L)
+                .comment("여기 정말 별로에여")
+                .username("member2")
+                .rating(1L)
+                .build();
+
+        GymReview gymReview2 = GymReview.builder()
+                .gymId(2L)
+                .comment("여기 정말 트레이너분도 친절하고 좋네요")
+                .username("member2")
+                .rating(5L)
+                .build();
+
+        GymReview gymReview3 = GymReview.builder()
+                .gymId(2L)
+                .comment("여기 정말좋아여 많이들 오세요")
+                .username("member1")
+                .rating(4L)
+                .build();
+
+        GymReview gymReview4 = GymReview.builder()
+                .gymId(2L)
+                .comment("여기 좋은가여 많이들 오지마세여 좋지 못해여")
+                .username("member2")
+                .rating(1L)
+                .build();
+
+        GymReview gymReview5 = GymReview.builder()
+                .gymId(2L)
+                .comment("그냥 평벙함? 그런느낌")
+                .username("member1")
+                .rating(3L)
+                .build();
+        gymReviewRepository.save(gymReview1);
+        gymReviewRepository.save(gymReview2);
+        gymReviewRepository.save(gymReview3);
+        gymReviewRepository.save(gymReview4);
+        gymReviewRepository.save(gymReview5);
+        //----------------
     }
   }
 

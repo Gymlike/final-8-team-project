@@ -1,17 +1,14 @@
-package com.team.final8teamproject.owner.dto;
+package com.team.final8teamproject.manager.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-public class OwnerLoginRequestDto {
-
+public class ManagerLoginRequestDto {
     @NotBlank
     private String username;
 
     @NotBlank
     private String password;
-
 }

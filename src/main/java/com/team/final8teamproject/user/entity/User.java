@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
     private String profileImage;
 
-    @Column(nullable = false)
-    private String nickName;
+//    @Column(nullable = false)
+//    private String nickName;
 
     @Column(nullable = false)
     private String phoneNumber;
@@ -30,16 +30,15 @@ public class User extends BaseEntity {
     public User(String username, String password, UserRoleEnum role,
                 String nickName, String phoneNumber, String email,
                 Long experience){
-        super(username, password, email, role);
-        this.nickName = nickName;
+        super(username, password, email, role, nickName);
         this.phoneNumber = phoneNumber;
         this.experience = experience;
     }
-
-    public void changeProfile(ProfileModifyRequestDto profileModifyRequestDto) {
-        this.nickName = profileModifyRequestDto.getNickname();
-        this.profileImage = profileModifyRequestDto.getImage();
-        this.phoneNumber = profileModifyRequestDto.getPhoneNumber();
+    public void changeProfile(String nickName, String profileImage, String phoneNumber) {
+        changeNickNme(nickName);
+        this.profileImage = profileImage;
+        this.phoneNumber = phoneNumber;
     }
+
 
 }

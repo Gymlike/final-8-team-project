@@ -9,7 +9,6 @@ import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.service.UserService;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;

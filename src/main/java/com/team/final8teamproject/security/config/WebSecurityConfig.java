@@ -41,21 +41,19 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     return new BCryptPasswordEncoder();
   }
 
-
-  // 가장 먼저 시큐리티를 사용하기 위해선 선언해준다.
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-    // h2-console 사용 및 resources 접근 허용 설정
-    return (web) -> web.ignoring()
-        .requestMatchers(PathRequest.toH2Console())
-        .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-  }
-
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable();
-    // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    // 가장 먼저 시큐리티를 사용하기 위해선 선언해준다.
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // h2-console 사용 및 resources 접근 허용 설정
+        return (web) -> web.ignoring()
+                .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.authorizeRequests()
 
     http.authorizeHttpRequests()//요청에 대한 권한을 지정할 수 있다.

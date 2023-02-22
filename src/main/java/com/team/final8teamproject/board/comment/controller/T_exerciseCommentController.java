@@ -28,13 +28,13 @@ public class T_exerciseCommentController {
     //댓글삭제 //
     @DeleteMapping("/{boardId}/comment/{commentId}")
     public ResponseEntity<String> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
-        return tExerciseCommentService.deleteComment((User) userDetails.getBase(), commentId);
+        return tExerciseCommentService.deleteComment(userDetails.getBase(), commentId);
     }
 
     //댓글수정
     @PutMapping("/{boardId}/comment/{commentId}")
     public ResponseEntity<String> updateComment(@RequestBody CreatCommentRequestDTO requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
 
-        return tExerciseCommentService.updateComment(requestDto, (User) userDetails.getBase(), commentId);
+        return tExerciseCommentService.updateComment(requestDto, userDetails.getBase(), commentId);
     }
 }
