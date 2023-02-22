@@ -1,4 +1,4 @@
-package com.team.final8teamproject.gymboard.dto;
+package com.team.final8teamproject.gymboardreview.dto;
 
 import com.team.final8teamproject.gymboard.entity.GymBoard;
 

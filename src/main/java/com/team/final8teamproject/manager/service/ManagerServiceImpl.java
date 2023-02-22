@@ -92,10 +92,12 @@ public class ManagerServiceImpl implements ManagerService {
     @Transactional
     public String logout(String accessToken, String username) {
 
+
         // 레디스에 accessToken 사용못하도록 등록
         Long expiration = jwtUtil.getExpiration(accessToken);
         redisUtil.setBlackList(accessToken, "logout", expiration);
 
+        // 레디스에서 리프레쉬 토큰 삭제
         if (redisUtil.hasKey("RT:" + username)) {
             redisUtil.deleteRefreshToken("RT:" + username);
         } else {
@@ -125,7 +127,7 @@ public class ManagerServiceImpl implements ManagerService {
         Manager manager = managerRepository.findById(id).orElseThrow();
         BaseEntity base = baseRepository.findById(id).orElseThrow();
         if (manager.isApplyManager() == true) {
-            base.changeRole1(UserRoleEnum.MANAGER);
+            base.approvalManager(UserRoleEnum.MANAGER);
             manager.changeRole(UserRoleEnum.MANAGER);
             manager.changeApplyStatus(false);
         } else {

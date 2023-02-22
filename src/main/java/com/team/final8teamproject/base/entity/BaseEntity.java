@@ -12,7 +12,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
 public class BaseEntity extends Timestamped {
     @Id
@@ -34,13 +34,27 @@ public class BaseEntity extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    public BaseEntity(String username, String password, String email, UserRoleEnum role){
+    @Column(nullable = false)
+    private String nickName;
+
+    public BaseEntity(String username, String password,
+                      String email, UserRoleEnum role,
+                        String nickName){
         this.username = username;
         this.password = password;
         this.email=email;
         this.role = role;
+        this.nickName = nickName;
     }
 
+    public BaseEntity(String username, String password,
+                      UserRoleEnum role,
+                      String nickName){
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.nickName = nickName;
+    }
     public BaseEntity(String username, String password, UserRoleEnum role){
         this.username = username;
         this.password = password;
@@ -50,6 +64,9 @@ public class BaseEntity extends Timestamped {
         this.password = password;
     }
 
+    public void changeNickNme(String nickName) {
+        this.nickName = nickName;
+    }
     public boolean isUserId(Long userid) {
         return this.id.equals(userid);
     }
@@ -58,7 +75,7 @@ public class BaseEntity extends Timestamped {
         return this.username;
     }
 
-    public void changeRole1(UserRoleEnum role) {
+    public void approvalManager(UserRoleEnum role) {
         this.role = role;
     }
 

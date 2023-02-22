@@ -24,7 +24,6 @@ public class TodayMealCommentReplyController {
         String username = userDetails.getUsername();
         String comment = requestDTO.getComment();
         String userNickname = userService.getUserNickname(userDetails.getBase());
-
         return todayMealCommentReplyService.creatCommentRely(commentId,comment,username,userNickname);
     }
 

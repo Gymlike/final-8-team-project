@@ -3,6 +3,7 @@ package com.team.final8teamproject.gymboard.dto;
 import jakarta.persistence.Column;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 @Getter
 public class GymRequestDto {
     private String username;

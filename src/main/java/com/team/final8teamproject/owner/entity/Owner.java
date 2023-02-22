@@ -16,16 +16,14 @@ public class Owner extends BaseEntity {
 
     private String profileImage;
 
-    @Column(nullable = false)
     private String ownerNumber;
 
-    @Column(nullable = false)
-    private String nickName;
+//    @Column(nullable = false)
+//    private String nickName;
 
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
     private String storeName;
 
     @Column(nullable = false)
@@ -36,8 +34,7 @@ public class Owner extends BaseEntity {
     public Owner(String username, String password, UserRoleEnum role,
                  String nickName, String phoneNumber, String email,
                  Long experience, String storeName, String ownerNumber) {
-        super(username, password, email, role);
-        this.nickName = nickName;
+        super(username, password, email, role, nickName);
         this.phoneNumber = phoneNumber;
         this.experience = experience;
         this.ownerNumber = ownerNumber;
@@ -48,12 +45,11 @@ public class Owner extends BaseEntity {
                                    String nickName, String phoneNumber, String email,
                                    String storeName, String ownerNumber, String profileImage) {
         super.modifyBaseProfile(email, password);
-        this.nickName = nickName;
+        changeNickNme(nickName);
         this.phoneNumber = phoneNumber;
         this.ownerNumber = ownerNumber;
         this.storeName = storeName;
         this.profileImage = profileImage;
     }
-
 
 }
