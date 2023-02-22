@@ -38,8 +38,7 @@ public class InquiryController {
   @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    String nickName = userService.getUserNickname(userDetails.getBase());
-    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),nickName);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),userDetails.getBase().getNickName());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
     return ResponseEntity.ok("등록 완료");
   }
 
