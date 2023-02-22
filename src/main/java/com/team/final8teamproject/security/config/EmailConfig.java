@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:aws.yml")
+
 public class EmailConfig {
 
     @org.springframework.beans.factory.annotation.Value("${mail.smtp.port}")

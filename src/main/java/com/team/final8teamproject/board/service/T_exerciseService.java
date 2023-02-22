@@ -17,7 +17,7 @@ import java.io.IOException;
 public interface T_exerciseService {
 
 
-    ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, BaseEntity base) throws NullPointerException, IOException;
+    ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity base) throws NullPointerException, IOException;
 
 
     T_exerciseServiceImple.Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);

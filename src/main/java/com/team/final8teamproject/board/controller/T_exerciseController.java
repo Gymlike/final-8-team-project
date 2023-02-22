@@ -48,8 +48,8 @@ public class T_exerciseController {
         boolean checkUser = baseService.checkUser(base.getUsername());
 
         if(checkUser){
-            String s = s3Uploader.uploadOne(file, "t_exe");
-            return t_exerciseService.creatTExerciseBord(title,content,file,base);
+            String imageUrl = s3Uploader.uploadOne(file, "/texe");
+            return t_exerciseService.creatTExerciseBord(title,content,imageUrl,base);
         }else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }

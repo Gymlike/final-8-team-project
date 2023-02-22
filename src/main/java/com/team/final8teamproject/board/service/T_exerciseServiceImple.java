@@ -63,13 +63,9 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
      */
     @Transactional
     @Override
-    public ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, BaseEntity user) throws NullPointerException, IOException {
-        UUID uuid = UUID.randomUUID();
-        String filename = uuid + "_" + file.getOriginalFilename() + ".jpeg";
-        String filepath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-        File savefile = new File(filepath, filename);
-        file.transferTo(savefile);
-        T_exercise t_exercise = new T_exercise(title, content, filename, filepath, user);
+    public ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity user) throws NullPointerException, IOException {
+
+        T_exercise t_exercise = new T_exercise(title, content, imageUrl, user);
         t_exerciseRepository.save(t_exercise);
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);

@@ -48,9 +48,9 @@ public class S3Uploader {
 
         try(InputStream inputStream = multipartFile.getInputStream()) {
             amazonS3Client.putObject(
-                    new PutObjectRequest(bucket+dir,fileName,inputStream,objectMetadata)
+                    new PutObjectRequest(bucket +dir,fileName,inputStream,objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
-            imgPath = amazonS3Client.getUrl(bucket+dir,fileName).toString();
+            imgPath = amazonS3Client.getUrl(bucket+ dir,fileName).toString();
         }catch (IOException e){
             throw new IOException();
         }
