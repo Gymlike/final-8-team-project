@@ -30,14 +30,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +52,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
      *
      * @param title   제목
      * @param content 내용
-     * @param file    이게 올릴 이미지임..!
+     * @param imageUrl    이게 올릴 이미지임..!
      * @param user    관계를 맺기 위해 ~ 인증된 객체 꺼내옴
      * @return http status
      * @throws NullPointerException ?
@@ -176,16 +173,19 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
          */
         @Override
         @Transactional
-        public ResponseEntity<String> editPost (Long boardId,
-                CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                User user,
-                MultipartFile file) throws IOException
+        public ResponseEntity<String> editPost(Long boardId,
+                                               CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                               User user,
+                                               String imageUrl) throws IOException
         {
             T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
             if (t_exercise.isWriter(user.getId())) {
 
-                t_exercise.editSalePost(title, content, filename, filepath);
+                String content = creatTExerciseBordRequestDTO.getContent();
+                String title = creatTExerciseBordRequestDTO.getTitle();
+
+                t_exercise.editSalePost(title, content,imageUrl);
                 return new ResponseEntity<>("게시물 수정 완료", HttpStatus.OK);
 
             }
