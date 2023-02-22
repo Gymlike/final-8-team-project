@@ -99,12 +99,12 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
             Long countLike = tExerciseLikeService.countLike(boardId);
             String title = t_exercise.getTitle();
             String content = t_exercise.getContent();
-            String filepath = t_exercise.getFilepath();
+            String imageUrl = t_exercise.getImageUrl();
             LocalDateTime modifiedDate = t_exercise.getModifiedDate();
             String username = t_exercise.getUser().getUsername();
             String nickName = userService.getUserNickname(t_exercise.getUser());
 
-            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, filepath, modifiedDate, username, nickName);
+            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
             boardResponseDTO.add(dto);
         }
         return new Result(page, totalCount, countPage, totalPage, boardResponseDTO);
@@ -167,7 +167,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
          * @param boardId  게시물id
          * @param creatTExerciseBordRequestDTO 수정할 내용이 담겨있음
          * @param user  수정을 요청한 유저
-         * @param file 수정에 들어갈 이미지~
+         * @param imageUrl 들어갈 이미지~
          * @return status
          * @throws IOException ?
          */
