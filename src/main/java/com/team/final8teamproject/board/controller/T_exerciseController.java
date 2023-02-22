@@ -93,8 +93,8 @@ public class T_exerciseController {
                                            @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
         User user = (User)userDetails.getBase();
-
-        return t_exerciseService.editPost(boardId,creatTExerciseBordRequestDTO,user,file);
+        String imageUrl = s3Uploader.uploadOne(file, "/texe");
+        return t_exerciseService.editPost(boardId,creatTExerciseBordRequestDTO,user,imageUrl);
     }
 
     @GetMapping("/selectboard/checkwriter")

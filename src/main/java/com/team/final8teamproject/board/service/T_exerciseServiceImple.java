@@ -184,13 +184,6 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
             T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
             if (t_exercise.isWriter(user.getId())) {
-                UUID uuid = UUID.randomUUID();
-                String filename = uuid + "_" + file.getOriginalFilename();
-                String filepath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-                File savefile = new File(filepath, filename);
-                file.transferTo(savefile);
-                String content = creatTExerciseBordRequestDTO.getContent();
-                String title = creatTExerciseBordRequestDTO.getTitle();
 
                 t_exercise.editSalePost(title, content, filename, filepath);
                 return new ResponseEntity<>("게시물 수정 완료", HttpStatus.OK);
