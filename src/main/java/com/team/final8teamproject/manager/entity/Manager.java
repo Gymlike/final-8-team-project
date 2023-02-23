@@ -19,7 +19,6 @@ public class Manager extends BaseEntity {
 //    @Column(nullable = false)
 //    private String nickName;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)

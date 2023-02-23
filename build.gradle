@@ -3,33 +3,32 @@ plugins {
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
 }
-
 group = 'com.team'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-messaging'
+
+    // thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     testImplementation 'junit:junit:4.13.1'
-    testImplementation 'junit:junit:4.13.1'
-    compileOnly 'org.projectlombok:lombok'
 
+    //소셜 로그인을 위한 oauth2사용
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     //편의를 위한 lombok 의존성
@@ -38,7 +37,7 @@ dependencies {
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    //jsonwebtoken을 사용하기 위한 의존성
+    //jwt
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
@@ -48,20 +47,27 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
-    //mysql전 h2콘솔을 사용하기위해서 사용
+    //h2 DB사용
     runtimeOnly 'com.h2database:h2'
     //사업자정보조회
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
 
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
     //이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     //websocket사용을 위한 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.webjars:webjars-locator-core'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars.bower:bootstrap:4.3.1'
+    implementation 'org.webjars.bower:vue:2.5.16'
 
+    // Stomp-websocket
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+//    implementation 'com.google.code.gson:gson:2.8.0'
+//    implementation 'org.webjars.bower:axios:0.17.1'
 }
-
 tasks.named('test') {
     useJUnitPlatform()
 }

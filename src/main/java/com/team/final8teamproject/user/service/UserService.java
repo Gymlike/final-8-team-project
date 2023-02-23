@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -41,7 +40,6 @@ public class UserService {
     //1. 회원가입
     @Transactional
     public MessageResponseDto signUp(@Valid SignupRequestDto requestDto) {
-
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 //        String password2 = passwordEncoder.encode(requestDto.getPassword2());
@@ -49,7 +47,6 @@ public class UserService {
         String email = requestDto.getEmail();
         String phoneNumber = requestDto.getPhoneNumber();
         Long experience = requestDto.getExperience();
-
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");

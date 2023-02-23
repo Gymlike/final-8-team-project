@@ -32,7 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if(token != null) {
             //JwtUtil 클래스 메소드인 vaildateToken에서 토큰을 검사한다.
             //토큰에 문제가 있을때 if문을 실행시킨다.
-            if (!jwtUtil.validateToken(token, response)) {
+            if (!jwtUtil.validateToken(token)) {
                 jwtExceptionHandler(response, "Invalid JWT signature", HttpStatus.BAD_REQUEST.value());
                 return;
             }
