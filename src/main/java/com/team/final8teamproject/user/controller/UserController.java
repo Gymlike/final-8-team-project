@@ -65,4 +65,10 @@ public class UserController {
         return userService.findByUsername(email);
     }
 
+    //6.Password 재발급
+    @PostMapping("/find/password")
+    public FindByResponseDto reissuancePassword(@RequestBody FindPasswordRequestDto requestDto) {
+        return userService.userFindPassword(requestDto);
+    }
+
 }
