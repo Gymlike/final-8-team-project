@@ -19,7 +19,7 @@ public class KakaoController {
     @Autowired
     private final KakaoService kakaoService;
 
-//https://kauth.kakao.com/oauth/authorize?client_id=adacc39e0738d79ed04fd79995f809d3&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code
+//https://kauth.kakao.com/oauth/authorize?client_id=adacc39e0738d79ed04fd79995f809d3&redirect_uri=http://localhost:5500/api/user/kakao/callback&response_type=code
 
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
@@ -31,7 +31,7 @@ public class KakaoController {
 
         response.setHeader("Authorization", token);
 
-        return "redirect:http://127.0.0.1:5500/index.html?token="+ token;
+        return "redirect:http://127.0.0.1:5501/callback.html?token="+ token;
     }
 
 }

@@ -14,6 +14,8 @@ public interface ProfileService {
 
     ProfileResponseDto getManagerProfile(Long id);
 
+    ProfileResponseDto getKakaoProfile(Long id);
+
 //    ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이전 버전ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 //    //유저
 //    ProfileResponseDto getProfile(User user);

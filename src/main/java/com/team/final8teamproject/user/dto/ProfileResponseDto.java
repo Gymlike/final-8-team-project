@@ -3,6 +3,7 @@ package com.team.final8teamproject.user.dto;
 import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.owner.dto.OwnerProfileResponseDto;
 import com.team.final8teamproject.owner.entity.Owner;
+import com.team.final8teamproject.user.entity.KaKao;
 import com.team.final8teamproject.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,6 +51,19 @@ public class ProfileResponseDto {
 
     public static ProfileResponseDto of(Manager manager) {
         return new ProfileResponseDto(manager);
+    }
+
+    private ProfileResponseDto(KaKao kaKao) {
+        this.id = kaKao.getId();
+        this.username = kaKao.getUsername();
+        this.nickName = kaKao.getNickName();
+        this.email = kaKao.getEmail();
+        this.profileImage = kaKao.getProfileImage();
+        this.experience = kaKao.getExperience();
+    }
+
+    public static ProfileResponseDto of(KaKao kaKao) {
+        return new ProfileResponseDto(kaKao);
     }
 
 //    ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이전 버전ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ

@@ -8,7 +8,9 @@ import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import com.team.final8teamproject.user.dto.ProfileResponseDto;
+import com.team.final8teamproject.user.entity.KaKao;
 import com.team.final8teamproject.user.entity.User;
+import com.team.final8teamproject.user.repository.KakaoRepository;
 import com.team.final8teamproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ManagerRepository managerRepository;
 
     private final PasswordEncoder passwordEncoder;
+    private final KakaoRepository kakaoRepository;
 
     //유저
     @Override
@@ -76,6 +79,24 @@ public class ProfileServiceImpl implements ProfileService {
             throw new IllegalArgumentException("프로필을 찾을 수 없습니다");
         }
         return manager.get();
+    }
+
+
+
+    @Override
+    @Transactional
+    public ProfileResponseDto getKakaoProfile(Long id) {
+        KaKao kaKao = getKakaoById(id);
+        return ProfileResponseDto.of(kaKao);
+    }
+
+    @Transactional
+    public KaKao getKakaoById(Long id) {
+        Optional<KaKao> kaKao = kakaoRepository.findById(id);
+        if (kaKao.isEmpty()) {
+            throw new IllegalArgumentException("프로필을 찾을 수 없습니다");
+        }
+        return kaKao.get();
     }
 
 //    ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이전 버전ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ

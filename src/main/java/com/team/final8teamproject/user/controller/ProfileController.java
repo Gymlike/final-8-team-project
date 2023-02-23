@@ -42,6 +42,11 @@ public class ProfileController {
         profileService.modifyManagerProfile(profileModifyRequestDto,userDetails.getBase().getId());
     }
 
+    @GetMapping("/kakao")
+    public ProfileResponseDto getKakaoProfile(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        return profileService.getKakaoProfile(userDetailsImpl.getBase().getId());
+    }
+
 //    ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이전 버전ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 //    //유저
 //    //1. 프로필 조회
