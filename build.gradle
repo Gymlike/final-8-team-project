@@ -3,17 +3,21 @@ plugins {
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
 }
+
 group = 'com.team'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
+
 repositories {
     mavenCentral()
 }
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -23,6 +27,11 @@ dependencies {
 
     // thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-bundle', version: '1.12.405'
+
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     testImplementation 'junit:junit:4.13.1'
 
@@ -52,6 +61,7 @@ dependencies {
     //사업자정보조회
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
 
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     //이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 

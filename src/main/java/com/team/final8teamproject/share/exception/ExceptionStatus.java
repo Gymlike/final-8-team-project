@@ -28,7 +28,9 @@ public enum ExceptionStatus {
     WRONG_USER_T0_COMMENT(403,"다른 유저의 댓글에는 접근 할 수 없습니다."),
     WRONG_USER_T0_CONTACT(403,"다른 유저의 게시글에는 접근 할 수 없습니다."),
     WRONG_USER_T0_COMMENT_REPLY(403,"다른 유저의 대댓글에는 접근 할 수 없습니다."),
-    WRONG_SELLER_ID_TO_USER_REQUEST(403,"다른 판매자의 요청목록에는 접근 할 수 없습니다.");
+    WRONG_SELLER_ID_TO_USER_REQUEST(403,"다른 판매자의 요청목록에는 접근 할 수 없습니다."),
+
+    IS_NOT_CORRECT_FORMAT(400,"지원하지 않는 형식입니다.");
 
     private final int statusCode;
     private final String message;

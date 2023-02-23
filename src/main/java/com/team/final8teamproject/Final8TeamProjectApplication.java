@@ -13,7 +13,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @EnableScheduling
 @EnableWebSocket
 public class Final8TeamProjectApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(Final8TeamProjectApplication.class, args);
 
