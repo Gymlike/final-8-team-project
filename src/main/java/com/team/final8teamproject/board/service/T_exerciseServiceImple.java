@@ -30,14 +30,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +52,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
      *
      * @param title   제목
      * @param content 내용
-     * @param file    이게 올릴 이미지임..!
+     * @param imageUrl    이게 올릴 이미지임..!
      * @param user    관계를 맺기 위해 ~ 인증된 객체 꺼내옴
      * @return http status
      * @throws NullPointerException ?
@@ -63,13 +60,9 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
      */
     @Transactional
     @Override
-    public ResponseEntity<String> creatTExerciseBord(String title, String content, MultipartFile file, BaseEntity user) throws NullPointerException, IOException {
-        UUID uuid = UUID.randomUUID();
-        String filename = uuid + "_" + file.getOriginalFilename() + ".jpeg";
-        String filepath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-        File savefile = new File(filepath, filename);
-        file.transferTo(savefile);
-        T_exercise t_exercise = new T_exercise(title, content, filename, filepath, user);
+    public ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity user) throws NullPointerException, IOException {
+
+        T_exercise t_exercise = new T_exercise(title, content, imageUrl, user);
         t_exerciseRepository.save(t_exercise);
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
@@ -106,12 +99,12 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
             Long countLike = tExerciseLikeService.countLike(boardId);
             String title = t_exercise.getTitle();
             String content = t_exercise.getContent();
-            String filepath = t_exercise.getFilepath();
+            String imageUrl = t_exercise.getImageUrl();
             LocalDateTime modifiedDate = t_exercise.getModifiedDate();
             String username = t_exercise.getUser().getUsername();
             String nickName = userService.getUserNickname(t_exercise.getUser());
 
-            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, filepath, modifiedDate, username, nickName);
+            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
             boardResponseDTO.add(dto);
         }
         return new Result(page, totalCount, countPage, totalPage, boardResponseDTO);
@@ -174,29 +167,25 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
          * @param boardId  게시물id
          * @param creatTExerciseBordRequestDTO 수정할 내용이 담겨있음
          * @param user  수정을 요청한 유저
-         * @param file 수정에 들어갈 이미지~
+         * @param imageUrl 들어갈 이미지~
          * @return status
          * @throws IOException ?
          */
         @Override
         @Transactional
-        public ResponseEntity<String> editPost (Long boardId,
-                CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                User user,
-                MultipartFile file) throws IOException
+        public ResponseEntity<String> editPost(Long boardId,
+                                               CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                               User user,
+                                               String imageUrl) throws IOException
         {
             T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
             if (t_exercise.isWriter(user.getId())) {
-                UUID uuid = UUID.randomUUID();
-                String filename = uuid + "_" + file.getOriginalFilename();
-                String filepath = System.getProperty("user.dir") + "/src/main/resources/static/files";
-                File savefile = new File(filepath, filename);
-                file.transferTo(savefile);
+
                 String content = creatTExerciseBordRequestDTO.getContent();
                 String title = creatTExerciseBordRequestDTO.getTitle();
 
-                t_exercise.editSalePost(title, content, filename, filepath);
+                t_exercise.editSalePost(title, content,imageUrl);
                 return new ResponseEntity<>("게시물 수정 완료", HttpStatus.OK);
 
             }

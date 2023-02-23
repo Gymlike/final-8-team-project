@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaAuditing
 @EnableScheduling
 public class Final8TeamProjectApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(Final8TeamProjectApplication.class, args);
 

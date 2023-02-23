@@ -36,7 +36,7 @@ public class T_exerciseBoardResponseDTO {
         this.id = t_exercise.getId();
         this.title = t_exercise.getTitle();
         this.content =t_exercise.getContent();
-        this.image = t_exercise.getFilepath(); // 이게 image url 로 바뀌나?
+        this.image = t_exercise.getImageUrl(); // 이게 image url 로 바뀌나?
         this.modifiedDate =t_exercise.getModifiedDate();
         this.userName = t_exercise.getUser().getUsername();
         this.userNickname = nickname;

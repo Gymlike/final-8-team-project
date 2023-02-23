@@ -24,20 +24,19 @@ public class T_exercise extends Timestamped {
 
 //    private String imageUrl;
 
-    private String filename;
 
-    private String filepath;
+
+    private String imageUrl;
 
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private BaseEntity user;
 
-    public T_exercise(String title, String content, String filename, String filepath,BaseEntity user) {
+    public T_exercise(String title, String content, String imageUrl,BaseEntity user) {
         this.title = title;
         this.content = content;
-        this.filename = filename;
-        this.filepath = filepath;
+        this.imageUrl=imageUrl;
         this.user = user;
     }
 
@@ -47,11 +46,10 @@ public class T_exercise extends Timestamped {
 
     }
 
-    public void editSalePost(String title,String content,String filename,String filepath) {
+    public void editSalePost(String title,String content,String imageUrl) {
         this.title = title;
         this.content = content;
-        this.filename = filename;
-        this.filepath = filepath;
+        this.imageUrl= imageUrl;
     }
 
     public Long returnPostId(){
