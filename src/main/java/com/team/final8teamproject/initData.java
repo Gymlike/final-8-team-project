@@ -171,16 +171,16 @@ public class initData implements ApplicationRunner {
       // -----------------------------------
 
 
-        T_exercise t_exercise1 = new T_exercise("1번제목","내용","파일이름","경로",member1);
-        T_exercise t_exercise2 = new T_exercise("2번제목","내용","파일이름","경로",member1);
-        T_exercise t_exercise3 = new T_exercise("3번제목","내용","파일이름","경로",member1);
-        T_exercise t_exercise4 = new T_exercise("4번제목","검색","파일이름","경로",member1);
-        T_exercise t_exercise5 = new T_exercise("5번제목","내용","파일이름","경로",member1);
-        T_exercise t_exercise6 = new T_exercise("6번제목","내용","파일이름","경로",member1);
-        T_exercise t_exercise7 = new T_exercise("7번제목","검색","파일이름","경로",member1);
-        T_exercise t_exercise8 = new T_exercise("8번제목","내용","파일이름","경로",member1);
-        T_exercise t_exercise9 = new T_exercise("9번제목","검","파일이름","경로",member1);
-        T_exercise t_exercise10 = new T_exercise("10번제목검색","내용","파일이름","경로",member1);
+        T_exercise t_exercise1 = new T_exercise("1번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise2 = new T_exercise("2번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise3 = new T_exercise("3번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise4 = new T_exercise("4번제목","검색","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise5 = new T_exercise("5번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise6 = new T_exercise("6번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise7 = new T_exercise("7번제목","검색","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise8 = new T_exercise("8번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise9 = new T_exercise("9번제목","검","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise10 = new T_exercise("10번제목검색","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
 
         tExerciseRepository.save(t_exercise1);
         tExerciseRepository.save(t_exercise2);
