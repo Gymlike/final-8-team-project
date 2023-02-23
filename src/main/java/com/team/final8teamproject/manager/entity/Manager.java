@@ -19,7 +19,7 @@ public class Manager extends BaseEntity {
 //    @Column(nullable = false)
 //    private String nickName;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -42,10 +42,9 @@ public class Manager extends BaseEntity {
     }
 
     //프로필이미지 수정
-    public void changeManagerProfile(ProfileModifyRequestDto profileModifyRequestDto) {
-        changeNickNme(profileModifyRequestDto.getNickname());
-        this.profileImage = profileModifyRequestDto.getImage();
-        this.phoneNumber = profileModifyRequestDto.getPhoneNumber();
+    public void modifyManagerProfile(String nickName, String profileImage) {
+        changeNickNme(nickName);
+        this.profileImage = profileImage;
     }
 
     //권한 변경
