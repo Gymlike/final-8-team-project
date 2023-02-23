@@ -15,6 +15,4 @@ public class KakaoProfileResponseDto {
 
     private String image;
 
-    private String phoneNumber;
-
 }

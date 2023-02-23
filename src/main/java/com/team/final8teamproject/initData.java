@@ -17,6 +17,8 @@ import com.team.final8teamproject.gymboard.entity.GymBoard;
 import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
 import com.team.final8teamproject.gymboardreview.entity.GymReview;
 import com.team.final8teamproject.gymboardreview.repository.GymReviewRepository;
+import com.team.final8teamproject.manager.entity.Manager;
+import com.team.final8teamproject.manager.repository.ManagerRepository;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import com.team.final8teamproject.user.entity.User;
@@ -45,11 +47,12 @@ public class initData implements ApplicationRunner {
   private final ContactCommentRepository contactCommentRepository;
     private final GymBoardRepository gymBoardRepository;
     private final GymReviewRepository gymReviewRepository;
+    private final ManagerRepository managerRepository;
 
-  @Override
+    @Override
   public void run(ApplicationArguments args) throws Exception {
 
-      User manager = User.builder()
+      Manager manager = Manager.builder()
           .nickName("manager").email("manager@nvaer.com")
           .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
           .username("manager").role(UserRoleEnum.MANAGER).experience(0L)
@@ -83,7 +86,7 @@ public class initData implements ApplicationRunner {
                 .username("member2").role(UserRoleEnum.MEMBER).experience(0L)
                 .build();
 
-      userRepository.save(manager);
+      managerRepository.save(manager);
       userRepository.save(member);
       userRepository.save(member1);
       ownerRepository.save(owner);
