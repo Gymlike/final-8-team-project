@@ -39,7 +39,7 @@ public class BaseEntity extends Timestamped {
 
     public BaseEntity(String username, String password,
                       String email, UserRoleEnum role,
-                        String nickName){
+                      String nickName){
         this.username = username;
         this.password = password;
         this.email=email;
@@ -48,8 +48,7 @@ public class BaseEntity extends Timestamped {
     }
 
     public BaseEntity(String username, String password,
-                      UserRoleEnum role,
-                      String nickName){
+                      UserRoleEnum role, String nickName){
         this.username = username;
         this.password = password;
         this.role = role;

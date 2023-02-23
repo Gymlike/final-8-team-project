@@ -20,7 +20,7 @@ public class User extends BaseEntity {
 //    @Column(nullable = false)
 //    private String nickName;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -34,10 +34,9 @@ public class User extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.experience = experience;
     }
-    public void changeProfile(String nickName, String profileImage, String phoneNumber) {
+    public void modifyProfile(String nickName, String profileImage) {
         changeNickNme(nickName);
         this.profileImage = profileImage;
-        this.phoneNumber = phoneNumber;
     }
 
 

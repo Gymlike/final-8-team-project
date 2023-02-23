@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BaseServiceImple implements BaseService {
+public class BaseServiceImpl implements BaseService {
 
 
     private final BaseRepository baseRepository;
