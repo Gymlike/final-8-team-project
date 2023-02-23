@@ -31,7 +31,8 @@ public class KakaoController {
 
         response.setHeader("Authorization", token);
 
-        return "redirect:http://127.0.0.1:5501/callback.html?token="+ token;
+//        포트번호 5500
+        return "redirect:http://127.0.0.1:5500/callback.html?token="+ token;
     }
 
 }
