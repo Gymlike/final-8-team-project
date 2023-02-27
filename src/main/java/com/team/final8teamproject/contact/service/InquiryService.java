@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
@@ -13,8 +14,8 @@ public interface InquiryService {
   void createInquiry(InquiryRequest inquiryRequest, String username, String nickName);
   void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest);
 
-  void deleteInquiry(Long id, String username);
-  void deleteManager(Long id);
+   void deleteInquiry(Long id, BaseEntity user);
+//  void deleteManager(Long id);
   Result getInquiry(int page, int size, Direction direction, String properties);
   Result searchByKeyword(String keyword, int page, int size, Direction direction, String properties);
   InquiryResponse getSelectedInquiry(Long id);

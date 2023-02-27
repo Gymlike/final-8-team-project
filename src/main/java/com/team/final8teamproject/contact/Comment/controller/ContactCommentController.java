@@ -41,7 +41,7 @@ public class ContactCommentController {
   }
 
 
-  //댓글 수정 todo patch타입으로 사용해 일부수정해보기   
+  //댓글 수정 todo patch타입으로 사용해 일부수정해보기
   @PutMapping("/{id}/inquiry")
   public ResponseEntity updateInquiryComment(
       @PathVariable Long id,
@@ -52,22 +52,40 @@ public class ContactCommentController {
     return ResponseEntity.ok("수정 완료");
   }
 
-  //댓글 삭제
+  /**
+   * 딜리트를 어드민용과 사용자용 함께 하는 메소드 구현 시도
+   * @param id
+   * @param userDetails
+   * @return
+   * if (해당 유저이면){
+   *   딜리트해라,해당 id
+   * }else{
+   *
+   * }
+   */
   @DeleteMapping("/{id}/inquiry")
   public ResponseEntity deleteInquiryComment(
       @PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername());
+    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase());
     return ResponseEntity.ok("삭제 완료");
   }
+  //댓글 삭제
+//  @DeleteMapping("/{id}/inquiry")
+//  public ResponseEntity deleteInquiryComment(
+//      @PathVariable Long id,
+//      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername());
+//    return ResponseEntity.ok("삭제 완료");
+//  }
 
-  //todo 권한 : 관리자만
-  // 관리자의 댓글 삭제 기능
-  @DeleteMapping("/{id}/inquiry/managers")
-  public ResponseEntity deleteManager(@PathVariable Long id) {
-    contactCommentServiceIml.deleteManager(id);
-    return ResponseEntity.ok("삭제 완료");
-  }
+//  //todo 권한 : 관리자만
+//  // 관리자의 댓글 삭제 기능
+//  @DeleteMapping("/{id}/inquiry/managers")
+//  public ResponseEntity deleteManager(@PathVariable Long id) {
+//    contactCommentServiceIml.deleteManager(id);
+//    return ResponseEntity.ok("삭제 완료");
+//  }
 
 
 }

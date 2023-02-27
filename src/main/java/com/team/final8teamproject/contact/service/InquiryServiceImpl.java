@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
@@ -9,6 +10,7 @@ import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.entity.UserRoleEnum;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -124,31 +126,35 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void deleteInquiry(Long id, String username) {
+  public void deleteInquiry(Long id, BaseEntity user) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (inquiry.isWriter(username)) {
+    if (inquiry.isWriter(user.getUsername())) {
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);
-    } else {
+    } else if(user.getRole().equals(UserRoleEnum.MANAGER)){
+      inquiryRepository.delete(inquiry);
+      // 문의글 해당 댓글 삭제
+      contactCommentService.deleteAllByInquiryId(id);
+    }else{
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
   }
 
-
-  /**
-   * 관리자가 유저 글 삭제 기능
-   */
-  @Transactional
-  @Override
-  public void deleteManager(Long id) {
-    Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
-    );
-    inquiryRepository.delete(inquiry);
-  }
+//
+//  /**
+//   * 관리자가 유저 글 삭제 기능
+//   */
+//  @Transactional
+//  @Override
+//  public void deleteManager(Long id) {
+//    Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
+//        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
+//    );
+//    inquiryRepository.delete(inquiry);
+//  }
 
   @Override
   public Inquiry findById(Long inquiryId) {

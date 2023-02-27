@@ -81,16 +81,16 @@ public class InquiryController {
   @DeleteMapping("/users/contact/inquiries/{id}")
   public ResponseEntity deleteInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    inquiryServiceImpl.deleteInquiry(id,userDetails.getBase().getUsername());
+    inquiryServiceImpl.deleteInquiry(id,userDetails.getBase());
     return ResponseEntity.ok("삭제 완료");
   }
-  //todo 권한 : 관리자만
-  // 관리자의 삭제 기능
-  @DeleteMapping("/managers/contact/inquiries/{id}")
-  public ResponseEntity deleteManager(@PathVariable Long id){
-    inquiryServiceImpl.deleteManager(id);
-    return ResponseEntity.ok("삭제 완료");
-  }
+//  //todo 권한 : 관리자만
+//  // 관리자의 삭제 기능
+//  @DeleteMapping("/managers/contact/inquiries/{id}")
+//  public ResponseEntity deleteManager(@PathVariable Long id){
+//    inquiryServiceImpl.deleteManager(id);
+//    return ResponseEntity.ok("삭제 완료");
+//  }
 
 
 }
