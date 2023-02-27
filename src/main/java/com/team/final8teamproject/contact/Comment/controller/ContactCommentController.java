@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/comments")
 public class ContactCommentController {
 
-  private final ContactCommentServiceImpl contactCommentServiceIml;
+  private final ContactCommentServiceImpl contactCommentServiceIml;//todo 추후 개방패쇄원칙 인터페이스로 주입하기 그럼 자동으로 주입이됨.
   private final UserService userService;
 
   @PostMapping("/inquiry/{id}")
@@ -41,7 +41,7 @@ public class ContactCommentController {
   }
 
 
-  //댓글 수정
+  //댓글 수정 todo patch타입으로 사용해 일부수정해보기   
   @PutMapping("/{id}/inquiry")
   public ResponseEntity updateInquiryComment(
       @PathVariable Long id,
