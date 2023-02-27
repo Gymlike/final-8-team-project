@@ -4,6 +4,7 @@ package com.team.final8teamproject.contact.controller;
 import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
+import com.team.final8teamproject.contact.service.NoticeService;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
@@ -32,13 +33,13 @@ public class NoticeController {
   /** 웹컨피그.requestMatchers("/api/faqs/check/**").permitAll()
    * todo  메서드 마다 권한 설정
    */
-  private final NoticeServiceImpl noticeServiceImpl;
+  private final NoticeService noticeService;
 
   //관리자 공지사항 등록
   @PostMapping("")
   public ResponseEntity saveNotice(@RequestBody NoticeRequest noticeRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    noticeServiceImpl.saveNotice(noticeRequest, userDetails.getBase().getId());
+    noticeService.saveNotice(noticeRequest, userDetails.getBase().getId());
     return ResponseEntity.ok("등록 완료");
     //new ResponseEntity<>("등록완료",HttpStatus.CREATED);
   }
@@ -50,12 +51,12 @@ public class NoticeController {
       @RequestParam(value = "size", required = false, defaultValue = "2") int size, //todo 리팩토링시 10 설정 하기
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
-    return noticeServiceImpl.getNoticeList(page, size, direction, properties);
+    return noticeService.getNoticeList(page, size, direction, properties);
   }
 
   @GetMapping("/check/{id}")
   public NoticeResponse getSelectedNotice(@PathVariable Long id) {
-    return noticeServiceImpl.getSelectedNotice(id);
+    return noticeService.getSelectedNotice(id);
   }
 
   @GetMapping("/check/search")
@@ -65,7 +66,7 @@ public class NoticeController {
       @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
-    return noticeServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    return noticeService.searchByKeyword(keyword, page, size, direction, properties);
 
   }
   // 관리자 공지사항 수정
@@ -73,7 +74,7 @@ public class NoticeController {
   public ResponseEntity updateNotice(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateNoticeRequest updateNoticeRequest) {
-    noticeServiceImpl.updateNotice(id, userDetails.getBase().getId(),updateNoticeRequest);
+    noticeService.updateNotice(id, userDetails.getBase().getId(),updateNoticeRequest);
     return ResponseEntity.ok("수정 완료");
   }
 
@@ -82,7 +83,7 @@ public class NoticeController {
   @DeleteMapping("/{id}")
   public ResponseEntity deleteNotice(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    noticeServiceImpl.deleteNotice(id, userDetails.getBase().getId());
+    noticeService.deleteNotice(id, userDetails.getBase().getId());
     return ResponseEntity.ok("삭제 완료");
 
   }

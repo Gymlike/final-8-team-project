@@ -4,6 +4,7 @@ package com.team.final8teamproject.contact.controller;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
+import com.team.final8teamproject.contact.service.InquiryService;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
@@ -32,13 +33,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class InquiryController {
 
-  private final InquiryServiceImpl inquiryServiceImpl;
+  private final InquiryService inquiryService;
   private final UserService userService;
 
   @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    inquiryServiceImpl.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),userDetails.getBase().getNickName());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    inquiryService.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),userDetails.getBase().getNickName());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -48,12 +49,12 @@ public class InquiryController {
       @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
-    return inquiryServiceImpl.getInquiry(page,size,direction,properties);
+    return inquiryService.getInquiry(page,size,direction,properties);
   }
 
   @GetMapping("/contact/inquiries/{id}")
   public InquiryResponse getSelectedInquiry(@PathVariable Long  id){
-    return inquiryServiceImpl.getSelectedInquiry(id);
+    return inquiryService.getSelectedInquiry(id);
   }
 
 
@@ -65,7 +66,7 @@ public class InquiryController {
       @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
-    return inquiryServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    return inquiryService.searchByKeyword(keyword, page, size, direction, properties);
   }
 
   //todo 모든 put매핑에 , 입력값만 최신화 되도록 하기 patch 안됨
@@ -73,7 +74,7 @@ public class InquiryController {
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateInquiryRequest updateInquiryRequest){
-    inquiryServiceImpl.updateInquiry(id,userDetails.getBase().getUsername(), updateInquiryRequest);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    inquiryService.updateInquiry(id,userDetails.getBase().getUsername(), updateInquiryRequest);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
 
     return ResponseEntity.ok("수정 완료");
   }
@@ -81,7 +82,7 @@ public class InquiryController {
   @DeleteMapping("/users/contact/inquiries/{id}")
   public ResponseEntity deleteInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    inquiryServiceImpl.deleteInquiry(id,userDetails.getBase());
+    inquiryService.deleteInquiry(id,userDetails.getBase());
     return ResponseEntity.ok("삭제 완료");
   }
 //  //todo 권한 : 관리자만

@@ -5,6 +5,7 @@ import com.sun.mail.imap.ResyncData;
 import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
+import com.team.final8teamproject.contact.service.FaqService;
 import com.team.final8teamproject.contact.service.FaqServiceImpl;
 import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
@@ -32,14 +33,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FaqController {
 
-  private final FaqServiceImpl faqServiceImpl;
+  private final FaqService faqService;
 
 
   //todo 권한 :관리자
   @PostMapping("")
   public ResponseEntity saveFaq(@RequestBody FaqRequest faqRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    faqServiceImpl.saveFaq(faqRequest, userDetails.getBase().getId());
+    faqService.saveFaq(faqRequest, userDetails.getBase().getId());
     return ResponseEntity.ok("등록 완료");
   }
 
@@ -51,12 +52,12 @@ public class FaqController {
       @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
-    return faqServiceImpl.getFaqList(page, size, direction, properties);
+    return faqService.getFaqList(page, size, direction, properties);
   }
 
   @GetMapping("/check/{id}")
   public FaqResponse getSelectedFaq(@PathVariable Long id) {
-    return faqServiceImpl.getSelectedFaq(id);
+    return faqService.getSelectedFaq(id);
   }
 
   @GetMapping("/check/search")
@@ -66,7 +67,7 @@ public class FaqController {
       @RequestParam(value = "size", required = false, defaultValue = "2") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
-    return faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
+    return faqService.searchByKeyword(keyword,page,size,direction,properties);
 
   }
 
@@ -74,14 +75,14 @@ public class FaqController {
   public ResponseEntity updateFaq(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateFaqRequest updateFaqRequest){
-    faqServiceImpl.updateFaq(id,userDetails.getBase().getId(),updateFaqRequest);
+    faqService.updateFaq(id,userDetails.getBase().getId(),updateFaqRequest);
     return ResponseEntity.ok("수정 완료");
   }
   //todo 권한 :관리자
   @DeleteMapping("/{id}")
   public ResponseEntity deleteFaq(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    faqServiceImpl.deleteFaq(id, userDetails.getBase().getId());
+    faqService.deleteFaq(id, userDetails.getBase().getId());
     return ResponseEntity.ok("삭제 완료");
   }
 
