@@ -33,14 +33,13 @@ public class OwnerProfileServiceImpl implements OwnerProfileService {
     public OwnerProfileResponseDto getMyOwnerProfile(Long id) {
         Owner owner = getOwnerById(id);
         return OwnerProfileResponseDto.of(owner);
-
     }
 
     @Transactional
     public Owner getOwnerById(Long id) {
         Optional<Owner> owner = ownerRepository.findById(id);
         if (owner.isEmpty()) {
-            throw new NoSuchElementException("오너프로필을 찾을 수 없습니다");
+            throw new IllegalArgumentException("오너프로필을 찾을 수 없습니다");
         }
         return owner.get();
     }

@@ -33,7 +33,7 @@ public class KakaoService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public LoginResponseDto kakaoLogin(String code, HttpServletResponse response, KakaoUserInfoDto kakaoUserInfoDto) throws JsonProcessingException {
+    public LoginResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
         System.out.println("액세스 토큰 " + accessToken);

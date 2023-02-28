@@ -23,8 +23,7 @@ public class KaKao extends BaseEntity {
 
     @Builder
     public KaKao(Long kakaoId, String username, String password, UserRoleEnum role,
-                String nickName, String email,
-                Long experience){
+                String nickName, String email, Long experience){
         super(username, password, email, role, nickName);
         this.kakaoId = kakaoId;
         this.experience = experience;

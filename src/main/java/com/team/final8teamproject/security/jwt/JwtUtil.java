@@ -72,6 +72,20 @@ public class JwtUtil {
                 .claim(AUTHORIZATION_KEY, role), date);
     }
 
+    //카카오 토큰 생성
+//    public String createToken(String username, UserRoleEnum role) {
+//        Date date = new Date();
+//
+//        return BEARER_PREFIX +
+//                Jwts.builder()
+//                        .setSubject(username)
+//                        .claim(AUTHORIZATION_KEY, role)
+//                        .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
+//                        .setIssuedAt(date)
+//                        .signWith(key, signatureAlgorithm)
+//                        .compact();
+//    }
+
 
     // 총관리자, 관리자 가지고 AccessToken, RefreshToken 을 반환해주는 메서드
     public LoginResponseDto createManagerToken(String general, UserRoleEnum role) {

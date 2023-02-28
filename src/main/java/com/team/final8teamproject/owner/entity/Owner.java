@@ -21,6 +21,7 @@ public class Owner extends BaseEntity {
 //    @Column(nullable = false)
 //    private String nickName;
 
+    //    @Column(nullable = false)
     private String phoneNumber;
 
     private String storeName;
