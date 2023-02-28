@@ -84,13 +84,13 @@ public class ContactCommentServiceImpl implements ContactCommentService {
 
   @Transactional
   @Override
-  public void deleteInquiryComment(Long commentId, BaseEntity user) {
+  public void deleteInquiryComment(Long commentId, String username, UserRoleEnum role) {
     ContactComment comment = contactCommentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
     );
-    if(comment.isWriter(user.getUsername())){
+    if(comment.isWriter(username)){
       contactCommentRepository.deleteById(commentId);
-    } else if(user.getRole().equals(UserRoleEnum.MANAGER)){
+    } else if(role.equals(UserRoleEnum.MANAGER)){
       contactCommentRepository.deleteById(commentId);
     }else{
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);

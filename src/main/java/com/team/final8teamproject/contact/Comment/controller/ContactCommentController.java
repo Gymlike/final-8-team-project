@@ -67,7 +67,7 @@ public class ContactCommentController {
   public ResponseEntity deleteInquiryComment(
       @PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase());
+    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername(),userDetails.getBase().getRole());
     return ResponseEntity.ok("삭제 완료");
   }
   //댓글 삭제

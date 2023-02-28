@@ -126,15 +126,15 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void deleteInquiry(Long id, BaseEntity user) {
+  public void deleteInquiry(Long id, String username, UserRoleEnum role) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (inquiry.isWriter(user.getUsername())) {
+    if (inquiry.isWriter(username)) {
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);
-    } else if(user.getRole().equals(UserRoleEnum.MANAGER)){
+    } else if(role.equals(UserRoleEnum.MANAGER)){
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);

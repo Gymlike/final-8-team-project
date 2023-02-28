@@ -82,7 +82,7 @@ public class InquiryController {
   @DeleteMapping("/users/contact/inquiries/{id}")
   public ResponseEntity deleteInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
-    inquiryService.deleteInquiry(id,userDetails.getBase());
+    inquiryService.deleteInquiry(id,userDetails.getBase().getUsername(),userDetails.getBase().getRole());
     return ResponseEntity.ok("삭제 완료");
   }
 //  //todo 권한 : 관리자만
