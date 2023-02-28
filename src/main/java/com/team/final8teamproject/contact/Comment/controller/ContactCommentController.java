@@ -52,17 +52,7 @@ public class ContactCommentController {
     return ResponseEntity.ok("수정 완료");
   }
 
-  /**
-   * 딜리트를 어드민용과 사용자용 함께 하는 메소드 구현 시도
-   * @param id
-   * @param userDetails
-   * @return
-   * if (해당 유저이면){
-   *   딜리트해라,해당 id
-   * }else{
-   *
-   * }
-   */
+// todo 댓글 페이징 처리 필요 하지 않을까?? - 댓글이 수십만개라도 했을때 포스트 불러올때 로딩 지연 우려  음... 고민해보자 .
   @DeleteMapping("/{id}/inquiry")
   public ResponseEntity deleteInquiryComment(
       @PathVariable Long id,
@@ -70,22 +60,7 @@ public class ContactCommentController {
     contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername(),userDetails.getBase().getRole());
     return ResponseEntity.ok("삭제 완료");
   }
-  //댓글 삭제
-//  @DeleteMapping("/{id}/inquiry")
-//  public ResponseEntity deleteInquiryComment(
-//      @PathVariable Long id,
-//      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername());
-//    return ResponseEntity.ok("삭제 완료");
-//  }
 
-//  //todo 권한 : 관리자만
-//  // 관리자의 댓글 삭제 기능
-//  @DeleteMapping("/{id}/inquiry/managers")
-//  public ResponseEntity deleteManager(@PathVariable Long id) {
-//    contactCommentServiceIml.deleteManager(id);
-//    return ResponseEntity.ok("삭제 완료");
-//  }
 
 
 }
