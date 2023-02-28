@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 public class InquiryRequest {
   private final String title;
   private final String content;
-
-
   private boolean secretCheckBox = false; //todo true 바뀌면 ? 비밀글 되야함. 해당 유저와 관리자만 볼 수 있음
 
 

@@ -39,14 +39,14 @@ public class InquiryController {
   @PostMapping("/users/contact/inquiries")
   public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    inquiryService.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),userDetails.getBase().getNickName());// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    inquiryService.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),userDetails.getBase().getNickName());
     return ResponseEntity.ok("등록 완료");
   }
 
   @GetMapping("/contact/inquiries")
   public Result getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
+      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return inquiryService.getInquiry(page,size,direction,properties);
@@ -63,7 +63,7 @@ public class InquiryController {
   public Result searchByKeyword(
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "2") int size,
+      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return inquiryService.searchByKeyword(keyword, page, size, direction, properties);
