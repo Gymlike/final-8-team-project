@@ -9,6 +9,7 @@ import com.team.final8teamproject.contact.service.InquiryServiceImpl;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.service.UserService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
@@ -37,7 +38,7 @@ public class InquiryController {
   private final UserService userService;
 
   @PostMapping("/users/contact/inquiries")
-  public ResponseEntity createInquiry(@RequestBody InquiryRequest inquiryRequest,
+  public ResponseEntity createInquiry(@RequestBody @Valid InquiryRequest inquiryRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     inquiryService.createInquiry(inquiryRequest,userDetails.getBase().getUsername(),userDetails.getBase().getNickName());
     return ResponseEntity.ok("등록 완료");

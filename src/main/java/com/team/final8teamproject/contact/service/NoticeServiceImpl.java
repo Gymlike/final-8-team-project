@@ -8,6 +8,7 @@ import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.contact.entity.Notice;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -32,7 +33,7 @@ public class NoticeServiceImpl implements NoticeService {
   //todo 관리자만 공지사항 등록 가능
   @Transactional
   @Override
-  public void saveNotice(NoticeRequest noticeRequest, Long managerId) {
+  public void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId) {
     Notice notice = noticeRequest.toEntity(managerId);
     noticeRepository.save(notice);
   }

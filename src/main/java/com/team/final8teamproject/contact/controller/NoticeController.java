@@ -8,6 +8,7 @@ import com.team.final8teamproject.contact.service.NoticeService;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
@@ -37,7 +38,7 @@ public class NoticeController {
 
   //관리자 공지사항 등록
   @PostMapping("")
-  public ResponseEntity saveNotice(@RequestBody NoticeRequest noticeRequest,
+  public ResponseEntity saveNotice(@RequestBody @Valid NoticeRequest noticeRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     noticeService.saveNotice(noticeRequest, userDetails.getBase().getId());
     return ResponseEntity.ok("등록 완료");

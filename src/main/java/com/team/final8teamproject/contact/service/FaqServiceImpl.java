@@ -9,6 +9,7 @@ import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -29,7 +30,7 @@ public class FaqServiceImpl implements FaqService {
 
   @Override
   @Transactional
-  public void saveFaq(FaqRequest faqRequest, Long managerId) {
+  public void saveFaq(@Valid FaqRequest faqRequest, Long managerId) {
     Faq faq = faqRequest.toEntity(managerId);
     faqRepository.save(faq);
   }

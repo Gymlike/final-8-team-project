@@ -9,6 +9,7 @@ import com.team.final8teamproject.contact.service.FaqService;
 import com.team.final8teamproject.contact.service.FaqServiceImpl;
 import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
@@ -38,7 +39,7 @@ public class FaqController {
 
   //todo 권한 :관리자
   @PostMapping("")
-  public ResponseEntity saveFaq(@RequestBody FaqRequest faqRequest,
+  public ResponseEntity saveFaq(@RequestBody @Valid FaqRequest faqRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     faqService.saveFaq(faqRequest, userDetails.getBase().getId());
     return ResponseEntity.ok("등록 완료");

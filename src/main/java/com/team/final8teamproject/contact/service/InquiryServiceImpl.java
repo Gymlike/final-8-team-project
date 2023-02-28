@@ -11,6 +11,7 @@ import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void createInquiry(InquiryRequest inquiryRequest, String username, String nickName) {
+  public void createInquiry(@Valid InquiryRequest inquiryRequest, String username, String nickName) {
     Inquiry inquiry = inquiryRequest.toEntity(username,nickName);
     inquiryRepository.save(inquiry);
   }
