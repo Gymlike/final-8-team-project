@@ -6,11 +6,15 @@ import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 
+import com.team.final8teamproject.board.dto.CreatPresignedBoardRequestDTO;
+import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
-import com.team.final8teamproject.share.aws_s3.S3Uploader;
+import com.team.final8teamproject.share.aws_s3.FileService;
+//import com.team.final8teamproject.share.aws_s3.S3Uploader;
+import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -19,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,30 +38,60 @@ public class T_exerciseController {
     private final T_exerciseService t_exerciseService;
     private final BaseService baseService;
 
-    private  final S3Uploader s3Uploader;
+    //private  final S3Uploader s3Uploader;
 
-    //오운완 게시판 생성//
+    private final FileService fileService;
+
+    private  final PresignedUrlService presignedUrlService;
+
+    private String path;
+//    오운완 게시판 생성//
     @PostMapping
-    public ResponseEntity<String> creatT_exerciseBord(@RequestPart("BordRequestDTO") CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                                      @RequestPart("file") MultipartFile file,
+    public ResponseEntity<String> creatT_exerciseBord(@RequestBody CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
         String content = creatTExerciseBordRequestDTO.getContent();
         String title = creatTExerciseBordRequestDTO.getTitle();
         BaseEntity base = userDetails.getBase();
 
+
+
         boolean checkUser = baseService.checkUser(base.getUsername());
 
         if(checkUser){
-            String imageUrl = s3Uploader.uploadOne(file, "/texe");
+            String imageUrl = presignedUrlService.findByName(path);
+            // String imageUrl = s3Uploader.uploadOne(file, "/texe");
             return t_exerciseService.creatTExerciseBord(title,content,imageUrl,base);
         }else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
 
+
     }
 
+//-------------------------------------------------------
 
+//    @PostMapping
+//    public ResponseEntity<String> creatT_exerciseBord(@RequestBody CreatPresignedBoardRequestDTO creatTExerciseBordRequestDTO,
+//                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+//
+//        String content = creatTExerciseBordRequestDTO.getContent();
+//        String title = creatTExerciseBordRequestDTO.getTitle();
+//        BaseEntity base = userDetails.getBase();
+//
+//        boolean checkUser = baseService.checkUser(base.getUsername());
+//
+//        if(checkUser){
+//            String imageUrl =creatTExerciseBordRequestDTO.getImageName();
+//            // String imageUrl = s3Uploader.uploadOne(file, "/texe");
+//            return t_exerciseService.creatTExerciseBord(title,content,imageUrl,base);
+//        }else {
+//            throw new CustomException(ExceptionStatus.WRONG_USERNAME);
+//        }
+//
+//    }
+
+//-------------------------------------------------------
     //오운완 전체 게시물 조회
     @GetMapping ("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
     public T_exerciseServiceImple.Result getAllT_exerciseBoards(
@@ -93,7 +128,8 @@ public class T_exerciseController {
                                            @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
         User user = (User)userDetails.getBase();
-        String imageUrl = s3Uploader.uploadOne(file, "/texe");
+        String imageUrl ="메롱";
+        //String imageUrl = s3Uploader.uploadOne(file, "/texe");
         return t_exerciseService.editPost(boardId,creatTExerciseBordRequestDTO,user,imageUrl);
     }
 
@@ -109,5 +145,21 @@ public class T_exerciseController {
             page=1;
         }
         return PageRequest.of(page-1, size,sort);
+    }
+//프리사인 이용할꺼임
+    @PostMapping("/presigned")
+    public String creatPresigned(@RequestBody ImageNameDTO imageNameDTO,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        BaseEntity base = userDetails.getBase();
+
+        boolean checkUser = baseService.checkUser(base.getUsername());
+
+        if(checkUser){
+            path ="texe";
+            String imageName = imageNameDTO.getImageName();
+            return presignedUrlService.getPreSignedUrl(path,imageName);
+        }else {
+            throw new CustomException(ExceptionStatus.WRONG_USERNAME);
+        }
     }
 }
