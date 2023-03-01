@@ -54,5 +54,8 @@ public class Inquiry extends Timestamped {
   public boolean isWriter(String username) {
     return this.username.equals(username);
   }
+  public boolean isNickName(String nickName){
+    return this.nickName.equals(nickName);
+  }
 }
 

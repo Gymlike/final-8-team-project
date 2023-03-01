@@ -94,10 +94,10 @@ public class initData implements ApplicationRunner {
 
       // -------------------고객 센터 관련
 
-      Inquiry ownerInquiry = new Inquiry("owner", "오너 ", "사업자 문의", "입점가능?", false);
-      Inquiry memberInquiry = new Inquiry("member", "멤버", "회원 문의", "회원가입?", true); // 문의글 비밀상태
-      Inquiry ownerInquiry1 = new Inquiry("owner", "오너1", "아무거나 문의", "입점가능?", false);
-      Inquiry memberInquiry2 = new Inquiry("member", "멤버1", "이것도 문의", "회원가입?", true); // 문의글 비밀상태
+      Inquiry ownerInquiry = new Inquiry("member1", "member ", "사업자 문의", "입점가능?", false);
+      Inquiry memberInquiry = new Inquiry("member2", "member1", "회원 문의", "회원가입?", true); // 문의글 비밀상태
+      Inquiry ownerInquiry1 = new Inquiry("member1", "member", "아무거나 문의", "입점가능?", false);
+      Inquiry memberInquiry2 = new Inquiry("member2", "member1", "이것도 문의", "회원가입?", true); // 문의글 비밀상태
       inquiryRepository.save(ownerInquiry);
       inquiryRepository.save(memberInquiry);
       inquiryRepository.save(ownerInquiry1);

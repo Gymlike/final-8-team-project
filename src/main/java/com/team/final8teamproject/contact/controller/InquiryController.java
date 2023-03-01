@@ -44,6 +44,16 @@ public class InquiryController {
     return ResponseEntity.ok("등록 완료");
   }
 
+  /** 모든 유저 조회 -> 비밀글 설정된 게시글 : 해당 유저 및 관리자만 볼 수 있도록
+   * 웹에 리스트가 있다.
+   * 내가 만약 유저가 아니면 -> 해당 글을 클릭 할 수 없다.
+   * 내가 유저 또는 관리자라면 -> 글 을 볼 수 있다. 를 표현해야 한다.
+   *
+   * 프론트에서 처리 한다고 치자
+   * 유저 아닐때와 유저
+   */
+
+
   @GetMapping("/contact/inquiries")
   public Result getInquiry(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -54,8 +64,10 @@ public class InquiryController {
   }
 
   @GetMapping("/contact/inquiries/{id}")
-  public InquiryResponse getSelectedInquiry(@PathVariable Long  id){
-    return inquiryService.getSelectedInquiry(id);
+  public InquiryResponse getSelectedInquiry(
+      @PathVariable Long  id,
+      @AuthenticationPrincipal UserDetailsImpl userDetails){
+    return inquiryService.getSelectedInquiry(id,userDetails.getBase().getNickName(),userDetails.getBase().getRole());
   }
 
 
@@ -86,13 +98,7 @@ public class InquiryController {
     inquiryService.deleteInquiry(id,userDetails.getBase().getUsername(),userDetails.getBase().getRole());
     return ResponseEntity.ok("삭제 완료");
   }
-//  //todo 권한 : 관리자만
-//  // 관리자의 삭제 기능
-//  @DeleteMapping("/managers/contact/inquiries/{id}")
-//  public ResponseEntity deleteManager(@PathVariable Long id){
-//    inquiryServiceImpl.deleteManager(id);
-//    return ResponseEntity.ok("삭제 완료");
-//  }
+
 
 
 }

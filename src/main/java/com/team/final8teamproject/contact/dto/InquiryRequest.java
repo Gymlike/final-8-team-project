@@ -15,7 +15,7 @@ public class InquiryRequest {
   private final String title;
   @NotBlank
   private final String content;
-  private boolean secret = false; // 비밀글 유무
+  private boolean secret; // 비밀글 유무
 
 
 

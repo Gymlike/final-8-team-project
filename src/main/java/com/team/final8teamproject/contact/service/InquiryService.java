@@ -13,15 +13,22 @@ import org.springframework.data.domain.Sort.Direction;
 public interface InquiryService {
 
   void createInquiry(InquiryRequest inquiryRequest, String username, String nickName);
+
   void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest);
 
   void deleteInquiry(Long id, String username, UserRoleEnum role);
-//  void deleteManager(Long id);
-  Result getInquiry(int page, int size, Direction direction, String properties);
-  Result searchByKeyword(String keyword, int page, int size, Direction direction, String properties);
-  InquiryResponse getSelectedInquiry(Long id);
-  Inquiry findById(Long inquiryId);
 
+  //  void deleteManager(Long id);
+  Result getInquiry(int page, int size, Direction direction,
+      String properties);
+
+  Result searchByKeyword(String keyword, int page, int size, Direction direction,
+      String properties);
+
+  InquiryResponse getSelectedInquiry(Long id,String nickName, UserRoleEnum role);
+  //InquiryResponse getSelectedInquiry(Long id);
+
+  Inquiry findById(Long inquiryId);
 
 
 }

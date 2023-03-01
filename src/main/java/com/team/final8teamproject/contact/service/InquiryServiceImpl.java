@@ -1,6 +1,5 @@
 package com.team.final8teamproject.contact.service;
 
-import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
@@ -33,8 +32,9 @@ public class InquiryServiceImpl implements InquiryService {
 
   @Transactional
   @Override
-  public void createInquiry(@Valid InquiryRequest inquiryRequest, String username, String nickName) {
-    Inquiry inquiry = inquiryRequest.toEntity(username,nickName);
+  public void createInquiry(@Valid InquiryRequest inquiryRequest, String username,
+      String nickName) {
+    Inquiry inquiry = inquiryRequest.toEntity(username, nickName);
     inquiryRepository.save(inquiry);
   }
 
@@ -48,7 +48,7 @@ public class InquiryServiceImpl implements InquiryService {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if(inquiry.isWriter(username)){
+    if (inquiry.isWriter(username)) {
       inquiry.update(title, content);
       inquiryRepository.save(inquiry);
     } else {
@@ -64,11 +64,12 @@ public class InquiryServiceImpl implements InquiryService {
     Page<Inquiry> inquiryListPage = inquiryRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
     int totalCount = (int) inquiryListPage.getTotalElements();
-    if(inquiryListPage.isEmpty()){
+    if (inquiryListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
+
     int countList = size;
     int countPage = 5;//todo 리팩토링때  10으로 변경예정
     int totalPage = totalCount / countList;
@@ -84,31 +85,45 @@ public class InquiryServiceImpl implements InquiryService {
 
   /**
    * 건당 문의 글 조회 시
+   * 회원만 조회가능, 비밀글은 해당 유저 및 관리자만 볼 수 있음
    *
    * @param id 문의글 아이디
    * @return 문의글 , 글에 해당하는 댓글, 대댓글
    */
+
   @Transactional(readOnly = true)
   @Override
-  public InquiryResponse getSelectedInquiry(Long id) {
+  public InquiryResponse getSelectedInquiry(Long id, String nickName, UserRoleEnum role) {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-    List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
-        id);
-    return new InquiryResponse(inquiry, parentComments);
+    if (inquiry.getSecret()) {
+      if (inquiry.isNickName(nickName) || role.equals(UserRoleEnum.MANAGER)) {
+        List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
+            id);
+        return new InquiryResponse(inquiry, parentComments);
+      } else {
+
+        throw new CustomException(ExceptionStatus.SECRET_POST);
+      }
+    } else {
+      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
+          id);
+      return new InquiryResponse(inquiry, parentComments);
+    }
+
   }
 
   @Transactional(readOnly = true)
   @Override
   public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
-      String title = keyword;
-      String content = keyword;
+    String title = keyword;
+    String content = keyword;
 
     Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(
         title, content, PageRequest.of(page - 1, size, direction, properties));
     int totalCount = (int) inquiryListPage.getTotalElements();
-    if(inquiryListPage.isEmpty()){
+    if (inquiryListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
     }
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
@@ -125,6 +140,13 @@ public class InquiryServiceImpl implements InquiryService {
     return new Result(page, totalCount, countPage, totalPage, inquiryResponses);
   }
 
+  /**
+   * 해당 유저 및 관리자만 글 삭제 가능
+   *
+   * @param id
+   * @param username
+   * @param role
+   */
   @Transactional
   @Override
   public void deleteInquiry(Long id, String username, UserRoleEnum role) {
@@ -135,27 +157,15 @@ public class InquiryServiceImpl implements InquiryService {
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);
-    } else if(role.equals(UserRoleEnum.MANAGER)){
+    } else if (role.equals(UserRoleEnum.MANAGER)) {
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);
-    }else{
+    } else {
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
     }
   }
 
-//
-//  /**
-//   * 관리자가 유저 글 삭제 기능
-//   */
-//  @Transactional
-//  @Override
-//  public void deleteManager(Long id) {
-//    Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
-//        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
-//    );
-//    inquiryRepository.delete(inquiry);
-//  }
 
   @Override
   public Inquiry findById(Long inquiryId) {
