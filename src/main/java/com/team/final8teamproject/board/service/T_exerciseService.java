@@ -35,7 +35,7 @@ public interface T_exerciseService {
     @Transactional
     ResponseEntity<String> editPost(Long boardId,
                                     CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                    User user,
+                                    BaseEntity user,
                                     String imageUrl) throws IOException;
 
     T_exercise findT_exerciseBoardById(Long id);
