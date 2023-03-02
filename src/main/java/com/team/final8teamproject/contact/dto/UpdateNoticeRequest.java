@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 public class UpdateNoticeRequest {
   private final String title;
   private final String content;
+  private final String imageUrl;
 
 
-  public UpdateNoticeRequest(String title, String content) {
+  public UpdateNoticeRequest(String title, String content,String imageUrl) {
     this.title = title;
     this.content = content;
+    this.imageUrl = imageUrl;
 
   }
 }

@@ -1,6 +1,9 @@
 package com.team.final8teamproject.contact.controller;
 
 //import com.team.final8teamproject.contact.dto.InquiryResponse;
+
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
@@ -8,6 +11,9 @@ import com.team.final8teamproject.contact.service.NoticeService;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,25 +37,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NoticeController {
 
-  /** 웹컨피그.requestMatchers("/api/faqs/check/**").permitAll()
-   * todo  메서드 마다 권한 설정
-   */
   private final NoticeService noticeService;
+  private  final PresignedUrlService presignedUrlService;
+  private String path; //이미지파일 경로
 
   //관리자 공지사항 등록
   @PostMapping("")
   public ResponseEntity saveNotice(@RequestBody @Valid NoticeRequest noticeRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    noticeService.saveNotice(noticeRequest, userDetails.getBase().getId());
+    String imageUrl = presignedUrlService.findByName(path);
+    noticeService.saveNotice(noticeRequest, userDetails.getBase().getId(),imageUrl);
     return ResponseEntity.ok("등록 완료");
     //new ResponseEntity<>("등록완료",HttpStatus.CREATED);
   }
 
-  //todo 페이징 처리 /,조회기능 /키워드검색 api/managers/notices/check/**
+  /**
+   * S3에게 pre-signed URL (권한) 요청
+   */
+  @PostMapping("/presigned")
+  public String createPresigned(@RequestBody ImageNameDTO imageNameDTO
+      ) {
+      path ="contact";  //원하는 경로 지정
+      String imageName = imageNameDTO.getImageName();
+      return presignedUrlService.getPreSignedUrl(path,imageName);
+  }
+
   @GetMapping("/check")
   public Result getNoticeList(
       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-      @RequestParam(value = "size", required = false, defaultValue = "10") int size, //todo 리팩토링시 10 설정 하기
+      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+      //todo 리팩토링시 10 설정 하기
       @RequestParam(value = "direction", required = false, defaultValue = "DESC") Direction direction,
       @RequestParam(value = "properties", required = false, defaultValue = "createdDate") String properties) {
     return noticeService.getNoticeList(page, size, direction, properties);
@@ -70,12 +87,13 @@ public class NoticeController {
     return noticeService.searchByKeyword(keyword, page, size, direction, properties);
 
   }
+
   // 관리자 공지사항 수정
   @PutMapping("/{id}")
   public ResponseEntity updateNotice(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateNoticeRequest updateNoticeRequest) {
-    noticeService.updateNotice(id, userDetails.getBase().getId(),updateNoticeRequest);
+    noticeService.updateNotice(id, userDetails.getBase().getId(), updateNoticeRequest);
     return ResponseEntity.ok("수정 완료");
   }
 

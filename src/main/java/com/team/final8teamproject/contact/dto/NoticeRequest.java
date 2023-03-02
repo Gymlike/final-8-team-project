@@ -16,6 +16,7 @@ public class NoticeRequest {
   @NotBlank
   private final String content;
 
+
   @Builder
   public NoticeRequest(String title, String content) {
     this.title = title;
@@ -23,11 +24,12 @@ public class NoticeRequest {
 
   }
 
-  public Notice toEntity(Long managerId) {
+  public Notice toEntity(Long managerId, String imageUrl) {
     return Notice.builder()
         .managerId(managerId)
         .title(title)
         .content(content)
+        .imageUrl(imageUrl)
         .build();
 
   }

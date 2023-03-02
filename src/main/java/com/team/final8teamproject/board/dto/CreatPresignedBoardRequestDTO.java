@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
-public class CreatPresignedBoardRequestDTO {
+class CreatPresignedBoardRequestDTO {
 
     private final String title;
 

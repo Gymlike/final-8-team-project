@@ -6,13 +6,13 @@ import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.contact.entity.Notice;
 
 import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface NoticeService {
-  void saveNotice(NoticeRequest noticeRequest, Long managerId);
-  //todo 조회기능 페이징
+  void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId,String imageUrl) ;
   void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest);
   void deleteNotice(Long id, Long managerId);
   Result getNoticeList(int page, int size, Direction direction, String properties);
