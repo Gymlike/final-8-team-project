@@ -175,7 +175,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
         @Transactional
         public ResponseEntity<String> editPost(Long boardId,
                                                CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                               User user,
+                                               BaseEntity user,
                                                String imageUrl) throws IOException
         {
             T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
