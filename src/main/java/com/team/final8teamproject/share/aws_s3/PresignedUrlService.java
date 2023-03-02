@@ -8,14 +8,15 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+
+import org.springframework.stereotype.Component;
+
 
 import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class PresignedUrlService {
     private final AmazonS3 amazonS3;
@@ -68,13 +69,11 @@ public class PresignedUrlService {
     }
 
     public String findByName(String path) {
-        if (!amazonS3.doesObjectExist(bucket, useOnlyOneFileName))
-            return "File does not exist";
+//        if (!amazonS3.doesObjectExist(bucket,editPath+ useOnlyOneFileName))
+//            return "File does not exist";
         log.info("Generating signed URL for file name {}", useOnlyOneFileName);
-
-        String editPath = "/"+path+"/";
-        return  amazonS3.getUrl(bucket+ editPath,useOnlyOneFileName).toString();
-//        return "https://"+bucket+".s3."+location+".amazonaws.com/"+path+"/"+useOnlyOneFileName;
+//        return  amazonS3.getUrl(bucket,editPath+useOnlyOneFileName).toString();
+        return "https://"+bucket+".s3."+location+".amazonaws.com/"+path+"/"+useOnlyOneFileName;
     }
 }
 

@@ -6,24 +6,24 @@ import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 
-import com.team.final8teamproject.board.dto.CreatPresignedBoardRequestDTO;
+
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
-import com.team.final8teamproject.share.aws_s3.FileService;
-//import com.team.final8teamproject.share.aws_s3.S3Uploader;
+
+
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +39,6 @@ public class T_exerciseController {
     private final BaseService baseService;
 
     //private  final S3Uploader s3Uploader;
-
-    private final FileService fileService;
 
     private  final PresignedUrlService presignedUrlService;
 
@@ -123,14 +121,14 @@ public class T_exerciseController {
     //오운완 게시물 수정
     @PatchMapping("/{boardId}")
     public ResponseEntity<String> editPost(@PathVariable Long boardId,
-                                           @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                           @RequestPart("file") MultipartFile file,
+                                           @RequestBody CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
 
-        User user = (User)userDetails.getBase();
-        String imageUrl ="메롱";
+        BaseEntity base = userDetails.getBase();
+
+        String imageUrl = presignedUrlService.findByName(path);
         //String imageUrl = s3Uploader.uploadOne(file, "/texe");
-        return t_exerciseService.editPost(boardId,creatTExerciseBordRequestDTO,user,imageUrl);
+        return t_exerciseService.editPost(boardId,creatTExerciseBordRequestDTO,base,imageUrl);
     }
 
     @GetMapping("/selectboard/checkwriter")
