@@ -38,11 +38,11 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, BaseEntity user, Long commentID) {
+    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO,String writer, Long commentID) {
         TodayMealCommentReply commentReply = todayMealCommentReplyRepository.findById(commentID).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
-        String username = user.getUsername();
+
         String comment = requestDTO.getComment();
-        if (commentReply.isWriter(username)) {
+        if (commentReply.isWriter(writer)) {
            commentReply.update(comment);
            return new ResponseEntity<>("대댓글 수정완료",HttpStatus.OK);
         }

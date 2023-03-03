@@ -3,7 +3,7 @@ package com.team.final8teamproject.board.comment.commentReply.controller;
 import com.team.final8teamproject.board.comment.commentReply.dto.CreatCommentReplyRequestDTO;
 import com.team.final8teamproject.board.comment.commentReply.service.TodayMealCommentReplyService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
-import com.team.final8teamproject.user.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,8 +32,9 @@ public class TodayMealCommentReplyController {
     public ResponseEntity<String> updateCommentReply(@RequestBody CreatCommentReplyRequestDTO requestDTO,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId){
+        String userName = userDetails.getUsername();
 
-        return todayMealCommentReplyService.updateCommentReply(requestDTO,userDetails.getBase(),commentId);
+        return todayMealCommentReplyService.updateCommentReply(requestDTO,userName,commentId);
     }
 
     //대댓글 삭제
