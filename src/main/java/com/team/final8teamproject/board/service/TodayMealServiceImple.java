@@ -133,8 +133,9 @@ public class TodayMealServiceImple implements  TodayMealService{
                 })
                 .collect(Collectors.toList());
         Long countLike = todayMealLikeService.countLike(boardId);
+        String userNickname = userService.getUserNickname(todayMeal.getUser());
 
-        return new TodayMealBoardResponseDTO(countLike,todayMeal,commentFilter);
+        return new TodayMealBoardResponseDTO(countLike,todayMeal,commentFilter,userNickname);
     }
 
 
