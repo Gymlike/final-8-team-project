@@ -3,6 +3,7 @@ package com.team.final8teamproject;
 //import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 //import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.like.repository.T_exerciseLikeRepository;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
@@ -44,6 +45,8 @@ public class initData implements ApplicationRunner {
 
     private final T_exerciseRepository tExerciseRepository;
 
+    private final T_exerciseLikeRepository tExerciseLikeRepository;
+
   private final ContactCommentRepository contactCommentRepository;
     private final GymBoardRepository gymBoardRepository;
     private final GymReviewRepository gymReviewRepository;
@@ -74,21 +77,47 @@ public class initData implements ApplicationRunner {
           .storeName("짐짐")
           .build();
       User member = User.builder()
-          .nickName("member").email("member1@google.com")
+          .nickName("member").email("member@google.com")
           .phoneNumber("01033334444")
           .password(passwordEncoder.encode("member1234"))
-          .username("member1").role(UserRoleEnum.MEMBER).experience(0L)
+          .username("member").role(UserRoleEnum.MEMBER).experience(0L)
           .build();
 
         User member1 =User.builder()
-                .nickName("member1").email("member2@google.com")
+                .nickName("member1").email("member1@google.com")
+                .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
+                .username("member1").role(UserRoleEnum.MEMBER).experience(0L)
+                .build();
+        User member2 =User.builder()
+                .nickName("안녕하세요").email("member2@google.com")
                 .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
                 .username("member2").role(UserRoleEnum.MEMBER).experience(0L)
+                .build();
+        User member3 =User.builder()
+                .nickName("마포동포동동").email("member3@google.com")
+                .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
+                .username("member3").role(UserRoleEnum.MEMBER).experience(0L)
+                .build();
+
+        User member4 =User.builder()
+                .nickName("로니에여").email("member4@google.com")
+                .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
+                .username("member4").role(UserRoleEnum.MEMBER).experience(0L)
+                .build();
+
+        User member5 =User.builder()
+                .nickName("콜먼").email("member5@google.com")
+                .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
+                .username("member5").role(UserRoleEnum.MEMBER).experience(0L)
                 .build();
 
       managerRepository.save(manager);
       userRepository.save(member);
       userRepository.save(member1);
+      userRepository.save(member2);
+      userRepository.save(member3);
+      userRepository.save(member4);
+      userRepository.save(member5);
       ownerRepository.save(owner);
       ownerRepository.save(owner1);
 
@@ -171,16 +200,27 @@ public class initData implements ApplicationRunner {
       // -----------------------------------
 
 
-        T_exercise t_exercise1 = new T_exercise("1번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise2 = new T_exercise("2번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise3 = new T_exercise("3번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise4 = new T_exercise("4번제목","검색","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise5 = new T_exercise("5번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise6 = new T_exercise("6번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise7 = new T_exercise("7번제목","검색","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise8 = new T_exercise("8번제목","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise9 = new T_exercise("9번제목","검","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
-        T_exercise t_exercise10 = new T_exercise("10번제목검색","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise1 = new T_exercise("오늘등운동했습니다","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise2 = new T_exercise("오운완","내용","https://scent.kisti.re.kr/site/main/file/image/8756",member2);
+        T_exercise t_exercise3 = new T_exercise("안녕하세요","내용","https://mblogthumb-phinf.pstatic.net/20160507_57/clubswin_1462592272624dXmOO_JPEG/%BF%EE%B5%BF8.jpg?type=w2",member4);
+        T_exercise t_exercise4 = new T_exercise("반갑습니다","검색","https://mblogthumb-phinf.pstatic.net/20160507_271/clubswin_1462592270408ERwhX_JPEG/%BF%EE%B5%BF5.jpg?type=w2",member3);
+        T_exercise t_exercise5 = new T_exercise("오늘 어깨 운동 했습니다","내용","https://cdn.4flix.co.kr/data/file/gallery/3076623982_l51Yduam_deaed678afae4d43901c0163ab25685c21f8abdb.jpeg",member5);
+        T_exercise t_exercise6 = new T_exercise("오.운.완!","내용","https://i.pinimg.com/1200x/12/9b/a4/129ba49677dc1453ba16d1d244ad00ea.jpg",member1);
+        T_exercise t_exercise7 = new T_exercise("제목쓰기 어렵네요","검색","https://cdn.clien.net/web/api/file/F01/10934363/6e707fbe69cf2b.jpg?w=850&h=30000",member4);
+        T_exercise t_exercise8 = new T_exercise("이지합니다","내용","https://a-static.besthdwallpaper.com/you-can-have-muscles-like-this-by-working-out-weights-wallpaper-2560x1600-92007_7.jpg",member2);
+        T_exercise t_exercise9 = new T_exercise("안녕하세요~~~~~~","검","https://mblogthumb-phinf.pstatic.net/20150722_180/zpaxm20_1437550649646j1LoB_JPEG/1423579188602.jpg?type=w2",member3);
+        T_exercise t_exercise10 = new T_exercise("오늘운동끝~~~","내용","https://www.thedailypost.kr/news/photo/202111/84872_80385_2547.png",member4);
+
+        T_exercise t_exercise11 = new T_exercise("오늘등운동했습니다","내용","https://cfnimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=201908231123000034655469ec1315814021222.jpg&nmt=18",member1);
+        T_exercise t_exercise12= new T_exercise("오운완","내용","https://scent.kisti.re.kr/site/main/file/image/8756",member2);
+        T_exercise t_exercise13= new T_exercise("안녕하세요","내용","https://mblogthumb-phinf.pstatic.net/20160507_57/clubswin_1462592272624dXmOO_JPEG/%BF%EE%B5%BF8.jpg?type=w2",member4);
+        T_exercise t_exercise14 = new T_exercise("반갑습니다","검색","https://mblogthumb-phinf.pstatic.net/20160507_271/clubswin_1462592270408ERwhX_JPEG/%BF%EE%B5%BF5.jpg?type=w2",member3);
+        T_exercise t_exercise15= new T_exercise("오늘 어깨 운동 했습니다","내용","https://cdn.4flix.co.kr/data/file/gallery/3076623982_l51Yduam_deaed678afae4d43901c0163ab25685c21f8abdb.jpeg",member5);
+        T_exercise t_exercise16 = new T_exercise("오.운.완!","내용","https://i.pinimg.com/1200x/12/9b/a4/129ba49677dc1453ba16d1d244ad00ea.jpg",member1);
+        T_exercise t_exercise17 = new T_exercise("제목쓰기 어렵네요","검색","https://cdn.clien.net/web/api/file/F01/10934363/6e707fbe69cf2b.jpg?w=850&h=30000",member4);
+        T_exercise t_exercise18= new T_exercise("이지합니다","내용","https://a-static.besthdwallpaper.com/you-can-have-muscles-like-this-by-working-out-weights-wallpaper-2560x1600-92007_7.jpg",member2);
+        T_exercise t_exercise19= new T_exercise("안녕하세요~~~~~~","검","https://mblogthumb-phinf.pstatic.net/20150722_180/zpaxm20_1437550649646j1LoB_JPEG/1423579188602.jpg?type=w2",member3);
+        T_exercise t_exercise20 = new T_exercise("오늘운동끝~~~","내용","https://www.thedailypost.kr/news/photo/202111/84872_80385_2547.png",member4);
 
         tExerciseRepository.save(t_exercise1);
         tExerciseRepository.save(t_exercise2);
@@ -192,6 +232,16 @@ public class initData implements ApplicationRunner {
         tExerciseRepository.save(t_exercise8);
         tExerciseRepository.save(t_exercise9);
         tExerciseRepository.save(t_exercise10);
+        tExerciseRepository.save(t_exercise11);
+        tExerciseRepository.save(t_exercise12);
+        tExerciseRepository.save(t_exercise13);
+        tExerciseRepository.save(t_exercise14);
+        tExerciseRepository.save(t_exercise15);
+        tExerciseRepository.save(t_exercise16);
+        tExerciseRepository.save(t_exercise17);
+        tExerciseRepository.save(t_exercise18);
+        tExerciseRepository.save(t_exercise19);
+        tExerciseRepository.save(t_exercise20);
 
         // 운동시설 등록
 
