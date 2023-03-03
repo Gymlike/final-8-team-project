@@ -9,13 +9,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FreeBoardRepository extends JpaRepository<FreeBoard,Long> {
-    Page<T_exercise> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(
+    Page<FreeBoard> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(
             String title,
             String content,
             Pageable pageable
     );
 
     //하나만  필요한거니까 튜플이나 DTO이용해서 하나만 가져와보자..
- List<T_exercise> findIdByCreatedDateString(String dateTime);
+ List<FreeBoard> findIdByCreatedDateString(String dateTime);
 
 }

@@ -4,9 +4,11 @@ package com.team.final8teamproject.board.controller;
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.FreeBoardResponseDTO;
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.FreeBoardService;
+import com.team.final8teamproject.board.service.FreeBoardServiceImple;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
@@ -46,7 +48,7 @@ public class FreeBoardController {
 
         if (checkUser) {
             String imageUrl = presignedUrlService.findByName(path);
-            // String imageUrl = s3Uploader.uploadOne(file, "/texe");
+
             return freeBoardService.creatTExerciseBord(title, content, imageUrl, base);
         } else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
@@ -55,7 +57,7 @@ public class FreeBoardController {
 
     //오운완 전체 게시물 조회
     @GetMapping("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
-    public T_exerciseServiceImple.Result getAllT_exerciseBoards(
+    public FreeBoardServiceImple.Result getAllFreeBoards(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "6") Integer size,//나중에 10
             @RequestParam(value = "isAsc", required = false, defaultValue = "false") Boolean isAsc,
@@ -63,12 +65,12 @@ public class FreeBoardController {
             @RequestParam(value = "search", required = false, defaultValue = "") String search
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
-        return freeBoardService.getAllT_exerciseBoards(pageRequest, search, size, page);
+        return freeBoardService.getAllFreeBoards(pageRequest, search, size, page);
     }
 
     //오운완 선택 게시물 조회
     @GetMapping("/selectboard/{boardId}")
-    public T_exerciseBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId) {
+    public FreeBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId) {
 
         return freeBoardService.getT_exerciseBoard(boardId);
     }
@@ -91,7 +93,7 @@ public class FreeBoardController {
         BaseEntity base = userDetails.getBase();
 
         String imageUrl = presignedUrlService.findByName(path);
-        //String imageUrl = s3Uploader.uploadOne(file, "/texe");
+
         return freeBoardService.editPost(boardId, creatTExerciseBordRequestDTO, base, imageUrl);
     }
 
@@ -118,7 +120,7 @@ public class FreeBoardController {
         boolean checkUser = baseService.checkUser(base.getUsername());
 
         if (checkUser) {
-            path = "texe";
+            path = "freeBoard";
             String imageName = imageNameDTO.getImageName();
             return presignedUrlService.getPreSignedUrl(path, imageName);
         } else {
@@ -127,7 +129,7 @@ public class FreeBoardController {
     }
 
     @GetMapping("/top3")
-    public List<T_exerciseBoardResponseDTO> getTop3PostByLike() {
+    public List<FreeBoardResponseDTO> getTop3PostByLike() {
         return freeBoardService.getTop3PostByLike();
     }
 }

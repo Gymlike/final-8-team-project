@@ -1,7 +1,9 @@
 package com.team.final8teamproject.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
+
+import com.team.final8teamproject.board.comment.dto.FreeBoardCommentResponseDTO;
+import com.team.final8teamproject.board.entity.FreeBoard;
 import com.team.final8teamproject.board.entity.T_exercise;
 import lombok.Getter;
 
@@ -28,17 +30,17 @@ public class FreeBoardResponseDTO {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
     private final LocalDateTime modifiedDate;
 
-    private  List<T_exerciseCommentResponseDTO> commentList;
+    private  List<FreeBoardCommentResponseDTO> commentList;
 
 
-    public FreeBoardResponseDTO(Long like, T_exercise t_exercise, List<T_exerciseCommentResponseDTO> commentList, String nickname) {
+    public FreeBoardResponseDTO(Long like, FreeBoard freeBoard, List<FreeBoardCommentResponseDTO> commentList, String nickname) {
         this.like= like;
-        this.id = t_exercise.getId();
-        this.title = t_exercise.getTitle();
-        this.content =t_exercise.getContent();
-        this.image = t_exercise.getImageUrl(); // 이게 image url 로 바뀌나?
-        this.modifiedDate =t_exercise.getModifiedDate();
-        this.userName = t_exercise.getUser().getUsername();
+        this.id = freeBoard.getId();
+        this.title = freeBoard.getTitle();
+        this.content =freeBoard.getContent();
+        this.image = freeBoard.getImageUrl(); // 이게 image url 로 바뀌나?
+        this.modifiedDate =freeBoard.getModifiedDate();
+        this.userName = freeBoard.getUser().getUsername();
         this.userNickname = nickname;
         this.commentList = commentList;
     }
