@@ -16,6 +16,7 @@ public interface T_exerciseRepository extends JpaRepository<T_exercise,Long> {
             Pageable pageable
     );
 
- List<Long> findIdByCreatedDateString(String dateTime);
+    //하나만  필요한거니까 튜플이나 DTO이용해서 하나만 가져와보자..
+ List<T_exercise> findIdByCreatedDateString(String dateTime);
 
 }

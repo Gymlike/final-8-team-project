@@ -161,7 +161,7 @@ public class T_exerciseController {
         }
     }
     @GetMapping("/top3")
-    public List<Long> getTop3PostByLike(){
+    public List<T_exerciseBoardResponseDTO> getTop3PostByLike(){
       return  t_exerciseService.getTop3PostByLike();
     }
 }

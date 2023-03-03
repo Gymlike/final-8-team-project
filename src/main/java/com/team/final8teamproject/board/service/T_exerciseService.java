@@ -41,7 +41,7 @@ public interface T_exerciseService {
 
     T_exercise findT_exerciseBoardById(Long id);
 
-    List<Long> getTop3PostByLike();
+    List<T_exerciseBoardResponseDTO> getTop3PostByLike();
 
 
    /* 파일서비스 인터페이스 만들어서～
