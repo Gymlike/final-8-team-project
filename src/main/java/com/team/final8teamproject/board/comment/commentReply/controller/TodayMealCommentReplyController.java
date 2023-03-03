@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class TodayMealCommentReplyController {
 
     private final TodayMealCommentReplyService todayMealCommentReplyService;
-    private final UserService userService;
+
     //대댓글 생성
     @PostMapping("/comment/{commentId}")
     public ResponseEntity<String> creatCommentReply(@PathVariable Long commentId,
@@ -23,7 +23,7 @@ public class TodayMealCommentReplyController {
                                                     @RequestBody CreatCommentReplyRequestDTO requestDTO){
         String username = userDetails.getUsername();
         String comment = requestDTO.getComment();
-        String userNickname = userService.getUserNickname(userDetails.getBase());
+        String userNickname = userDetails.getBase().getNickName();
         return todayMealCommentReplyService.creatCommentRely(commentId,comment,username,userNickname);
     }
 

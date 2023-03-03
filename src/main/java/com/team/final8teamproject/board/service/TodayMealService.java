@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface TodayMealService {
 
-    ResponseEntity<String> creatTodayMealBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException;
+    ResponseEntity<String> creatTodayMealBord(String title, String content, String file, BaseEntity user) throws NullPointerException, IOException;
 
     List<TodayMealBoardResponseDTO> getAllTodayBoards(Pageable pageRequest, String search);
 

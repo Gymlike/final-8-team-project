@@ -1,10 +1,12 @@
 package com.team.final8teamproject.board.controller;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.service.TodayMealService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -28,22 +30,25 @@ public class TodayMealController {
 
     private final TodayMealService todayMealService;
     private final BaseService baseService;
+    private final PresignedUrlService presignedUrlService;
 
+    private String path;
     //오먹 게시판 생성
     @PostMapping
-    public ResponseEntity<String> creatTodayMealBord(@RequestPart("BordRequestDTO") CreatBordRequestDTO creatBordRequestDTO,
-                                                     @RequestPart("file") MultipartFile file,
-                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public ResponseEntity<String> creatT_exerciseBord(@RequestBody CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
-        String content = creatBordRequestDTO.getContent();
-        String title = creatBordRequestDTO.getTitle();
-        User user = (User) userDetails.getBase();
+        String content = creatTExerciseBordRequestDTO.getContent();
+        String title = creatTExerciseBordRequestDTO.getTitle();
+        BaseEntity base = userDetails.getBase();
 
-        boolean checkUser = baseService.checkUser(user.getUsername());
+        boolean checkUser = baseService.checkUser(base.getUsername());
 
-        if(checkUser){
-            return todayMealService.creatTodayMealBord(title,content,file,user);
-        }else {
+        if (checkUser) {
+            String imageUrl = presignedUrlService.findByName(path);
+            // String imageUrl = s3Uploader.uploadOne(file, "/texe");
+            return todayMealService.creatTodayMealBord(title, content, imageUrl, base);
+        } else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
     }

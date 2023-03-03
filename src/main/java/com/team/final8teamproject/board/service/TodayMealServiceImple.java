@@ -2,10 +2,9 @@ package com.team.final8teamproject.board.service;
 
 
 import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
+
 import com.team.final8teamproject.board.comment.commentReply.dto.TodayMealCommentReplyResponseDTO;
-import com.team.final8teamproject.board.comment.commentReply.entity.TodayMealCommentReply;
-import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
+
 import com.team.final8teamproject.board.comment.dto.TodayMealCommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.board.comment.service.TodayMealCommentService;
@@ -17,7 +16,6 @@ import com.team.final8teamproject.board.repository.TodayMealRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
-import com.team.final8teamproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,8 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -43,14 +40,12 @@ public class TodayMealServiceImple implements  TodayMealService{
     private final TodayMealCommentService todayMealCommentService;
     private final TodayMealLikeService todayMealLikeService;
 
-    private final UserService userService;
 
 
     /**
      *오먹 게시물 생성
      * @param title  제목
      * @param content  내용
-     * @param file   이게 올릴 이미지임..!
      * @param user   관계를 맺기 위해 ~ 인증된 객체 꺼내옴
      * @return    http status
      * @throws NullPointerException  ?
@@ -58,14 +53,9 @@ public class TodayMealServiceImple implements  TodayMealService{
      */
     @Transactional
     @Override
-    public ResponseEntity<String> creatTodayMealBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException {
-        UUID uuid = UUID.randomUUID();
-        String filename = uuid+"_"+file.getOriginalFilename();
-        String filepath = System.getProperty("user.dir")+"/src/main/resources/static/files";
-        File savefile = new File(filepath, filename);
-        file.transferTo(savefile);
+    public ResponseEntity<String> creatTodayMealBord(String title, String content, String url, BaseEntity user) throws NullPointerException, IOException {
 
-        TodayMeal todayMeal = new TodayMeal(title,content,filename,filepath,user);
+        TodayMeal todayMeal = new TodayMeal(title,content,url,user);
         todayMealRepository.save(todayMeal);
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
