@@ -83,13 +83,14 @@ public class TodayMealController {
     //오먹 게시물 수정
     @PatchMapping("/{boardId}")
     public ResponseEntity<String> editPost(@PathVariable Long boardId,
-                                           @RequestPart("creatTExerciseBordRequestDTO") @Valid CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                           @RequestPart("file") MultipartFile file,
-                                           @AuthenticationPrincipal UserDetailsImpl userDetails)throws IOException{
+                                           @RequestBody CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
-        User user = (User)userDetails.getBase();
+        BaseEntity base = userDetails.getBase();
 
-        return todayMealService.editPost(boardId,creatTExerciseBordRequestDTO,user,file);
+        String imageUrl = presignedUrlService.findByName(path);
+        //String imageUrl = s3Uploader.uploadOne(file, "/texe");
+        return todayMealService.editPost(boardId, creatTExerciseBordRequestDTO, base, imageUrl);
     }
 
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {

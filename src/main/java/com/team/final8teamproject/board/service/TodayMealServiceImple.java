@@ -166,7 +166,7 @@ public class TodayMealServiceImple implements  TodayMealService{
      * @param boardId  게시물id
      * @param creatBordRequestDTO 수정할 내용이 담겨있음
      * @param user  수정을 요청한 유저
-     * @param file 수정에 들어갈 이미지~
+     * @param imageUrl 수정에 들어갈 이미지~
      * @return   status
      * @throws IOException ?
      */
@@ -174,23 +174,18 @@ public class TodayMealServiceImple implements  TodayMealService{
     @Transactional
     public ResponseEntity<String> editPost(Long boardId,
                                            CreatBordRequestDTO creatBordRequestDTO,
-                                           User user,
-                                           MultipartFile file) throws  IOException
+                                           BaseEntity user,
+                                           String imageUrl) throws  IOException
     {
         TodayMeal todayMeal = todayMealRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         if(todayMeal.isWriter(user.getId())){
-            UUID uuid = UUID.randomUUID();
-            String filename = uuid+"_"+file.getOriginalFilename();
-            String filepath = System.getProperty("user.dir")+"/src/main/resources/static/files";
-            File savefile = new File(filepath, filename);
-            file.transferTo(savefile);
+
             String content = creatBordRequestDTO.getContent();
             String title = creatBordRequestDTO.getTitle();
 
-            todayMeal.editSalePost(title,content,filename,filepath);
+            todayMeal.editSalePost(title,content,imageUrl);
             return new ResponseEntity<>("게시물 수정 완료",HttpStatus.OK);
-
         }throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
     }
 

@@ -46,7 +46,7 @@ public class TodayMeal extends Timestamped {
 
     }
 
-    public void editSalePost(String title,String content,String filename,String filepath) {
+    public void editSalePost(String title,String content,String filepath) {
         this.title = title;
         this.content = content;
         this.filepath = filepath;
