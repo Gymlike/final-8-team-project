@@ -41,6 +41,6 @@ public class TodayMealCommentReplyController {
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<String> deleteCommentReply(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                      @PathVariable Long commentId) {
-        return todayMealCommentReplyService.deleteCommentReply(userDetails.getBase(),commentId);
+        return todayMealCommentReplyService.deleteCommentReply(userDetails.getBase().getUsername(),commentId);
     }
 }

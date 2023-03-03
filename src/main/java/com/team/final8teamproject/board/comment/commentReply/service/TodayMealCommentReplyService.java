@@ -12,5 +12,5 @@ public interface TodayMealCommentReplyService {
     ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, String username, Long commentID);
 
 
-    ResponseEntity<String> deleteCommentReply(BaseEntity user, Long commentId);
+    ResponseEntity<String> deleteCommentReply(String  user, Long commentId);
 }
