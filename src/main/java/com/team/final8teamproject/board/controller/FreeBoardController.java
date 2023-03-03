@@ -6,7 +6,7 @@ import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
-import com.team.final8teamproject.board.service.T_exerciseService;
+import com.team.final8teamproject.board.service.FreeBoardService;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
@@ -27,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/freeboard")
 public class FreeBoardController {
-    private final T_exerciseService t_exerciseService;
+    private final FreeBoardService freeBoardService;
     private final BaseService baseService;
     private final PresignedUrlService presignedUrlService;
 
@@ -47,7 +47,7 @@ public class FreeBoardController {
         if (checkUser) {
             String imageUrl = presignedUrlService.findByName(path);
             // String imageUrl = s3Uploader.uploadOne(file, "/texe");
-            return t_exerciseService.creatTExerciseBord(title, content, imageUrl, base);
+            return freeBoardService.creatTExerciseBord(title, content, imageUrl, base);
         } else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
@@ -63,21 +63,21 @@ public class FreeBoardController {
             @RequestParam(value = "search", required = false, defaultValue = "") String search
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
-        return t_exerciseService.getAllT_exerciseBoards(pageRequest, search, size, page);
+        return freeBoardService.getAllT_exerciseBoards(pageRequest, search, size, page);
     }
 
     //오운완 선택 게시물 조회
     @GetMapping("/selectboard/{boardId}")
     public T_exerciseBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId) {
 
-        return t_exerciseService.getT_exerciseBoard(boardId);
+        return freeBoardService.getT_exerciseBoard(boardId);
     }
 
     //오운완 게시물 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteT_exerciseBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        return t_exerciseService.deletePost(boardId, userDetails.getBase()); //인증은 앞단에서..했다고 가정하니까....
+        return freeBoardService.deletePost(boardId, userDetails.getBase()); //인증은 앞단에서..했다고 가정하니까....
 
     }
 
@@ -92,7 +92,7 @@ public class FreeBoardController {
 
         String imageUrl = presignedUrlService.findByName(path);
         //String imageUrl = s3Uploader.uploadOne(file, "/texe");
-        return t_exerciseService.editPost(boardId, creatTExerciseBordRequestDTO, base, imageUrl);
+        return freeBoardService.editPost(boardId, creatTExerciseBordRequestDTO, base, imageUrl);
     }
 
     @GetMapping("/selectboard/checkwriter")
@@ -128,6 +128,6 @@ public class FreeBoardController {
 
     @GetMapping("/top3")
     public List<T_exerciseBoardResponseDTO> getTop3PostByLike() {
-        return t_exerciseService.getTop3PostByLike();
+        return freeBoardService.getTop3PostByLike();
     }
 }

@@ -8,9 +8,10 @@ import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.entity.FreeBoard;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
-import com.team.final8teamproject.board.repository.T_exerciseRepository;
+import com.team.final8teamproject.board.repository.FreeBoardRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.service.UserService;
@@ -34,8 +35,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class FreeBoardServiceImple implements  T_exerciseService {
-    private final T_exerciseRepository t_exerciseRepository;
+public class FreeBoardServiceImple implements FreeBoardService {
+    private final FreeBoardRepository freeBoardRepository;
     private final T_exerciseCommentService tExerciseCommentService;
     private final T_exerciseLikeService tExerciseLikeService;
 
@@ -56,8 +57,8 @@ public class FreeBoardServiceImple implements  T_exerciseService {
     @Override
     public ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity user) throws NullPointerException, IOException {
 
-        T_exercise t_exercise = new T_exercise(title, content, imageUrl, user);
-        t_exerciseRepository.save(t_exercise);
+        FreeBoard freeBoard = new FreeBoard(title, content, imageUrl, user);
+        freeBoardRepository.save(freeBoard);
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
     }
@@ -72,7 +73,7 @@ public class FreeBoardServiceImple implements  T_exerciseService {
      */
     @Override
     public Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page) {
-        Page<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+        Page<T_exercise> tExerciseList = freeBoardRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
         int totalCount = (int) tExerciseList.getTotalElements();
         Long countList = size.longValue();
         int countPage = 5;//리펙토링때 10으로변경합세!
@@ -114,7 +115,7 @@ public class FreeBoardServiceImple implements  T_exerciseService {
      */
     @Override
     public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
-        T_exercise t_exercise = t_exerciseRepository.findById(boardId)
+        T_exercise t_exercise = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
         List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
@@ -146,9 +147,9 @@ public class FreeBoardServiceImple implements  T_exerciseService {
     @Override
     @Transactional
         public ResponseEntity<String> deletePost(Long boardId, BaseEntity base){
-            T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+            T_exercise t_exercise = freeBoardRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
             if (t_exercise.isWriter(base.getId())) {
-                t_exerciseRepository.deleteById(boardId);
+                freeBoardRepository.deleteById(boardId);
                 tExerciseCommentService.deleteByBoardId(boardId);
                 return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
             } else {
@@ -172,7 +173,7 @@ public class FreeBoardServiceImple implements  T_exerciseService {
                                                BaseEntity user,
                                                String imageUrl) throws IOException
         {
-            T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+            T_exercise t_exercise = freeBoardRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
             if (t_exercise.isWriter(user.getId())) {
 
@@ -188,12 +189,12 @@ public class FreeBoardServiceImple implements  T_exerciseService {
 
         @Override
         public T_exercise findT_exerciseBoardById (Long id){
-            return t_exerciseRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+            return freeBoardRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
         }
 
     @Override
     public List<T_exerciseBoardResponseDTO> getTop3PostByLike() {
-        List<T_exercise> exercises = t_exerciseRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        List<T_exercise> exercises = freeBoardRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
         List<T_exerciseBoardResponseDTO> top3Post = new ArrayList<>();
 
 
