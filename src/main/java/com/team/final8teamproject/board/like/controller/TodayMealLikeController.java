@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/todaymeal")
-public class TodayMealLikeController {
+public class  TodayMealLikeController {
 
     private final TodayMealLikeService todayMealLikeService;
     //좋아요 누르기
     @PostMapping("/{boardId}/like")
     public ResponseEntity<String> likeBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails ){
 
-            return todayMealLikeService.likeBoard((User) userDetails.getBase(),boardId);
+            return todayMealLikeService.likeBoard(userDetails.getBase(),boardId);
     }
 }
