@@ -9,6 +9,7 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
@@ -17,7 +18,6 @@ import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +27,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -159,5 +159,9 @@ public class T_exerciseController {
         }else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
+    }
+    @GetMapping("/top3")
+    public List<Long> getTop3PostByLike(){
+      return  t_exerciseService.getTop3PostByLike();
     }
 }

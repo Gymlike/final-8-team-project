@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -197,7 +198,12 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
             return t_exerciseRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
         }
 
-        @Getter
+    @Override
+    public List<Long> getTop3PostByLike() {
+      return   t_exerciseRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+    }
+
+    @Getter
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         public static class Result<T> {
             private int page;
