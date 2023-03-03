@@ -20,5 +20,5 @@ public interface TodayMealCommentService {
 
     void deleteByBoardId(Long boardId);
 
-    ResponseEntity<String> updateComment(CreatCommentRequestDTO requestDto, User user, Long commentId);
+    ResponseEntity<String> updateComment(CreatCommentRequestDTO requestDto, BaseEntity user, Long commentId);
 }

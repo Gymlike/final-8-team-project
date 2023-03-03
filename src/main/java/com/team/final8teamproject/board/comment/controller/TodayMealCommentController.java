@@ -36,6 +36,6 @@ public class TodayMealCommentController {
     @PutMapping("/{boardId}/comment/{commentId}")
     public ResponseEntity<String> updateComment(@RequestBody CreatCommentRequestDTO requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
 
-        return todayMealCommentService.updateComment(requestDto, (User) userDetails.getBase(), commentId);
+        return todayMealCommentService.updateComment(requestDto, userDetails.getBase(), commentId);
     }
 }
