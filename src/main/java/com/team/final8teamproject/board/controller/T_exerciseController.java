@@ -9,6 +9,7 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
@@ -17,7 +18,6 @@ import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +27,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -94,7 +94,7 @@ public class T_exerciseController {
     @GetMapping ("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
     public T_exerciseServiceImple.Result getAllT_exerciseBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
-            @RequestParam(value = "size",required = false,defaultValue = "3") Integer size,//나중에 10
+            @RequestParam(value = "size",required = false,defaultValue = "6") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
             @RequestParam(value = "sortBy",required = false,defaultValue = "createdDate")String sortBy,
             @RequestParam(value = "search",required = false,defaultValue = "") String search
@@ -159,5 +159,9 @@ public class T_exerciseController {
         }else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
+    }
+    @GetMapping("/top3")
+    public List<T_exerciseBoardResponseDTO> getTop3PostByLike(){
+      return  t_exerciseService.getTop3PostByLike();
     }
 }

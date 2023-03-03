@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.like.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.like.entity.T_exerciseLike;
 import com.team.final8teamproject.board.like.repository.T_exerciseLikeRepository;
 import com.team.final8teamproject.user.entity.User;
@@ -18,7 +19,7 @@ public class T_exerciseLikeServiceImple implements T_exerciseLikeService {
     private final T_exerciseLikeRepository tExerciseLikeRepository;
     @Override
     @Transactional
-    public ResponseEntity<String> likeBoard(User user, Long boardId) {
+    public ResponseEntity<String> likeBoard(BaseEntity user, Long boardId) {
         String username = user.getUsername();
         if(!tExerciseLikeRepository.existsByUsernameAndBoardId(username,boardId)){
             T_exerciseLike tExerciseLike = new T_exerciseLike(username,boardId);

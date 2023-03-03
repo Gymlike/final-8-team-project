@@ -66,6 +66,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/general/**").hasRole("GeneralManager")
         .requestMatchers("/h2-console").permitAll()
         .requestMatchers("/t-exercise/allboard").permitAll()
+        .requestMatchers("/t-exercise/top3").permitAll()
         .requestMatchers("/t-exercise/selectboard/**").permitAll()
         .requestMatchers("/api/user/kakao/callback").permitAll()
         .requestMatchers("/api/profile/kakao").permitAll()

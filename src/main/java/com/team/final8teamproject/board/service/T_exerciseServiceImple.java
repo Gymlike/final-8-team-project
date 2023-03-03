@@ -33,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -197,7 +197,48 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
             return t_exerciseRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
         }
 
-        @Getter
+    @Override
+    public List<T_exerciseBoardResponseDTO> getTop3PostByLike() {
+        List<T_exercise> exercises = t_exerciseRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        List<T_exerciseBoardResponseDTO> top3Post = new ArrayList<>();
+
+
+        HashMap<T_exercise,Long> postSortByLike = new HashMap();
+        ValueComparator bvc =  new ValueComparator(postSortByLike);
+        TreeMap<T_exercise,Long> sorted_map = new TreeMap<T_exercise,Long>(bvc);
+
+
+        for (T_exercise exercise : exercises) {
+            Long boardId = exercise.returnPostId();
+            Long countLike = tExerciseLikeService.countLike(boardId);
+            postSortByLike.put(exercise,countLike);
+        }
+        sorted_map.putAll(postSortByLike);
+
+        int count =0;
+        for (Map.Entry<T_exercise, Long> tExerciseLongEntry : sorted_map.entrySet()) {
+            T_exercise exercise = tExerciseLongEntry.getKey();
+
+            Long boardId = exercise.returnPostId();
+            Long countLike = tExerciseLongEntry.getValue();
+            String title = exercise.getTitle();
+            String content = exercise.getContent();
+            String imageUrl = exercise.getImageUrl();
+            LocalDateTime modifiedDate = exercise.getModifiedDate();
+            String username = exercise.getUser().getUsername();
+            String nickName = userService.getUserNickname(exercise.getUser());
+
+            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
+            top3Post.add(dto);
+            count++;
+            if (count==3){
+                break;
+            }
+        }
+        return top3Post;
+    }
+
+    @Getter
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         public static class Result<T> {
             private int page;
@@ -214,4 +255,31 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
                 this.data = data;
             }
         }
+//    private LinkedHashMap<T_exercise, Long> sortMapByValue(Map<T_exercise, Long> map) {
+//        List<Map.Entry<T_exercise, Long>> entries = new LinkedList<>(map.entrySet());
+//        entries.sort(Map.Entry.comparingByValue());
+//
+//        LinkedHashMap<T_exercise, Long> result = new LinkedHashMap<>();
+//        for (Map.Entry<T_exercise, Long> entry : entries) {
+//            result.put(entry.getKey(), entry.getValue());
+//        }
+//        return result;
+
+  private class ValueComparator implements Comparator<T_exercise> {
+
+        Map<T_exercise, Long> base;
+
+        public ValueComparator(Map<T_exercise, Long> base) {
+            this.base = base;
+        }
+
+        // Note: this comparator imposes orderings that are inconsistent with equals.
+        public int compare(T_exercise a, T_exercise b) {
+            if (base.get(a) >= base.get(b)) { //반대로 하면 오름차순 <=
+                return -1;
+            } else {
+                return 1;
+            } // returning 0 would merge keys
+        }
+    }
 }
