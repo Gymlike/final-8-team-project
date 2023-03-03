@@ -3,6 +3,7 @@ package com.team.final8teamproject.board.controller;
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.service.TodayMealService;
 import com.team.final8teamproject.board.service.TodayMealServiceImple;
@@ -10,8 +11,7 @@ import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.entity.User;
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +19,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
-import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -91,6 +91,22 @@ public class TodayMealController {
         String imageUrl = presignedUrlService.findByName(path);
         //String imageUrl = s3Uploader.uploadOne(file, "/texe");
         return todayMealService.editPost(boardId, creatTExerciseBordRequestDTO, base, imageUrl);
+    }
+
+    @PostMapping("/presigned")
+    public String creatPresigned(@RequestBody ImageNameDTO imageNameDTO,
+                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        BaseEntity base = userDetails.getBase();
+
+        boolean checkUser = baseService.checkUser(base.getUsername());
+
+        if (checkUser) {
+            path = "todaymeal";
+            String imageName = imageNameDTO.getImageName();
+            return presignedUrlService.getPreSignedUrl(path, imageName);
+        } else {
+            throw new CustomException(ExceptionStatus.WRONG_USERNAME);
+        }
     }
 
     private static Pageable getPageable(Integer page, Integer size, Boolean isAsc, String sortBy) {
