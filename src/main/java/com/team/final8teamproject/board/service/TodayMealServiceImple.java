@@ -9,14 +9,21 @@ import com.team.final8teamproject.board.comment.dto.TodayMealCommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.TodayMealComment;
 import com.team.final8teamproject.board.comment.service.TodayMealCommentService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
+import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.entity.TodayMeal;
 import com.team.final8teamproject.board.like.service.TodayMealLikeService;
 import com.team.final8teamproject.board.repository.TodayMealRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
+import com.team.final8teamproject.user.service.UserService;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -40,7 +49,7 @@ public class TodayMealServiceImple implements  TodayMealService{
     private final TodayMealCommentService todayMealCommentService;
     private final TodayMealLikeService todayMealLikeService;
 
-
+    private final UserService userService;
 
     /**
      *오먹 게시물 생성
@@ -69,12 +78,37 @@ public class TodayMealServiceImple implements  TodayMealService{
      * @return 리스트로 반환
      */
     @Override
-    public List<TodayMealBoardResponseDTO> getAllTodayBoards(Pageable pageRequest, String search) {
-        List<TodayMeal> todayMeal = todayMealRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+    public Result getAllTodayBoards(Pageable pageRequest, String search, Integer size, Integer page) {
+        Page<TodayMeal> todayMeals = todayMealRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+        int totalCount = (int) todayMeals.getTotalElements();
+        Long countList = size.longValue();
+        int countPage = 5;//리펙토링때 10으로변경합세!
 
-        return todayMeal.stream()
-                .map(TodayMealBoardResponseDTO::new)
-                .toList();
+        int totalPage = (int) (totalCount / countList);
+
+        if (totalCount % countList > 0) {
+            totalPage++;
+        }
+        if (totalPage < page) {
+            page = totalPage;
+        }
+
+        List<T_exerciseBoardResponseDTO> boardResponseDTO = new ArrayList<>();
+
+        for (TodayMeal todayMeal : todayMeals) {
+            Long boardId = todayMeal.returnPostId();
+            Long countLike = todayMealLikeService.countLike(boardId);
+            String title = todayMeal.getTitle();
+            String content = todayMeal.getContent();
+            String imageUrl = todayMeal.getFilepath();
+            LocalDateTime modifiedDate = todayMeal.getModifiedDate();
+            String username = todayMeal.getUser().getUsername();
+            String nickName = userService.getUserNickname(todayMeal.getUser());
+
+            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
+            boardResponseDTO.add(dto);
+        }
+        return new Result(page, totalCount, countPage, totalPage, boardResponseDTO);
     }
 
     /**
@@ -165,4 +199,21 @@ public class TodayMealServiceImple implements  TodayMealService{
         return todayMealRepository.findById(id).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
     }
 
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Result<T> {
+        private int page;
+        private int totalCount;
+        private int countPage;
+        private int totalPage;
+        private T data;
+
+        public Result(int page, int totalCount, int countPage, int totalPage, T data) {
+            this.page = page;
+            this.totalCount = totalCount;
+            this.countPage = countPage;
+            this.totalPage = totalPage;
+            this.data = data;
+        }
+    }
 }

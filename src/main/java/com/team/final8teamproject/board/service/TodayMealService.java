@@ -17,7 +17,7 @@ public interface TodayMealService {
 
     ResponseEntity<String> creatTodayMealBord(String title, String content, String file, BaseEntity user) throws NullPointerException, IOException;
 
-    List<TodayMealBoardResponseDTO> getAllTodayBoards(Pageable pageRequest, String search);
+    TodayMealServiceImple.Result getAllTodayBoards(Pageable pageRequest, String search, Integer size, Integer page);
 
     TodayMealBoardResponseDTO getTodayMealBoard(Long boardId);
 

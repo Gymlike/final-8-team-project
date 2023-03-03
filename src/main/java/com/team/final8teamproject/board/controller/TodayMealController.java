@@ -5,6 +5,7 @@ import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.service.TodayMealService;
+import com.team.final8teamproject.board.service.TodayMealServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
@@ -46,7 +47,6 @@ public class TodayMealController {
 
         if (checkUser) {
             String imageUrl = presignedUrlService.findByName(path);
-            // String imageUrl = s3Uploader.uploadOne(file, "/texe");
             return todayMealService.creatTodayMealBord(title, content, imageUrl, base);
         } else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
@@ -55,16 +55,16 @@ public class TodayMealController {
 
     //오먹 전체 게시물 조회
     @GetMapping ("/allboard")
-    public List<TodayMealBoardResponseDTO> getAllTodayMealBoards(
+    public TodayMealServiceImple.Result getAllTodayMealBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
-            @RequestParam(value = "size",required = false,defaultValue = "2") Integer size,//나중에 10
+            @RequestParam(value = "size",required = false,defaultValue = "6") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
             @RequestParam(value = "sortBy",required = false,defaultValue = "createdDate")String sortBy,
             @RequestParam(value = "search",required = false,defaultValue = "") String search
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
 
-        return todayMealService.getAllTodayBoards(pageRequest,search);
+        return todayMealService.getAllTodayBoards(pageRequest,search,size,page);
     }
 
     //오먹 선택 게시물 조회

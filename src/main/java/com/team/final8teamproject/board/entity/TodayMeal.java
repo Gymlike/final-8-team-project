@@ -51,4 +51,8 @@ public class TodayMeal extends Timestamped {
         this.content = content;
         this.filepath = filepath;
     }
+
+    public Long returnPostId(){
+        return id;
+    }
 }
