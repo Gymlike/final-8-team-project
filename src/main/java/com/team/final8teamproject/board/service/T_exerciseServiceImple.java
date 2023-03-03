@@ -202,17 +202,21 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
         List<T_exercise> exercises = t_exerciseRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
         List<T_exerciseBoardResponseDTO> top3Post = new ArrayList<>();
 
+
         HashMap<T_exercise,Long> postSortByLike = new HashMap();
+        ValueComparator bvc =  new ValueComparator(postSortByLike);
+        TreeMap<T_exercise,Long> sorted_map = new TreeMap<T_exercise,Long>(bvc);
+
 
         for (T_exercise exercise : exercises) {
             Long boardId = exercise.returnPostId();
             Long countLike = tExerciseLikeService.countLike(boardId);
             postSortByLike.put(exercise,countLike);
         }
+        sorted_map.putAll(postSortByLike);
 
-        LinkedHashMap<T_exercise, Long> top3map = sortMapByValue(postSortByLike);
         int count =0;
-        for (Map.Entry<T_exercise, Long> tExerciseLongEntry : top3map.entrySet()) {
+        for (Map.Entry<T_exercise, Long> tExerciseLongEntry : sorted_map.entrySet()) {
             T_exercise exercise = tExerciseLongEntry.getKey();
 
             Long boardId = exercise.returnPostId();
@@ -251,14 +255,31 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
                 this.data = data;
             }
         }
-    private LinkedHashMap<T_exercise, Long> sortMapByValue(Map<T_exercise, Long> map) {
-        List<Map.Entry<T_exercise, Long>> entries = new LinkedList<>(map.entrySet());
-        Collections.sort(entries, Map.Entry.comparingByValue());
+//    private LinkedHashMap<T_exercise, Long> sortMapByValue(Map<T_exercise, Long> map) {
+//        List<Map.Entry<T_exercise, Long>> entries = new LinkedList<>(map.entrySet());
+//        entries.sort(Map.Entry.comparingByValue());
+//
+//        LinkedHashMap<T_exercise, Long> result = new LinkedHashMap<>();
+//        for (Map.Entry<T_exercise, Long> entry : entries) {
+//            result.put(entry.getKey(), entry.getValue());
+//        }
+//        return result;
 
-        LinkedHashMap<T_exercise, Long> result = new LinkedHashMap<>();
-        for (Map.Entry<T_exercise, Long> entry : entries) {
-            result.put(entry.getKey(), entry.getValue());
+  private class ValueComparator implements Comparator<T_exercise> {
+
+        Map<T_exercise, Long> base;
+
+        public ValueComparator(Map<T_exercise, Long> base) {
+            this.base = base;
         }
-        return result;
+
+        // Note: this comparator imposes orderings that are inconsistent with equals.
+        public int compare(T_exercise a, T_exercise b) {
+            if (base.get(a) >= base.get(b)) { //반대로 하면 오름차순 <=
+                return -1;
+            } else {
+                return 1;
+            } // returning 0 would merge keys
+        }
     }
 }
