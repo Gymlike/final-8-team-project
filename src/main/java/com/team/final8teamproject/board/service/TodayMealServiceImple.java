@@ -35,9 +35,8 @@ import java.io.File;
 import java.io.IOException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -195,6 +194,47 @@ public class TodayMealServiceImple implements  TodayMealService{
         return todayMealRepository.findById(id).orElseThrow(()-> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
     }
 
+    @Override
+    public List<TodayMealBoardResponseDTO> getTop3PostByLike() {
+        List<TodayMeal> todaymeals = todayMealRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        List<TodayMealBoardResponseDTO> top3Post = new ArrayList<>();
+
+
+        HashMap<TodayMeal,Long> postSortByLike = new HashMap();
+        ValueComparator bvc =  new ValueComparator(postSortByLike);
+        TreeMap<TodayMeal,Long> sorted_map = new TreeMap<>(bvc);
+
+
+        for (TodayMeal todayMeal : todaymeals) {
+            Long boardId = todayMeal.returnPostId();
+            Long countLike = todayMealLikeService.countLike(boardId);
+            postSortByLike.put(todayMeal,countLike);
+        }
+        sorted_map.putAll(postSortByLike);
+
+        int count =0;
+        for (Map.Entry<TodayMeal, Long> todayMealLongEntry : sorted_map.entrySet()) {
+           TodayMeal exercise = todayMealLongEntry.getKey();
+
+            Long boardId = exercise.returnPostId();
+            Long countLike = todayMealLongEntry.getValue();
+            String title = exercise.getTitle();
+            String content = exercise.getContent();
+            String imageUrl = exercise.getFilepath();
+            LocalDateTime modifiedDate = exercise.getModifiedDate();
+            String username = exercise.getUser().getUsername();
+            String nickName = userService.getUserNickname(exercise.getUser());
+
+            TodayMealBoardResponseDTO dto = new TodayMealBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
+            top3Post.add(dto);
+            count++;
+            if (count==3){
+                break;
+            }
+        }
+        return top3Post;
+    }
+
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Result<T> {
@@ -210,6 +250,23 @@ public class TodayMealServiceImple implements  TodayMealService{
             this.countPage = countPage;
             this.totalPage = totalPage;
             this.data = data;
+        }
+    }
+    private class ValueComparator implements Comparator<TodayMeal> {
+
+        Map<TodayMeal, Long> base;
+
+        public ValueComparator(Map<TodayMeal, Long> base) {
+            this.base = base;
+        }
+
+        // Note: this comparator imposes orderings that are inconsistent with equals.
+        public int compare(TodayMeal a, TodayMeal b) {
+            if (base.get(a) >= base.get(b)) { //반대로 하면 오름차순 <=
+                return -1;
+            } else {
+                return 1;
+            } // returning 0 would merge keys
         }
     }
 }

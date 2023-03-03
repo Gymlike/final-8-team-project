@@ -205,7 +205,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
 
         HashMap<T_exercise,Long> postSortByLike = new HashMap();
         ValueComparator bvc =  new ValueComparator(postSortByLike);
-        TreeMap<T_exercise,Long> sorted_map = new TreeMap<T_exercise,Long>(bvc);
+        TreeMap<T_exercise,Long> sorted_map = new TreeMap<>(bvc);
 
 
         for (T_exercise exercise : exercises) {

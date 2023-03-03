@@ -14,4 +14,6 @@ public interface TodayMealRepository extends JpaRepository<TodayMeal,Long> {
             String content,
             Pageable pageable
     );
+
+    List<TodayMeal> findIdByCreatedDateString(String dateTime);
 }

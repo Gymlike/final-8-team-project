@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 
 import com.team.final8teamproject.board.entity.TodayMeal;
@@ -27,4 +28,6 @@ public interface TodayMealService {
 
 
     TodayMeal findBoardById(Long id);
+
+    List<TodayMealBoardResponseDTO> getTop3PostByLike();
 }

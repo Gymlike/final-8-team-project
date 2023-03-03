@@ -4,6 +4,7 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.ImageNameDTO;
+import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.service.TodayMealService;
 import com.team.final8teamproject.board.service.TodayMealServiceImple;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -117,7 +119,10 @@ public class TodayMealController {
         }
         return PageRequest.of(page -1, size,sort);
     }
+    @GetMapping("/top3")
+    public List<TodayMealBoardResponseDTO> getTop3PostByLike() {
+        return todayMealService.getTop3PostByLike();
+    }
 
 
-    
 }
