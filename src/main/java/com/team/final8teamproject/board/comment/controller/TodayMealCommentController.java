@@ -29,7 +29,7 @@ public class TodayMealCommentController {
     //댓글삭제
     @DeleteMapping("/{boardId}/comment/{commentId}")
     public ResponseEntity<String> deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
-        return todayMealCommentService.deleteComment((User) userDetails.getBase(), commentId);
+        return todayMealCommentService.deleteComment( userDetails.getBase(), commentId);
     }
 
     //댓글수정
