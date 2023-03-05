@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface NoticeService {
   void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId,String imageUrl) ;
-  void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest);
+  void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest, String imageUrl);
   void deleteNotice(Long id, Long managerId);
   Result getNoticeList(int page, int size, Direction direction, String properties);
 

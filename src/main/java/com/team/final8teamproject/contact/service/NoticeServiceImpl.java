@@ -108,10 +108,9 @@ public class NoticeServiceImpl implements NoticeService {
 
   @Transactional
   @Override
-  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest) {
+  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest, String imageUrl) {
     String title = updateNoticeRequest.getTitle();
     String content = updateNoticeRequest.getContent();
-    String imageUrl = updateNoticeRequest.getImageUrl();
 
     Notice notice = noticeRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)

@@ -74,9 +74,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/todaymeal/allboard").permitAll()
         .requestMatchers("/todaymeal/selectboard/**").permitAll()
         .requestMatchers("/api/user/find/**").permitAll()
-        .requestMatchers("/api/faqs/check/**").permitAll()  //todo 추후변경예정
-        .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
-        .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정
+        .requestMatchers("/api/faqs/check/**").permitAll()
+        .requestMatchers("/api/contact/inquiries/**").permitAll()
+        .requestMatchers("/api/managers/notices/check/**").permitAll()
+        .requestMatchers("/hello").permitAll()
 
 
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.

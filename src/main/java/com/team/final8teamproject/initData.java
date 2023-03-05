@@ -120,42 +120,42 @@ public class initData implements ApplicationRunner {
           1);
       contactCommentRepository.save(childrenComment2);
 
-      Notice notice = new Notice(1L, "공지사항", "공지사항입니다.","image");
-//      Notice notice1 = new Notice(1L, " 대체공휴일 휴무 안내", "휴무입니다.");
-//      Notice notice2 = new Notice(1L, " 더미1", "휴무입니다.");
-//      Notice notice3 = new Notice(1L, " 더미2", "휴무입니다.");
-//      Notice notice4 = new Notice(1L, " 더미3", "휴무입니다.");
-//      Notice notice5 = new Notice(1L, " 더미4", "휴무입니다.");
-//      Notice notice6 = new Notice(1L, "더미5", "공지사항입니다.");
-//      Notice notice7 = new Notice(1L, " 더미6", "휴무입니다.");
-//      Notice notice8 = new Notice(1L, "더미7", "휴무입니다.");
-//      Notice notice9 = new Notice(1L, " 더미8", "휴무입니다.");
-//      Notice notice10 = new Notice(1L, " 더미9", "휴무입니다.");
-//      Notice notice11 = new Notice(1L, " 더미10", "휴무입니다.");
-//      Notice notice12 = new Notice(1L, " 더미11", "휴무입니다.");
-//      Notice notice13 = new Notice(1L, " 더미12", "휴무입니다.");
-//      Notice notice14 = new Notice(1L, " 더미13", "휴무입니다.");
-//      Notice notice15 = new Notice(1L, " 더미14", "휴무입니다.");
-//      Notice notice16 = new Notice(1L, " 더미15", "휴무입니다.");
-//      Notice notice17 = new Notice(1L, " 더미16", "휴무입니다.");
+      Notice notice = new Notice(1L, "공지사항", "공지사항입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice1 = new Notice(1L, " 오픈했습니다.", "오픈했습니다.^^","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/7ca7128f-d08a-430a-b28a-30e3b35de720서치징.png");
+      Notice notice2 = new Notice(1L, " 더미1", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice3 = new Notice(1L, " 더미2", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice4 = new Notice(1L, " 더미3", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice5 = new Notice(1L, " 더미4", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice6 = new Notice(1L, "더미5", "공지사항입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice7 = new Notice(1L, " 더미6", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice8 = new Notice(1L, "더미7", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice9 = new Notice(1L, " 더미8", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice10 = new Notice(1L, " 더미9", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice11 = new Notice(1L, " 더미10", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice12 = new Notice(1L, " 더미11", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice13 = new Notice(1L, " 더미12", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice14 = new Notice(1L, " 더미13", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice15 = new Notice(1L, " 더미14", "휴무입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice16 = new Notice(1L, " 공지사항", "공지사항입니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+      Notice notice17 = new Notice(1L, " 오픈했습니다", "오픈했습니다.","https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/7ca7128f-d08a-430a-b28a-30e3b35de720서치징.png");
      noticeRepository.save(notice);
-//      noticeRepository.save(notice1);
-//      noticeRepository.save(notice2);
-//      noticeRepository.save(notice3);
-//      noticeRepository.save(notice4);
-//      noticeRepository.save(notice5);
-//      noticeRepository.save(notice6);
-//      noticeRepository.save(notice7);
-//      noticeRepository.save(notice8);
-//      noticeRepository.save(notice9);
-//      noticeRepository.save(notice10);
-//      noticeRepository.save(notice11);
-//      noticeRepository.save(notice12);
-//      noticeRepository.save(notice13);
-//      noticeRepository.save(notice14);
-//      noticeRepository.save(notice15);
-//      noticeRepository.save(notice16);
-//      noticeRepository.save(notice17);
+      noticeRepository.save(notice1);
+      noticeRepository.save(notice2);
+      noticeRepository.save(notice3);
+      noticeRepository.save(notice4);
+      noticeRepository.save(notice5);
+      noticeRepository.save(notice6);
+      noticeRepository.save(notice7);
+      noticeRepository.save(notice8);
+      noticeRepository.save(notice9);
+      noticeRepository.save(notice10);
+      noticeRepository.save(notice11);
+      noticeRepository.save(notice12);
+      noticeRepository.save(notice13);
+      noticeRepository.save(notice14);
+      noticeRepository.save(notice15);
+      noticeRepository.save(notice16);
+      noticeRepository.save(notice17);
 
       Faq faq1 = new Faq(1L, "센터 운영 중인데 [ㅇㅇㅇ] 에 등록?입점? 하고 싶습니다.", "홈페이지 상단 xx 페이지에서 ~ 진행");
       Faq faq2 = new Faq(1L, "회원 탈퇴는 어떻게 해야 하나요?",
@@ -166,8 +166,13 @@ public class initData implements ApplicationRunner {
               + "1. 회원 탈퇴 하더라도 모든 정보는 삭제 되지 않습니다. 원할 시 회원 탈퇴 전에 원하는 글에 대해 삭제 하시길 바랍니다. \n"
               + "   단, 게시글 중 댓글이 있는 경우는 삭제 할 수 없습니다. \n"
               + "2. 본인의 의지와 상관없이 이용약관 위반 등으로 탈퇴된 경우 재등록이 제한될 수 있습니다");
+      Faq faq3 = new Faq(1L,"인증메일이 오지 않습니다.","인증 이메일은 입력하신 이메일로 전송됩니다. 다시 한번 확인해주세요.\n"
+          + "인증이메일이 안온다면 이메일를 정확히 입력 하셨는지 다시 한 번 확인부탁드리겠습니다.\n"
+          + "이메일을 정확히 입력 하셨는데도 인증메세지가 안온다면 서칭짐 고객센터로 문의주시길 부탁드리겠습니다. \n"
+          + "최선을 다해 문제해결을 도와드리겠습니다.");
       faqRepository.save(faq1);
       faqRepository.save(faq2);
+      faqRepository.save(faq3);
       // -----------------------------------
 
 

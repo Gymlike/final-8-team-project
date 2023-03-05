@@ -93,7 +93,8 @@ public class NoticeController {
   public ResponseEntity updateNotice(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateNoticeRequest updateNoticeRequest) {
-    noticeService.updateNotice(id, userDetails.getBase().getId(), updateNoticeRequest);
+    String imageUrl = presignedUrlService.findByName(path);
+    noticeService.updateNotice(id, userDetails.getBase().getId(), updateNoticeRequest,imageUrl);
     return ResponseEntity.ok("수정 완료");
   }
 
