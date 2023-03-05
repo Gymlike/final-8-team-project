@@ -123,6 +123,9 @@ public class TodayMealController {
     public List<TodayMealBoardResponseDTO> getTop3PostByLike() {
         return todayMealService.getTop3PostByLike();
     }
-
+    @GetMapping("/selectboard/checkwriter")
+    public String checkwriter(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userDetails.getUsername();
+    }
 
 }
