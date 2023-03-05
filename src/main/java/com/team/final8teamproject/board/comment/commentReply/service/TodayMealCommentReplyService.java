@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface TodayMealCommentReplyService {
     ResponseEntity<String> creatCommentRely(Long commentId, String comment, String username,String userNickname);
 
-    ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, BaseEntity user, Long commentID);
+    ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, String username, Long commentID);
 
 
-    ResponseEntity<String> deleteCommentReply(BaseEntity user, Long commentId);
+    ResponseEntity<String> deleteCommentReply(String  user, Long commentId);
 }

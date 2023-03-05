@@ -1,8 +1,7 @@
 package com.team.final8teamproject.board.like.controller;
 
-import com.team.final8teamproject.board.like.service.TodayMealLikeService;
+import com.team.final8teamproject.board.like.service.FreeBoardLikeService;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
-import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/todaymeal")
-public class  TodayMealLikeController {
+@RequestMapping("/freeboard")
+public class FreeBoardLikeController {
 
-    private final TodayMealLikeService todayMealLikeService;
+    private final FreeBoardLikeService freeBoardLikeService;
     //좋아요 누르기
     @PostMapping("/{boardId}/like")
     public ResponseEntity<String> likeBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails ){
 
-            return todayMealLikeService.likeBoard(userDetails.getBase(),boardId);
+            return freeBoardLikeService.likeBoard(userDetails.getBase(),boardId);
     }
 }

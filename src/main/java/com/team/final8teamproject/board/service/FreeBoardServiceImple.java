@@ -1,28 +1,27 @@
 package com.team.final8teamproject.board.service;
 
 
-
-import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
-
 import com.team.final8teamproject.base.entity.BaseEntity;
-
-import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
-import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
-import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
-import com.team.final8teamproject.board.entity.T_exercise;
-import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
-import com.team.final8teamproject.board.repository.T_exerciseRepository;
+import com.team.final8teamproject.board.comment.commentReply.dto.FreeBoardCommentReplyResponseDTO;
+import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
+import com.team.final8teamproject.board.comment.dto.FreeBoardCommentResponseDTO;
 import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
+import com.team.final8teamproject.board.comment.entity.FreeBoardComment;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.board.comment.service.FreeBoardCommentService;
+import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.FreeBoardResponseDTO;
+import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.entity.FreeBoard;
+import com.team.final8teamproject.board.entity.T_exercise;
+import com.team.final8teamproject.board.like.service.FreeBoardLikeService;
+import com.team.final8teamproject.board.repository.FreeBoardRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.entity.User;
-
 import com.team.final8teamproject.user.service.UserService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,10 +39,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class T_exerciseServiceImple  implements  T_exerciseService {
-    private final T_exerciseRepository t_exerciseRepository;
-    private final T_exerciseCommentService tExerciseCommentService;
-    private final T_exerciseLikeService tExerciseLikeService;
+public class FreeBoardServiceImple implements FreeBoardService {
+    private final FreeBoardRepository freeBoardRepository;
+    private final FreeBoardCommentService freeBoardCommentService;
+    private final FreeBoardLikeService freeBoardLikeService;
 
     private final UserService userService;
 
@@ -62,8 +61,8 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
     @Override
     public ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity user) throws NullPointerException, IOException {
 
-        T_exercise t_exercise = new T_exercise(title, content, imageUrl, user);
-        t_exerciseRepository.save(t_exercise);
+        FreeBoard freeBoard = new FreeBoard(title, content, imageUrl, user);
+        freeBoardRepository.save(freeBoard);
 
         return new ResponseEntity<>("등록완료", HttpStatus.OK);
     }
@@ -77,9 +76,9 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
      * @return 리스트로 반환
      */
     @Override
-    public Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page) {
-        Page<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
-        int totalCount = (int) tExerciseList.getTotalElements();
+    public Result getAllFreeBoards(Pageable pageRequest, String search, Integer size, Integer page) {
+        Page<FreeBoard> freeBoards = freeBoardRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
+        int totalCount = (int) freeBoards.getTotalElements();
         Long countList = size.longValue();
         int countPage = 5;//리펙토링때 10으로변경합세!
 
@@ -92,19 +91,19 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
             page = totalPage;
         }
 
-        List<T_exerciseBoardResponseDTO> boardResponseDTO = new ArrayList<>();
+        List<FreeBoardResponseDTO> boardResponseDTO = new ArrayList<>();
 
-        for (T_exercise t_exercise : tExerciseList) {
-            Long boardId = t_exercise.returnPostId();
-            Long countLike = tExerciseLikeService.countLike(boardId);
-            String title = t_exercise.getTitle();
-            String content = t_exercise.getContent();
-            String imageUrl = t_exercise.getImageUrl();
-            LocalDateTime modifiedDate = t_exercise.getModifiedDate();
-            String username = t_exercise.getUser().getUsername();
-            String nickName = userService.getUserNickname(t_exercise.getUser());
+        for (FreeBoard freeBoard : freeBoards) {
+            Long boardId = freeBoard.returnPostId();
+            Long countLike = freeBoardLikeService.countLike(boardId);
+            String title = freeBoard.getTitle();
+            String content = freeBoard.getContent();
+            String imageUrl = freeBoard.getImageUrl();
+            LocalDateTime modifiedDate = freeBoard.getModifiedDate();
+            String username = freeBoard.getUser().getUsername();
+            String nickName = userService.getUserNickname(freeBoard.getUser());
 
-            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
+            FreeBoardResponseDTO dto = new FreeBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
             boardResponseDTO.add(dto);
         }
         return new Result(page, totalCount, countPage, totalPage, boardResponseDTO);
@@ -119,27 +118,27 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
      * @return DTO에 담아서 반환
      */
     @Override
-    public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
-        T_exercise t_exercise = t_exerciseRepository.findById(boardId)
+    public FreeBoardResponseDTO getT_exerciseBoard(Long boardId) {
+        FreeBoard freeBoard = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
-        List<T_exerciseComment> comments = tExerciseCommentService.findCommentByBoardId(boardId);
+        List<FreeBoardComment> comments = freeBoardCommentService.findCommentByBoardId(boardId);
 
-        List<T_exerciseCommentResponseDTO> commentFilter = comments.stream()
+        List<FreeBoardCommentResponseDTO> commentFilter = comments.stream()
                 .map(comment -> {
-                    List<T_exerciseCommentReplyResponseDTO> toList = comment.getCommentReplyList().stream()
-                            .map(T_exerciseCommentReplyResponseDTO::new)
+                    List<FreeBoardCommentReplyResponseDTO> toList = comment.getCommentReplyList().stream()
+                            .map(FreeBoardCommentReplyResponseDTO::new)
                             .collect(Collectors.toList());
-                    return new T_exerciseCommentResponseDTO(comment.getId(), comment.getComment(), comment.getUsername(),
+                    return new FreeBoardCommentResponseDTO(comment.getId(), comment.getComment(), comment.getUsername(),
                             comment.getCreatedDate(), toList, comment.getUserNickname());
                 })
                 .collect(Collectors.toList());
 
 
-        Long countLike = tExerciseLikeService.countLike(boardId);
-        String userNickname = userService.getUserNickname(t_exercise.getUser());
+        Long countLike = freeBoardLikeService.countLike(boardId);
+        String userNickname = userService.getUserNickname(freeBoard.getUser());
 
-        return new T_exerciseBoardResponseDTO(countLike, t_exercise, commentFilter,userNickname);
+        return new FreeBoardResponseDTO(countLike, freeBoard, commentFilter,userNickname);
     }
 
 
@@ -152,10 +151,10 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
     @Override
     @Transactional
         public ResponseEntity<String> deletePost(Long boardId, BaseEntity base){
-            T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-            if (t_exercise.isWriter(base.getId())) {
-                t_exerciseRepository.deleteById(boardId);
-                tExerciseCommentService.deleteByBoardId(boardId);
+            FreeBoard freeBoard = freeBoardRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+            if (freeBoard.isWriter(base.getId())) {
+                freeBoardRepository.deleteById(boardId);
+                freeBoardCommentService.deleteByBoardId(boardId);
                 return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
             } else {
                 throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
@@ -178,14 +177,14 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
                                                BaseEntity user,
                                                String imageUrl) throws IOException
         {
-            T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+            FreeBoard freeBoard = freeBoardRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
 
-            if (t_exercise.isWriter(user.getId())) {
+            if (freeBoard.isWriter(user.getId())) {
 
                 String content = creatTExerciseBordRequestDTO.getContent();
                 String title = creatTExerciseBordRequestDTO.getTitle();
 
-                t_exercise.editSalePost(title, content,imageUrl);
+                freeBoard.editSalePost(title, content,imageUrl);
                 return new ResponseEntity<>("게시물 수정 완료", HttpStatus.OK);
 
             }
@@ -193,42 +192,42 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
         }
 
         @Override
-        public T_exercise findT_exerciseBoardById (Long id){
-            return t_exerciseRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+        public FreeBoard findT_exerciseBoardById (Long id){
+            return freeBoardRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
         }
 
     @Override
-    public List<T_exerciseBoardResponseDTO> getTop3PostByLike() {
-        List<T_exercise> exercises = t_exerciseRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
-        List<T_exerciseBoardResponseDTO> top3Post = new ArrayList<>();
+    public List<FreeBoardResponseDTO> getTop3PostByLike() {
+        List<FreeBoard> freeBoards = freeBoardRepository.findIdByCreatedDateString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        List<FreeBoardResponseDTO> top3Post = new ArrayList<>();
 
 
-        HashMap<T_exercise,Long> postSortByLike = new HashMap();
+        HashMap<FreeBoard,Long> postSortByLike = new HashMap();
         ValueComparator bvc =  new ValueComparator(postSortByLike);
-        TreeMap<T_exercise,Long> sorted_map = new TreeMap<>(bvc);
+        TreeMap<FreeBoard,Long> sorted_map = new TreeMap<>(bvc);
 
 
-        for (T_exercise exercise : exercises) {
-            Long boardId = exercise.returnPostId();
-            Long countLike = tExerciseLikeService.countLike(boardId);
-            postSortByLike.put(exercise,countLike);
+        for (FreeBoard freeBoard : freeBoards) {
+            Long boardId = freeBoard.returnPostId();
+            Long countLike = freeBoardLikeService.countLike(boardId);
+            postSortByLike.put(freeBoard,countLike);
         }
         sorted_map.putAll(postSortByLike);
 
         int count =0;
-        for (Map.Entry<T_exercise, Long> tExerciseLongEntry : sorted_map.entrySet()) {
-            T_exercise exercise = tExerciseLongEntry.getKey();
+        for (Map.Entry<FreeBoard, Long> tExerciseLongEntry : sorted_map.entrySet()) {
+            FreeBoard freeBoard = tExerciseLongEntry.getKey();
 
-            Long boardId = exercise.returnPostId();
+            Long boardId = freeBoard.returnPostId();
             Long countLike = tExerciseLongEntry.getValue();
-            String title = exercise.getTitle();
-            String content = exercise.getContent();
-            String imageUrl = exercise.getImageUrl();
-            LocalDateTime modifiedDate = exercise.getModifiedDate();
-            String username = exercise.getUser().getUsername();
-            String nickName = userService.getUserNickname(exercise.getUser());
+            String title = freeBoard.getTitle();
+            String content = freeBoard.getContent();
+            String imageUrl = freeBoard.getImageUrl();
+            LocalDateTime modifiedDate = freeBoard.getModifiedDate();
+            String username = freeBoard.getUser().getUsername();
+            String nickName = userService.getUserNickname(freeBoard.getUser());
 
-            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
+            FreeBoardResponseDTO dto = new FreeBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
             top3Post.add(dto);
             count++;
             if (count==3){
@@ -265,16 +264,16 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
 //        }
 //        return result;
 
-  private class ValueComparator implements Comparator<T_exercise> {
+  private class ValueComparator implements Comparator<FreeBoard> {
 
-        Map<T_exercise, Long> base;
+        Map<FreeBoard, Long> base;
 
-        public ValueComparator(Map<T_exercise, Long> base) {
+        public ValueComparator(Map<FreeBoard, Long> base) {
             this.base = base;
         }
 
         // Note: this comparator imposes orderings that are inconsistent with equals.
-        public int compare(T_exercise a, T_exercise b) {
+        public int compare(FreeBoard a, FreeBoard b) {
             if (base.get(a) >= base.get(b)) { //반대로 하면 오름차순 <=
                 return -1;
             } else {

@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 
 import com.team.final8teamproject.board.entity.TodayMeal;
@@ -15,16 +16,18 @@ import java.util.List;
 
 public interface TodayMealService {
 
-    ResponseEntity<String> creatTodayMealBord(String title, String content, MultipartFile file, User user) throws NullPointerException, IOException;
+    ResponseEntity<String> creatTodayMealBord(String title, String content, String file, BaseEntity user) throws NullPointerException, IOException;
 
-    List<TodayMealBoardResponseDTO> getAllTodayBoards(Pageable pageRequest, String search);
+    TodayMealServiceImple.Result getAllTodayBoards(Pageable pageRequest, String search, Integer size, Integer page);
 
     TodayMealBoardResponseDTO getTodayMealBoard(Long boardId);
 
     ResponseEntity<String> deletePost(Long boardId, BaseEntity user);
 
-    ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatBordRequestDTO, User user, MultipartFile file) throws IOException;
+    ResponseEntity<String> editPost(Long boardId, CreatBordRequestDTO creatBordRequestDTO, BaseEntity user, String file) throws IOException;
 
 
     TodayMeal findBoardById(Long id);
+
+    List<TodayMealBoardResponseDTO> getTop3PostByLike();
 }
