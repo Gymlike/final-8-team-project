@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.like.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.like.entity.T_exerciseLike;
 import com.team.final8teamproject.board.like.entity.TodayMealLike;
 import com.team.final8teamproject.board.like.repository.TodayMealLikeRepository;
@@ -17,7 +18,7 @@ public class TodayMealLikeServiceImple implements TodayMealLikeService {
     private final TodayMealLikeRepository todayMealRepository;
     @Override
     @Transactional
-    public ResponseEntity<String> likeBoard(User user, Long boardId) {
+    public ResponseEntity<String> likeBoard(BaseEntity user, Long boardId) {
         String username = user.getUsername();
         if(!todayMealRepository.existsByUsernameAndBoardId(username,boardId)){
             TodayMealLike todayMealLike = new TodayMealLike(username,boardId);
