@@ -19,7 +19,7 @@ public class SignupRequestDto {
 // 정규식이 틀렸을때 발생하는 예외 MethodArgumentNotValidException
 // @NotBlank = null 과 "" 과 " " 모두 비허용, @Notnull = "" 이나 " " 은 허용, @NotEmpty = null 과 "" 은 불가, " " 은 허용
 
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z]{4,10}$", message = "최소 4자 이상, 10자 이하이며, 영문과 숫자만 입력하세요.")
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며, 영문과 숫자만 입력하세요.")
     private String username;
 
     @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[0-9])^[a-zA-Z0-9~!@#$%^&*()+|=]{8,15}$", message = "최소 8자 이상, 15자 이하이며, 영문과 숫자, 특수문자만 입력하세요.")
