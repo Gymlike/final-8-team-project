@@ -46,11 +46,14 @@ public class PresignedUrlService {
 
     public String updatePreSigedurl(String prefix, String fileName) {
 
-        String newFilename = fileName;
-
+        String newFilename;
+        String fixpath =   "8projectFront/";
         if (!prefix.equals("")) {
-           newFilename = prefix + "/" + fileName;
+           newFilename =fixpath+ prefix + "/" + fileName;
+        }else {
+            newFilename=fixpath+fileName;
         }
+
         GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, newFilename);
 
         return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
