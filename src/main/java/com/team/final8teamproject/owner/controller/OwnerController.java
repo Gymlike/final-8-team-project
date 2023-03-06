@@ -1,11 +1,11 @@
 package com.team.final8teamproject.owner.controller;
 
-import com.team.final8teamproject.business.dto.BusinessRequestDto;
 import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.owner.service.OwnerService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class OwnerController {
     private final OwnerService ownerService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public MessageResponseDto signup(@RequestBody @Valid OwnerSignupRequestDto ownersignupRequestDto) {
@@ -37,4 +38,13 @@ public class OwnerController {
             response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
             return new MessageResponseDto("로그인 되었습니다.");
         }
+
+    //3. 로그아웃
+    @DeleteMapping("/logout")
+    public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
+            , HttpServletRequest request) {
+        String accessToken = jwtUtil.resolveToken(request);
+        return new MessageResponseDto(ownerService.logout(accessToken, userDetails.getUsername()));
     }
+
+}

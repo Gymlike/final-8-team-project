@@ -32,7 +32,7 @@ public class KakaoController {
         response.setHeader("Authorization", token);
 
 //        포트번호 5500
-        return "redirect:http://127.0.0.1:5500/callback.html?token="+ token;
+        return "redirect:http://ec2-3-36-89-51.ap-northeast-2.compute.amazonaws.com/callback.html?token="+ token;
     }
 
 }

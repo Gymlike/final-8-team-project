@@ -1,6 +1,7 @@
 package com.team.final8teamproject.user.controller;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.security.service.EmailServiceImpl;
 import com.team.final8teamproject.share.exception.CustomException;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class UserController {
     EmailService emailService;
 
     private final UserService userService;
+    private final BaseRepository baseRepository;
     private final JwtUtil jwtUtil;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -67,7 +71,10 @@ public class UserController {
     public void emailConfirm(String email) throws Exception {
             logger.info("post emailConfirm");
             System.out.println("전달 받은 이메일 : " + email);
-            emailService.sendSimpleMessage(email);
+        Optional<BaseEntity> findEmail = baseRepository.findByEmail(email);
+        if (findEmail.isPresent()) {
+            throw new IllegalArgumentException("이메일 중복");
+        } else emailService.sendSimpleMessage(email);
     }
 
     //이메일 코드 확인

@@ -15,6 +15,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.jackson.map.Serializers;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,17 +48,17 @@ public class UserService {
         String phoneNumber = signupRequestDto.getPhoneNumber();
         Long experience = signupRequestDto.getExperience();
 
-        Optional<User> findUserName = userRepository.findByUsername(username);
+        Optional<BaseEntity> findUserName = baseRepository.findByUsername(username);
         if (findUserName.isPresent()) {
             throw new CustomException(ExceptionStatus.DUPLICATED_USERNAME);
         }
 
-        Optional<User> findNickName = userRepository.findByNickName(nickName);
+        Optional<BaseEntity> findNickName = baseRepository.findByNickName(nickName);
         if (findNickName.isPresent()) {
             throw new CustomException(ExceptionStatus.DUPLICATED_NICKNAME);
         }
 
-        Optional<User> findEmail = userRepository.findByEmail(email);
+        Optional<BaseEntity> findEmail = baseRepository.findByEmail(email);
         if (findEmail.isPresent()) {
             throw new CustomException(ExceptionStatus.DUPLICATED_EMAIL);
         }

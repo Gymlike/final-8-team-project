@@ -83,8 +83,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
         .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정
         .requestMatchers("/api/validate").permitAll()
+        .requestMatchers("/api/user/email/**").permitAll()
 
-        .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
+
+            .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
         // JWT 인증/인가를 사용하기 위한 설정
         .and().addFilterBefore(new JwtAuthFilter(jwtUtil, redisUtil),

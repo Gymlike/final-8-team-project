@@ -10,6 +10,7 @@ import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.manager.entity.Manager;
+import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.manager.repository.ManagerRepository;
 import jakarta.validation.Valid;
@@ -40,17 +41,30 @@ public class ManagerServiceImpl implements ManagerService {
 
         String username = managerSignupRequestDto.getUsername();
         String password = passwordEncoder.encode(managerSignupRequestDto.getPassword());
-//        String password2 = passwordEncoder.encode(requestDto.getPassword2());
         String nickName = managerSignupRequestDto.getNickName();
         String phoneNumber = managerSignupRequestDto.getPhoneNumber();
         String email = managerSignupRequestDto.getEmail();
         Long experience = managerSignupRequestDto.getExperience();
 
-        Optional<Manager> found = managerRepository.findByUsername(username);
-        if (found.isPresent()) {
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+        Optional<BaseEntity> findUserName = baseRepository.findByUsername(username);
+        if (findUserName.isPresent()) {
+            throw new CustomException(ExceptionStatus.DUPLICATED_USERNAME);
         }
 
+        Optional<BaseEntity> findNickName = baseRepository.findByNickName(nickName);
+        if (findNickName.isPresent()) {
+            throw new CustomException(ExceptionStatus.DUPLICATED_NICKNAME);
+        }
+
+        Optional<BaseEntity> findEmail = baseRepository.findByEmail(email);
+        if (findEmail.isPresent()) {
+            throw new CustomException(ExceptionStatus.DUPLICATED_EMAIL);
+        }
+
+        Optional<Manager> findPhoneNumber = managerRepository.findByPhoneNumber(phoneNumber);
+        if (findPhoneNumber.isPresent()) {
+            throw new CustomException(ExceptionStatus.DUPLICATED_PHONENUMBER);
+        }
 
         UserRoleEnum userRoleEnum = UserRoleEnum.WAIT;
         Manager manager = Manager.builder()
