@@ -32,6 +32,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -55,6 +56,7 @@ public class initData implements ApplicationRunner {
   private final ManagerRepository managerRepository;
 
   @Override
+  @Transactional
   public void run(ApplicationArguments args) throws Exception {
 
     Manager manager = Manager.builder()
