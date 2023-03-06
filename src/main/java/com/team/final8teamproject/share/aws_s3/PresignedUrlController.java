@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/presiged")
+@RequestMapping("/presigned")
 public class PresignedUrlController {
 
 
@@ -21,7 +21,7 @@ public class PresignedUrlController {
         String filepath = pEupdateDto.getFilepath();
         String objectName = pEupdateDto.getObjectName();
 
-     return presignedUrlService.updatePreSigedurl(filepath,objectName);
+     return presignedUrlService.updatePreSignedurl(filepath,objectName);
     }
 
 
