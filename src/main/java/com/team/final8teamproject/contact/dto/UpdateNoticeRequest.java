@@ -13,9 +13,11 @@ public class UpdateNoticeRequest {
   private final String content;
 
 
+
   public UpdateNoticeRequest(String title, String content) {
     this.title = title;
     this.content = content;
+
 
   }
 }
