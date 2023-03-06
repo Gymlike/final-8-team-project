@@ -21,7 +21,7 @@ public class PresignedUrlController {
         String filepath = pEupdateDto.getFilepath();
         String objectName = pEupdateDto.getObjectName();
 
-     return presignedUrlService.getPreSignedUrl(filepath,objectName);
+     return presignedUrlService.updatePreSigedurl(filepath,objectName);
     }
 
 
