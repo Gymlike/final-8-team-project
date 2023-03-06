@@ -19,7 +19,7 @@ public class T_exerciseLikeController {
     @PostMapping("/{boardId}/like")
     public ResponseEntity<String> likeBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails ){
 
-            return tExerciseLikeService.likeBoard((User)userDetails.getBase(),boardId);
+            return tExerciseLikeService.likeBoard(userDetails.getBase(),boardId);
     }
 
     @GetMapping("/{boardId}/like")

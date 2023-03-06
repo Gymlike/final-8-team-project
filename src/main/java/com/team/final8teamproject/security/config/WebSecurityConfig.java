@@ -66,14 +66,19 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/general/**").hasRole("GeneralManager")
         .requestMatchers("/h2-console").permitAll()
         .requestMatchers("/t-exercise/allboard").permitAll()
+        .requestMatchers("/todaymeal/allboard").permitAll()
+        .requestMatchers("/freeboard/allboard").permitAll()
+        .requestMatchers("/t-exercise/top3").permitAll()
+        .requestMatchers("/todaymeal/top3").permitAll()
+        .requestMatchers("/freeboard/top3").permitAll()
         .requestMatchers("/t-exercise/selectboard/**").permitAll()
+        .requestMatchers("/todaymeal/selectboard/**").permitAll()
+        .requestMatchers("/freeboard/selectboard/**").permitAll()
         .requestMatchers("/api/user/kakao/callback").permitAll()
         .requestMatchers("/api/profile/kakao").permitAll()
         .requestMatchers("/api/home").permitAll()
         .requestMatchers("/api/company/**").permitAll()
-        .requestMatchers("/todaymeal/allboard").permitAll()
-        .requestMatchers("/todaymeal/selectboard/**").permitAll()
-        .requestMatchers("/api/find/**").permitAll()
+        .requestMatchers("/api/user/find/**").permitAll()
         .requestMatchers("/api/faqs/check/**").permitAll()  //todo 추후변경예정
         .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
         .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정

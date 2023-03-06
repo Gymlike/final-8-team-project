@@ -1,30 +1,28 @@
 package com.team.final8teamproject.board.service;
 
 
-import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
-
 import com.team.final8teamproject.base.entity.BaseEntity;
-
+import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.FreeBoardResponseDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
+import com.team.final8teamproject.board.entity.FreeBoard;
 import com.team.final8teamproject.board.entity.T_exercise;
-import com.team.final8teamproject.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
-public interface T_exerciseService {
+public interface FreeBoardService {
 
 
     ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity base) throws NullPointerException, IOException;
 
 
-    T_exerciseServiceImple.Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);
+    FreeBoardServiceImple.Result getAllFreeBoards(Pageable pageRequest, String search, Integer size, Integer page);
 
-    T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
+    FreeBoardResponseDTO getT_exerciseBoard(Long boardId);
 
 
     ResponseEntity<String> deletePost(Long boardId, BaseEntity base);
@@ -39,9 +37,11 @@ public interface T_exerciseService {
                                     BaseEntity user,
                                     String imageUrl) throws IOException;
 
-    T_exercise findT_exerciseBoardById(Long id);
+    FreeBoard findT_exerciseBoardById(Long id);
 
-    List<T_exerciseBoardResponseDTO> getTop3PostByLike();
+    List<FreeBoardResponseDTO> getTop3PostByLike();
+
+
 
 
    /* 파일서비스 인터페이스 만들어서～

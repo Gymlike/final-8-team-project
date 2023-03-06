@@ -38,11 +38,11 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO, BaseEntity user, Long commentID) {
+    public ResponseEntity<String> updateCommentReply(CreatCommentReplyRequestDTO requestDTO,String writer, Long commentID) {
         TodayMealCommentReply commentReply = todayMealCommentReplyRepository.findById(commentID).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
-        String username = user.getUsername();
+
         String comment = requestDTO.getComment();
-        if (commentReply.isWriter(username)) {
+        if (commentReply.isWriter(writer)) {
            commentReply.update(comment);
            return new ResponseEntity<>("대댓글 수정완료",HttpStatus.OK);
         }
@@ -51,10 +51,10 @@ public class TodayMealCommentReplyServiceImple implements TodayMealCommentReplyS
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteCommentReply(BaseEntity user, Long commentId) {
-        String username = user.getUsername();
+    public ResponseEntity<String> deleteCommentReply(String  writer, Long commentId) {
+
         TodayMealCommentReply commentReply = todayMealCommentReplyRepository.findById(commentId).orElseThrow(() -> new CustomException(ExceptionStatus.COMMENT_REPLY_NOT_EXIST));
-        if(commentReply.isWriter(username)){
+        if(commentReply.isWriter(writer)){
             todayMealCommentReplyRepository.deleteById(commentId);
 
             return new ResponseEntity<>("대댓글 삭제완료",HttpStatus.OK);

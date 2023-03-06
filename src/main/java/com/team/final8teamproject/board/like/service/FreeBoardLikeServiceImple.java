@@ -1,8 +1,8 @@
 package com.team.final8teamproject.board.like.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.board.like.entity.T_exerciseLike;
-import com.team.final8teamproject.board.like.repository.T_exerciseLikeRepository;
+import com.team.final8teamproject.board.like.entity.FreeBoardLike;
+import com.team.final8teamproject.board.like.repository.FreeBoardLikeRepository;
 import com.team.final8teamproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,26 +10,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
-
 @Service
 @RequiredArgsConstructor
-public class T_exerciseLikeServiceImple implements T_exerciseLikeService {
+public class FreeBoardLikeServiceImple implements FreeBoardLikeService {
 
-    private final T_exerciseLikeRepository tExerciseLikeRepository;
+    private final FreeBoardLikeRepository freeBoardLikeRepository;
     @Override
     @Transactional
     public ResponseEntity<String> likeBoard(BaseEntity user, Long boardId) {
         String username = user.getUsername();
-        if(!tExerciseLikeRepository.existsByUsernameAndBoardId(username,boardId)){
-            T_exerciseLike tExerciseLike = new T_exerciseLike(username,boardId);
-            tExerciseLikeRepository.save(tExerciseLike);
+        if(!freeBoardLikeRepository.existsByUsernameAndBoardId(username,boardId)){
+            FreeBoardLike freeBoardLike = new FreeBoardLike(username,boardId);
+            freeBoardLikeRepository.save(freeBoardLike);
 
             //303코드 보내서 중복요청 막고싶은데...~.~ 그러면 좋아요 취소기능을 하나더 만들어야하나?
             return new ResponseEntity<>("좋아요 증가", HttpStatus.OK);//중복요청
        }
         else{
-          tExerciseLikeRepository.deleteByUsernameAndBoardId(username,boardId);
+          freeBoardLikeRepository.deleteByUsernameAndBoardId(username,boardId);
 
             return new ResponseEntity<>("좋아요 취소",HttpStatus.OK);
         }
@@ -39,14 +37,14 @@ public class T_exerciseLikeServiceImple implements T_exerciseLikeService {
     @Override
     public Long countLike(Long boardID) {
 
-     return  tExerciseLikeRepository.countByBoardId(boardID);
+     return  freeBoardLikeRepository.countByBoardId(boardID);
     }
 
     @Override
     @Transactional
     public Long checkLike(User user, Long boardId) {
         String username = user.getUsername();
-        if (!tExerciseLikeRepository.existsByUsernameAndBoardId(username,boardId)) {
+        if (!freeBoardLikeRepository.existsByUsernameAndBoardId(username,boardId)) {
             return 0L;
         }else {
             return 1L;

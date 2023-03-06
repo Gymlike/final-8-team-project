@@ -2,8 +2,9 @@ package com.team.final8teamproject.board.comment.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.team.final8teamproject.board.comment.commentReply.dto.FreeBoardCommentReplyResponseDTO;
 import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
-import com.team.final8teamproject.board.comment.commentReply.dto.TodayMealCommentReplyResponseDTO;
+import com.team.final8teamproject.board.entity.FreeBoard;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 @Getter
-public class TodayMealCommentResponseDTO {
+public class FreeBoardCommentResponseDTO {
 
     private final Long id;
 
@@ -19,12 +20,13 @@ public class TodayMealCommentResponseDTO {
 
     private final String writerName;
 
-    private final String nickname;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
     private final LocalDateTime creatDate;
-    private final List<TodayMealCommentReplyResponseDTO> commentReplyList;
 
-    public TodayMealCommentResponseDTO(Long id, String content, String writerName, LocalDateTime creatDate, List<TodayMealCommentReplyResponseDTO> commentReplyList,String nickname) {
+    private final String nickname;
+    private final List<FreeBoardCommentReplyResponseDTO> commentReplyList;
+
+    public FreeBoardCommentResponseDTO(Long id, String content, String writerName, LocalDateTime creatDate, List<FreeBoardCommentReplyResponseDTO> commentReplyList, String nickname) {
         this.id = id;
         this.content = content;
         this.writerName = writerName;
