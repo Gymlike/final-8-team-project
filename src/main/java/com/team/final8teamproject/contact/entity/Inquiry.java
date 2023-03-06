@@ -32,18 +32,18 @@ public class Inquiry extends Timestamped {
   @Column(nullable = false)
   private String content;
 
-  private Boolean secretCheckBox; // todo ** 관리자만 보기 와 모두 보기 선택지 - 관리자만 보기시 관리지만 볼 수 있음
+  private Boolean secret; // todo ** 관리자만 보기 와 모두 보기 선택지 - 관리자만 보기시 관리지만 볼 수 있음
 
 
 
   @Builder
   public Inquiry( String username, String nickName, String title, String content,
-      Boolean secretCheckBox) {
+      Boolean secret) {
     this.username = username;
     this.nickName = nickName;
     this.title = title;
     this.content = content;
-    this.secretCheckBox = secretCheckBox;
+    this.secret = secret;
   }
 
   public void update(String title, String content) {
@@ -53,6 +53,9 @@ public class Inquiry extends Timestamped {
 
   public boolean isWriter(String username) {
     return this.username.equals(username);
+  }
+  public boolean isNickName(String nickName){
+    return this.nickName.equals(nickName);
   }
 }
 

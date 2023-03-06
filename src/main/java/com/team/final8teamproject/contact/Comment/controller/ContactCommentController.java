@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/comments")
 public class ContactCommentController {
 
-  private final ContactCommentServiceImpl contactCommentServiceIml;
+  private final ContactCommentServiceImpl contactCommentServiceIml;//todo 추후 개방패쇄원칙 인터페이스로 주입하기 그럼 자동으로 주입이됨.
   private final UserService userService;
 
   @PostMapping("/inquiry/{id}")
@@ -35,14 +35,13 @@ public class ContactCommentController {
       @RequestBody CreateContactCommentRequest createContactCommentRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     System.out.println(createContactCommentRequest.getComments());
-    String nickName = userService.getUserNickname(userDetails.getBase());
     contactCommentServiceIml.saveInquiryComment(id, createContactCommentRequest,
-        userDetails.getBase().getUsername(), nickName);//
+        userDetails.getBase().getUsername(),userDetails.getBase().getNickName());//
     return ResponseEntity.ok("등록 완료");
   }
 
 
-  //댓글 수정
+  //댓글 수정 todo patch타입으로 사용해 일부수정해보기
   @PutMapping("/{id}/inquiry")
   public ResponseEntity updateInquiryComment(
       @PathVariable Long id,
@@ -53,22 +52,15 @@ public class ContactCommentController {
     return ResponseEntity.ok("수정 완료");
   }
 
-  //댓글 삭제
+// todo 댓글 페이징 처리 필요 하지 않을까?? - 댓글이 수십만개라도 했을때 포스트 불러올때 로딩 지연 우려  음... 고민해보자 .
   @DeleteMapping("/{id}/inquiry")
   public ResponseEntity deleteInquiryComment(
       @PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername());
+    contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername(),userDetails.getBase().getRole());
     return ResponseEntity.ok("삭제 완료");
   }
 
-  //todo 권한 : 관리자만
-  // 관리자의 댓글 삭제 기능
-  @DeleteMapping("/{id}/inquiry/managers")
-  public ResponseEntity deleteManager(@PathVariable Long id) {
-    contactCommentServiceIml.deleteManager(id);
-    return ResponseEntity.ok("삭제 완료");
-  }
 
 
 }
