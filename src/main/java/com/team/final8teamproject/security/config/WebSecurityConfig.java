@@ -77,6 +77,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/faqs/check/**").permitAll()  //todo 추후변경예정
         .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
         .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정
+        .requestMatchers("/api/validate").permitAll()
 
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
@@ -101,7 +102,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-
+        .allowedOrigins("*")
         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
         .exposedHeaders("Authorization");
   }
