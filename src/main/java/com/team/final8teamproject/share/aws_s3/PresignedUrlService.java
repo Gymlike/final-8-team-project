@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -43,9 +44,10 @@ public class PresignedUrlService {
         return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
     }
 
+
     private GeneratePresignedUrlRequest getGeneratePreSignedUrlRequest(String bucket, String fileName) {
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucket, fileName)
+                new GeneratePresignedUrlRequest(bucket, fileName)//버킷에 들어가는 객체의 이름
                         .withMethod(HttpMethod.PUT)
                         .withExpiration(getPreSignedUrlExpiration());
         generatePresignedUrlRequest.addRequestParameter(

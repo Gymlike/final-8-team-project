@@ -208,6 +208,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
         TreeMap<T_exercise,Long> sorted_map = new TreeMap<>(bvc);
 
 
+
         for (T_exercise exercise : exercises) {
             Long boardId = exercise.returnPostId();
             Long countLike = tExerciseLikeService.countLike(boardId);
