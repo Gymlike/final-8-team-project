@@ -54,7 +54,10 @@ dependencies {
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
     //mysql전 h2콘솔을 사용하기위해서 사용
-    runtimeOnly 'com.h2database:h2'
+    //runtimeOnly 'com.h2database:h2'
+
+    // MySql
+    implementation 'mysql:mysql-connector-java'
     //사업자정보조회
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
 
