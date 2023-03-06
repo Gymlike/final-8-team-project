@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -85,8 +84,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/validate").permitAll()
         .requestMatchers("/api/user/email/**").permitAll()
 
+        .requestMatchers("/hello").permitAll()
 
-            .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
+
+        .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
         // JWT 인증/인가를 사용하기 위한 설정
         .and().addFilterBefore(new JwtAuthFilter(jwtUtil, redisUtil),

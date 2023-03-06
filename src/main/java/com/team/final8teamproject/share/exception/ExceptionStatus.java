@@ -28,6 +28,7 @@ public enum ExceptionStatus {
     REQUEST_NOT_EXIST(404,"해당하는 요청이 존재하지 않습니다."),
     WRONG_POST_ID(404,"게시글 번호가 일치하지 않습니다."),
     POST_IS_EMPTY(404,"해당 페이지는 게시글이 존재하지 않습니다."),
+    SECRET_POST(403,"비밀글입니다. 해당 사용자 외엔 조회 불가능 합니다. "),
     WRONG_SELLER_ID_T0_BOARD(403,"다른 판매자의 게시물에는 접근 할 수 없습니다."),
     WRONG_USER_T0_COMMENT(403,"다른 유저의 댓글에는 접근 할 수 없습니다."),
     WRONG_USER_T0_CONTACT(403,"다른 유저의 게시글에는 접근 할 수 없습니다."),

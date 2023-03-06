@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 
 public class UpdateFaqRequest {
+
   private final String question;
   private final String answer;
 

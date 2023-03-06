@@ -2,6 +2,7 @@ package com.team.final8teamproject.contact.dto;
 
 
 import com.team.final8teamproject.contact.entity.Notice;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,9 +11,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class NoticeRequest {
-
+  @NotBlank
   private final String title;
+  @NotBlank
   private final String content;
+
 
   @Builder
   public NoticeRequest(String title, String content) {
@@ -21,11 +24,12 @@ public class NoticeRequest {
 
   }
 
-  public Notice toEntity(Long managerId) {
+  public Notice toEntity(Long managerId, String imageUrl) {
     return Notice.builder()
         .managerId(managerId)
         .title(title)
         .content(content)
+        .imageUrl(imageUrl)
         .build();
 
   }

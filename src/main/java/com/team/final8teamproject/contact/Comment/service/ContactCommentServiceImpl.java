@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.Comment.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.contact.Comment.dto.CreateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
@@ -7,6 +8,7 @@ import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepos
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -82,25 +84,26 @@ public class ContactCommentServiceImpl implements ContactCommentService {
 
   @Transactional
   @Override
-  public void deleteInquiryComment(Long commentId, String username) {
+  public void deleteInquiryComment(Long commentId, String username, UserRoleEnum role) {
     ContactComment comment = contactCommentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
     );
-    //if (comment.getUsername().equals(username)) {
     if(comment.isWriter(username)){
       contactCommentRepository.deleteById(commentId);
-    } else {
+    } else if(role.equals(UserRoleEnum.MANAGER)){
+      contactCommentRepository.deleteById(commentId);
+    }else{
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
     }
   }
-  @Transactional
-  @Override
-  public void deleteManager(Long id) {
-    ContactComment contactComment = contactCommentRepository.findById(id).orElseThrow(
-        () -> new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT)
-    );
-    contactCommentRepository.delete(contactComment);
-  }
+//  @Transactional
+//  @Override
+//  public void deleteManager(Long id) {
+//    ContactComment contactComment = contactCommentRepository.findById(id).orElseThrow(
+//        () -> new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT)
+//    );
+//    contactCommentRepository.delete(contactComment);
+//  }
 
 
   /** 해당 문의글 의 댓글 삭제하는 서비스 호출 */

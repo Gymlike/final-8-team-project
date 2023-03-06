@@ -27,18 +27,22 @@ public class Notice extends Timestamped {
     @Column(nullable = false)
     private String content;
 
+    private String imageUrl;
+
 
     @Builder
-    public Notice(Long managerId, String title, String content) {
+    public Notice(Long managerId, String title, String content,String imageUrl) {
         this.managerId = managerId;
         this.title = title;
         this.content = content;
+        this.imageUrl = imageUrl;
     }
 
 
-    public void update(String title, String content){
+    public void update(String title, String content, String imageUrl){
         this.title = title;
         this.content = content;
+        this.imageUrl = imageUrl;
     }
 
 

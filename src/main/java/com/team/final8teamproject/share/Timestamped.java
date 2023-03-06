@@ -31,4 +31,6 @@ public class Timestamped {
     public void onPrePersit(){
         this.createdDateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
     }
+
+
 }
