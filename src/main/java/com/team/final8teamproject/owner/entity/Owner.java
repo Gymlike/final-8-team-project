@@ -54,4 +54,9 @@ public class Owner extends BaseEntity {
         this.profileImage = profileImage;
     }
 
+    public boolean isPasswordVaild(String password) {
+        return getPassword().equals(password);
+    }
+
+
 }

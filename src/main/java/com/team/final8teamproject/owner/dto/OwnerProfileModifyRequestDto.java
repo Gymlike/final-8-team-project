@@ -13,8 +13,8 @@ public class OwnerProfileModifyRequestDto {
     @NotBlank(message = "닉네임을 입력하세요.")
     private String nickname;
 
-    @NotBlank(message = "이미지를 등록하세요.")
-    private String image;
+//    @NotBlank(message = "이미지를 등록하세요.")
+//    private String image;
 
     @NotBlank(message = "핸드폰 번호를 입력하세요.")
     private String phoneNumber;

@@ -4,13 +4,14 @@ import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import com.team.final8teamproject.user.dto.ProfileResponseDto;
 
 public interface ProfileService {
+
     //유저
-    void modifyProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id);
+    void modifyProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id,String imageUrl);
 
     ProfileResponseDto getProfile(Long id);
 
     //관리자
-    void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id);
+    void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id, String imageUrl);
 
     ProfileResponseDto getManagerProfile(Long id);
 
