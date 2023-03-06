@@ -1,6 +1,8 @@
 package com.team.final8teamproject.base.repository;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.owner.entity.Owner;
+import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,8 +20,9 @@ public interface BaseRepository extends JpaRepository<BaseEntity, Long> {
 
 //    void deleteAllByUsername(@Param("username") String username);
 
-//    Optional<BaseEntity> findByUsername(String username);
-    Optional<BaseEntity> findByEmail(String email);
+    Optional<BaseEntity> findByNickName(@Param("nickName") String nickName);
+
+    Optional<BaseEntity> findByEmail(@Param("email") String email);
 
     List<BaseEntity> findByRole(UserRoleEnum userRoleEnum);
 

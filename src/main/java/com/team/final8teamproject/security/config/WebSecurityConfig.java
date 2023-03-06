@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -79,9 +78,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/home").permitAll()
         .requestMatchers("/api/company/**").permitAll()
         .requestMatchers("/api/user/find/**").permitAll()
-        .requestMatchers("/api/faqs/check/**").permitAll()
-        .requestMatchers("/api/contact/inquiries/**").permitAll()
-        .requestMatchers("/api/managers/notices/check/**").permitAll()
+        .requestMatchers("/api/faqs/check/**").permitAll()  //todo 추후변경예정
+        .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
+        .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정
+        .requestMatchers("/api/validate").permitAll()
+        .requestMatchers("/api/user/email/**").permitAll()
+
         .requestMatchers("/hello").permitAll()
 
 
@@ -108,7 +110,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-
+        .allowedOrigins("*")
         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
         .exposedHeaders("Authorization");
   }
