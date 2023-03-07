@@ -44,7 +44,20 @@ public class PresignedUrlService {
         return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
     }
 
+    public String updatePreSigedurl(String prefix, String fileName) {
 
+        String newFilename;
+        String fixpath =   "8projectFront/";
+        if (!prefix.equals("")) {
+           newFilename =fixpath+ prefix + "/" + fileName;
+        }else {
+            newFilename=fixpath+fileName;
+        }
+
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, newFilename);
+
+        return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
+    }
     private GeneratePresignedUrlRequest getGeneratePreSignedUrlRequest(String bucket, String fileName) {
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(bucket, fileName)//버킷에 들어가는 객체의 이름
