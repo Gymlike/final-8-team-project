@@ -1,6 +1,7 @@
 package com.team.final8teamproject.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
