@@ -1,5 +1,9 @@
 package com.team.final8teamproject.security.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.base.repository.BaseRepository;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -8,17 +12,19 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
+
+    private final BaseRepository baseRepository;
     private final JavaMailSender emailSender;
     public static String ePw;
 
-    private MimeMessage createMessage(String to)throws Exception{
+    private MimeMessage createMessage(String to)throws CustomException, Exception{
         ePw = createKey();
-        System.out.println("보내는 대상 : "+ to);
         System.out.println("인증 번호 : "+ePw);
         MimeMessage  message = emailSender.createMimeMessage();
 
@@ -71,16 +77,14 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public String sendSimpleMessage(String to)throws Exception {
+    public void sendSimpleMessage(String to) throws CustomException, Exception {
         // TODO Auto-generated method stub
         MimeMessage message = createMessage(to);
-        try{//예외처리
+        try {//예외처리
             emailSender.send(message);
-        }catch(MailException es){
+        } catch (MailException es) {
             es.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new CustomException(ExceptionStatus.IS_NOT_CORRECT_FORMAT);
         }
-        return ePw;
     }
-
 }

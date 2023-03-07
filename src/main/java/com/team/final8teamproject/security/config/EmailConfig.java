@@ -1,5 +1,6 @@
 package com.team.final8teamproject.security.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -9,24 +10,24 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-
+@PropertySource("classpath:application.yml")
 public class EmailConfig {
 
-    @org.springframework.beans.factory.annotation.Value("${mail.smtp.port}")
+    @Value("${mail.smtp.port}")
     private int port;
-    @org.springframework.beans.factory.annotation.Value("${mail.smtp.socketFactory.port}")
+    @Value("${mail.smtp.socketFactory.port}")
     private int socketPort;
-    @org.springframework.beans.factory.annotation.Value("${mail.smtp.auth}")
+    @Value("${mail.smtp.auth}")
     private boolean auth;
-    @org.springframework.beans.factory.annotation.Value("${mail.smtp.starttls.enable}")
+    @Value("${mail.smtp.starttls.enable}")
     private boolean starttls;
-    @org.springframework.beans.factory.annotation.Value("${mail.smtp.starttls.required}")
+    @Value("${mail.smtp.starttls.required}")
     private boolean startlls_required;
-    @org.springframework.beans.factory.annotation.Value("${mail.smtp.socketFactory.fallback}")
+    @Value("${mail.smtp.socketFactory.fallback}")
     private boolean fallback;
-    @org.springframework.beans.factory.annotation.Value("${AdminMail.id}")
+    @Value("${AdminMail.id}")
     private String id;
-    @org.springframework.beans.factory.annotation.Value("${AdminMail.password}")
+    @Value("${AdminMail.password}")
     private String password;
 
     @Bean
