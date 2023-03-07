@@ -15,7 +15,6 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.codehaus.jackson.map.Serializers;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -94,10 +93,6 @@ public class UserService {
         }
         LoginResponseDto loginResponseDto = jwtUtil.createUserToken(user.getUsername(), user.getRole());
 
-
-//        if(redisUtil.hasKey("RT:" +user.getUsername())){
-//            throw new SecurityException("이미 접속중인 사용자 입니다.");
-//        }
         redisUtil.setRefreshToken("RT:" + user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
         return loginResponseDto;
     }
