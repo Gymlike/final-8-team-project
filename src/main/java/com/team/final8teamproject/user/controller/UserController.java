@@ -70,7 +70,6 @@ public class UserController {
     @ResponseBody
     public void emailConfirm(String email) throws Exception {
             logger.info("post emailConfirm");
-            System.out.println("전달 받은 이메일 : " + email);
         Optional<BaseEntity> findEmail = baseRepository.findByEmail(email);
         if (findEmail.isPresent()) {
             throw new IllegalArgumentException("이메일 중복");
