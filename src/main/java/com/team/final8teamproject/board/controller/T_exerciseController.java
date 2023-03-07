@@ -1,36 +1,24 @@
 package com.team.final8teamproject.board.controller;
 
-
 import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
-
 import com.team.final8teamproject.base.entity.BaseEntity;
-
-
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.service.T_exerciseService;
 import com.team.final8teamproject.board.service.T_exerciseServiceImple;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
-
-
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.entity.User;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/t-exercise")
