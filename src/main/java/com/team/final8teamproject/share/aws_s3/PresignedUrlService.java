@@ -44,7 +44,7 @@ public class PresignedUrlService {
         return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
     }
 
-    public String updatePreSigedurl(String prefix, String fileName) {
+    public String updatePreSignedurl(String prefix, String fileName) {
 
         String newFilename;
         String fixpath =   "8projectFront/";
