@@ -32,7 +32,7 @@ public class KakaoController {
         response.setHeader("Authorization", token);
 
 //        포트번호 5500
-        return "redirect:http://gylike.shop/callback.html?token="+ token;
+        return "redirect:http://gylike.shop/8projectFront/callback.html?token="+ token;
     }
 
 }
