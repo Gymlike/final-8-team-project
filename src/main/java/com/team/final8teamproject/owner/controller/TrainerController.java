@@ -46,7 +46,7 @@ public class TrainerController {
 
     //4.트레이너 조회
     @GetMapping("")
-    public Page<TrainerResponseDto> getTrainersByStoreName(@RequestBody String storeName,
+    public Page<TrainerResponseDto> getTrainersByStoreName(@RequestParam(name = "storeName") String storeName,
                                                 @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                 @RequestParam(value = "size", required = false, defaultValue = "2") Integer size,//나중에 10
                                                 @RequestParam(value = "isAsc", required = false, defaultValue = "false") Boolean isAsc,
