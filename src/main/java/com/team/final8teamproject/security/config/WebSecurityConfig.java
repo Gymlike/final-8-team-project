@@ -81,6 +81,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/faqs/check/**").permitAll()  //todo 추후변경예정
         .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
         .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정
+        .requestMatchers("/api/owners").permitAll()
+        .requestMatchers("/api/trainers").permitAll()
         .requestMatchers("/api/validate").permitAll()
         .requestMatchers("/api/user/email/**").permitAll()
 

@@ -32,10 +32,10 @@ public class ProfileServiceImpl implements ProfileService {
     //유저
     @Override
     @Transactional
-    public void modifyProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id) {
+    public void modifyProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id,String imageUrl) {
         User user = getUserById(id);
         String password = passwordEncoder.encode(profileModifyRequestDto.getPassword());
-        user.modifyProfile(profileModifyRequestDto.getNickname(), profileModifyRequestDto.getImage());
+        user.modifyProfile(profileModifyRequestDto.getNickname(), imageUrl);
     }
 
     //프로필 조회
@@ -58,10 +58,10 @@ public class ProfileServiceImpl implements ProfileService {
     //관리자
     @Override
     @Transactional
-    public void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id) {
+    public void modifyManagerProfile(ProfileModifyRequestDto profileModifyRequestDto, Long id,String iamgeUrl) {
         Manager manager = getManagerById(id);
         String password = passwordEncoder.encode(profileModifyRequestDto.getPassword());
-        manager.modifyManagerProfile(profileModifyRequestDto.getNickname(), profileModifyRequestDto.getImage());
+        manager.modifyManagerProfile(profileModifyRequestDto.getNickname(), iamgeUrl);
     }
 
     //프로필 조회

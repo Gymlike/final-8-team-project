@@ -21,10 +21,10 @@ public class OwnerProfileServiceImpl implements OwnerProfileService {
     //프로필 수정
     @Override
     @Transactional
-    public void modifyMyOwnerProfile(OwnerProfileModifyRequestDto dto, Long id) {
+    public void modifyMyOwnerProfile(OwnerProfileModifyRequestDto dto, Long id,String imageUrl) {
         Owner owner = getOwnerById(id);
         String password = passwordEncoder.encode(dto.getPassword());
-        owner.modifyOwnerProfile(password, dto.getNickname(), dto.getPhoneNumber(), dto.getEmail(), dto.getStoreName(), dto.getOwnerNumber(), dto.getImage());
+        owner.modifyOwnerProfile(password, dto.getNickname(), dto.getPhoneNumber(), dto.getEmail(), dto.getStoreName(), dto.getOwnerNumber(), imageUrl);
     }
 
     //프로필 조회
