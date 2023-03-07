@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.entity;
 
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.user.entity.User;
 import jakarta.persistence.*;
@@ -23,19 +24,18 @@ public class TodayMeal extends Timestamped {
 
 //    private String imageUrl;
 
-    private String filename;
+
 
     private String filepath;
 
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
-    private User user;
+    private BaseEntity user;
 
-    public TodayMeal(String title, String content, String filename, String filepath, User user) {
+    public TodayMeal(String title, String content,String filepath, BaseEntity user) {
         this.title = title;
         this.content = content;
-        this.filename = filename;
         this.filepath = filepath;
         this.user = user;
     }
@@ -46,10 +46,13 @@ public class TodayMeal extends Timestamped {
 
     }
 
-    public void editSalePost(String title,String content,String filename,String filepath) {
+    public void editSalePost(String title,String content,String filepath) {
         this.title = title;
         this.content = content;
-        this.filename = filename;
         this.filepath = filepath;
+    }
+
+    public Long returnPostId(){
+        return id;
     }
 }

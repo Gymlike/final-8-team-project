@@ -6,8 +6,10 @@ import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.contact.entity.Notice;
+import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -28,12 +30,10 @@ public class NoticeServiceImpl implements NoticeService {
 
   private final NoticeRepository noticeRepository;
 
-
-  //todo 관리자만 공지사항 등록 가능
   @Transactional
   @Override
-  public void saveNotice(NoticeRequest noticeRequest, Long managerId) {
-    Notice notice = noticeRequest.toEntity(managerId);
+  public void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId,String imageUrl) {
+    Notice notice = noticeRequest.toEntity(managerId,imageUrl);
     noticeRepository.save(notice);
   }
 
@@ -108,7 +108,7 @@ public class NoticeServiceImpl implements NoticeService {
 
   @Transactional
   @Override
-  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest) {
+  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest, String imageUrl) {
     String title = updateNoticeRequest.getTitle();
     String content = updateNoticeRequest.getContent();
 
@@ -116,7 +116,7 @@ public class NoticeServiceImpl implements NoticeService {
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     if (notice.getManagerId().equals(managerId)) {
-      notice.update(title, content);
+      notice.update(title, content, imageUrl);
       noticeRepository.save(notice);
     } else {
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);

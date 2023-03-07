@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -65,17 +64,29 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/general/**").hasRole("GeneralManager")
         .requestMatchers("/h2-console").permitAll()
         .requestMatchers("/t-exercise/allboard").permitAll()
+        .requestMatchers("/todaymeal/allboard").permitAll()
+        .requestMatchers("/freeboard/allboard").permitAll()
+        .requestMatchers("/t-exercise/top3").permitAll()
+        .requestMatchers("/todaymeal/top3").permitAll()
+        .requestMatchers("/freeboard/top3").permitAll()
         .requestMatchers("/t-exercise/selectboard/**").permitAll()
+        .requestMatchers("/todaymeal/selectboard/**").permitAll()
+        .requestMatchers("/freeboard/selectboard/**").permitAll()
         .requestMatchers("/api/user/kakao/callback").permitAll()
         .requestMatchers("/api/profile/kakao").permitAll()
         .requestMatchers("/api/home").permitAll()
         .requestMatchers("/api/company/**").permitAll()
-        .requestMatchers("/todaymeal/allboard").permitAll()
-        .requestMatchers("/todaymeal/selectboard/**").permitAll()
         .requestMatchers("/api/user/find/**").permitAll()
         .requestMatchers("/api/faqs/check/**").permitAll()  //todo 추후변경예정
         .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
         .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정
+        .requestMatchers("/api/owners").permitAll()
+        .requestMatchers("/api/trainers").permitAll()
+        .requestMatchers("/api/validate").permitAll()
+        .requestMatchers("/api/user/email/**").permitAll()
+
+        .requestMatchers("/hello").permitAll()
+
 
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
@@ -100,7 +111,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-
+        .allowedOrigins("*")
         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
         .exposedHeaders("Authorization");
   }

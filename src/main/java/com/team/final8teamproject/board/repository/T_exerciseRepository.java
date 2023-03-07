@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface T_exerciseRepository extends JpaRepository<T_exercise,Long> {
@@ -14,6 +16,7 @@ public interface T_exerciseRepository extends JpaRepository<T_exercise,Long> {
             Pageable pageable
     );
 
-//    Long countDistinctBy;
+    //하나만  필요한거니까 튜플이나 DTO이용해서 하나만 가져와보자..
+ List<T_exercise> findIdByCreatedDateString(String dateTime);
 
 }

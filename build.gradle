@@ -63,6 +63,7 @@ dependencies {
     //사업자정보조회
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
 
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     //이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
@@ -83,6 +84,7 @@ dependencies {
 //    implementation 'org.webjars:stomp-websocket:2.3.3-1'
 
 }
+
 tasks.named('test') {
     useJUnitPlatform()
 }

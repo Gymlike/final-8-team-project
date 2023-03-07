@@ -5,7 +5,7 @@ import com.team.final8teamproject.owner.dto.OwnerProfileResponseDto;
 
 public interface OwnerProfileService {
 
-    void modifyMyOwnerProfile(OwnerProfileModifyRequestDto ownerProfileModifyRequestDto, Long id);
+    void modifyMyOwnerProfile(OwnerProfileModifyRequestDto ownerProfileModifyRequestDto, Long id,String imageURL);
 
     OwnerProfileResponseDto getMyOwnerProfile(Long id);
 }

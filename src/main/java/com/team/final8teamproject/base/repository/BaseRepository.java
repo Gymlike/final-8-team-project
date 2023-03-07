@@ -18,8 +18,9 @@ public interface BaseRepository extends JpaRepository<BaseEntity, Long> {
 
 //    void deleteAllByUsername(@Param("username") String username);
 
-//    Optional<BaseEntity> findByUsername(String username);
-    Optional<BaseEntity> findByEmail(String email);
+    Optional<BaseEntity> findByNickName(@Param("nickName") String nickName);
+
+    Optional<BaseEntity> findByEmail(@Param("email") String email);
 
     List<BaseEntity> findByRole(UserRoleEnum userRoleEnum);
 

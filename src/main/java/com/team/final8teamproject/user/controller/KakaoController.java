@@ -19,7 +19,7 @@ public class KakaoController {
     @Autowired
     private final KakaoService kakaoService;
 
-//https://kauth.kakao.com/oauth/authorize?client_id=adacc39e0738d79ed04fd79995f809d3&redirect_uri=http://localhost:5500/api/user/kakao/callback&response_type=code
+//https://kauth.kakao.com/oauth/authorize?client_id=adacc39e0738d79ed04fd79995f809d3&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code
 
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
@@ -32,7 +32,7 @@ public class KakaoController {
         response.setHeader("Authorization", token);
 
 //        포트번호 5500
-        return "redirect:http://127.0.0.1:5500/callback.html?token="+ token;
+        return "redirect:http://gylike.shop/8projectFront/callback.html?token="+ token;
     }
 
 }

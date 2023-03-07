@@ -15,6 +15,8 @@ public class NoticeResponse {
   private final Long managerId;
   private final String title;
   private final String content;
+
+  private final String image;
   @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
   private final LocalDateTime createdDate;
   //private final LocalDateTime modifiedDate;
@@ -27,6 +29,7 @@ public class NoticeResponse {
     this.title = notice.getTitle();
     this.content = notice.getContent();
     this.createdDate = notice.getCreatedDate();
+    this.image = notice.getImageUrl(); // 이미지 url
   //  this.modifiedDate = notice.getModifiedDate();
   }
 }

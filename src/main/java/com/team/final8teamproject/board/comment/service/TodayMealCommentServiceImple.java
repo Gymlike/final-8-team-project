@@ -1,5 +1,6 @@
 package com.team.final8teamproject.board.comment.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.comment.commentReply.service.T_exerciseCommentReplyService;
 import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
@@ -42,7 +43,7 @@ public class TodayMealCommentServiceImple implements TodayMealCommentService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> deleteComment(User user, Long commentId) {
+    public ResponseEntity<String> deleteComment(BaseEntity user, Long commentId) {
         String username = user.getUsername();
         TodayMealComment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
         if(comment.isWriter(username)){
@@ -66,7 +67,7 @@ public class TodayMealCommentServiceImple implements TodayMealCommentService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> updateComment(CreatCommentRequestDTO requestDto, User user, Long commentId) {
+    public ResponseEntity<String> updateComment(CreatCommentRequestDTO requestDto, BaseEntity  user, Long commentId) {
         TodayMealComment comment =  commentRepository.findById(commentId).orElseThrow(()-> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST));
 
         String username = user.getUsername();

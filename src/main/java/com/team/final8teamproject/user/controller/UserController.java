@@ -1,32 +1,45 @@
 package com.team.final8teamproject.user.controller;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.security.service.EmailService;
+import com.team.final8teamproject.security.service.EmailServiceImpl;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
+    @Autowired
+    EmailService emailService;
 
     private final UserService userService;
-    private final EmailService emailService;
+    private final BaseRepository baseRepository;
     private final JwtUtil jwtUtil;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     //1. 회원가입
     @PostMapping("/signup")
-    public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) {
+    public MessageResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         if (!signupRequestDto.getPassword().equals((signupRequestDto.getPassword2()))) {
             throw new IllegalArgumentException("일치X");
-//         bindingResult.rejectValue("password2", "passwordInCorrect", "비밀번호가 일치하지 않습니다");
         }
         return userService.signUp(signupRequestDto);
     }
@@ -46,22 +59,44 @@ public class UserController {
     //3. 로그아웃
     @DeleteMapping("/logout")
     public MessageResponseDto logout(@AuthenticationPrincipal UserDetailsImpl userDetails
-    , HttpServletRequest request){
+            , HttpServletRequest request) {
         String accessToken = jwtUtil.resolveToken(request);
         return new MessageResponseDto(userService.logout(accessToken, userDetails.getUsername()));
     }
 
     //4. 이메일 인증
-    @PostMapping("/emailConfirm")
-    public String emailConfirm(@RequestParam String email) throws Exception {
-        return emailService.sendSimpleMessage(email);
+    //이메일 전송
+    @PostMapping("/email")
+    @ResponseBody
+    public void emailConfirm(String email) throws Exception {
+            logger.info("post emailConfirm");
+        Optional<BaseEntity> findEmail = baseRepository.findByEmail(email);
+        if (findEmail.isPresent()) {
+            throw new IllegalArgumentException("이메일 중복");
+        } else emailService.sendSimpleMessage(email);
     }
+
+    //이메일 코드 확인
+    @PostMapping("/verifyCode")
+    @ResponseBody
+    public int verifyCode(String code) {
+        logger.info("Post verifyCode");
+        int result = 0;
+        System.out.println("code : " + code);
+        System.out.println("code match : " + EmailServiceImpl.ePw.equals(code));
+        if (EmailServiceImpl.ePw.equals(code)) {
+            result = 1;
+        }
+        return result;
+    }
+
     //파일서비스란 인터페이스를 만들어서 이것을 이용하여 저장하게 해놓으면
     //나중에 할수있다.
     //http표준 요청상에는 get은 body를 사용하면 안된다. param을 사용해야한다.
-    //5.Id찾기
+
+    //5.ID 찾기
     @GetMapping("/find/username")
-    public FindByResponseDto getfindByUsername(@RequestParam("email") String email){
+    public FindByResponseDto getfindByUsername(@RequestParam("email") String email) {
         return userService.findByUsername(email);
     }
 

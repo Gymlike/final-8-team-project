@@ -57,7 +57,7 @@ public class KakaoService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "adacc39e0738d79ed04fd79995f809d3");
-        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+        body.add("redirect_uri", "http://gylike.shop/api/user/kakao/callback");
         body.add("code", code);
 
         // HTTP 요청 보내기

@@ -1,5 +1,8 @@
 package com.team.final8teamproject.security.service;
 
+import com.team.final8teamproject.base.repository.BaseRepository;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -13,34 +16,42 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
+
+    private final BaseRepository baseRepository;
     private final JavaMailSender emailSender;
     public static String ePw;
 
-    private MimeMessage createMessage(String to)throws Exception{
+    private MimeMessage createMessage(String to)throws CustomException, Exception{
         ePw = createKey();
-        System.out.println("보내는 대상 : "+ to);
+        System.out.println("전달 받은 이메일 : " + to);
         System.out.println("인증 번호 : "+ePw);
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
-        message.setSubject("8조 이메일 인증 테스트");//제목
+        message.setSubject("짐라이크 이메일인증 코드");//제목
 
         String msgg="";
-        msgg+= "<div style='margin:20px;'>";
-        msgg+= "<h1> 안녕하세요 8조입니다. </h1>";
-        msgg+= "<br>";
-        msgg+= "<p>아래 코드를 복사해 입력해주세요<p>";
-        msgg+= "<br>";
-        msgg+= "<p>감사합니다.<p>";
-        msgg+= "<br>";
-        msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
-        msgg+= "<div style='font-size:130%'>";
-        msgg+= "CODE : <strong>";
-        msgg+= ePw+"</strong><div><br/> ";
-        msgg+= "</div>";
+        msgg += "<div style='background-color:#f7f7f7; font-family:Verdana, sans-serif;'>";
+        msgg += "<div style='max-width:600px; margin:0 auto;'>";
+        msgg += "<div style='background-color:#fff; padding:40px;'>";
+        msgg += "<div style='display:flex; justify-content:center; align-items:center;'>";
+        msgg += "<img src='https://cdn-icons-png.flaticon.com/512/69/69840.png' width='60' height='60' style='margin-right:20px;'>";
+        msgg += "<h1 style='font-size:28px; color:#333333; margin:0;'>안녕하세요! 짐라이크입니다.</h1>";
+        msgg += "</div>";
+        msgg += "<hr style='border:none; height:1px; background-color:#005555; margin:20px 0;'>";
+        msgg += "<p style='font-size:16px; color:#333333; margin:0; padding:0;'>아래 코드를 복사해 입력란에 작성해주세요.</p>";
+        msgg += "<p style='font-size:16px; color:#333333; margin:0; padding:0;'>감사합니다.</p>";
+        msgg += "</div>";
+        msgg += "<div style='background-color:#005555; color:#fff; padding:40px;'>";
+        msgg += "<h2 style='font-size:24px; margin:0;'>" + "인증 코드" + "</h2>";
+        msgg += "<div style='background-color:#fff; padding:20px; margin:20px 0; text-align:center;'>";
+        msgg += "<h3 style='font-size:28px; color:#333333; margin:0;'>" + ePw + "</h3>";
+        msgg += "</div>";
+        msgg += "</div>";
+        msgg += "</div>";
+        msgg += "</div>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("spartafinalproject@gmail.com","sparta"));//보내는 사람
+        message.setFrom(new InternetAddress("spartafinalproject@gmail.com","짐라이크"));//보내는 사람
 
         return message;
     }
@@ -71,16 +82,14 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public String sendSimpleMessage(String to)throws Exception {
+    public void sendSimpleMessage(String to) throws CustomException, Exception {
         // TODO Auto-generated method stub
         MimeMessage message = createMessage(to);
-        try{//예외처리
+        try {//예외처리
             emailSender.send(message);
-        }catch(MailException es){
+        } catch (MailException es) {
             es.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new CustomException(ExceptionStatus.IS_NOT_CORRECT_FORMAT);
         }
-        return ePw;
     }
-
 }
