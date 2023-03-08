@@ -4,7 +4,6 @@ import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
-import java.util.List;
 import org.springframework.data.domain.Sort.Direction;
 
 public interface FaqService {
