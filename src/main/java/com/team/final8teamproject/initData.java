@@ -1,7 +1,5 @@
 package com.team.final8teamproject;
 
-//import com.team.final8teamproject.contact.Comment.entity.ContactComment;
-//import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.like.entity.T_exerciseLike;
@@ -15,7 +13,6 @@ import com.team.final8teamproject.contact.Repository.NoticeRepository;
 import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.entity.Notice;
-import com.team.final8teamproject.contact.service.FaqService;
 import com.team.final8teamproject.gymboard.entity.GymBoard;
 import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
 import com.team.final8teamproject.gymboardreview.entity.GymReview;
@@ -328,16 +325,13 @@ public class initData implements ApplicationRunner {
             .price("시설비용_1_21000_2_40000_4_80000_5_100000")
             .region("서울 마포구 토정로 192, 진영빌딩 지하 1층")
             .openTime("[평   일] 09:00 ~ 22:00\n" +
-                    "\n" +
                     "[토요일] 09:00 ~ 22:00\n" +
-                    "\n" +
                     "[일요일] 09:00 ~ 22:00\n" +
-                    "\n" +
                     "[휴무일] 공휴일")
             .amenities("시설_1_2_3_4_5")
             .amenitiesDetail("편의시설 이용 정보\n" +
                     "무료\n" +
-                    "주차 3시간 / 수건 / 운동복            \n" +
+                    "주차 3시간 / 수건 / 운동복\n" +
                     "유료\n" +
                     "라커 : 월 10,000원")
             .build();
@@ -405,14 +399,14 @@ public class initData implements ApplicationRunner {
             .amenities("시설_1_2_3_4_5_6")
             .amenitiesDetail("편의시설 이용 정보\n" +
                     "무료\n" +
-                    "주차 3시간 / 수건 / 운동복            \n" +
+                    "주차 3시간 / 수건 / 운동복\n" +
                     "유료\n" +
                     "라커 : 월 10,000원")
             .build();
 
     GymBoard gymBoard4 = GymBoard.GymBoard()
             .title("[인천]피트니스를 연구하는~ 연구소 용마루점")
-            .content("안녕하세요,\n" +
+            .content("안녕하세요," +
                     "\n" +
                     " 용마루점 입니다.\n" +
                     "\n" +

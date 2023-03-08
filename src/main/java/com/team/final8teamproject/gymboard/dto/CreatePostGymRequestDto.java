@@ -1,11 +1,14 @@
 package com.team.final8teamproject.gymboard.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
 @Getter
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class CreatePostGymRequestDto {
     private final String title;
     private final String contents;
