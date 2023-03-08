@@ -2,20 +2,15 @@ package com.team.final8teamproject.contact.controller;
 
 //import com.team.final8teamproject.contact.dto.InquiryResponse;
 
-import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
 import com.team.final8teamproject.contact.service.NoticeService;
-import com.team.final8teamproject.contact.service.NoticeServiceImpl;
 import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
-import com.team.final8teamproject.share.exception.CustomException;
-import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +19,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-//todo 권한 : 관리자만  ( 조회 기능시 메서드별 권한 설정 요망)
+
+/** .requestMatchers("/api/managers/notices").hasAnyRole("Manager", "GeneralManager")
+ * 글쓰기 권한 관리자 // 그 외 다른 유저들은 조회만 가능
+ */
 @RequiredArgsConstructor
 @RequestMapping("/api/managers/notices")
 @RestController

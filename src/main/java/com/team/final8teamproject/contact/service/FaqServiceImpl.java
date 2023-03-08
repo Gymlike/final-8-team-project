@@ -5,8 +5,6 @@ import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
-import com.team.final8teamproject.contact.entity.Inquiry;
-import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.validation.Valid;

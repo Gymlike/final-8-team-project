@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class SignupRequestDto {
 
 // 회원가입 비밀번호 재확인 추가
@@ -42,7 +41,9 @@ public class SignupRequestDto {
     private String email;
 
     private Long experience = 0L;
+
     private boolean admin = false;
+
     private String adminToken = "";
 
 }

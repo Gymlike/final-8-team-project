@@ -41,12 +41,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   }
 
     // 가장 먼저 시큐리티를 사용하기 위해선 선언해준다.
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         // h2-console 사용 및 resources 접근 허용 설정
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -63,9 +65,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/owner/**").hasAnyRole("Owner", "Manager", "GeneralManager")
         .requestMatchers("/api/general/**").hasRole("GeneralManager")
         .requestMatchers("/h2-console").permitAll()
-        .requestMatchers("/t-exercise/allboard").permitAll()
         .requestMatchers("/todaymeal/allboard").permitAll()
         .requestMatchers("/freeboard/allboard").permitAll()
+        .requestMatchers("/t-exercise/allboard").permitAll()
         .requestMatchers("/t-exercise/top3").permitAll()
         .requestMatchers("/todaymeal/top3").permitAll()
         .requestMatchers("/freeboard/top3").permitAll()
@@ -77,15 +79,17 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/home").permitAll()
         .requestMatchers("/api/company/**").permitAll()
         .requestMatchers("/api/user/find/**").permitAll()
-        .requestMatchers("/api/faqs/check/**").permitAll()  //todo 추후변경예정
-        .requestMatchers("/api/contact/inquiries/**").permitAll()//todo 추후변경예정
-        .requestMatchers("/api/managers/notices/check/**").permitAll()//todo 추후변경예정
+        .requestMatchers("/api/faqs/check/**").permitAll()
+        .requestMatchers("/api/contact/inquiries/**").permitAll()
+        .requestMatchers("/api/managers/notices/check/**").permitAll()
         .requestMatchers("/api/owners").permitAll()
         .requestMatchers("/api/trainers").permitAll()
         .requestMatchers("/api/validate").permitAll()
         .requestMatchers("/api/user/email/**").permitAll()
-
         .requestMatchers("/hello").permitAll()
+        .requestMatchers("/api/managers/notices").hasAnyRole("Manager", "GeneralManager")
+        .requestMatchers("/api/faqs").hasAnyRole("Manager", "GeneralManager")
+
 
 
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.

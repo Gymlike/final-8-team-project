@@ -1,16 +1,13 @@
 package com.team.final8teamproject.contact.controller;
 
 
-import com.sun.mail.imap.ResyncData;
 import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.service.FaqService;
-import com.team.final8teamproject.contact.service.FaqServiceImpl;
 import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** 웹컨피그.requestMatchers("/api/faqs/check/**").permitAll()
- *  이미지 파일 ? 여러개 올리는 방법? 구현 할까말까
- * todo  메서드 마다 권한 설정
+/** .requestMatchers("/api/faqs").hasAnyRole("Manager", "GeneralManager")
+ * 글쓰기 권한 관리자 // 그 외 다른 유저들은 조회만 가능
  */
 @RequiredArgsConstructor
 @RequestMapping("/api/faqs")
@@ -37,7 +33,7 @@ public class FaqController {
   private final FaqService faqService;
 
 
-  //todo 권한 :관리자
+
   @PostMapping("")
   public ResponseEntity saveFaq(@RequestBody @Valid FaqRequest faqRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
