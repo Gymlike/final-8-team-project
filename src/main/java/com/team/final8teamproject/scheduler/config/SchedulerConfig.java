@@ -1,4 +1,4 @@
-package com.team.final8teamproject.Scheduler.config;
+package com.team.final8teamproject.scheduler.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -12,11 +12,9 @@ public class SchedulerConfig implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         final ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-
         threadPoolTaskScheduler.setPoolSize(POOL_SIZE);
         threadPoolTaskScheduler.setThreadNamePrefix("hello-");
         threadPoolTaskScheduler.initialize();
-
         taskRegistrar.setTaskScheduler(threadPoolTaskScheduler);
     }
 }

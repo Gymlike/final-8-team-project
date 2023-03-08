@@ -1,4 +1,4 @@
-package com.team.final8teamproject.Scheduler.service;
+package com.team.final8teamproject.scheduler.service;
 
 import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.gymboard.entity.GymBoard;
@@ -24,11 +24,12 @@ public class RatingReviewUpdateSchedeled {
     private final GymReviewRepository gymReviewRepository;
 
 
-    //7. 평점 업데이트
+    //1. 평점 업데이트
+    //JPQL과 성능 비교를 하기위해서 만듬
     @Transactional
     @PostConstruct
     //1분 주기로 실행된다.
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 600000)
     public void ratingReviewUpdate() {
         List<GymBoard> gymBoards = gymBoardRepository.findAll();
         if(gymBoards.isEmpty()){

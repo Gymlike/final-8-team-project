@@ -16,7 +16,7 @@ public class GymBoardviewResponseDto {
         this.id = gymBoard.getId();
         this.title = gymBoard.getTitle();
         this.content =gymBoard.getContent();
-        this.image =gymBoard.getGymImage();
+        this.image =gymBoard.getImageUrl();
         this.gymName =gymBoard.getGymName();
         this.location = gymBoard.getRegion();
     }

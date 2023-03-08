@@ -12,9 +12,12 @@ public interface GymBoardRepository extends JpaRepository<GymBoard, Long> {
     List<GymBoard> findAllByUsername(String username);
 
     List<GymBoard> findAll();
+    Page<GymBoard> findByTitleContainingIgnoreCase(
+            String title,
+            Pageable pageable
+    );
     Optional<GymBoard> findById(Long id);
     Optional<GymBoard> findByIdAndUsername(Long id, String username);
-    Page<GymBoard> findAll(Pageable pageable);
     Page<GymBoard> findByUsername(Pageable pageable, String username);
     void deleteById(Long id);
 

@@ -69,11 +69,12 @@ public class GymBoardReviewServiceImpl implements GymBoardReviewService{
         GymReview gymReview = gymReviewRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        if(base.getRole().equals(UserRoleEnum.MANAGER) || !gymReview.getUsername().equals(username)){
-            throw new IllegalArgumentException("작성한 사용자만 삭제할수있습니다.");
+        if(base.getRole().equals(UserRoleEnum.MANAGER) || gymReview.getUsername().equals(username)){
+            gymReview.updateReview(requestDto.getComment());
+            return "수정 성공";
         }
-        gymReview.updateReview(requestDto.getComment());
-        return "수정 성공";
+
+        throw new IllegalArgumentException("작성한 사용자만 삭제할수있습니다.");
     }
     //4. 작성된 리뷰 삭제
     @Override
@@ -85,18 +86,18 @@ public class GymBoardReviewServiceImpl implements GymBoardReviewService{
         GymReview gymReview = gymReviewRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        if(base.getRole().equals(UserRoleEnum.MANAGER) || !gymReview.getUsername().equals(username)){
-            throw new IllegalArgumentException("작성한 사용자만 삭제할수있습니다.");
-        }
-        GymDeleteReview gymDeleteReview = GymDeleteReview.builder()
-                        .username(gymReview.getUsername())
-                                .comment(gymReview.getComment())
-                                        .gymId(gymReview.getGymId())
-                .reviewId(gymReview.getId())
-                .build();
+        if(base.getRole().equals(UserRoleEnum.MANAGER) || gymReview.getUsername().equals(username)){
+            GymDeleteReview gymDeleteReview = GymDeleteReview.builder()
+                    .username(gymReview.getUsername())
+                    .comment(gymReview.getComment())
+                    .gymId(gymReview.getGymId())
+                    .reviewId(gymReview.getId())
+                    .build();
 
-        gymDeleteReviewRepository.save(gymDeleteReview);
-        gymReviewRepository.deleteById(gymReview.getId());
-        return "삭제 성공";
+            gymDeleteReviewRepository.save(gymDeleteReview);
+            gymReviewRepository.deleteById(gymReview.getId());
+            return "삭제 성공";
+        }
+        throw new IllegalArgumentException("작성한 사용자만 삭제할수있습니다.");
     }
 }
