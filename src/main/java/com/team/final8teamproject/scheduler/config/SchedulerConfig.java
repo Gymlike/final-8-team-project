@@ -1,4 +1,4 @@
-package com.team.final8teamproject.Scheduler.config;
+package com.team.final8teamproject.scheduler.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;

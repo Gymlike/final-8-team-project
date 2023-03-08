@@ -16,7 +16,7 @@ public class GymPostPutResponseDto {
     public GymPostPutResponseDto(GymBoard gymBoard) {
         this.title = gymBoard.getTitle();
         this.content =gymBoard.getContent();
-        this.image =gymBoard.getGymImage();
+        this.image =gymBoard.getImageUrl();
         this.gymName =gymBoard.getGymName();
         this.location = gymBoard.getRegion();
         this.ownerNumber= gymBoard.getOwnerNumber();

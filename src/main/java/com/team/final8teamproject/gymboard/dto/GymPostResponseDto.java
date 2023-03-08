@@ -5,7 +5,6 @@ import com.team.final8teamproject.gymboard.entity.GymBoard;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 public class GymPostResponseDto {
@@ -23,7 +22,7 @@ public class GymPostResponseDto {
         this.id = gymBoard.getId();
         this.title = gymBoard.getTitle();
         this.content =gymBoard.getContent();
-        this.image =gymBoard.getGymImage();
+        this.image =gymBoard.getImageUrl();
         this.gymName =gymBoard.getGymName();
         this.location = gymBoard.getRegion();
         this.createdDate =gymBoard.getCreatedDate();

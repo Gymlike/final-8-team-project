@@ -19,22 +19,27 @@ repositories {
 }
 
 dependencies {
+    //jpa쿼리를 위해서 사용
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //소셜 로그인을 위해서 사용
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.2.2.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    //aws사용을 위해서 사용
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-bundle', version: '1.12.405'
 
+    //security사용을 위해서 사용
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-    testImplementation 'junit:junit:4.13.1'
-    testImplementation 'junit:junit:4.13.1'
-    compileOnly 'org.projectlombok:lombok'
 
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.1'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     //편의를 위한 lombok 의존성
@@ -53,9 +58,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
-    //mysql전 h2콘솔을 사용하기위해서 사용
-    //runtimeOnly 'com.h2database:h2'
-
     // MySql
     implementation 'mysql:mysql-connector-java'
     //사업자정보조회
@@ -65,10 +67,21 @@ dependencies {
     //이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    //websocket사용을 위한 의존성
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
+    //사업자번호 인증
     implementation 'org.json:json:20200518'
+
+    //websocket사용을 위한 의존성
+//    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+//
+//    //websocket사용을 위한 의존성
+//    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+//    implementation 'org.webjars:webjars-locator-core'
+//    implementation 'org.webjars:sockjs-client:1.1.2'
+//    implementation 'org.webjars.bower:bootstrap:4.3.1'
+//    implementation 'org.webjars.bower:vue:2.5.16'
+    // Stomp-websocket
+//    implementation 'org.webjars:stomp-websocket:2.3.3-1'
 
 }
 

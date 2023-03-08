@@ -18,21 +18,27 @@ public class GymBoardReviewController {
     @PostMapping("/{id}/write")
     public String writeReview(@PathVariable Long id, @RequestBody GymBoardReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         gymBoardReviewService.writeReview(id, requestDto, userDetails.getUsername());
-        return "작성 성공";
+
+        return "작성성공";
     }
 
+    //1-1. PRG 실험중
+    @GetMapping("/success")
+    public String writeReviewSuccess(){
+        return "작성 성공";
+    }
     //2. 운동시설 리뷰 조회
     //    @GetMapping("")
     //GymBoard에서 알아서 호출해서 조회함
 
     //3. 운동시설 리뷰 수정
-    @PutMapping("/{reviewId}/putreview")
+    @PutMapping("/{reviewId}/put-review")
     public String putReview(@PathVariable Long reviewId, @RequestBody GymReviewUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         return gymBoardReviewService.putReview(requestDto, userDetails.getUsername(), reviewId);
     }
     //4. 운동시설 리뷰 삭제
-    @DeleteMapping("/{reviewId}/deletereview")
+    @DeleteMapping("/{reviewId}/delete-review")
     public String deleteReview(@PathVariable Long reviewId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return gymBoardReviewService.deleteReview(userDetails.getUsername(), reviewId);
     }

@@ -45,12 +45,9 @@ public class KakaoService {
         // 3. 필요시에 회원가입
         KaKao kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
-
         return jwtUtil.createUserToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
     }
-
-
     private String getToken(String code) throws JsonProcessingException {
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
@@ -139,9 +136,6 @@ public class KakaoService {
 
                 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
-
-
-
                 kakaoUser = new KaKao(kakaoId, kakaoUserInfo.getUsername(), encodedPassword, UserRoleEnum.MEMBER, kakaoUserInfo.getNickname(), email, 0L);
             }
 
