@@ -20,10 +20,15 @@ public class Owner extends BaseEntity {
 
     private String ownerNumber;
 
+//    @Column(nullable = false)
+//    private String nickName;
+
+//    @Column(nullable = false)
     private String phoneNumber;
 
     private String storeName;
 
+    @Column(nullable = false)
     private Long experience;
 
     private String start_dt;

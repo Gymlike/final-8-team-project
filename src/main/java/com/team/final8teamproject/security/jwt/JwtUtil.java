@@ -142,7 +142,7 @@ public class JwtUtil {
 
     // 토큰 검증
     // Header에서 토큰 가져오기
-    public boolean validateToken(String token,HttpServletResponse response) {
+    public boolean validateToken(String token) {
         //parser : parsing을 하는 도구. parsing : token에 내재된 자료 구조를 빌드하고 문법을 검사한다.
         // JwtParseBuilder인스턴스를 생성
         // 서명 검증을 위한 키를 지정 setSigningKey()
