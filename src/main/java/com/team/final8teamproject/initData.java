@@ -32,6 +32,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -55,6 +56,7 @@ public class initData implements ApplicationRunner {
   private final ManagerRepository managerRepository;
 
   @Override
+  @Transactional
   public void run(ApplicationArguments args) throws Exception {
 
     Manager manager = Manager.builder()
@@ -152,41 +154,32 @@ public class initData implements ApplicationRunner {
     contactCommentRepository.save(childrenComment2);
 
     Notice notice = new Notice(1L, "공지사항", "공지사항입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice1 = new Notice(1L, " 오픈했습니다.", "오픈했습니다.^^",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/7ca7128f-d08a-430a-b28a-30e3b35de720서치징.png");
+            "");
     Notice notice2 = new Notice(1L, " 더미1", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice3 = new Notice(1L, " 더미2", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice4 = new Notice(1L, " 더미3", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice5 = new Notice(1L, " 더미4", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice6 = new Notice(1L, "더미5", "공지사항입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice7 = new Notice(1L, " 더미6", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice8 = new Notice(1L, "더미7", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice9 = new Notice(1L, " 더미8", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice10 = new Notice(1L, " 더미9", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice11 = new Notice(1L, " 더미10", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
+            "");
     Notice notice12 = new Notice(1L, " 더미11", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
-    Notice notice13 = new Notice(1L, " 더미12", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
-    Notice notice14 = new Notice(1L, " 더미13", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
-    Notice notice15 = new Notice(1L, " 더미14", "휴무입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
-    Notice notice16 = new Notice(1L, " 공지사항", "공지사항입니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/5866d653-cd6f-4089-a1aa-aa74e04cdd2d고객공지사항_-001.png");
-    Notice notice17 = new Notice(1L, " 오픈했습니다", "오픈했습니다.",
-            "https://final-8-team-project.s3.ap-northeast-2.amazonaws.com/contact/7ca7128f-d08a-430a-b28a-30e3b35de720서치징.png");
+            "");
+
     noticeRepository.save(notice);
     noticeRepository.save(notice1);
     noticeRepository.save(notice2);
@@ -200,11 +193,7 @@ public class initData implements ApplicationRunner {
     noticeRepository.save(notice10);
     noticeRepository.save(notice11);
     noticeRepository.save(notice12);
-    noticeRepository.save(notice13);
-    noticeRepository.save(notice14);
-    noticeRepository.save(notice15);
-    noticeRepository.save(notice16);
-    noticeRepository.save(notice17);
+
 
     Faq faq1 = new Faq(1L, "센터 운영 중인데 [ㅇㅇㅇ] 에 등록?입점? 하고 싶습니다.", "홈페이지 상단 xx 페이지에서 ~ 진행");
     Faq faq2 = new Faq(1L, "회원 탈퇴는 어떻게 해야 하나요?",
@@ -582,5 +571,6 @@ public class initData implements ApplicationRunner {
     gymReviewRepository.save(gymReview3);
     gymReviewRepository.save(gymReview4);
     gymReviewRepository.save(gymReview5);
+
   }
 }
