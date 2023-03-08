@@ -24,9 +24,6 @@ public class T_exercise extends Timestamped {
     private String content;
 
 //    private String imageUrl;
-
-
-
     private String imageUrl;
 
 
