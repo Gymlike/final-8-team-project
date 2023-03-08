@@ -67,6 +67,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/h2-console").permitAll()
         .requestMatchers("/todaymeal/allboard").permitAll()
         .requestMatchers("/freeboard/allboard").permitAll()
+        .requestMatchers("/t-exercise/allboard").permitAll()
         .requestMatchers("/t-exercise/top3").permitAll()
         .requestMatchers("/todaymeal/top3").permitAll()
         .requestMatchers("/freeboard/top3").permitAll()
