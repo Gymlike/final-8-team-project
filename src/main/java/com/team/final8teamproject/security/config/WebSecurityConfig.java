@@ -87,8 +87,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/validate").permitAll()
         .requestMatchers("/api/user/email/**").permitAll()
         .requestMatchers("/hello").permitAll()
-        .requestMatchers("/api/managers/notices").hasAnyRole("Manager", "GeneralManager")
-        .requestMatchers("/api/faqs").hasAnyRole("Manager", "GeneralManager")
+        .requestMatchers("/api/managers/notices").hasRole("Manager")
+        .requestMatchers("/api/faqs").hasRole("Manager")
 
 
 
