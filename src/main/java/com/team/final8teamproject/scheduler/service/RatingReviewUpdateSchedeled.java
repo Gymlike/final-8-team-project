@@ -29,7 +29,7 @@ public class RatingReviewUpdateSchedeled {
     @Transactional
     @PostConstruct
     //1분 주기로 실행된다.
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 600000)
     public void ratingReviewUpdate() {
         List<GymBoard> gymBoards = gymBoardRepository.findAll();
         if(gymBoards.isEmpty()){
