@@ -5,12 +5,10 @@ import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.security.service.EmailServiceImpl;
 import com.team.final8teamproject.share.exception.CustomException;
-import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +28,9 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    EmailServiceImpl emailServiceImpl;
 
     private final UserService userService;
     private final BaseRepository baseRepository;
@@ -70,7 +71,7 @@ public class UserController {
     @PostMapping("/email")
     @ResponseBody
     public void emailConfirm(String email) throws Exception {
-            logger.info("post emailConfirm");
+        logger.info("post emailConfirm");
         Optional<BaseEntity> findEmail = baseRepository.findByEmail(email);
         if (findEmail.isPresent()) {
             throw new IllegalArgumentException("이메일 중복");
@@ -80,15 +81,14 @@ public class UserController {
     //이메일 코드 확인
     @PostMapping("/verifyCode")
     @ResponseBody
-    public int verifyCode(String code, HttpSession session) {
+    public int verifyCode(String code, String email) throws CustomException {
         logger.info("Post verifyCode");
         int result = 0;
+        System.out.println("인증실패");
         System.out.println("code : " + code);
-
-        session.setAttribute("emailCode", code);
-
-        String emailCode = (String) session.getAttribute("emailCode");
-        if (emailCode.equals(code)) {
+        System.out.println("email : " + email);
+        if (emailServiceImpl.verifyAuthCode(email, code)) {
+            System.out.println("인증성공");
             result = 1;
         }
         return result;

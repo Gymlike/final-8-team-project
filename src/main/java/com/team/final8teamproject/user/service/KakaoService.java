@@ -48,6 +48,7 @@ public class KakaoService {
         return jwtUtil.createUserToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
     }
+
     private String getToken(String code) throws JsonProcessingException {
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
@@ -103,7 +104,7 @@ public class KakaoService {
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
-                .get("email").asText();
+                .get("email").asText("");
 
 
         log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
