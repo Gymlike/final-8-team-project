@@ -1,6 +1,5 @@
 package com.team.final8teamproject.security.service;
 
-import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.mail.Message;
@@ -11,16 +10,21 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements EmailService {
 
-    private final BaseRepository baseRepository;
     private final JavaMailSender emailSender;
+    private Map<String, String> authCodes = new HashMap<>();
+    private Map<String, LocalDateTime> authCodeExpirationTimes = new HashMap<>();
+    private Map<String, LocalDateTime> authCodeCreatedAt = new HashMap<>();
 
-    private static String createKey() {
+    public static String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 
@@ -45,16 +49,15 @@ public class EmailServiceImpl implements EmailService{
         return key.toString();
     }
 
-    private MimeMessage createMessage(String to) throws CustomException, Exception{
-        String ePw = createKey();
+    private MimeMessage createMessage(String to, String ePw) throws Exception {
         System.out.println("전달 받은 이메일 : " + to);
-        System.out.println("인증 번호 : "+ePw);
-        MimeMessage  message = emailSender.createMimeMessage();
+        System.out.println("인증 번호 : " + ePw);
+        MimeMessage message = emailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
         message.setSubject("서치짐 이메일인증 코드");//제목
 
-        String msgg="";
+        String msgg = "";
         msgg += "<div style='background-color:#f7f7f7; font-family:Verdana, sans-serif;'>";
         msgg += "<div style='max-width:600px; margin:0 auto;'>";
         msgg += "<div style='background-color:#fff; padding:40px;'>";
@@ -75,20 +78,44 @@ public class EmailServiceImpl implements EmailService{
         msgg += "</div>";
         msgg += "</div>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("spartafinalproject@gmail.com","서치짐"));//보내는 사람
+        message.setFrom(new InternetAddress("spartafinalproject@gmail.com", "서치짐"));//보내는 사람
 
         return message;
     }
 
     @Override
-    public void sendSimpleMessage(String to) throws CustomException, Exception {
-        // TODO Auto-generated method stub
-        MimeMessage message = createMessage(to);
-        try {//예외처리
+    public void sendSimpleMessage(String to) throws Exception {
+        String ePw = createKey();
+        authCodes.put(to, ePw); // 이메일과 인증 코드를 Map에 저장
+        authCodeExpirationTimes.put(to, LocalDateTime.now().plusMinutes(2)); // 2분 뒤에 만료되도록 현재 시간 + 2분을 저장
+
+        MimeMessage message = createMessage(to, ePw);
+        try {
             emailSender.send(message);
         } catch (MailException es) {
             es.printStackTrace();
             throw new CustomException(ExceptionStatus.IS_NOT_CORRECT_FORMAT);
         }
     }
+
+    public boolean verifyAuthCode(String to, String authCode) throws CustomException {
+        String savedAuthCode = authCodes.get(to);
+        LocalDateTime expirationTime = authCodeExpirationTimes.get(to);
+        if (savedAuthCode != null && savedAuthCode.equals(authCode) && expirationTime != null && LocalDateTime.now().isBefore(expirationTime)) {
+            authCodes.remove(to);
+            authCodeExpirationTimes.remove(to);
+            return true;
+        } else {
+            if (expirationTime != null && LocalDateTime.now().isAfter(expirationTime)) {
+                throw new CustomException(ExceptionStatus.AUTH_EXPIRED);
+            } else {
+                throw new CustomException(ExceptionStatus.AUTHENTICATION);
+            }
+        }
+    }
+
+    public LocalDateTime getAuthCodeCreatedAt(String to) {
+        return authCodeCreatedAt.get(to);
+    }
+
 }
