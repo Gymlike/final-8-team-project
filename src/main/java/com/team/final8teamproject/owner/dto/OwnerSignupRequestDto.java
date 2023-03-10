@@ -1,5 +1,6 @@
 package com.team.final8teamproject.owner.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +12,17 @@ import lombok.NoArgsConstructor;
 public class OwnerSignupRequestDto {
 
     //정규식이 틀렸을때 발생하는 예외 MethodArgumentNotValidException
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)")
+    @Pattern(regexp = "[a-zA-Z0-9]{4,10}$", message = "아이디는 최소 4자 이상, 10자 이하이며, 영문과 숫자만 입력하세요.")
     private String username;
-    @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[0-9])^[a-zA-Z0-9~!@#$%^&*()+|=]{8,15}$", message = "최소 8자 이상, 15자 이하이며 알파벳 대소문자(a~z, A~Z), 숫자(0~9),특수문자(~!@#$%^&*()+|=)")
+    @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[0-9])^[a-zA-Z0-9~!@#$%^&*()+|=]{8,15}$", message = "비밀번호는 최소 8자 이상, 15자 이하이며, 영문과 숫자, 특수문자만 입력하세요.")
     private String password;
+    @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[0-9])^[a-zA-Z0-9~!@#$%^&*()+|=]{8,15}$", message = "비밀번호를 확인해주세요.")
     private String password2;
     private String image;
     private String nickName;
-    @Pattern(regexp = "(?=.*[0-9])^[0-9]{11}$", message = "11122223333형식으로 -를 빼고 입력해주시기 바랍니다.")
+    @Pattern(regexp = "(?=.*[0-9])^[0-9]{11}$", message = "-을 제외한 10자리 번호를 입력해주세요")
     private String phoneNumber;
+    @Email
     private String email;
     private String storeName;
 

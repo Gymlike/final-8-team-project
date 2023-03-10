@@ -67,6 +67,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/h2-console").permitAll()
         .requestMatchers("/todaymeal/allboard").permitAll()
         .requestMatchers("/freeboard/allboard").permitAll()
+        .requestMatchers("/t-exercise/allboard").permitAll()
         .requestMatchers("/t-exercise/top3").permitAll()
         .requestMatchers("/todaymeal/top3").permitAll()
         .requestMatchers("/freeboard/top3").permitAll()
@@ -86,8 +87,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/validate").permitAll()
         .requestMatchers("/api/user/email/**").permitAll()
         .requestMatchers("/hello").permitAll()
-        .requestMatchers("/api/managers/notices").hasAnyRole("Manager", "GeneralManager")
-        .requestMatchers("/api/faqs").hasAnyRole("Manager", "GeneralManager")
+        .requestMatchers("/api/managers/notices").hasRole("Manager")
+        .requestMatchers("/api/faqs").hasRole("Manager")
+
+
+
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
         // JWT 인증/인가를 사용하기 위한 설정

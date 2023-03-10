@@ -55,7 +55,7 @@ public class initData implements ApplicationRunner {
   @Override
   @Transactional
   public void run(ApplicationArguments args) throws Exception {
-
+//
 //    Manager manager = Manager.builder()
 //            .nickName("manager").email("manager@nvaer.com")
 //            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))

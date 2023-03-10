@@ -8,6 +8,7 @@ import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
@@ -78,12 +79,15 @@ public class UserController {
     //이메일 코드 확인
     @PostMapping("/verifyCode")
     @ResponseBody
-    public int verifyCode(String code) {
+    public int verifyCode(String code, HttpSession session) {
         logger.info("Post verifyCode");
         int result = 0;
         System.out.println("code : " + code);
-        System.out.println("code match : " + EmailServiceImpl.ePw.equals(code));
-        if (EmailServiceImpl.ePw.equals(code)) {
+
+        session.setAttribute("emailCode", code);
+
+        String emailCode = (String) session.getAttribute("emailCode");
+        if (emailCode.equals(code)) {
             result = 1;
         }
         return result;
