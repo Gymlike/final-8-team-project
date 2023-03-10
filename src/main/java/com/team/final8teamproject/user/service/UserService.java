@@ -21,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -141,16 +142,14 @@ public class UserService {
         BaseEntity user = baseRepository.findByEmail(vo.getEmail()).orElseThrow(
                 () -> new IllegalArgumentException("이메일을 다시 입력해주시기 바랍니다.")
         );
-
         // 가입된 아이디가 없으면
-        if (!user.getUsername().equals(vo.getUsername())) {
+        if (user.isUsername(vo.getUsername())) {
             throw new IllegalArgumentException("등록되지 않은 사용자입니다.");
         }
 
         // 가입된 이메일이 아니면
-        else if (!vo.getEmail().equals(user.getEmail())) {
+        else if (user.isEmail(vo.getEmail())) {
             throw new IllegalArgumentException("등록되지 않은 사용자입니다.");
-
         } else {
 
             // 임시 비밀번호 생성
@@ -167,6 +166,7 @@ public class UserService {
     }
 
     //5-1.이메일 발송
+    @Async
     public void sendEmail(FindPasswordRequestDto vo, String password) {
         // Mail Server 설정
         MimeMessage mail = mailSender.createMimeMessage();
