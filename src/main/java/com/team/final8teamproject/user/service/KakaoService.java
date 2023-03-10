@@ -48,6 +48,7 @@ public class KakaoService {
         return jwtUtil.createUserToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
     }
+
     private String getToken(String code) throws JsonProcessingException {
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
@@ -56,7 +57,7 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "adacc39e0738d79ed04fd79995f809d3");
+        body.add("client_id", "dbd325dd993263a4866065ae4d1c3c00");
         body.add("redirect_uri", "http://ec2-3-36-89-51.ap-northeast-2.compute.amazonaws.com/api/user/kakao/callback");
         body.add("code", code);
 
@@ -103,7 +104,7 @@ public class KakaoService {
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
-                .get("email").asText();
+                .get("email").asText("");
 
 
         log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
