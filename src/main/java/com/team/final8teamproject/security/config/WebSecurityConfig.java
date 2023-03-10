@@ -88,9 +88,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/hello").permitAll()
         .requestMatchers("/api/managers/notices").hasAnyRole("Manager", "GeneralManager")
         .requestMatchers("/api/faqs").hasAnyRole("Manager", "GeneralManager")
-
-
-
         .anyRequest().authenticated()//인증이 되어야 한다는 이야기이다.
         //.anonymous() : 인증되지 않은 사용자도 접근할 수 있다.
         // JWT 인증/인가를 사용하기 위한 설정
