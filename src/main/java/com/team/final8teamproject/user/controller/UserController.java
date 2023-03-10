@@ -4,8 +4,6 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.security.service.EmailServiceImpl;
-import com.team.final8teamproject.share.exception.CustomException;
-import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
@@ -105,5 +104,9 @@ public class UserController {
     public FindByResponseDto reissuancePassword(@RequestBody FindPasswordRequestDto requestDto) {
         return userService.userFindPassword(requestDto);
     }
-
+    //7. 토큰 재발급(클라이언트에서 Access_Token이 만료될시)
+    @PostMapping("/token/regenerate")
+    public ResponseEntity<String> regenerateToken(@RequestBody @Valid RegenerateTokenRequestDto requestDto){
+        return userService.regenerateToken(requestDto);
+    }
 }
