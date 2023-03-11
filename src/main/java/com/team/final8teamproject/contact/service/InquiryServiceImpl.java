@@ -30,7 +30,7 @@ public class InquiryServiceImpl implements InquiryService {
   private final ContactCommentServiceImpl contactCommentService;
 
 
-  @Transactional
+
   @Override
   public void createInquiry(@Valid InquiryRequest inquiryRequest, String username,
       String nickName) {
@@ -57,7 +57,7 @@ public class InquiryServiceImpl implements InquiryService {
   }
 
 
-  @Transactional(readOnly = true)
+
   @Override
   public Result getInquiry(int page, int size, Direction direction,
       String properties) {
@@ -113,7 +113,7 @@ public class InquiryServiceImpl implements InquiryService {
 
   }
 
-  @Transactional(readOnly = true)
+
   @Override
   public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {

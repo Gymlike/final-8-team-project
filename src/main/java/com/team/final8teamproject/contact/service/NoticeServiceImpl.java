@@ -28,7 +28,7 @@ public class NoticeServiceImpl implements NoticeService {
 
   private final NoticeRepository noticeRepository;
 
-  @Transactional
+
   @Override
   public void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId,String imageUrl) {
     Notice notice = noticeRequest.toEntity(managerId,imageUrl);
@@ -40,7 +40,7 @@ public class NoticeServiceImpl implements NoticeService {
    * 프론트 페이징 시도 * int page, int countList, int countPage, int totalCount, T data
    */
 
-  @Transactional(readOnly = true)
+
   @Override
   public Result getNoticeList(int page, int size, Direction direction,
       String properties) {
@@ -68,7 +68,7 @@ public class NoticeServiceImpl implements NoticeService {
   }
 
 
-  @Transactional(readOnly = true)
+
   @Override
   public NoticeResponse getSelectedNotice(Long id) {
     Notice notice = noticeRepository.findById(id).orElseThrow(
@@ -76,7 +76,7 @@ public class NoticeServiceImpl implements NoticeService {
     );
     return new NoticeResponse(notice);
   }
-  @Transactional(readOnly = true)
+
   @Override
   public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
@@ -104,8 +104,9 @@ public class NoticeServiceImpl implements NoticeService {
     return new Result(page, totalCount, countPage, totalPage, noticeResponses);
   }
 
-  @Transactional
+
   @Override
+  @Transactional
   public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest, String imageUrl) {
     String title = updateNoticeRequest.getTitle();
     String content = updateNoticeRequest.getContent();
@@ -122,7 +123,7 @@ public class NoticeServiceImpl implements NoticeService {
 
   }
 
-  @Transactional
+
   @Override
   public void deleteNotice(Long id, Long managerId) {
     Notice notice = noticeRepository.findById(id).orElseThrow(

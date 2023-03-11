@@ -28,6 +28,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
    */
 
   @Override
+  @Transactional
   public void saveInquiryComment(Long inquiryId,
       CreateContactCommentRequest createContactCommentRequest,
       String username,String nickName) {
@@ -36,7 +37,6 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     } else {
       /**부모댓글이 있는 경우 - 대댓글 등록. 즉 자식 댓글이 됨 */
       ContactComment parent = null;
-
       if (createContactCommentRequest.getParentId() != null) {
         parent = contactCommentRepository.findById(createContactCommentRequest.getParentId())
             .orElseThrow(
@@ -51,7 +51,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
             nickName, parent,depth);
         // ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         depth = contactComment.getDepth()+1;
-        contactComment.getParent().setId(createContactCommentRequest.getParentId());
+        contactComment.getParent().setId(createContactCommentRequest.getParentId());//todo entity @Setter 없애기
         contactComment.setDepth(depth);
         contactCommentRepository.save(contactComment);
 
@@ -96,15 +96,6 @@ public class ContactCommentServiceImpl implements ContactCommentService {
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
     }
   }
-//  @Transactional
-//  @Override
-//  public void deleteManager(Long id) {
-//    ContactComment contactComment = contactCommentRepository.findById(id).orElseThrow(
-//        () -> new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT)
-//    );
-//    contactCommentRepository.delete(contactComment);
-//  }
-
 
   /** 해당 문의글 의 댓글 삭제하는 서비스 호출 */
 
