@@ -99,12 +99,10 @@ public class FaqServiceImpl implements FaqService {
     Faq faq = faqRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (faq.getManagerId().equals(managerId)) {
-      faq.update(question, answer);
-      faqRepository.save(faq);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
+    faq.isWriter(managerId);
+    faq.update(question, answer);
+    faqRepository.save(faq);
+
   }
 
   @Override
@@ -112,11 +110,8 @@ public class FaqServiceImpl implements FaqService {
     Faq faq = faqRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (faq.getManagerId().equals(managerId)) {
-      faqRepository.delete(faq);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
+    faq.isWriter(managerId);
+    faqRepository.delete(faq);
   }
 
   @Getter

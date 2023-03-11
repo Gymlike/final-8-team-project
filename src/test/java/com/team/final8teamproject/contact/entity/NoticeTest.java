@@ -65,16 +65,14 @@ class NoticeTest {
   @Test
   @DisplayName("유효한 사용자 테스트")
   void isWriter() {
-    Long managerId1 = 1L;
-    Long managerId2 = 2L;
     Notice notice = Notice.builder()
-        .managerId(managerId1)
+        .managerId(1L)
         .title("title")
         .content("content")
         .build();
     //when&then
-    assertThatNoException().isThrownBy(()-> notice.isWriter(managerId1)); //예외가 발생하지 않는 경우
-    assertThatThrownBy(()->notice.isWriter(managerId2)).isInstanceOf(CustomException.class);//예외 발생하는 경우
+    assertThatNoException().isThrownBy(()-> notice.isWriter( 1L)); //예외가 발생하지 않는 경우
+    assertThatThrownBy(()->notice.isWriter(2L)).isInstanceOf(CustomException.class);//예외 발생하는 경우
 
   }
 

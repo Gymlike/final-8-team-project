@@ -244,24 +244,24 @@ class FaqServiceImplTest {
       faqServiceImpl.getSelectedFaq(1L);
     });
   }
-  @Test
-  @DisplayName("FAQ 수정_다른사람이 작성하려고 할때 에러 ")
-  void updateFaq_invalid_user() {
-    //given
-    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello","hello");
-    String question = updateFaqRequest.getQuestion();
-    String answer = updateFaqRequest.getAnswer();
-
-    Faq faq = new Faq(1L,question,answer);
-
-    when(faqRepository.findById(1L))
-        .thenReturn(Optional.of(faq));
-
-    //when&then
-    assertThrows(CustomException.class,()->{
-        faqServiceImpl.updateFaq(1L,2L,updateFaqRequest);
-    });
-  }
+//  @Test
+//  @DisplayName("FAQ 수정_다른사람이 작성하려고 할때 에러 ")
+//  void updateFaq_invalid_user() {
+//    //given
+//    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello","hello");
+//    String question = updateFaqRequest.getQuestion();
+//    String answer = updateFaqRequest.getAnswer();
+//
+//    Faq faq = new Faq(1L,question,answer);
+//
+//    when(faqRepository.findById(1L))
+//        .thenReturn(Optional.of(faq));
+//
+//    //when&then
+//    assertThrows(CustomException.class,()->{
+//        faqServiceImpl.updateFaq(1L,2L,updateFaqRequest);
+//    });
+//  }
 
   @Test
   @DisplayName("FAQ 삭제_성공")

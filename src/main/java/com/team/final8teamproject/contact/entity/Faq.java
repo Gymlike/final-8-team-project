@@ -2,6 +2,8 @@ package com.team.final8teamproject.contact.entity;
 
 
 import com.team.final8teamproject.share.Timestamped;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,5 +39,11 @@ public class Faq extends Timestamped {
   public void update(String question, String answer) {
     this.question = question;
     this.answer = answer;
+  }
+
+  public void isWriter(Long managerId) {
+    if(!this.managerId.equals(managerId)){
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
+    }
   }
 }
