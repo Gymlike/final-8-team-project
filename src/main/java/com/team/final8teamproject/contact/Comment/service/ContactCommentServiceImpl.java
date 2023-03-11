@@ -51,7 +51,8 @@ public class ContactCommentServiceImpl implements ContactCommentService {
             nickName, parent,depth);
         // ContactComment contactComment = new ContactComment(comments,inquiryId,username,parent);
         depth = contactComment.getDepth()+1;
-        contactComment.getParent().setId(createContactCommentRequest.getParentId());//todo entity @Setter 없애기
+        contactComment.setParent(parent);
+       // contactComment.getParent().setId(createContactCommentRequest.getParentId());//todo entity @Setter 없애기
         contactComment.setDepth(depth);
         contactCommentRepository.save(contactComment);
 
