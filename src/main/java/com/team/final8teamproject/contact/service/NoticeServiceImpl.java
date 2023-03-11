@@ -114,7 +114,8 @@ public class NoticeServiceImpl implements NoticeService {
     Notice notice = noticeRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (notice.getManagerId().equals(managerId)) {
+
+    if (notice.isWriter(managerId)) {
       notice.update(title, content, imageUrl);
       noticeRepository.save(notice);
     } else {
@@ -129,7 +130,7 @@ public class NoticeServiceImpl implements NoticeService {
     Notice notice = noticeRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (notice.getManagerId().equals(managerId)) {
+    if (notice.isWriter(managerId)) {
       noticeRepository.delete(notice);
     } else {
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);

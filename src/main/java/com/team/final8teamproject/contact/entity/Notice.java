@@ -46,4 +46,7 @@ public class Notice extends Timestamped {
     }
 
 
+    public boolean isWriter(Long managerId) {
+        return this.managerId.equals(managerId);
+    }
 }
