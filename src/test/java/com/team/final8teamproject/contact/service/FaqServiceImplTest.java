@@ -1,19 +1,17 @@
 package com.team.final8teamproject.contact.service;
 
+//AssertJ
 
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNotNull;
+import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import com.team.final8teamproject.contact.Repository.FaqRepository;
 import com.team.final8teamproject.contact.dto.FaqRequest;
@@ -22,10 +20,17 @@ import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
-import java.util.List;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import java.util.Optional;
+import java.util.Set;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,10 +38,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
@@ -51,25 +56,45 @@ class FaqServiceImplTest {
   @InjectMocks
   private FaqServiceImpl faqServiceImpl;
 
+  private static ValidatorFactory factory;
+  private static Validator validator;
 
+  @BeforeAll
+  public static void init() {
+    factory = Validation.buildDefaultValidatorFactory();
+    validator = factory.getValidator();
+  }
+
+  @AfterAll
+  public static void close() {
+    factory.close();
+  }
   /**
    * 1.when -> 테스트할 로직 작성 2.given -> 테스트에 필요한 입력값 , 리턴값 등을 작성 3.then -> 검증
+   * 페이징처리는 테스는 코드 큰 의미 없다.
+   * 스프링부트를 돌려봐야 , 페이지처리 가 잘된지 알 수 있다.
+   * AssertJ 의 assertThat
+   * AssertJ 의 예외 테스트
    */
 
+  /**
+   * 튜텨님 방법
+   */
   @Test
   @DisplayName("FAQ 등록_성공")
   void saveFaq_success() {
     //given입력값, 리턴값
     FaqRequest faqRequest = mock(FaqRequest.class);
-    Faq faq =mock(Faq.class);
+    Faq faq = mock(Faq.class);
     when(faqRequest.toEntity(1L))
         .thenReturn(faq);
 
     //when
-    faqServiceImpl.saveFaq(faqRequest,1L);
+    faqServiceImpl.saveFaq(faqRequest, 1L);
     //then
-    verify(faqRepository,times(1)).save(faq);
+    verify(faqRepository, times(1)).save(faq);
   }
+
   @Test
   @DisplayName("FAQ 등록_성공")
   void saveFaq_success1() {
@@ -87,54 +112,44 @@ class FaqServiceImplTest {
 
   @Test
   @DisplayName("FAQ 등록_실패 request에 @NotBlank 아닐때")
-  void saveFaq_fail() {
+  void saveFaq_valid_fail() {
+
     //given
-
-    //Faq faq =mock(Faq.class);
-//    when(faqRepository.save(any(Faq.class)))
-//        .thenReturn();
-
+    FaqRequest faqRequest = new FaqRequest("", "1111");
     //when
-    FaqRequest faqRequest = new FaqRequest("","");
+    Set<ConstraintViolation<FaqRequest>> violation = validator.validate(faqRequest);
     //then
-    //assertThrow; // 실행되지 않는 것을 확인
+    assertThat(violation).isNotEmpty();
+    violation
+        .forEach(error -> {
+          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
+        });
   }
 
-  /**
-   * 페이징처리는 테스는 코드 큰 의미 없다.
-   * 스프링부트를 돌려봐야 , 페이지처리 가 잘된지 알 수 있다.
-   * assertThat (list 타입 요구함) 과 assertEquals 차이
-   */
-    @Test
-  @DisplayName("FAQ 조회_성공")
-  void getFaqList_success() {
-        //given
+  @Test
+  @DisplayName("FAQ 전체조회_글이 없을때 예외발생")
+  void getFaqList_throw() {
+    //given
+    int page =1 ;
+    int size =10;
+    Direction direction = Direction.DESC;
+    String properties = "createdDate";
 
-    //when
-    Result response = faqServiceImpl.getFaqList(1,10,DESC,"createdDate");
-    //then
-
-
+    lenient().when(faqRepository.findAll(PageRequest.of(page-1,size,direction,properties)))
+        .thenReturn(Page.empty());
+    //when&then
+    assertThrows(CustomException.class,()->{
+      faqServiceImpl.getFaqList(page,size,direction,properties);
+        });
   }
-//  @Test
-//  @DisplayName("FAQ 조회_글이 없을때 예외발생")
-//  void getFaqList_throw() {
-//    //given
-//    when(faqRepository.findAll(any(Pageable.class)))
-//        .thenReturn(Optional.empty());
-//    //when&then
-//    Result response = faqServiceImpl.getFaqList(1, 10, DESC, "createdDate");
-//    //
-//
-//
-//  }
+
 
 
   @Test
   @DisplayName("FAQ 건당조회_성공")
   void getSelectedFaq_success() {
     //given
-    FaqRequest request = new FaqRequest("hello","hello");
+    FaqRequest request = new FaqRequest("hello", "hello");
     Faq faq = request.toEntity(1L);
     when(faqRepository.findById(anyLong()))
         .thenReturn(Optional.of(faq));
@@ -142,8 +157,8 @@ class FaqServiceImplTest {
     //when
     FaqResponse response = faqServiceImpl.getSelectedFaq(anyLong());
     //then
-    assertEquals(response.getQuestion(),faq.getQuestion());
-    assertEquals(response.getAnswer(),faq.getAnswer());  //todo 왜 요구가 리스트지?
+    assertThat(response.getQuestion()).isEqualTo(faq.getQuestion());
+    assertThat(response.getAnswer()).isEqualTo((faq.getAnswer()));
     verify(faqRepository).findById(anyLong());
   }
 
@@ -159,30 +174,68 @@ class FaqServiceImplTest {
     });
   }
 
-  @Test
-  @DisplayName("FAQ 검색조회_성공")
-  void searchByKeyword() {
-  }
+  // todo
+//  @Test
+//  @DisplayName("FAQ 검색조회_성공")
+//  void searchByKeyword() throws IllegalAccessException, InstantiationException {
+//    //given
+//    String keyword = "keyword";
+//    int page =1 ;
+//    int size =10;
+//    Direction direction = Direction.DESC;
+//    String properties = "createdDate";
+//    Faq faq = new Faq(1L,"question","answer");
+//    when(faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer",PageRequest.of(page - 1, size, direction, properties)))
+//        .thenReturn((Page<Faq>)faq);
+//
+//    //when
+//    Result response = faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
+//
+//    //then
+//    assertThat(response.getTotalCount()).isEqualTo(1);
+//
+//  }
+//  @Test
+//  @DisplayName("FAQ 검색조회_성공")
+//  void searchByKeyword() throws IllegalAccessException, InstantiationException {
+//    //given
+//    String keyword = "keyword";
+//    int page =1 ;
+//    int size =10;
+//    Direction direction = Direction.DESC;
+//    String properties = "createdDate";
+//    Faq faq = new Faq(1L,"question","answer");
+//   // Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer", PageRequest.of(page - 1, size, direction, properties));
+//    when(faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer",PageRequest.of(page - 1, size, direction, properties)))
+//        .thenReturn(any(Page.class));
+//
+//    //when
+//    Result response = faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
+//
+//    //then
+//    assertThat(response.getTotalCount()).isEqualTo(1);
+//
+//  }
 
   @Test
   @DisplayName("FAQ 수정_성공")
   void updateFaq() {
     //given
 
-    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello","hello");
+    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello", "hello");
     String question = updateFaqRequest.getQuestion();
     String answer = updateFaqRequest.getAnswer();
-    Faq faq = new Faq(1L,question,answer);
+    Faq faq = new Faq(1L, question, answer);
 
-    faq.update(question,answer);
+    faq.update(question, answer);
 
     when(faqRepository.findById(anyLong()))
         .thenReturn(Optional.of(faq));
 
     //when
-    faqServiceImpl.updateFaq(1L,1L,updateFaqRequest);
+    faqServiceImpl.updateFaq(1L, 1L, updateFaqRequest);
     //verify
-    verify(faqRepository,times(1)).save(any(Faq.class));
+    verify(faqRepository, times(1)).save(any(Faq.class));
   }
 
 
@@ -194,34 +247,50 @@ class FaqServiceImplTest {
         .thenReturn(Optional.empty());
 
     //when&then
-    assertThrows(CustomException.class, ()-> {
+    assertThrows(CustomException.class, () -> {
       faqServiceImpl.getSelectedFaq(1L);
     });
   }
-//  @Test
-//  @DisplayName("FAQ 수정_다른사람이 작성하려고 할때 에러 ")
-//  void updateFaq_invalid_user() {
-//    //given
-//    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello","hello");
-//    String question = updateFaqRequest.getQuestion();
-//    String answer = updateFaqRequest.getAnswer();
-//
-//    User member1 = new User("member1","member1234", UserRoleEnum.MEMBER,"member1","01012345678","member@naver.com",0L);
-//    User member2 = new User("member2","member1234", UserRoleEnum.MEMBER,"member2","01022345678","member@naver.com",0L);
-//
-//    Faq faq = new Faq(member1.getId(),question,answer);
-//
-//    when(faqRepository.findById(anyLong()))
-//        .thenReturn(Optional.of(faq));
-//
-//    //when&then
-//    assertThrows(CustomException.class,()->
-//        faqServiceImpl.updateFaq(1L,member2.getId(),updateFaqRequest));
-//  }
+  @Test
+  @DisplayName("FAQ 수정_다른사람이 작성하려고 할때 에러 ")
+  void updateFaq_invalid_user() {
+    //given
+    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello","hello");
+    String question = updateFaqRequest.getQuestion();
+    String answer = updateFaqRequest.getAnswer();
 
+    Faq faq = new Faq(1L,question,answer);
+
+    when(faqRepository.findById(1L))
+        .thenReturn(Optional.of(faq));
+
+    //when&then
+    assertThrows(CustomException.class,()->{
+        faqServiceImpl.updateFaq(1L,2L,updateFaqRequest);
+    });
+  }
 
   @Test
   @DisplayName("FAQ 삭제_성공")
   void deleteFaq() {
+    //given
+    Faq faq = new Faq(1L,"ee","ee");
+    when(faqRepository.findById(faq.getId())).thenReturn(Optional.of(faq));
+    //when
+    faqServiceImpl.deleteFaq(faq.getId(),1L);
+    //then
+    verify(faqRepository,times(1)).delete(any(Faq.class));
   }
+  @Test
+  @DisplayName("FAQ 삭제_해당 게시글이 존재하지 않을때_예외")
+  void deleteFaq_throw() {
+  //given
+  when(faqRepository.findById(1L))
+      .thenReturn(Optional.empty());
+  //when&then
+  assertThrows(CustomException.class,()->{
+    faqServiceImpl.deleteFaq(1L,anyLong());
+  });
+  }
+
 }
