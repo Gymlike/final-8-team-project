@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**inquiry , user 연관관계  x  없이 구현
- *todo  세터 사용 하지않고 , 부보댓글 아이디 저장하는 방법
  */
 
 

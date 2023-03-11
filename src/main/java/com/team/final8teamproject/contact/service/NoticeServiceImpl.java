@@ -30,8 +30,8 @@ public class NoticeServiceImpl implements NoticeService {
 
 
   @Override
-  public void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId,String imageUrl) {
-    Notice notice = noticeRequest.toEntity(managerId,imageUrl);
+  public void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId, String imageUrl) {
+    Notice notice = noticeRequest.toEntity(managerId, imageUrl);
     noticeRepository.save(notice);
   }
 
@@ -48,7 +48,7 @@ public class NoticeServiceImpl implements NoticeService {
     Page<Notice> noticeListPage = noticeRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
     int totalCount = (int) noticeListPage.getTotalElements();
-    System.out.println("totalCount:"+totalCount);
+    System.out.println("totalCount:" + totalCount);
 
     if (noticeListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
@@ -66,7 +66,6 @@ public class NoticeServiceImpl implements NoticeService {
     }
     return new Result(page, totalCount, countPage, totalPage, noticeResponses);
   }
-
 
 
   @Override
@@ -107,7 +106,8 @@ public class NoticeServiceImpl implements NoticeService {
 
   @Override
   @Transactional
-  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest, String imageUrl) {
+  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest,
+      String imageUrl) {
     String title = updateNoticeRequest.getTitle();
     String content = updateNoticeRequest.getContent();
 
@@ -115,12 +115,16 @@ public class NoticeServiceImpl implements NoticeService {
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
 
-    if (notice.isWriter(managerId)) {
-      notice.update(title, content, imageUrl);
-      noticeRepository.save(notice);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
+//    if (notice.isWriter(managerId)) {
+//      notice.update(title, content, imageUrl);
+//      noticeRepository.save(notice);
+//    } else {
+//      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
+//    }
+    notice.isWriter(managerId);
+    notice.update(title, content, imageUrl);
+    noticeRepository.save(notice);
+
 
   }
 
@@ -130,12 +134,8 @@ public class NoticeServiceImpl implements NoticeService {
     Notice notice = noticeRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (notice.isWriter(managerId)) {
-      noticeRepository.delete(notice);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
-
+    notice.isWriter(managerId);
+    noticeRepository.delete(notice);
   }
 
   /**
