@@ -43,7 +43,8 @@ public class ContactCommentServiceImpl implements ContactCommentService {
                 () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
             );
         /** 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인*/
-        if (!parent.getInquiryId().equals(inquiryId)) {
+        if (!parent.isInquiryId(inquiryId)) {
+          //if (!parent.getInquiryId().equals(inquiryId)) {
           throw new CustomException(ExceptionStatus.WRONG_POST_ID);
         }
         int depth = parent.getDepth();

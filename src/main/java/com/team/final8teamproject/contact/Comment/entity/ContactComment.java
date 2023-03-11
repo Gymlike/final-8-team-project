@@ -78,6 +78,10 @@ public class ContactComment extends Timestamped {
   public void setDepth(int depth) {
     this.depth = depth;
   }
+
+  public boolean isInquiryId(Long inquiryId) {
+    return this.inquiryId.equals(inquiryId);
+  }
 }
 
 
