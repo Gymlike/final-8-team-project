@@ -1,14 +1,12 @@
 package com.team.final8teamproject.contact.entity;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.team.final8teamproject.share.exception.CustomException;
-import com.team.final8teamproject.user.entity.User;
-import com.team.final8teamproject.user.entity.UserRoleEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 class NoticeTest {
 

@@ -156,7 +156,7 @@ class FaqServiceImplTest {
   }
 
   @Test
-  @DisplayName("FAQ 건당조회_id가 없을때 예외")
+  @DisplayName("FAQ 건당조회_해당 유저의 글이 없을때 예외")
   void getSelectedFaq_throw() {
     //given
     when(faqRepository.findById(anyLong()))
@@ -212,13 +212,12 @@ class FaqServiceImplTest {
 
   @Test
   @DisplayName("FAQ 수정_성공")
-  void updateFaq() {
+  void updateFaq_success() {
     //given
-
-    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello", "hello");
+    Faq faq = new Faq(1L, "question", "answer");
+    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("updateQ", "updateA");
     String question = updateFaqRequest.getQuestion();
     String answer = updateFaqRequest.getAnswer();
-    Faq faq = new Faq(1L, question, answer);
 
     faq.update(question, answer);
 
@@ -227,7 +226,9 @@ class FaqServiceImplTest {
 
     //when
     faqServiceImpl.updateFaq(1L, 1L, updateFaqRequest);
-    //verify
+    //then&verify
+    assertThat(faq.getQuestion()).isEqualTo("updateQ");
+    assertThat(faq.getAnswer()).isEqualTo("updateA");
     verify(faqRepository, times(1)).save(any(Faq.class));
   }
 
@@ -241,7 +242,7 @@ class FaqServiceImplTest {
 
     //when&then
     assertThrows(CustomException.class, () -> {
-      faqServiceImpl.getSelectedFaq(1L);
+      faqServiceImpl.updateFaq(1L,1L,new UpdateFaqRequest("question","answer"));
     });
   }
 //  @Test
