@@ -7,10 +7,13 @@ import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceI
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
 import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
+import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -29,6 +32,8 @@ import org.mockito.Mock;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -138,70 +143,212 @@ class InquiryServiceImplTest {
     verify(inquiryRepository).findById(anyLong());
   }
 
-//  @DisplayName("Inquiry 건당조회 & getSecret_true 일때 해당유저만 보기 성공")
-//  void getSelectedInquiry_true_validUser_success () {
-//    User user = new User("username","username1234",UserRoleEnum.MEMBER,"validUser","01022223333","member@naver.com",0L);
-//    Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
-//    when(inquiryRepository.findById(1L))
-//        .thenReturn(Optional.of(inquiry));
-//
-//    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
-//      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
-//          anyLong());
-//    }
-//
-//    InquiryResponse inquiryResponse = new InquiryResponse(inquiry, parentComments);
-//
-//    //when
-//    InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "validUser",
-//        UserRoleEnum.MEMBER);
-//    //then
-//    assertThat(response.getNickName()).isEqualTo(inquiryResponse.getNickName());
-//    assertThat(response.getTitle()).isEqualTo(inquiryResponse.getTitle());
-//    assertThat(response.getContent()).isEqualTo(inquiryResponse.getContent());
-//    assertThat(response.getComments()).isEqualTo(inquiryResponse.getComments());
-//  }
+  @Test
+  @DisplayName("Inquiry 건당조회 & getSecret_true 일때 해당유저만 보기 성공")
+  void getSelectedInquiry_true_validUser_success() {
+    InquiryResponse inquiryResponse = null;
+    User user = new User("username", "username1234", UserRoleEnum.MEMBER, "validUser",
+        "01022223333", "member@naver.com", 0L);
+    Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
+    when(inquiryRepository.findById(1L))
+        .thenReturn(Optional.of(inquiry));
 
-
-    @Test
-    @DisplayName("Inquiry 건당조회 & getSecret_true 일때 관리자일때 보기 성공")
-    void getSelectedInquiry_true_Role_Manager_success () {
-      //      if (inquiry.isNickName(nickName) || role.equals(UserRoleEnum.MANAGER)) {
-      //        List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
-      //            id);
-      //        return new InquiryResponse(inquiry, parentComments);
-      //given
-
-      //when
-      InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "nickname",
-          UserRoleEnum.MEMBER);
-      //then
-
+    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
+      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
+          anyLong());
+      inquiryResponse = new InquiryResponse(inquiry, parentComments);
     }
 
-    @Test
-    @DisplayName("Inquiry 건당조회 & getSecret_true 일때 예외")
-    void getSelectedInquiry_true_throw () {
-//        throw new CustomException(ExceptionStatus.SECRET_POST);
-    }
-    @Test
-    //todo 물어보기 😄😄😄😄😄😄😄😄
-    @DisplayName("Inquiry 건당조회 & getSecret_false 일때 실패_댓글 못가져오는 경우???")
-    void getSelectedInquiry_fail () {
-
-    }
-
-    @Test
-    void searchByKeyword () {
-    }
-    @Test
-    void updateInquiry () {
-    }
-    @Test
-    void deleteInquiry () {
-    }
-
-    @Test
-    void findById () {
-    }
+    //when
+    InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "validUser",
+        UserRoleEnum.MEMBER);
+    //then
+    assertThat(response.getNickName()).isEqualTo(inquiryResponse.getNickName());
+    assertThat(response.getTitle()).isEqualTo(inquiryResponse.getTitle());
+    assertThat(response.getContent()).isEqualTo(inquiryResponse.getContent());
+    assertThat(response.getComments()).isEqualTo(inquiryResponse.getComments());
+    verify(inquiryRepository).findById(anyLong());
   }
+
+  @Test
+  @DisplayName("Inquiry 건당조회 & getSecret_true 일때 해당 유저 아닐때 보기 예외")
+  void getSelectedInquiry_true_invalidUser_throw() {
+    InquiryResponse inquiryResponse = null;
+    User user = new User("username", "username1234", UserRoleEnum.MEMBER, "validUser",
+        "01022223333", "member@naver.com", 0L);
+    Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
+    when(inquiryRepository.findById(1L))
+        .thenReturn(Optional.of(inquiry));
+
+    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
+      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
+          anyLong());
+      inquiryResponse = new InquiryResponse(inquiry, parentComments);
+    }
+    //when&then
+    assertThatThrownBy(() -> inquiryServiceImpl.getSelectedInquiry(1L, "invalidUser",
+        UserRoleEnum.MEMBER)).isInstanceOf(CustomException.class);
+  }
+
+
+  @Test
+  @DisplayName("Inquiry 건당조회 & getSecret_true 일때 관리자일때 보기 성공")
+  void getSelectedInquiry_true_Role_Manager_success() {
+    //given
+    InquiryResponse inquiryResponse = null;
+    User user = new User("manager", "username1234", UserRoleEnum.MANAGER, "manager",
+        "01022223333", "member@naver.com", 0L);
+    Inquiry inquiry = new Inquiry("username", "invalidUser", "title", "content", true);
+    when(inquiryRepository.findById(1L))
+        .thenReturn(Optional.of(inquiry));
+    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
+      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
+          anyLong());
+      inquiryResponse = new InquiryResponse(inquiry, parentComments);
+    }
+
+    //when
+    InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "invalidUser",
+        UserRoleEnum.MEMBER);
+    //then
+    assertThat(response.getNickName()).isEqualTo(inquiryResponse.getNickName());
+    assertThat(response.getTitle()).isEqualTo(inquiryResponse.getTitle());
+    assertThat(response.getContent()).isEqualTo(inquiryResponse.getContent());
+    assertThat(response.getComments()).isEqualTo(inquiryResponse.getComments());
+  }
+
+  @Test
+  @DisplayName("Inquiry 건당조회 & getSecret_true 일때 관리자도 아니고 해당 유저도 아닐때 보기 예외")
+  void getSelectedInquiry_true_invalidUserAndRole_MemBer_throw() {
+    //given
+    InquiryResponse inquiryResponse = null;
+    User user = new User("member1", "username1234", UserRoleEnum.MEMBER, "invalidUser",
+        "01022223333", "member@naver.com", 0L);
+    Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
+    when(inquiryRepository.findById(1L))
+        .thenReturn(Optional.of(inquiry));
+    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
+      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
+          anyLong());
+      inquiryResponse = new InquiryResponse(inquiry, parentComments);
+    }
+
+    //when&then
+    assertThatThrownBy(() ->
+        inquiryServiceImpl.getSelectedInquiry(1L, "invalidUser",
+            UserRoleEnum.MEMBER)).isInstanceOf(CustomException.class);
+  }
+
+
+  @Test
+  @DisplayName("inquiry 수정_성공")
+  void updateInquiry_success() {
+    //given
+    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
+    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
+        "updateContent");
+    String updateTitle = updateInquiryRequest.getTitle();
+    String updateContent = updateInquiryRequest.getContent();
+
+    when(inquiryRepository.findById(anyLong()))
+        .thenReturn(Optional.of(inquiry));
+    //when
+    inquiryServiceImpl.updateInquiry(anyLong(), "username", updateInquiryRequest);
+
+    //then
+    assertThat(inquiry.getTitle()).isEqualTo(updateTitle);
+    assertThat(inquiry.getContent()).isEqualTo(updateContent);
+    verify(inquiryRepository, times(1)).save(any(Inquiry.class));
+  }
+
+  @Test
+  @DisplayName("inquiry 수정_해당유저의 글이 존재 하지 않을때 예외")
+  void updateInquiry_BOARD_NOT_EXIST_throw() {
+    //given
+    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
+    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
+        "updateContent");
+    String updateTitle = updateInquiryRequest.getTitle();
+    String updateContent = updateInquiryRequest.getContent();
+    inquiry.update(updateTitle, updateContent);
+    when(inquiryRepository.findById(anyLong()))
+        .thenReturn(Optional.of(inquiry));
+    //when&then
+    assertThatThrownBy(() ->
+        inquiryServiceImpl.updateInquiry(anyLong(), "invalid", updateInquiryRequest)).isInstanceOf(
+        CustomException.class);
+  }
+
+  @Test
+  @DisplayName("inquiry 수정_해당 유저가 아닐때 예외")
+  void updateInquiry_invalidUser_throw() {
+    //given
+    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
+    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
+        "updateContent");
+    String updateTitle = updateInquiryRequest.getTitle();
+    String updateContent = updateInquiryRequest.getContent();
+
+    when(inquiryRepository.findById(anyLong()))
+        .thenReturn(Optional.of(inquiry));
+
+    //when&then
+    assertThatThrownBy(() ->
+        inquiryServiceImpl.updateInquiry(anyLong(), "invalid", updateInquiryRequest)).isInstanceOf(
+        CustomException.class);
+  }
+
+  @Test
+  @DisplayName("Inquiry 삭제_해당 유저 일때 성공")
+  void deleteInquiry_validUser_success() {
+    //given
+    User user = new User("member", "username1234", UserRoleEnum.MEMBER, "invalidUser",
+        "01022223333", "member@naver.com", 0L);
+    Inquiry inquiry = new Inquiry(user.getUsername(), user.getNickName(), "title", "content",
+        false);
+
+    when(inquiryRepository.findById(anyLong())).thenReturn(Optional.of(inquiry));
+    //when
+    inquiryServiceImpl.deleteInquiry(anyLong(), "member", UserRoleEnum.MEMBER);
+    //then
+    verify(inquiryRepository, times(1)).delete(any(Inquiry.class));
+  }
+
+  @Test
+  @DisplayName("Inquiry 삭제_관리자 일때 성공")
+  void deleteInquiry_Role_Manager_success() {
+    //given
+    User user = new User("manager", "username1234", UserRoleEnum.MANAGER, "invalidUser",
+        "01022223333", "member@naver.com", 0L);
+    Inquiry inquiry = new Inquiry("member", "member", "title", "content",
+        false);
+
+    when(inquiryRepository.findById(anyLong())).thenReturn(Optional.of(inquiry));
+    //when
+    inquiryServiceImpl.deleteInquiry(anyLong(), "manager", UserRoleEnum.MANAGER);
+    //then
+    verify(inquiryRepository, times(1)).delete(any(Inquiry.class));
+  }
+
+  @Test
+  @DisplayName("Inquiry 삭제_해당유저가도 아니고 매니저도 아닐때 예외")
+  void deleteInquiry_invalidUserAndRoleMEMBER_throw() {
+
+    User user = new User("member", "username1234", UserRoleEnum.MEMBER, "invalidUser",
+        "01022223333", "member@naver.com", 0L);
+    Inquiry inquiry = new Inquiry(user.getUsername(), user.getNickName(), "title", "content",
+        false);
+
+    when(inquiryRepository.findById(anyLong())).thenReturn(Optional.of(inquiry));
+
+    //when&then
+    assertThatThrownBy(() ->
+        inquiryServiceImpl.deleteInquiry(anyLong(), "invalidUser",
+            UserRoleEnum.MEMBER)).isInstanceOf(CustomException.class);
+  }
+
+
+  @Test
+  void searchByKeyword() {
+  }
+}

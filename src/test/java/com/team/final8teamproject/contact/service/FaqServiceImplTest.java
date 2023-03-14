@@ -3,6 +3,7 @@ package com.team.final8teamproject.contact.service;
 //AssertJ
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -17,6 +18,7 @@ import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
+import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -34,6 +36,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 
 
@@ -123,19 +126,18 @@ class FaqServiceImplTest {
   @DisplayName("FAQ 전체조회_글이 없을때 예외발생")
   void getFaqList_throw() {
     //given
-    int page =1 ;
-    int size =10;
+    int page = 1;
+    int size = 10;
     Direction direction = Direction.DESC;
     String properties = "createdDate";
 
-    lenient().when(faqRepository.findAll(PageRequest.of(page-1,size,direction,properties)))
+    lenient().when(faqRepository.findAll(PageRequest.of(page - 1, size, direction, properties)))
         .thenReturn(Page.empty());
     //when&then
-    assertThrows(CustomException.class,()->{
-      faqServiceImpl.getFaqList(page,size,direction,properties);
-        });
+    assertThrows(CustomException.class, () -> {
+      faqServiceImpl.getFaqList(page, size, direction, properties);
+    });
   }
-
 
 
   @Test
@@ -167,10 +169,10 @@ class FaqServiceImplTest {
     });
   }
 
-  // todo
+  // todo 검색 조회 해야 함
 //  @Test
 //  @DisplayName("FAQ 검색조회_성공")
-//  void searchByKeyword() throws IllegalAccessException, InstantiationException {
+//  void searchByKeyword()  {
 //    //given
 //    String keyword = "keyword";
 //    int page =1 ;
@@ -179,9 +181,9 @@ class FaqServiceImplTest {
 //    String properties = "createdDate";
 //    Faq faq = new Faq(1L,"question","answer");
 //    when(faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer",PageRequest.of(page - 1, size, direction, properties)))
-//        .thenReturn((Page<Faq>)faq);
+//        .thenReturn(Optional.of(any(Page.class));
 //
-//    //when
+//
 //    Result response = faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
 //
 //    //then
@@ -197,7 +199,7 @@ class FaqServiceImplTest {
 //    int size =10;
 //    Direction direction = Direction.DESC;
 //    String properties = "createdDate";
-//    Faq faq = new Faq(1L,"question","answer");
+//    Faq faq = new Faq(1L,"keyword","answer");
 //   // Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer", PageRequest.of(page - 1, size, direction, properties));
 //    when(faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer",PageRequest.of(page - 1, size, direction, properties)))
 //        .thenReturn(any(Page.class));
@@ -242,49 +244,51 @@ class FaqServiceImplTest {
 
     //when&then
     assertThrows(CustomException.class, () -> {
-      faqServiceImpl.updateFaq(1L,1L,new UpdateFaqRequest("question","answer"));
+      faqServiceImpl.updateFaq(1L, 1L, new UpdateFaqRequest("question", "answer"));
     });
   }
-//  @Test
-//  @DisplayName("FAQ 수정_다른사람이 작성하려고 할때 에러 ")
-//  void updateFaq_invalid_user() {
-//    //given
-//    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello","hello");
-//    String question = updateFaqRequest.getQuestion();
-//    String answer = updateFaqRequest.getAnswer();
-//
-//    Faq faq = new Faq(1L,question,answer);
-//
-//    when(faqRepository.findById(1L))
-//        .thenReturn(Optional.of(faq));
-//
-//    //when&then
-//    assertThrows(CustomException.class,()->{
-//        faqServiceImpl.updateFaq(1L,2L,updateFaqRequest);
-//    });
-//  }
+
+  @Test
+  @DisplayName("FAQ 수정_다른사람이 작성하려고 할때 에러 ")
+  void updateFaq_invalid_user() {
+    //given
+    UpdateFaqRequest updateFaqRequest = new UpdateFaqRequest("hello", "hello");
+    String question = updateFaqRequest.getQuestion();
+    String answer = updateFaqRequest.getAnswer();
+
+    Faq faq = new Faq(1L, question, answer);
+
+    when(faqRepository.findById(1L))
+        .thenReturn(Optional.of(faq));
+
+    //when&then
+    assertThatThrownBy(() ->
+        faqServiceImpl.updateFaq(1L, 2L, updateFaqRequest)).isInstanceOf(CustomException.class);
+
+  }
 
   @Test
   @DisplayName("FAQ 삭제_성공")
   void deleteFaq() {
     //given
-    Faq faq = new Faq(1L,"ee","ee");
+    Faq faq = new Faq(1L, "ee", "ee");
     when(faqRepository.findById(faq.getId())).thenReturn(Optional.of(faq));
     //when
-    faqServiceImpl.deleteFaq(faq.getId(),1L);
+    faqServiceImpl.deleteFaq(faq.getId(), 1L);
     //then
-    verify(faqRepository,times(1)).delete(any(Faq.class));
+    verify(faqRepository, times(1)).delete(any(Faq.class));
   }
+
   @Test
   @DisplayName("FAQ 삭제_해당 게시글이 존재하지 않을때_예외")
   void deleteFaq_throw() {
-  //given
-  when(faqRepository.findById(1L))
-      .thenReturn(Optional.empty());
-  //when&then
-  assertThrows(CustomException.class,()->{
-    faqServiceImpl.deleteFaq(1L,anyLong());
-  });
+    //given
+    when(faqRepository.findById(1L))
+        .thenReturn(Optional.empty());
+    //when&then
+    assertThrows(CustomException.class, () -> {
+      faqServiceImpl.deleteFaq(1L, anyLong());
+    });
   }
 
 }

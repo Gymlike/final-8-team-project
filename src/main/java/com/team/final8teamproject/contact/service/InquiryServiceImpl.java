@@ -153,11 +153,7 @@ public class InquiryServiceImpl implements InquiryService {
     Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (inquiry.isWriter(username)) {
-      inquiryRepository.delete(inquiry);
-      // 문의글 해당 댓글 삭제
-      contactCommentService.deleteAllByInquiryId(id);
-    } else if (role.equals(UserRoleEnum.MANAGER)) {
+    if(inquiry.isWriter(username)||role.equals(UserRoleEnum.MANAGER)) {
       inquiryRepository.delete(inquiry);
       // 문의글 해당 댓글 삭제
       contactCommentService.deleteAllByInquiryId(id);

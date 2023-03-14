@@ -32,7 +32,6 @@ public class InquiryResponse {
     this.nickName = inquiry.getNickName();
     this.createdDate = inquiry.getCreatedDate();
     this.secret = inquiry.getSecret();
-
     this.comments = comments.stream().map(ContactCommentResponse::new)
         .sorted(Comparator.comparing(ContactCommentResponse::getCreatedDate))
         .collect(Collectors.toList());

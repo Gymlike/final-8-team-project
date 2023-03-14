@@ -157,7 +157,9 @@ class NoticeServiceImplTest {
     String title = updateNoticeRequest.getTitle();
     String content = updateNoticeRequest.getContent();
     String imageUrl = "imageUrl";
+
     notice.update(title, content, imageUrl);
+
     when(noticeRepository.findById(1L))
         .thenReturn(Optional.of(notice));
     //when
