@@ -22,6 +22,8 @@ public enum ExceptionStatus {
     WRONG_ADMINTOKEN(400, "잘못된 관리자 비밀번호 입니다."),
     ACCESS_DENINED(500, "접근 권한이 없습니다."),
     AUTHENTICATION(500, "인증 실패"),
+    AUTH_EXPIRED(501, "인증 만료"),
+
     BOARD_NOT_EXIST(404, "게시물이 삭제되어 존재하지 않습니다."),
     COMMENT_NOT_EXIST(404, "해당 댓글이 삭제되어 존재 하지 않습니다."),
     COMMENT_REPLY_NOT_EXIST(404, "해당하는 댓글이 삭제되어 존재 하지 않습니다."),
