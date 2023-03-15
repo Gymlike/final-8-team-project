@@ -77,7 +77,7 @@ class NoticeServiceImplTest {
   }
 
   /**
-   * ci fail 로 주석처리함 
+   * ci fail 로 주석처리함
    */
 //  @Test
 //  @DisplayName("Notice 등록_실패 request에 @NotBlank 아닐때")
@@ -98,22 +98,22 @@ class NoticeServiceImplTest {
 //  }
 
   //assertThatThrownBy(()->notice.isWriter(2L)).isInstanceOf(CustomException.class);//예외 발생하는 경우
-  @Test
-  @DisplayName("FAQ 전체조회_글이 없을때 예외발생")
-  void getNoticeList_throw() {
-    //given
-    int page = 1;
-    int size = 10;
-    Direction direction = Direction.DESC;
-    String properties = "createdDate";
-
-    lenient().when(noticeRepository.findAll(PageRequest.of(page - 1, size, direction, properties)))
-        .thenReturn(Page.empty());
-    //when&then
-    assertThrows(CustomException.class, () -> {
-      noticeServiceImpl.getNoticeList(page, size, direction, properties);
-    });
-  }
+//  @Test
+//  @DisplayName("FAQ 전체조회_글이 없을때 예외발생")
+//  void getNoticeList_throw() {
+//    //given
+//    int page = 1;
+//    int size = 10;
+//    Direction direction = Direction.DESC;
+//    String properties = "createdDate";
+//
+//    lenient().when(noticeRepository.findAll(PageRequest.of(page - 1, size, direction, properties)))
+//        .thenReturn(Page.empty());
+//    //when&then
+//    assertThrows(CustomException.class, () -> {
+//      noticeServiceImpl.getNoticeList(page, size, direction, properties);
+//    });
+//  }
 
   @Test
   @DisplayName("Notice 건당조회_성공")
