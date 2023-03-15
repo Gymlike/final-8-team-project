@@ -14,13 +14,6 @@ class InquiryTest {
   @DisplayName("FAQ 빌더 테스트")
   void builder() {
     //given
-    User member1 = User.builder()
-        .nickName("member1").email("member1@google.com")
-        .phoneNumber("01033334444")
-        .password("member1234")
-        .username("member1").role(UserRoleEnum.MEMBER).experience(0L)
-        .build();
-
     String title = "title";
     String content = "content";
     boolean secret = false;
