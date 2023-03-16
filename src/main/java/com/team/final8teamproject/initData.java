@@ -35,23 +35,24 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class initData implements ApplicationRunner {
 
-//  private final PasswordEncoder passwordEncoder;
-//  private final UserRepository userRepository;
-//  private final OwnerRepository ownerRepository;
-//  private final InquiryRepository inquiryRepository;
-//  private final FaqRepository faqRepository;
-//  //    private final ContactCommentRepository contactCommentRepository;
-//  private final NoticeRepository noticeRepository;
-//
-//  private final T_exerciseRepository tExerciseRepository;
-//
-//  private final T_exerciseLikeRepository tExerciseLikeRepository;
 
-//  private final ContactCommentRepository contactCommentRepository;
-//  private final GymBoardRepository gymBoardRepository;
-//  private final GymReviewRepository gymReviewRepository;
-//  private final ManagerRepository managerRepository;
-//
+  private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
+  private final OwnerRepository ownerRepository;
+  private final InquiryRepository inquiryRepository;
+  private final FaqRepository faqRepository;
+  //    private final ContactCommentRepository contactCommentRepository;
+  private final NoticeRepository noticeRepository;
+
+  private final T_exerciseRepository tExerciseRepository;
+
+  private final T_exerciseLikeRepository tExerciseLikeRepository;
+
+  private final ContactCommentRepository contactCommentRepository;
+  private final GymBoardRepository gymBoardRepository;
+  private final GymReviewRepository gymReviewRepository;
+  private final ManagerRepository managerRepository;
+
   @Override
   @Transactional
   public void run(ApplicationArguments args) throws Exception {
