@@ -9,12 +9,14 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+
 public class EmailServiceImpl implements EmailService{
 
     private final BaseRepository baseRepository;
@@ -81,6 +83,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
+    @Async
     public void sendSimpleMessage(String to) throws CustomException, Exception {
         // TODO Auto-generated method stub
         MimeMessage message = createMessage(to);
