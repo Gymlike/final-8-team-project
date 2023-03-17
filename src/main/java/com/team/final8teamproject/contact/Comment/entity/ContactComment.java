@@ -19,10 +19,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**inquiry , user 연관관계  x  없이 구현
- *todo  세터 사용 하지않고 , 부보댓글 아이디 저장하는 방법
  */
 
-@Setter
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -69,6 +68,18 @@ public class ContactComment extends Timestamped {
 
   public boolean isWriter(String username) {
     return this.username.equals(username);
+  }
+
+  public void setParent(ContactComment parent) {
+    this.parent = parent;
+  }
+
+  public void setDepth(int depth) {
+    this.depth = depth;
+  }
+
+  public boolean isInquiryId(Long inquiryId) {
+    return this.inquiryId.equals(inquiryId);
   }
 }
 
