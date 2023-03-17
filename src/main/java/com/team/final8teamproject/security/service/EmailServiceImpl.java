@@ -89,7 +89,8 @@ public class EmailServiceImpl implements EmailService {
     @Async
     public void sendSimpleMessage(String to) throws CustomException, Exception {
         // TODO Auto-generated method stub
-        MimeMessage message = createMessage(to);
+        String ePw = createKey();
+        MimeMessage message = createMessage(to,ePw);
         try {//예외처리
 
             emailSender.send(message);
