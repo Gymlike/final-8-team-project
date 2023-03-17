@@ -90,6 +90,8 @@ public class EmailServiceImpl implements EmailService {
     public void sendSimpleMessage(String to) throws CustomException, Exception {
         // TODO Auto-generated method stub
         String ePw = createKey();
+        authCodes.put(to, ePw); // 이메일과 인증 코드를 Map에 저장
+        authCodeExpirationTimes.put(to, LocalDateTime.now().plusMinutes(2)); // 2분 뒤에 만료되도록 현재 시간 + 2분을 저장
         MimeMessage message = createMessage(to,ePw);
         try {//예외처리
 
