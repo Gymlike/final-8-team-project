@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class initData implements ApplicationRunner {
 
+
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final OwnerRepository ownerRepository;
@@ -55,7 +56,7 @@ public class initData implements ApplicationRunner {
   @Override
   @Transactional
   public void run(ApplicationArguments args) throws Exception {
-//
+
 //    Manager manager = Manager.builder()
 //            .nickName("manager").email("manager@nvaer.com")
 //            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
