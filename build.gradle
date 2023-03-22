@@ -61,6 +61,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
+
     // MySql
     implementation 'mysql:mysql-connector-java'
     //사업자정보조회
@@ -70,7 +71,10 @@ dependencies {
     //이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    //사업자번호 인증
+
+    //websocket사용을 위한 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     implementation 'org.json:json:20200518'
 
     //websocket사용을 위한 의존성
