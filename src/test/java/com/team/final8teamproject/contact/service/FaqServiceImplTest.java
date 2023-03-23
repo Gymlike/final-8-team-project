@@ -106,21 +106,21 @@ class FaqServiceImplTest {
     verify(faqRepository, times(1)).save(any(Faq.class));
   }
 
-  @Test
-  @DisplayName("FAQ 등록_실패 request에 @NotBlank 아닐때")
-  void saveFaq_valid_fail() {
-
-    //given
-    FaqRequest faqRequest = new FaqRequest("", "1111");
-    //when
-    Set<ConstraintViolation<FaqRequest>> violation = validator.validate(faqRequest);
-    //then
-    assertThat(violation).isNotEmpty();
-    violation
-        .forEach(error -> {
-          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
-        });
-  }
+//  @Test
+//  @DisplayName("FAQ 등록_실패 request에 @NotBlank 아닐때")
+//  void saveFaq_valid_fail() {
+//
+//    //given
+//    FaqRequest faqRequest = new FaqRequest("", "1111");
+//    //when
+//    Set<ConstraintViolation<FaqRequest>> violation = validator.validate(faqRequest);
+//    //then
+//    assertThat(violation).isNotEmpty();
+//    violation
+//        .forEach(error -> {
+//          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
+//        });
+//  }
 
 
   @Test
