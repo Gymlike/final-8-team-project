@@ -36,7 +36,6 @@ jobs:
 
     - name: make application.yml
       run: |
-          mkdir ./src/main/resources
           touch ./src/main/resources/application.yml
           echo "${{ secrets.APPLICATION }}" | base64 --decode > ./src/main/resources/application.yml
       shell: bash
