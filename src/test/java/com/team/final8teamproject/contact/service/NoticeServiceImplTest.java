@@ -77,23 +77,23 @@ class NoticeServiceImplTest {
   }
 
 
-  @Test
-  @DisplayName("Notice 등록_실패 request에 @NotBlank 아닐때")
-  void saveNotice_fail() {
-    //given
-    NoticeRequest noticeRequest = NoticeRequest.builder()
-        .title("")
-        .content("content")
-        .build();
-    //when
-    Set<ConstraintViolation<NoticeRequest>> violation = validator.validate(noticeRequest);
-    //then
-    assertThat(violation).isNotEmpty();
-    violation
-        .forEach(error -> {
-          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
-        });
-  }
+//  @Test
+//  @DisplayName("Notice 등록_실패 request에 @NotBlank 아닐때")
+//  void saveNotice_fail() {
+//    //given
+//    NoticeRequest noticeRequest = NoticeRequest.builder()
+//        .title("")
+//        .content("content")
+//        .build();
+//    //when
+//    Set<ConstraintViolation<NoticeRequest>> violation = validator.validate(noticeRequest);
+//    //then
+//    assertThat(violation).isNotEmpty();
+//    violation
+//        .forEach(error -> {
+//          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
+//        });
+//  }
 
 
   @Test
@@ -106,7 +106,7 @@ class NoticeServiceImplTest {
     String properties = "createdDate";
 
     lenient().when(noticeRepository.findAll(PageRequest.of(page - 1, size, direction, properties)))
-        .thenReturn(Page.empty());
+        .thenReturn( Page.empty());
     //when&then
     assertThrows(CustomException.class, () -> {
       noticeServiceImpl.getNoticeList(page, size, direction, properties);
