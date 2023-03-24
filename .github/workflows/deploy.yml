@@ -37,7 +37,7 @@ jobs:
     - name: make application.yml
       run: |
           touch ./src/main/resources/application.yml
-          echo "${{ secrets.APPLICATION }}" | base64 --decode > ./src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
       shell: bash
       
     # (3) Gradle build (Test 제외)
