@@ -48,22 +48,23 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
     @Override
     public LoginResponseDto login(ManagerLoginRequestDto requestDto){
 
-        String username = requestDto.getUsername();
-        String password = requestDto.getPassword();
-
-        GeneralManager manager = generalManagerRepository.findByUsername(username).orElseThrow(
-                () -> new SecurityException("사용자를 찾을수 없습니다.")
-        );
-        if (!passwordEncoder.matches(password, manager.getPassword())) {
-            throw new SecurityException("사용자를 찾을수 없습니다.");
-        }
-        LoginResponseDto loginResponseDto =jwtUtil.createManagerToken(manager.getUsername(), manager.getRole());
-
-        if(redisUtil.hasKey("RT:" +manager.getUsername())){
-            throw new SecurityException("이미 접속중인 사용자 입니다.");
-        }
-//        redisUtil.setRefreshToken("RT:" +manager.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
-        return loginResponseDto;
+//        String username = requestDto.getUsername();
+//        String password = requestDto.getPassword();
+//
+//        GeneralManager manager = generalManagerRepository.findByUsername(username).orElseThrow(
+//                () -> new SecurityException("사용자를 찾을수 없습니다.")
+//        );
+//        if (!passwordEncoder.matches(password, manager.getPassword())) {
+//            throw new SecurityException("사용자를 찾을수 없습니다.");
+//        }
+//        LoginResponseDto loginResponseDto =jwtUtil.createManagerToken(manager.getUsername(), manager.getRole());
+//
+//        if(redisUtil.hasKey("RT:" +manager.getUsername())){
+//            throw new SecurityException("이미 접속중인 사용자 입니다.");
+//        }
+////        redisUtil.setRefreshToken("RT:" +manager.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+//        return loginResponseDto;
+        return null;
     }
     //관리자 조회
     public List<WaitMangerResponseDto> waitManagerList(Pageable pageable) {

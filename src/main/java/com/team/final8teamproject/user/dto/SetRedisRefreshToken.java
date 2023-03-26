@@ -25,16 +25,13 @@ public class SetRedisRefreshToken{
     private Long id;
 
     private String refreshToken;
-    private String username;
     private UserRoleEnum role;
 
     //역직렬화 해주기
     @JsonCreator
     public SetRedisRefreshToken(@JsonProperty("refreshToken") String refreshToken,
-                                @JsonProperty("username")  String username,
                                 @JsonProperty("role") UserRoleEnum role){
         this.refreshToken = refreshToken;
-        this.username = username;
         this.role = role;
     }
 }

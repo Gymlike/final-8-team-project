@@ -3,9 +3,11 @@ package com.team.final8teamproject.board.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor(force = true)
-public class CreatBordRequestDTO {
+public class CreatBordRequestDTO implements Serializable {
 
 
     private final String title;

@@ -1,11 +1,12 @@
 package com.team.final8teamproject.user.service;
 
-import com.amazonaws.thirdparty.jackson.databind.ObjectMapper;
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
+import com.team.final8teamproject.security.cache.CacheNames;
 import com.team.final8teamproject.security.redis.RedisUtil;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.controller.UserController;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
@@ -16,6 +17,9 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,6 +36,7 @@ import java.util.*;
 
 import static com.team.final8teamproject.share.exception.ExceptionStatus.*;
 
+import org.slf4j.Logger;
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,8 +49,10 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final Logger loggers = LoggerFactory.getLogger(UserService.class);
+    private final RedisTemplate<String, String> redisTemplate;
     //1. 회원가입
+    @CacheEvict(cacheNames = CacheNames.ALLUSERS, key = "'SimpleKey []'")
     @Transactional
     public MessageResponseDto signUp(@Valid SignupRequestDto signupRequestDto) {
 
@@ -88,22 +95,18 @@ public class UserService {
 
     //2. 로그인
     @Transactional
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+    public UserResponseDto login(LoginRequestDto loginRequestDto) {
 
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
         BaseEntity user = baseRepository.findByUsername(username).orElseThrow(
                 () -> new CustomException(ExceptionStatus.WRONG_USERNAME)
-
         );
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
-        LoginResponseDto loginResponseDto = jwtUtil.createUserToken(user.getUsername(), user.getRole());
-        SetRedisRefreshToken refreshToken = new SetRedisRefreshToken(loginResponseDto.getRefreshToken(), user.getUsername(), user.getRole());
-        redisUtil.setRefreshToken(loginResponseDto.getAccessToken(), refreshToken, loginResponseDto.getRefreshTokenExpirationTime());
-        return loginResponseDto;
+        return UserResponseDto.of(user);
     }
 
 
@@ -192,7 +195,7 @@ public class UserService {
 
     /**
      *
-     * @param requestDto 만료되어 받아오는 access토큰
+     * @param base 만료되어 받아오는 access토큰
      * @return
      * 서버 DB조회없이 redis에서 조회해온 데이터를 이용하여 처리
      * 여기서 문제 하루동안 접속을 안하거나
@@ -202,30 +205,40 @@ public class UserService {
      */
     @Transactional
     public ResponseEntity<String> regenerateToken(
-            RegenerateTokenRequestDto requestDto){
+            BaseEntity base){
         try{
-            if(!redisUtil.hasKey(requestDto.getAccessToken())){
+            String username = base.getUsername();
+            if(!redisUtil.hasKey(username)){
                 throw new CustomException(NOT_FOUNT_TOKEN);
             }
-            Object redisToken = redisUtil.getRefreshToken(requestDto.getAccessToken());
-            if(redisToken instanceof SetRedisRefreshToken){
-                long REFRESH_TOKEN_EXPIRE_TIME = 24 * 60 * 60 * 1000L; //1일
-                SetRedisRefreshToken refreshToken = (SetRedisRefreshToken)redisToken;
-                String reToken = jwtUtil.reCreateUserToken(refreshToken.getUsername(),
-                        refreshToken.getRole());
-                RegenerateTokenResponseDto tokenResponseDto
-                        = new RegenerateTokenResponseDto(reToken);
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.add(JwtUtil.AUTHORIZATION_HEADER,tokenResponseDto.getAccessToken());
-                redisUtil.setRefreshToken(reToken, refreshToken,REFRESH_TOKEN_EXPIRE_TIME);
-                redisUtil.setBlackList(requestDto.getAccessToken(), null,REFRESH_TOKEN_EXPIRE_TIME);
-                return new ResponseEntity<>("생성성공", httpHeaders, HttpStatus.OK);
-            }
-            throw new CustomException(NOT_FOUNT_TOKEN);
+            String redisToken = redisUtil.getRefreshToken(username);
+            long REFRESH_TOKEN_EXPIRE_TIME = 24 * 60 * 60 * 1000L; //1일
+            String reAccessToken = jwtUtil.reCreateAccessToken(username,
+                    base.getRole());
+            String reFreshToken = jwtUtil.reCreateRefreshTokenToken(username);
+            SetRedisRefreshToken redisRefreshToken =
+                    new SetRedisRefreshToken(reFreshToken, base.getRole());
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(JwtUtil.AUTHORIZATION_HEADER, reAccessToken);
+            redisUtil.setRefreshToken(username, reFreshToken, REFRESH_TOKEN_EXPIRE_TIME);
+            return new ResponseEntity<>("생성성공", httpHeaders, HttpStatus.OK);
+//            if(redisToken instanceof  SetRedisRefreshToken instanceofRefreshToken) {
+//                long REFRESH_TOKEN_EXPIRE_TIME = 24 * 60 * 60 * 1000L; //1일
+//                String reAccessToken = jwtUtil.reCreateAccessToken(username,
+//                        instanceofRefreshToken.getRole());
+//                String reFreshToken = jwtUtil.reCreateRefreshTokenToken(username);
+//                SetRedisRefreshToken redisRefreshToken =
+//                        new SetRedisRefreshToken(reFreshToken, instanceofRefreshToken.getRole());
+//                RegenerateTokenResponseDto tokenResponseDto
+//                        = new RegenerateTokenResponseDto(reAccessToken);
+//                HttpHeaders httpHeaders = new HttpHeaders();
+//                httpHeaders.add(JwtUtil.AUTHORIZATION_HEADER, tokenResponseDto.getAccessToken());
+//                redisUtil.setRefreshToken(username, reFreshToken, REFRESH_TOKEN_EXPIRE_TIME);
+//                return new ResponseEntity<>("생성성공", httpHeaders, HttpStatus.OK);
+//            }
         }catch (AuthenticationException e) {
             throw new CustomException(NOT_FOUNT_TOKEN);
         }
-
     }
     public String getUserNickname(BaseEntity base) {
         String username = base.getUsername();

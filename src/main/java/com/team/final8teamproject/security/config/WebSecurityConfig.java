@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
+@EnableMethodSecurity // 위 어노테이션은 Deprecated
 //@EnableGlobalMethodSecurity(prePostEnabled = true) // @Secured 어노테이션 활성화
 @EnableScheduling // @Scheduled 어노테이션 활성화
 public class WebSecurityConfig implements WebMvcConfigurer {
@@ -46,6 +48,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public WebSecurityCustomizer webSecurityCustomizer() {
         // h2-console 사용 및 resources 접근 허용 설정
         return (web) -> web.ignoring()
+                .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
@@ -117,7 +120,18 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     registry.addMapping("/**")
         .allowedOrigins("*")
         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
+        .allowedOriginPatterns("*")
         .exposedHeaders("Authorization");
   }
 
+  
+  /*
+  만약 swagger로 web에서 API를 관리하고 싶을때 추가
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/swagger-ui/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/swagger-ui/2.6.1/");
+
+    }
+   */
 }

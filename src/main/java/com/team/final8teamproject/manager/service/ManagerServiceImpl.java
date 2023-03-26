@@ -80,7 +80,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     //2. 로그인
     @Transactional
-    public LoginResponseDto login(LoginRequestDto requestDto) {
+    public TokenResponseDto login(LoginRequestDto requestDto) {
 
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
@@ -91,7 +91,7 @@ public class ManagerServiceImpl implements ManagerService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
-        LoginResponseDto loginResponseDto = jwtUtil.createUserToken(user.getUsername(), user.getRole());
+        TokenResponseDto loginResponseDto = jwtUtil.createUserToken(user.getUsername(), user.getRole());
 
 //        if(redisUtil.hasKey("RT:" +user.getUsername())){
 //            throw new SecurityException("이미 접속중인 사용자 입니다.");

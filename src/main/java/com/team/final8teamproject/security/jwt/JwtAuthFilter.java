@@ -41,7 +41,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 response.sendError(401, "만료되었습니다.");
                 jwtExceptionHandler(response, "401", HttpStatus.BAD_REQUEST.value());
                 return;
-
             }
             AuthenticatedUserByToken(token);
         }

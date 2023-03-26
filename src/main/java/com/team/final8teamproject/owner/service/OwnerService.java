@@ -77,7 +77,7 @@ public class OwnerService {
 
     //2.로그인
     @Transactional
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+    public TokenResponseDto login(LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
@@ -87,9 +87,10 @@ public class OwnerService {
         if (!passwordEncoder.matches(password, base.getPassword())){
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
-        LoginResponseDto loginResponseDto =jwtUtil.createUserToken(base.getUsername(), base.getRole());
-        SetRedisRefreshToken refreshToken = new SetRedisRefreshToken(loginResponseDto.getRefreshToken(), base.getUsername(), base.getRole());
-        redisUtil.setRefreshToken(loginResponseDto.getAccessToken(), refreshToken, loginResponseDto.getRefreshTokenExpirationTime());
+        TokenResponseDto loginResponseDto =jwtUtil.createUserToken(base.getUsername(), base.getRole());
+//        SetRedisRefreshToken refreshToken = new SetRedisRefreshToken(loginResponseDto.getRefreshToken(), base.getRole());
+//        redisUtil.setRefreshToken(base.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+
         return loginResponseDto;
 //        redisUtil.setRefreshToken(base.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
 

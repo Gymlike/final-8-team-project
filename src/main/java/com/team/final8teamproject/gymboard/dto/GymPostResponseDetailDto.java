@@ -5,10 +5,11 @@ import com.team.final8teamproject.gymboard.entity.GymBoard;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardReviewResponseDto;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 @Getter
-public class GymPostResponseDetailDto {
+public class GymPostResponseDetailDto implements Serializable {
     private final Long id;
     private final String title;
     private final String username;
