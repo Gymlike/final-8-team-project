@@ -8,6 +8,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender emailSender;
@@ -84,13 +86,15 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendSimpleMessage(String to) throws Exception {
+    @Async
+    public void sendSimpleMessage(String to) throws CustomException, Exception {
+        // TODO Auto-generated method stub
         String ePw = createKey();
         authCodes.put(to, ePw); // 이메일과 인증 코드를 Map에 저장
         authCodeExpirationTimes.put(to, LocalDateTime.now().plusMinutes(2)); // 2분 뒤에 만료되도록 현재 시간 + 2분을 저장
+        MimeMessage message = createMessage(to,ePw);
+        try {//예외처리
 
-        MimeMessage message = createMessage(to, ePw);
-        try {
             emailSender.send(message);
         } catch (MailException es) {
             es.printStackTrace();

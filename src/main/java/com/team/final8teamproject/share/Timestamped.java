@@ -23,6 +23,7 @@ public class Timestamped {
 
 
     private String createdDateString;
+
     @LastModifiedDate//마지막 변경시점
     private LocalDateTime modifiedDate;
 

@@ -90,5 +90,6 @@ public class PresignedUrlService {
 //        return  amazonS3.getUrl(bucket,editPath+useOnlyOneFileName).toString();
         return "https://"+bucket+".s3."+location+".amazonaws.com/"+path+"/"+useOnlyOneFileName;
     }
+
 }
 
