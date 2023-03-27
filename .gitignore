@@ -17,7 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 ## S3 ##
-*.yml
+application.yml
 
 ### IntelliJ IDEA ###
 .idea
