@@ -27,7 +27,6 @@ public class FaqServiceImpl implements FaqService {
   private final FaqRepository faqRepository;
 
   @Override
-  @Transactional
   public void saveFaq(@Valid FaqRequest faqRequest, Long managerId) {
     Faq faq = faqRequest.toEntity(managerId);
     faqRepository.save(faq);
@@ -35,7 +34,6 @@ public class FaqServiceImpl implements FaqService {
 
   //FAQ 전체 조회 (보기)
   @Override
-  @Transactional(readOnly = true)
   public Result getFaqList(int page, int size, Direction direction, String properties) {
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
@@ -60,7 +58,6 @@ public class FaqServiceImpl implements FaqService {
 
   //FAQ 해당 글 조회 (보기,가져오기)
   @Override
-  @Transactional(readOnly = true)
   public FaqResponse getSelectedFaq(Long id) {
     Faq faq = faqRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
@@ -69,7 +66,6 @@ public class FaqServiceImpl implements FaqService {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
     String question = keyword;
@@ -94,7 +90,7 @@ public class FaqServiceImpl implements FaqService {
     return new Result(page, totalCount, countPage, totalPage, faqResponses);
   }
 
-  @Transactional
+
   @Override
   public void updateFaq(Long id, Long managerId, UpdateFaqRequest updateFaqRequest) {
     String question = updateFaqRequest.getQuestion();
@@ -103,25 +99,19 @@ public class FaqServiceImpl implements FaqService {
     Faq faq = faqRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (faq.getManagerId().equals(managerId)) {
-      faq.update(question, answer);
-      faqRepository.save(faq);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
+    faq.isWriter(managerId);
+    faq.update(question, answer);
+    faqRepository.save(faq);
+
   }
 
   @Override
-  @Transactional
   public void deleteFaq(Long id, Long managerId) {
     Faq faq = faqRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (faq.getManagerId().equals(managerId)) {
-      faqRepository.delete(faq);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
+    faq.isWriter(managerId);
+    faqRepository.delete(faq);
   }
 
   @Getter

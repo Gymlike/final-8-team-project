@@ -123,7 +123,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .exposedHeaders("Authorization");
   }
 
-  
+
   /*
   만약 swagger로 web에서 API를 관리하고 싶을때 추가
     @Override

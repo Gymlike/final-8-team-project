@@ -28,10 +28,10 @@ public class NoticeServiceImpl implements NoticeService {
 
   private final NoticeRepository noticeRepository;
 
-  @Transactional
+
   @Override
-  public void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId,String imageUrl) {
-    Notice notice = noticeRequest.toEntity(managerId,imageUrl);
+  public void saveNotice(@Valid NoticeRequest noticeRequest, Long managerId, String imageUrl) {
+    Notice notice = noticeRequest.toEntity(managerId, imageUrl);
     noticeRepository.save(notice);
   }
 
@@ -40,7 +40,7 @@ public class NoticeServiceImpl implements NoticeService {
    * 프론트 페이징 시도 * int page, int countList, int countPage, int totalCount, T data
    */
 
-  @Transactional(readOnly = true)
+
   @Override
   public Result getNoticeList(int page, int size, Direction direction,
       String properties) {
@@ -48,7 +48,7 @@ public class NoticeServiceImpl implements NoticeService {
     Page<Notice> noticeListPage = noticeRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
     int totalCount = (int) noticeListPage.getTotalElements();
-    System.out.println("totalCount:"+totalCount);
+    System.out.println("totalCount:" + totalCount);
 
     if (noticeListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
@@ -68,7 +68,6 @@ public class NoticeServiceImpl implements NoticeService {
   }
 
 
-  @Transactional(readOnly = true)
   @Override
   public NoticeResponse getSelectedNotice(Long id) {
     Notice notice = noticeRepository.findById(id).orElseThrow(
@@ -76,7 +75,7 @@ public class NoticeServiceImpl implements NoticeService {
     );
     return new NoticeResponse(notice);
   }
-  @Transactional(readOnly = true)
+
   @Override
   public Result searchByKeyword(String keyword, int page, int size,
       Direction direction, String properties) {
@@ -104,36 +103,39 @@ public class NoticeServiceImpl implements NoticeService {
     return new Result(page, totalCount, countPage, totalPage, noticeResponses);
   }
 
-  @Transactional
+
   @Override
-  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest, String imageUrl) {
+  @Transactional
+  public void updateNotice(Long id, Long managerId, UpdateNoticeRequest updateNoticeRequest,
+      String imageUrl) {
     String title = updateNoticeRequest.getTitle();
     String content = updateNoticeRequest.getContent();
 
     Notice notice = noticeRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (notice.getManagerId().equals(managerId)) {
-      notice.update(title, content, imageUrl);
-      noticeRepository.save(notice);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
+
+//    if (notice.isWriter(managerId)) {
+//      notice.update(title, content, imageUrl);
+//      noticeRepository.save(notice);
+//    } else {
+//      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
+//    }
+    notice.isWriter(managerId);
+    notice.update(title, content, imageUrl);
+    noticeRepository.save(notice);
+
 
   }
 
-  @Transactional
+
   @Override
   public void deleteNotice(Long id, Long managerId) {
     Notice notice = noticeRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
-    if (notice.getManagerId().equals(managerId)) {
-      noticeRepository.delete(notice);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_CONTACT);
-    }
-
+    notice.isWriter(managerId);
+    noticeRepository.delete(notice);
   }
 
   /**
