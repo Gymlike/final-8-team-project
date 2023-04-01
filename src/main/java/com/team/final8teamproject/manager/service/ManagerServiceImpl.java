@@ -4,8 +4,10 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.manager.dto.ManagerResponseDto;
 import com.team.final8teamproject.manager.dto.ManagerSignupRequestDto;
+import com.team.final8teamproject.manager.dto.SignUpUserAllResponseDto;
+import com.team.final8teamproject.redis.cache.CacheNames;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
@@ -13,9 +15,12 @@ import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.manager.repository.ManagerRepository;
+import com.team.final8teamproject.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +33,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
+    private final UserRepository userRepository;
 
     private final ManagerRepository managerRepository;
     private final BaseRepository baseRepository;
@@ -36,6 +42,7 @@ public class ManagerServiceImpl implements ManagerService {
     private final PasswordEncoder passwordEncoder;
 
     //1. 회원가입
+    @CacheEvict(cacheNames = CacheNames.ALLUSERS, key = "'SimpleKey []'")
     @Transactional
     public MessageResponseDto signUp(@Valid ManagerSignupRequestDto managerSignupRequestDto) {
 
@@ -44,7 +51,6 @@ public class ManagerServiceImpl implements ManagerService {
         String nickName = managerSignupRequestDto.getNickName();
         String phoneNumber = managerSignupRequestDto.getPhoneNumber();
         String email = managerSignupRequestDto.getEmail();
-        Long experience = managerSignupRequestDto.getExperience();
 
         Optional<BaseEntity> findUserName = baseRepository.findByUsername(username);
         if (findUserName.isPresent()) {
@@ -70,7 +76,7 @@ public class ManagerServiceImpl implements ManagerService {
         Manager manager = Manager.builder()
                 .username(username).password(password)
                 .nickName(nickName).phoneNumber(phoneNumber)
-                .email(email).experience(experience)
+                .email(email)
                 .role(userRoleEnum)
                 .build();
         manager.changeApplyStatus(true);
@@ -80,7 +86,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     //2. 로그인
     @Transactional
-    public TokenResponseDto login(LoginRequestDto requestDto) {
+    public UserResponseDto login(LoginRequestDto requestDto) {
 
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
@@ -91,15 +97,9 @@ public class ManagerServiceImpl implements ManagerService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
-        TokenResponseDto loginResponseDto = jwtUtil.createUserToken(user.getUsername(), user.getRole());
-
-//        if(redisUtil.hasKey("RT:" +user.getUsername())){
-//            throw new SecurityException("이미 접속중인 사용자 입니다.");
-//        }
-//        redisUtil.setRefreshToken(user.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
-
-        return loginResponseDto;
+        return UserResponseDto.of(user);
     }
+
 
 
     //3. 로그아웃
@@ -159,6 +159,21 @@ public class ManagerServiceImpl implements ManagerService {
         } else {
             throw new IllegalArgumentException("신청되지 않은 사용자입니다.");
         }
+    }
+
+    @Override
+    @Cacheable(cacheNames = CacheNames.ALLUSERS)
+    @Transactional(readOnly = true)
+    //7. 회웝가입 회원 전체조회
+    public List<SignUpUserAllResponseDto> getSignUpUserAll(){
+        List<BaseEntity> list= baseRepository.findAll();
+
+        List<SignUpUserAllResponseDto> ResponseDtoList = new ArrayList<>();
+        for(BaseEntity base : list) {
+            ResponseDtoList.add(new SignUpUserAllResponseDto(base));
+            return ResponseDtoList;
+        }
+        return ResponseDtoList;
     }
 
 }

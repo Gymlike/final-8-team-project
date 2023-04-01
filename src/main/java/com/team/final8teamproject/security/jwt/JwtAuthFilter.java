@@ -2,8 +2,7 @@ package com.team.final8teamproject.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.final8teamproject.security.dto.SecurityExceptionDto;
-import com.team.final8teamproject.security.redis.RedisUtil;
-import com.team.final8teamproject.user.dto.SetRedisRefreshToken;
+import com.team.final8teamproject.redis.RedisUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +17,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor

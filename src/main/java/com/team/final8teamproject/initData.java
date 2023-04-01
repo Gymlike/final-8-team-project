@@ -56,11 +56,11 @@ public class initData implements ApplicationRunner {
   @Transactional
   public void run(ApplicationArguments args) throws Exception {
 //
-//    Manager manager = Manager.builder()
-//            .nickName("manager").email("manager@nvaer.com")
-//            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
-//            .username("manager").role(UserRoleEnum.MANAGER).experience(0L)
-//            .build();
+    Manager manager = Manager.builder()
+            .nickName("manager").email("manager@nvaer.com")
+            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
+            .username("manager").role(UserRoleEnum.MANAGER)
+            .build();
 //    Owner owner1 = Owner.builder()
 //            .nickName("owner2").email("owner2@google.com")
 //            .ownerNumber("owner2")
@@ -104,7 +104,7 @@ public class initData implements ApplicationRunner {
 //            .username("member5").role(UserRoleEnum.MEMBER).experience(0L)
 //            .build();
 //
-//    managerRepository.save(manager);
+    managerRepository.save(manager);
 //    userRepository.save(member);
 //    userRepository.save(member1);
 //    userRepository.save(member2);
@@ -116,16 +116,17 @@ public class initData implements ApplicationRunner {
       User members = User.builder()
               .nickName("member"+i).email("member"+i+"@google.com")
               .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
-              .username("member"+i).role(UserRoleEnum.MEMBER).experience(0L)
+              .username("member"+i).role(UserRoleEnum.MEMBER)
               .build();
       Owner owners = Owner.builder()
               .nickName("owner"+i).email("owner"+i+"@google.com")
               .phoneNumber("01022223333")
               .ownerNumber("owner"+i)
               .password(passwordEncoder.encode("owner1234"))
-              .username("owner"+i).role(UserRoleEnum.OWNER).experience(0L)
+              .username("owner"+i).role(UserRoleEnum.OWNER)
               .storeName("짐")
               .build();
+
       ownerRepository.save(owners);
       userRepository.save(members);
     }

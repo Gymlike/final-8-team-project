@@ -1,7 +1,7 @@
 package com.team.final8teamproject.security.jwt;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
 import com.team.final8teamproject.user.dto.TokenResponseDto;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
@@ -25,7 +25,6 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-import java.time.Duration;
 @Slf4j
 @Component
 @RequiredArgsConstructor

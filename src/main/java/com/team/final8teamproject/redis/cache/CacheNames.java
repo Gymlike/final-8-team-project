@@ -1,4 +1,4 @@
-package com.team.final8teamproject.security.cache;
+package com.team.final8teamproject.redis.cache;
 
 public class CacheNames {
     public static final String USERBYUSERNAME = "CACHE_USERBYEUSERNAME";

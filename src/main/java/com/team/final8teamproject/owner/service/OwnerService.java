@@ -2,15 +2,13 @@ package com.team.final8teamproject.owner.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
-import com.team.final8teamproject.business.dto.BusinessRequestDto;
 import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
-import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import io.jsonwebtoken.security.SecurityException;
@@ -69,7 +67,6 @@ public class OwnerService {
                 .phoneNumber(phoneNumber).password(password)
                 .username(username).role(role).storeName(storeName)
                 .ownerName(ownerName).ownerNumber(ownerNumber).start_dt(start_dt)
-                .experience(0L)
                 .build();
         ownerRepository.save(owner);
         return new MessageResponseDto("회원가입 성공");

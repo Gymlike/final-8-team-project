@@ -36,19 +36,16 @@ public class BaseEntity extends Timestamped{
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
-
     @Column(nullable = false)
     private String nickName;
     private String profileImage;
     private String phoneNumber;
-    @Column(nullable = false)
-    private Long experience;
-
+    @JsonIgnore
+    private String writerName;
     public void modifyProfile(String nickName, String profileImage) {
         changeNickNme(nickName);
         this.profileImage = profileImage;
     }
-    @Builder
     public BaseEntity(String username, String password,
                       String email, UserRoleEnum role,
                       String nickName){

@@ -45,8 +45,6 @@ public class T_exerciseController {
     private String path;
 
     //    오운완 게시판 생성//
-
-    @Cacheable(value="WriteTodayPost", key="#userDetails.getUsername()")
     @PostMapping
     public CreatCommentRequestDTO creatT_exerciseBord(@RequestBody CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {

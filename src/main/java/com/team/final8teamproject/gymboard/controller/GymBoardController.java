@@ -54,6 +54,7 @@ public class GymBoardController {
     public List<GymPostResponseDto> getGymPosts() {
         return gymPostService.getGymPostAll();
     }
+
     //3. 검색하여 운동시설 페이징 처리 조회
     @GetMapping//
     public Result<List<GymPostResponseDto>> getGymSearchPosts(

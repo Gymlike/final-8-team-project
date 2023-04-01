@@ -1,4 +1,4 @@
-package com.team.final8teamproject.security.redis;
+package com.team.final8teamproject.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

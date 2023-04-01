@@ -4,7 +4,7 @@ import com.team.final8teamproject.security.exception.CustomAccessDeniedHandler;
 import com.team.final8teamproject.security.exception.CustomAuthenticationEntryPoint;
 import com.team.final8teamproject.security.jwt.JwtAuthFilter;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -64,7 +64,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/**").permitAll()
         .requestMatchers("/api/user/**").permitAll()
         .requestMatchers("/api/owner/**").permitAll()
-        .requestMatchers("/api/manager/**").hasAnyRole("Manager", "GeneralManager")
         .requestMatchers("/owner/**").hasAnyRole("Owner", "Manager", "GeneralManager")
         .requestMatchers("/api/general/**").hasRole("GeneralManager")
         .requestMatchers("/h2-console").permitAll()

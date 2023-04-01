@@ -3,7 +3,7 @@ package com.team.final8teamproject.user.controller;
 import com.team.final8teamproject.aop.Timer;
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.security.service.EmailService;
 import com.team.final8teamproject.security.service.EmailServiceImpl;
 import com.team.final8teamproject.share.exception.CustomException;
@@ -11,7 +11,6 @@ import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
@@ -59,10 +54,12 @@ public class UserController {
     //2.로그인
     @Timer
     @PostMapping("/login")
-    public TokenResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
+    public TokenResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         //이름과 유저인지 관리자인지 구분한 토큰을 가져오는 부분
         UserResponseDto user = userService.login(loginRequestDto);
-        return jwtUtil.createUserToken(user.getUsername(), user.getRole());
+        TokenResponseDto token = jwtUtil.createUserToken(user.getUsername(), user.getRole());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token.getAtk());
+        return token;
     }
 
     //3. 로그아웃

@@ -1,4 +1,4 @@
-package com.team.final8teamproject.security.redis;
+package com.team.final8teamproject.redis.config;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +12,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
-@EnableRedisRepositories
-@EnableCaching
 public class RedisConfig {
 
 

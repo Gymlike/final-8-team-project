@@ -2,11 +2,10 @@ package com.team.final8teamproject.user.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
-import com.team.final8teamproject.security.cache.CacheNames;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.cache.CacheNames;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
-import com.team.final8teamproject.user.controller.UserController;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -61,7 +59,6 @@ public class UserService {
         String nickName = signupRequestDto.getNickName();
         String email = signupRequestDto.getEmail();
         String phoneNumber = signupRequestDto.getPhoneNumber();
-        Long experience = signupRequestDto.getExperience();
 
         Optional<BaseEntity> findUserName = baseRepository.findByUsername(username);
         if (findUserName.isPresent()) {
@@ -87,7 +84,7 @@ public class UserService {
         User user = User.builder()
                 .nickName(nickName).email(email)
                 .phoneNumber(phoneNumber).password(password)
-                .username(username).role(role).experience(experience)
+                .username(username).role(role)
                 .build();
         userRepository.save(user);
         return new MessageResponseDto("회원가입 성공");
