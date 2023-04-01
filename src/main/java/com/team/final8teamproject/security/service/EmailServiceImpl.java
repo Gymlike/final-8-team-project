@@ -2,7 +2,9 @@ package com.team.final8teamproject.security.service;
 
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.dto.FindPasswordRequestDto;
 import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -85,6 +87,7 @@ public class EmailServiceImpl implements EmailService {
         return message;
     }
 
+    @Async
     @Override
     public void sendSimpleMessage(String to) throws Exception {
         String ePw = createKey();
@@ -121,12 +124,14 @@ public class EmailServiceImpl implements EmailService {
         return authCodeCreatedAt.get(to);
     }
 
+
     // 유저 비밀번호 변경
     //5-1.이메일 발송
     @Async
-    public void sendEmail(FindPasswordRequestDto vo, String password) {
+    @Override
+    public void sendPasswordEmail(FindPasswordRequestDto vo, String password) {
         // Mail Server 설정
-        MimeMessage mail = emailSender.createMimeMessage();
+        MimeMessage passwordMail = emailSender.createMimeMessage();
         // 받는 사람 E-Mail 주소
         String userMail = vo.getEmail();
         String htmlStr = "<h2>안녕하세요 '" + vo.getUsername() + "' 님</h2><br><br>"
@@ -137,10 +142,10 @@ public class EmailServiceImpl implements EmailService {
                 + "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
 
         try {
-            mail.setSubject("[MS :p] 임시 비밀번호가 발급되었습니다", "utf-8");
-            mail.setText(htmlStr, "utf-8", "html");
-            mail.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(userMail));
-            emailSender.send(mail);
+            passwordMail.setSubject("[MS :p] 임시 비밀번호가 발급되었습니다", "utf-8");
+            passwordMail.setText(htmlStr, "utf-8", "html");
+            passwordMail.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(userMail));
+            emailSender.send(passwordMail);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

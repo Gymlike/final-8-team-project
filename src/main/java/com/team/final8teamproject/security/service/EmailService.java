@@ -12,5 +12,5 @@ public interface EmailService {
 
     LocalDateTime getAuthCodeCreatedAt(String to);
 
-    void sendEmail(FindPasswordRequestDto vo, String password);
+    void sendPasswordEmail(FindPasswordRequestDto vo, String password);
 }

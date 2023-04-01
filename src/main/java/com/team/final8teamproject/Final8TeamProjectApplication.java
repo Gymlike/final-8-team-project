@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAspectJAutoProxy
 @EnableAsync(proxyTargetClass=true)
 @EnableCaching(order = Ordered.HIGHEST_PRECEDENCE)
-//
 public class Final8TeamProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(Final8TeamProjectApplication.class, args);

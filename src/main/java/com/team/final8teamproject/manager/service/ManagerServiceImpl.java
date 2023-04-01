@@ -12,7 +12,6 @@ import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.manager.entity.Manager;
-import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.manager.repository.ManagerRepository;
 import com.team.final8teamproject.user.repository.UserRepository;
@@ -171,7 +170,6 @@ public class ManagerServiceImpl implements ManagerService {
         List<SignUpUserAllResponseDto> ResponseDtoList = new ArrayList<>();
         for(BaseEntity base : list) {
             ResponseDtoList.add(new SignUpUserAllResponseDto(base));
-            return ResponseDtoList;
         }
         return ResponseDtoList;
     }

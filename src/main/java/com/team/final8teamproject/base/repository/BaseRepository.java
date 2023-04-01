@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface BaseRepository extends JpaRepository<BaseEntity, Long> {
 
-
     @Cacheable(cacheNames = CacheNames.USERBYUSERNAME, key="'login'+#p0", unless="#result==null")
     Optional<BaseEntity> findByUsername(String username);
     Optional<BaseEntity> findByNickName(@Param("nickName") String nickName);

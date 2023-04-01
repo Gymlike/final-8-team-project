@@ -11,9 +11,6 @@ import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.UserRepository;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +20,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 
 import org.springframework.security.core.AuthenticationException;
 
@@ -162,7 +157,7 @@ public class UserService {
             }
             user.changePassword(passwordEncoder.encode(pw.toString()));
             // 비밀번호 변경 메일 발송
-            emailService.sendEmail(vo, pw.toString());
+            emailService.sendPasswordEmail(vo, pw.toString());
 
         }
         return new FindByResponseDto("임시 패스워드 발송 성공");
