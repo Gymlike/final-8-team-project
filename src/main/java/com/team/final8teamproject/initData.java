@@ -126,23 +126,24 @@ public class initData implements ApplicationRunner {
               .username("member" + i)
               .role(UserRoleEnum.MEMBER)
               .build();
-      userList.add(user);
+      userRepository.save(user);
+//      userList.add(user);
     }
-    userRepository.saveAll(userList);
+//    userRepository.saveAll(userList);
 
-    List<Owner> ownerList = new ArrayList<>();
-    for(int i=1; i<500; i++) {
-      Owner owners = Owner.builder()
-              .nickName("owner"+i).email("owner"+i+"@google.com")
-              .phoneNumber("01022223333")
-              .ownerNumber("owner"+i)
-              .password(passwordEncoder.encode("owner1234"))
-              .username("owner"+i).role(UserRoleEnum.OWNER)
-              .storeName("짐")
-              .build();
-      ownerList.add(owners);
-    }
-    ownerRepository.saveAll(ownerList);
+//    List<Owner> ownerList = new ArrayList<>();
+//    for(int i=1; i<500; i++) {
+//      Owner owners = Owner.builder()
+//              .nickName("owner"+i).email("owner"+i+"@google.com")
+//              .phoneNumber("01022223333")
+//              .ownerNumber("owner"+i)
+//              .password(passwordEncoder.encode("owner1234"))
+//              .username("owner"+i).role(UserRoleEnum.OWNER)
+//              .storeName("짐")
+//              .build();
+//      ownerList.add(owners);
+//    }
+//    ownerRepository.saveAll(ownerList);
 //
 //    // -------------------고객 센터 관련
 //
