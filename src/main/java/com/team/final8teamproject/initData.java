@@ -31,6 +31,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class initData implements ApplicationRunner {
@@ -113,12 +116,22 @@ public class initData implements ApplicationRunner {
 //    userRepository.save(member4);
 //    userRepository.save(member5);
 //
-    for(int i=1; i<10; i++) {
-      User members = User.builder()
-              .nickName("member"+i).email("member"+i+"@google.com")
-              .phoneNumber("01033334444").password(passwordEncoder.encode("member1234"))
-              .username("member"+i).role(UserRoleEnum.MEMBER)
+    List<User> userList = new ArrayList<>();
+    for (int i = 1; i < 15; i++) {
+      User user = User.builder()
+              .nickName("member" + i)
+              .email("member" + i + "@google.com")
+              .phoneNumber("01033334444")
+              .password(passwordEncoder.encode("member1234"))
+              .username("member" + i)
+              .role(UserRoleEnum.MEMBER)
               .build();
+      userList.add(user);
+    }
+    userRepository.saveAll(userList);
+
+    List<Owner> ownerList = new ArrayList<>();
+    for(int i=1; i<500; i++) {
       Owner owners = Owner.builder()
               .nickName("owner"+i).email("owner"+i+"@google.com")
               .phoneNumber("01022223333")
@@ -127,11 +140,9 @@ public class initData implements ApplicationRunner {
               .username("owner"+i).role(UserRoleEnum.OWNER)
               .storeName("짐")
               .build();
-
-      ownerRepository.save(owners);
-      userRepository.save(members);
+      ownerList.add(owners);
     }
-////    ownerRepository.save(owner1);
+    ownerRepository.saveAll(ownerList);
 //
 //    // -------------------고객 센터 관련
 //

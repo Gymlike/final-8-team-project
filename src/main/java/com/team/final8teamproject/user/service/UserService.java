@@ -104,7 +104,8 @@ public class UserService {
         return UserResponseDto.of(user);
     }
 
-
+    //두번째 파라미터는 username을 넣기 위해서 #p1을 넣어줌
+    @CacheEvict(cacheNames = CacheNames.USERBYUSERNAME, key="'login'+#p1")
     //3. 로그아웃
     @Transactional
     public String logout(String accessToken, String username) {

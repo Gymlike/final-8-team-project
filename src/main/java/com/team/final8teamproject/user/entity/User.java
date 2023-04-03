@@ -8,11 +8,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @DiscriminatorValue(value = "Users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "users")
+@BatchSize(size = 100) // 추가
 
 public class User extends BaseEntity {
     private String profileImage;

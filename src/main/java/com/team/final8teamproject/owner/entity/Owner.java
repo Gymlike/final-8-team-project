@@ -7,11 +7,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Entity(name = "owner")
 @DiscriminatorValue(value = "Owner")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@BatchSize(size = 100) // 추가
 public class Owner extends BaseEntity {
 
     private String profileImage;

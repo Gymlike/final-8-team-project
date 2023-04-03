@@ -27,10 +27,10 @@ public class UserDetailsServiceImpl implements UserDetailsService, Serializable 
         return baseRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
     }
-    public BaseEntity loadUserByUsernameUseRefreshToken(String username) {
-        return baseRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
-    }
+//    public BaseEntity loadUserByUsernameUseRefreshToken(String username) {
+//        return baseRepository.findByUsername(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
+//    }
 
 //    @Override
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

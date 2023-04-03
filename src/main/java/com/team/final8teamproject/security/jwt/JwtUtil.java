@@ -117,9 +117,6 @@ public class JwtUtil {
                 .signWith(key,signatureAlgorithm)
                 .compact();
     }
-    public BaseEntity AuthenticatedUser(String username) {
-        return userDetailsService.loadUserByUsernameUseRefreshToken(username);
-    }
 
     /**
      * 토큰 생성 메서드

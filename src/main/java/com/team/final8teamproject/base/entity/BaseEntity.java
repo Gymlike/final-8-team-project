@@ -17,6 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
+//@Table(indexes = @Index(name = "idx_username", columnList = "username"))
 public class BaseEntity extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
