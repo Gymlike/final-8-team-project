@@ -17,7 +17,6 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 ## S3 ##
-application.yml
 
 ### IntelliJ IDEA ###
 .idea
@@ -37,5 +36,3 @@ out/
 
 ### VS Code ###
 .vscode/
-## S3 ##
-application.yml
