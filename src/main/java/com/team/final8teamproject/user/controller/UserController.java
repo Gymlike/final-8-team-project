@@ -118,8 +118,7 @@ public class UserController {
     //7. 토큰 재발급(클라이언트에서 Access_Token이 만료될시)
     @PostMapping("/token/regenerate")
     @Timer
-    public TokenResponseDto regenerateToken(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                            @RequestBody RegenerateTokenRequestDto requestDto){
+    public TokenResponseDto regenerateToken(@AuthenticationPrincipal UserDetailsImpl userDetails){
         UserResponseDto user = UserResponseDto.of(userDetails.getBase());
         return jwtUtil.reissueAtk(user.getUsername(), user.getRole());
     }
