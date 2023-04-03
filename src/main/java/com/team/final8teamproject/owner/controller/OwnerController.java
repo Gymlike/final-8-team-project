@@ -27,17 +27,17 @@ public class OwnerController {
         return ownerService.signUp(ownersignupRequestDto);
     }
 
-        //2.로그인
-        @PostMapping("/login")
-        public MessageResponseDto login (@RequestBody LoginRequestDto LoginRequestDto, HttpServletResponse response){
-            //이름과 유저인지 관리자인지 구분한 토큰을 가져오는 부분
-            LoginResponseDto msg = ownerService.login(LoginRequestDto);
-            //문자열 token에 가져온 정보를 넣어주는 부분
-            String token = msg.getAccessToken();
-            //헤더를 통해 토큰을 발급해 주는 부분
-            response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
-            return new MessageResponseDto("로그인 되었습니다.");
-        }
+    //2.로그인
+    @PostMapping("/login")
+    public MessageResponseDto login (@RequestBody LoginRequestDto LoginRequestDto, HttpServletResponse response){
+        //이름과 유저인지 관리자인지 구분한 토큰을 가져오는 부분
+        TokenResponseDto msg = ownerService.login(LoginRequestDto);
+        //문자열 token에 가져온 정보를 넣어주는 부분
+        String token = msg.getAtk();
+        //헤더를 통해 토큰을 발급해 주는 부분
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        return new MessageResponseDto("로그인 되었습니다.");
+    }
 
     //3. 로그아웃
     @DeleteMapping("/logout")

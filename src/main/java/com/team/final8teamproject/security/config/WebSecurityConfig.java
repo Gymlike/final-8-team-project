@@ -4,13 +4,14 @@ import com.team.final8teamproject.security.exception.CustomAccessDeniedHandler;
 import com.team.final8teamproject.security.exception.CustomAuthenticationEntryPoint;
 import com.team.final8teamproject.security.jwt.JwtAuthFilter;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
+@EnableMethodSecurity // 위 어노테이션은 Deprecated
 //@EnableGlobalMethodSecurity(prePostEnabled = true) // @Secured 어노테이션 활성화
 @EnableScheduling // @Scheduled 어노테이션 활성화
 public class WebSecurityConfig implements WebMvcConfigurer {
@@ -42,6 +44,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     // 가장 먼저 시큐리티를 사용하기 위해선 선언해준다.
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // h2-console 사용 및 resources 접근 허용 설정
+        return (web) -> web.ignoring()
+                .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -55,7 +64,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .requestMatchers("/api/**").permitAll()
         .requestMatchers("/api/user/**").permitAll()
         .requestMatchers("/api/owner/**").permitAll()
-        .requestMatchers("/api/manager/**").hasAnyRole("Manager", "GeneralManager")
         .requestMatchers("/owner/**").hasAnyRole("Owner", "Manager", "GeneralManager")
         .requestMatchers("/api/general/**").hasRole("GeneralManager")
         .requestMatchers("/h2-console").permitAll()
@@ -111,7 +119,18 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     registry.addMapping("/**")
         .allowedOrigins("*")
         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
+        .allowedOriginPatterns("*")
         .exposedHeaders("Authorization");
   }
 
+
+  /*
+  만약 swagger로 web에서 API를 관리하고 싶을때 추가
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/swagger-ui/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/swagger-ui/2.6.1/");
+
+    }
+   */
 }

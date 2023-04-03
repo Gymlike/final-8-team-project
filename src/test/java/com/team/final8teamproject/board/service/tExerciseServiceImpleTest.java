@@ -1,5 +1,7 @@
 package com.team.final8teamproject.board.service;
 
+import com.team.final8teamproject.base.entity.BaseEntity;
+import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
@@ -41,7 +43,7 @@ class tExerciseServiceImpleTest {
     UserService userService;
 
     @Mock
-    User user;
+    BaseEntity user;
 
     //test를 실행하기 전마다 가짜객체를 주입시켜준다!..
     @BeforeEach
@@ -63,10 +65,10 @@ class tExerciseServiceImpleTest {
         Mockito.when(tExercise).thenReturn(t_exercise);
 
         //when
-        ResponseEntity<String> response = t_exerciseService.creatTExerciseBord("제목", "내용", "주소", user);
+        CreatCommentRequestDTO response = t_exerciseService.creatTExerciseBord("제목", "내용", "주소", user);
 
         //then
-        assertThat(response.getBody()).isEqualTo("등록완료");
+        assertThat(response.getComment()).isEqualTo("등록완료");
     }
 
     @Test

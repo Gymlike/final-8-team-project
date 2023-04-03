@@ -1,7 +1,9 @@
 package com.team.final8teamproject.board.controller;
 
 
+import com.amazonaws.services.workdocs.model.CreateCommentRequest;
 import com.team.final8teamproject.base.service.BaseService;
+import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
@@ -20,6 +22,7 @@ import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,7 +46,7 @@ public class T_exerciseController {
 
     //    오운완 게시판 생성//
     @PostMapping
-    public ResponseEntity<String> creatT_exerciseBord(@RequestBody CreatBordRequestDTO creatTExerciseBordRequestDTO,
+    public CreatCommentRequestDTO creatT_exerciseBord(@RequestBody CreatBordRequestDTO creatTExerciseBordRequestDTO,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
         String content = creatTExerciseBordRequestDTO.getContent();

@@ -1,21 +1,25 @@
 package com.team.final8teamproject.user.controller;
 
+import com.team.final8teamproject.aop.Timer;
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.security.service.EmailService;
-import com.team.final8teamproject.security.service.EmailServiceImpl; 
-import com.team.final8teamproject.share.exception.CustomException; 
+import com.team.final8teamproject.security.service.EmailServiceImpl;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.security.service.EmailServiceImpl;
+import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.user.dto.*;
 import com.team.final8teamproject.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.team.final8teamproject.security.jwt.JwtUtil;
@@ -23,6 +27,7 @@ import com.team.final8teamproject.security.service.UserDetailsImpl;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -36,6 +41,7 @@ public class UserController {
     private final UserService userService;
     private final BaseRepository baseRepository;
     private final JwtUtil jwtUtil;
+    private final RedisUtil redisUtil;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     //1. 회원가입
@@ -48,15 +54,14 @@ public class UserController {
     }
 
     //2.로그인
+    @Timer
     @PostMapping("/login")
-    public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public TokenResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         //이름과 유저인지 관리자인지 구분한 토큰을 가져오는 부분
-        LoginResponseDto msg = userService.login(loginRequestDto);
-        //문자열 token에 가져온 정보를 넣어주는 부분
-        String token = msg.getAccessToken();
-        //헤더를 통해 토큰을 발급해 주는 부분
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
-        return new MessageResponseDto("로그인 되었습니다.");
+        UserResponseDto user = userService.login(loginRequestDto);
+        TokenResponseDto token = jwtUtil.createUserToken(user.getUsername(), user.getRole());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token.getAtk());
+        return token;
     }
 
     //3. 로그아웃
@@ -112,7 +117,9 @@ public class UserController {
     }
     //7. 토큰 재발급(클라이언트에서 Access_Token이 만료될시)
     @PostMapping("/token/regenerate")
-    public ResponseEntity<String> regenerateToken(@RequestBody @Valid RegenerateTokenRequestDto requestDto){
-        return userService.regenerateToken(requestDto);
+    @Timer
+    public TokenResponseDto regenerateToken(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        UserResponseDto user = UserResponseDto.of(userDetails.getBase());
+        return jwtUtil.createUserToken(user.getUsername(), user.getRole());
     }
 }

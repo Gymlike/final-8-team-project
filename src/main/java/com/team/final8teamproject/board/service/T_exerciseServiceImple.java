@@ -2,10 +2,12 @@ package com.team.final8teamproject.board.service;
 
 
 
+import com.amazonaws.services.workdocs.model.CreateCommentRequest;
 import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 
+import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
@@ -60,12 +62,11 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
      */
     @Transactional
     @Override
-    public ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity user) throws NullPointerException, IOException {
+    public CreatCommentRequestDTO creatTExerciseBord(String title, String content, String imageUrl, BaseEntity user) throws NullPointerException, IOException {
 
         T_exercise t_exercise = new T_exercise(title, content, imageUrl, user);
         t_exerciseRepository.save(t_exercise);
-
-        return new ResponseEntity<>("등록완료", HttpStatus.OK);
+        return new CreatCommentRequestDTO("등록완료");
     }
 
 

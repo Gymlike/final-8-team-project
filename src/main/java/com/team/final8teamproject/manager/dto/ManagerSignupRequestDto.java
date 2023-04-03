@@ -35,8 +35,6 @@ public class ManagerSignupRequestDto {
     @Email
     private String email;
 
-    private Long experience = 0L;
-
     private boolean applyManager;
 
 }

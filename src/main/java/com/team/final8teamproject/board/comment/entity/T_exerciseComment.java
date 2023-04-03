@@ -8,13 +8,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class T_exerciseComment extends Timestamped {
+public class T_exerciseComment extends Timestamped implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_ID")
@@ -38,7 +39,6 @@ public class T_exerciseComment extends Timestamped {
     }
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "comments" , cascade = CascadeType.ALL, orphanRemoval = true)
     private List<T_exerciseCommentReply> commentReplyList = new ArrayList<>();
-
 
     public boolean isWriter(String username) {
         return this.username.equals(username);

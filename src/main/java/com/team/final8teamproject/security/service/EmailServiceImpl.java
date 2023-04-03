@@ -2,7 +2,9 @@ package com.team.final8teamproject.security.service;
 
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
+import com.team.final8teamproject.user.dto.FindPasswordRequestDto;
 import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -85,10 +87,9 @@ public class EmailServiceImpl implements EmailService {
         return message;
     }
 
-    @Override
     @Async
-    public void sendSimpleMessage(String to) throws CustomException, Exception {
-        // TODO Auto-generated method stub
+    @Override
+    public void sendSimpleMessage(String to) throws Exception {
         String ePw = createKey();
         authCodes.put(to, ePw); // 이메일과 인증 코드를 Map에 저장
         authCodeExpirationTimes.put(to, LocalDateTime.now().plusMinutes(2)); // 2분 뒤에 만료되도록 현재 시간 + 2분을 저장
@@ -119,7 +120,34 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public LocalDateTime getAuthCodeCreatedAt(String to) {
+
         return authCodeCreatedAt.get(to);
     }
 
+
+    // 유저 비밀번호 변경
+    //5-1.이메일 발송
+    @Async
+    @Override
+    public void sendPasswordEmail(FindPasswordRequestDto vo, String password) {
+        // Mail Server 설정
+        MimeMessage passwordMail = emailSender.createMimeMessage();
+        // 받는 사람 E-Mail 주소
+        String userMail = vo.getEmail();
+        String htmlStr = "<h2>안녕하세요 '" + vo.getUsername() + "' 님</h2><br><br>"
+                + "<p>비밀번호 찾기를 신청해주셔서 임시 비밀번호를 발급해드렸습니다.</p>"
+                + "<p>임시로 발급 드린 비밀번호는 <h2 style='color : blue'>'" + password
+                + "'</h2>이며 로그인 후 마이페이지에서 비밀번호를 변경해주시면 됩니다.</p><br>"
+                + "<h3><a href='http://localhost:5500/index.html'>MS :p 홈페이지 접속 ^0^</a></h3><br><br>"
+                + "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
+
+        try {
+            passwordMail.setSubject("[MS :p] 임시 비밀번호가 발급되었습니다", "utf-8");
+            passwordMail.setText(htmlStr, "utf-8", "html");
+            passwordMail.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(userMail));
+            emailSender.send(passwordMail);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
 }

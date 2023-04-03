@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.user.dto.KakaoUserInfoDto;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
+import com.team.final8teamproject.user.dto.TokenResponseDto;
 import com.team.final8teamproject.user.service.KakaoService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ public class KakaoController {
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
 
-        LoginResponseDto createToken = kakaoService.kakaoLogin(code, response);
+        TokenResponseDto createToken = kakaoService.kakaoLogin(code, response);
 
-        String token = createToken.getAccessToken();
+        String token = createToken.getAtk();
 
         response.setHeader("Authorization", token);
 
