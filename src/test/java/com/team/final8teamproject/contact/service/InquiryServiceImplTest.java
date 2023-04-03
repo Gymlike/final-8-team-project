@@ -148,7 +148,7 @@ class InquiryServiceImplTest {
   void getSelectedInquiry_true_validUser_success() {
     InquiryResponse inquiryResponse = null;
     User user = new User("username", "username1234", UserRoleEnum.MEMBER, "validUser",
-        "01022223333", "member@naver.com", 0L);
+        "01022223333", "member@naver.com");
     Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
@@ -175,7 +175,7 @@ class InquiryServiceImplTest {
   void getSelectedInquiry_true_invalidUser_throw() {
     InquiryResponse inquiryResponse = null;
     User user = new User("username", "username1234", UserRoleEnum.MEMBER, "validUser",
-        "01022223333", "member@naver.com", 0L);
+        "01022223333", "member@naver.com");
     Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
@@ -197,7 +197,7 @@ class InquiryServiceImplTest {
     //given
     InquiryResponse inquiryResponse = null;
     User user = new User("manager", "username1234", UserRoleEnum.MANAGER, "manager",
-        "01022223333", "member@naver.com", 0L);
+        "01022223333", "member@naver.com");
     Inquiry inquiry = new Inquiry("username", "invalidUser", "title", "content", true);
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
@@ -223,7 +223,7 @@ class InquiryServiceImplTest {
     //given
     InquiryResponse inquiryResponse = null;
     User user = new User("member1", "username1234", UserRoleEnum.MEMBER, "invalidUser",
-        "01022223333", "member@naver.com", 0L);
+        "01022223333", "member@naver.com");
     Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
@@ -303,7 +303,7 @@ class InquiryServiceImplTest {
   void deleteInquiry_validUser_success() {
     //given
     User user = new User("member", "username1234", UserRoleEnum.MEMBER, "invalidUser",
-        "01022223333", "member@naver.com", 0L);
+        "01022223333", "member@naver.com");
     Inquiry inquiry = new Inquiry(user.getUsername(), user.getNickName(), "title", "content",
         false);
 
@@ -319,7 +319,7 @@ class InquiryServiceImplTest {
   void deleteInquiry_Role_Manager_success() {
     //given
     User user = new User("manager", "username1234", UserRoleEnum.MANAGER, "invalidUser",
-        "01022223333", "member@naver.com", 0L);
+        "01022223333", "member@naver.com");
     Inquiry inquiry = new Inquiry("member", "member", "title", "content",
         false);
 
@@ -335,7 +335,7 @@ class InquiryServiceImplTest {
   void deleteInquiry_invalidUserAndRoleMEMBER_throw() {
 
     User user = new User("member", "username1234", UserRoleEnum.MEMBER, "invalidUser",
-        "01022223333", "member@naver.com", 0L);
+        "01022223333", "member@naver.com");
     Inquiry inquiry = new Inquiry(user.getUsername(), user.getNickName(), "title", "content",
         false);
 
