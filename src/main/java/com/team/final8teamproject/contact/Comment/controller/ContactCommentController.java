@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * todo  관리자,총관리자, 작성한 유저(유저,사업자) 댓글 등록 ,수정,삭제
- * todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+ *   관리자,총관리자, 작성한 유저(유저,사업자) 댓글 등록 ,수정,삭제
  */
 @RestController
 @RequiredArgsConstructor
@@ -41,7 +40,7 @@ public class ContactCommentController {
   }
 
 
-  //댓글 수정 todo patch타입으로 사용해 일부수정해보기
+  //댓글 수정
   @PutMapping("/{id}/inquiry")
   public ResponseEntity updateInquiryComment(
       @PathVariable Long id,
@@ -60,7 +59,5 @@ public class ContactCommentController {
     contactCommentServiceIml.deleteInquiryComment(id, userDetails.getBase().getUsername(),userDetails.getBase().getRole());
     return ResponseEntity.ok("삭제 완료");
   }
-
-
 
 }
