@@ -21,6 +21,9 @@ repositories {
 dependencies {
     //jpa쿼리를 위해서 사용
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //h2
+    implementation 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
     //소셜 로그인을 위해서 사용
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -77,9 +80,6 @@ dependencies {
 
     implementation 'org.json:json:20200518'
 
-    //websocket사용을 위한 의존성
-//    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-//
 //    //websocket사용을 위한 의존성
 //    implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.boot:spring-boot-starter-websocket'
