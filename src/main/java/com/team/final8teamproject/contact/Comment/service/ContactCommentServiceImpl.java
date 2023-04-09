@@ -24,7 +24,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
 
   /**
    * ㄴ 부모댓글이 있는 경우    -> 대댓글 저장
-   *    ㄴ 자식댓글인 경우     -> (대댓글)댓글 = 대대댓글을 저장
+   *    ㄴ 자식댓글(대댓글) 경우     -> 대대댓글을 저장
    * ㄴ 부모댓글이 없는 경우.   -> 댓글 저장
    *
    * 프론트엔드를 고려하여 자식 댓글의 계층구조로 보여주기 위해  depth 로 계층구조 나눔
@@ -38,7 +38,9 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     if (!inquiryRepository.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
-      /**부모댓글이 있는 경우 - 대댓글 등록. 즉 자식 댓글이 됨 */
+      /**부모댓글이 있는 경우 - 대댓글. 즉 자식 댓글이 됨
+       * 자식 댓글인 경우 -대대댓글  저장
+       */
       ContactComment parent = null;
       if (createContactCommentRequest.getParentId() != null) {
         parent = contactCommentRepository.findById(createContactCommentRequest.getParentId())

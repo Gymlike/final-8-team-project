@@ -153,11 +153,10 @@ class InquiryServiceImplTest {
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
 
-    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
       List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
-          anyLong());
-      inquiryResponse = new InquiryResponse(inquiry, parentComments);
-    }
+        anyLong());
+     inquiryResponse = new InquiryResponse(inquiry, parentComments);
+
 
     //when
     InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "validUser",
@@ -180,11 +179,10 @@ class InquiryServiceImplTest {
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
 
-    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
       List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
           anyLong());
       inquiryResponse = new InquiryResponse(inquiry, parentComments);
-    }
+
     //when&then
     assertThatThrownBy(() -> inquiryServiceImpl.getSelectedInquiry(1L, "invalidUser",
         UserRoleEnum.MEMBER)).isInstanceOf(CustomException.class);
@@ -201,11 +199,9 @@ class InquiryServiceImplTest {
     Inquiry inquiry = new Inquiry("username", "invalidUser", "title", "content", true);
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
-    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
       List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
           anyLong());
       inquiryResponse = new InquiryResponse(inquiry, parentComments);
-    }
 
     //when
     InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "invalidUser",
@@ -227,11 +223,10 @@ class InquiryServiceImplTest {
     Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
-    if (inquiry.isNickName(user.getNickName()) || user.getRole().equals(UserRoleEnum.MANAGER)) {
       List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
           anyLong());
       inquiryResponse = new InquiryResponse(inquiry, parentComments);
-    }
+
 
     //when&then
     assertThatThrownBy(() ->
@@ -348,7 +343,4 @@ class InquiryServiceImplTest {
   }
 
 
-  @Test
-  void searchByKeyword() {
-  }
 }

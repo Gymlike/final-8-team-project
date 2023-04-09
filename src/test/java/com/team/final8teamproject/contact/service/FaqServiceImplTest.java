@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -24,6 +25,8 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
@@ -35,6 +38,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -51,7 +55,7 @@ class FaqServiceImplTest {
 
   @InjectMocks
   private FaqServiceImpl faqServiceImpl;
-
+  //-------------validation 설정 ------------------------
   private static ValidatorFactory factory;
   private static Validator validator;
 
@@ -65,6 +69,7 @@ class FaqServiceImplTest {
   public static void close() {
     factory.close();
   }
+  //----------------------------------------------------
   /**
    * 1.when -> 테스트할 로직 작성 2.given -> 테스트에 필요한 입력값 , 리턴값 등을 작성 3.then -> 검증
    * 페이징처리는 테스는 코드 큰 의미 없다.
@@ -79,7 +84,7 @@ class FaqServiceImplTest {
   @Test
   @DisplayName("FAQ 등록_성공")
   void saveFaq_success() {
-    //given입력값, 리턴값
+    //given 입력값, 리턴값
     FaqRequest faqRequest = mock(FaqRequest.class);
     Faq faq = mock(Faq.class);
     when(faqRequest.toEntity(1L))
@@ -105,10 +110,11 @@ class FaqServiceImplTest {
     //then
     verify(faqRepository, times(1)).save(any(Faq.class));
   }
+
   /**
-   * CI/CD 때  이 테스트 에러남 인텔리제이에선 한글로 에러메시지를 보내어 테스트 성공이지만
-   * CI/CD 빌드할때 테스트의 경우엔 영어로 에러메세지를 보내 테스트 실패로 빌드가 되지 않는다.
-   * validation관한 테스트는ci/cd 경우 경우엔 주석처리 요망
+   * CI/CD 때  이 테스트 에러남 인텔리제이에선 한글로 에러메시지를 보내어 테스트 성공이지만 CI/CD 빌드할때 테스트의 경우엔 영어로 에러메세지를 보내 테스트 실패로
+   * 빌드가 되지 않는다. validation관한 테스트는ci/cd 경우 경우엔 주석처리 요망 근데 굳이 이 테스트가 필요할까 생각이 든다 -> 문제가 됐다면 다른 테스트에서
+   * 성공이 나오지 못하니
    */
 //  @Test
 //  @DisplayName("FAQ 등록_실패 request에 @NotBlank 아닐때")
@@ -125,8 +131,6 @@ class FaqServiceImplTest {
 //          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
 //        });
 //  }
-
-
   @Test
   @DisplayName("FAQ 전체조회_글이 없을때 예외발생")
   void getFaqList_throw() {
@@ -135,7 +139,6 @@ class FaqServiceImplTest {
     int size = 10;
     Direction direction = Direction.DESC;
     String properties = "createdDate";
-
 
     lenient().when(faqRepository.findAll(PageRequest.of(page - 1, size, direction, properties)))
         .thenReturn(Page.empty());
@@ -175,48 +178,9 @@ class FaqServiceImplTest {
     });
   }
 
-  // todo 검색 조회 해야 함
 //  @Test
-//  @DisplayName("FAQ 검색조회_성공")
-//  void searchByKeyword()  {
-//    //given
-//    String keyword = "keyword";
-//    int page =1 ;
-//    int size =10;
-//    Direction direction = Direction.DESC;
-//    String properties = "createdDate";
-//    Faq faq = new Faq(1L,"question","answer");
-//    when(faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer",PageRequest.of(page - 1, size, direction, properties)))
-//        .thenReturn(Optional.of(any(Page.class));
-//
-//
-//    Result response = faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
-//
-//    //then
-//    assertThat(response.getTotalCount()).isEqualTo(1);
-//
-//  }
-//  @Test
-//  @DisplayName("FAQ 검색조회_성공")
-//  void searchByKeyword() throws IllegalAccessException, InstantiationException {
-//    //given
-//    String keyword = "keyword";
-//    int page =1 ;
-//    int size =10;
-//    Direction direction = Direction.DESC;
-//    String properties = "createdDate";
-//    Faq faq = new Faq(1L,"keyword","answer");
-//   // Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer", PageRequest.of(page - 1, size, direction, properties));
-//    when(faqRepository.findAllByQuestionContainingOrAnswerContaining("keyword","answer",PageRequest.of(page - 1, size, direction, properties)))
-//        .thenReturn(any(Page.class));
-//
-//    //when
-//    Result response = faqServiceImpl.searchByKeyword(keyword,page,size,direction,properties);
-//
-//    //then
-//    assertThat(response.getTotalCount()).isEqualTo(1);
-//
-//  }
+//  @DisplayName("FAQ 검색조회")
+//  검색이 잘 되는지는 jpa가 하는 일이 때문에 성공은 별도 테스트 하지 않음
 
   @Test
   @DisplayName("FAQ 수정_성공")
@@ -272,6 +236,7 @@ class FaqServiceImplTest {
         faqServiceImpl.updateFaq(1L, 2L, updateFaqRequest)).isInstanceOf(CustomException.class);
 
   }
+
 
   @Test
   @DisplayName("FAQ 삭제_성공")
