@@ -105,7 +105,11 @@ class FaqServiceImplTest {
     //then
     verify(faqRepository, times(1)).save(any(Faq.class));
   }
-
+  /**
+   * CI/CD 때  이 테스트 에러남 인텔리제이에선 한글로 에러메시지를 보내어 테스트 성공이지만
+   * CI/CD 빌드할때 테스트의 경우엔 영어로 에러메세지를 보내 테스트 실패로 빌드가 되지 않는다.
+   * validation관한 테스트는ci/cd 경우 경우엔 주석처리 요망
+   */
 //  @Test
 //  @DisplayName("FAQ 등록_실패 request에 @NotBlank 아닐때")
 //  void saveFaq_valid_fail() {
