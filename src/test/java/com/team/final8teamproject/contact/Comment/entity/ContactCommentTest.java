@@ -3,11 +3,16 @@ package com.team.final8teamproject.contact.Comment.entity;
 import static org.assertj.core.api.Assertions.*;
 
 
+import com.team.final8teamproject.share.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+/**
+ * assertThatNoException().isThrownBy(()-> contactComment.isInquiryId(1L));//예외가 없을때
+ * assertThatThrownBy(()->contactComment.isInquiryId(2L)).isInstanceOf(CustomException.class); //예외 발생시
+ */
 @ExtendWith(MockitoExtension.class)
 class ContactCommentTest {
   @Test
@@ -91,27 +96,6 @@ class ContactCommentTest {
   }
 
   @Test
-  @DisplayName("댓글 계층 테스트")
-  void setDepth() {
-    //given
-    ContactComment parent = new ContactComment();
-    ContactComment contactComment = ContactComment.builder()
-        .comments("댓글")
-        .username("username")
-        .inquiryId(1L)
-        .nickName("nickname")
-        .parent(parent)
-        .depth(0)
-        .build();
-    int depth = 1;
-    //when
-    contactComment.setDepth(depth);
-    //then
-    assertThat(contactComment.getDepth()).isEqualTo(depth);
-
-  }
-
-  @Test
   @DisplayName("유효한 inquiry 인지  테스트")
   void isInquiryId() {
     //given
@@ -125,7 +109,8 @@ class ContactCommentTest {
         .depth(0)
         .build();
     //when&then
-    assertThatNoException().isThrownBy(()-> contactComment.isInquiryId(1L));
+    assertThatNoException().isThrownBy(()-> contactComment.isInquiryId(1L));//예외가 없을때
+    assertThatThrownBy(()->contactComment.isInquiryId(2L)).isInstanceOf(CustomException.class); //예외 발생시
   }
 
 

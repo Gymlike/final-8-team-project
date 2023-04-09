@@ -23,7 +23,11 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   private final InquiryRepository inquiryRepository;
 
   /**
-   * 부모댓글이 있는 경우 . 자식댓글인 경우 (대댓글) 댓글에 댓글을 저장 부모댓글이 없는 경우. 포스트에 댓글을 저장 프론트 단 고려하여 depth 로 계층구조 나눔
+   * ㄴ 부모댓글이 있는 경우    -> 대댓글 저장
+   *    ㄴ 자식댓글(대댓글) 경우     -> 대대댓글을 저장
+   * ㄴ 부모댓글이 없는 경우.   -> 댓글 저장
+   *
+   * 프론트엔드를 고려하여 자식 댓글의 계층구조로 보여주기 위해  depth 로 계층구조 나눔
    */
 
   @Override
@@ -34,7 +38,9 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     if (!inquiryRepository.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
-      /**부모댓글이 있는 경우 - 대댓글 등록. 즉 자식 댓글이 됨 */
+      /**부모댓글이 있는 경우 - 대댓글. 즉 자식 댓글이 됨
+       * 자식 댓글인 경우 -대대댓글  저장
+       */
       ContactComment parent = null;
       if (createContactCommentRequest.getParentId() != null) {
         parent = contactCommentRepository.findById(createContactCommentRequest.getParentId())
@@ -42,16 +48,13 @@ public class ContactCommentServiceImpl implements ContactCommentService {
                 () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
             );
         /** 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인*/
-        if (!parent.isInquiryId(inquiryId)) {
-          //if (!parent.getInquiryId().equals(inquiryId)) {
-          throw new CustomException(ExceptionStatus.WRONG_POST_ID);
-        }
-        int depth = parent.getDepth();
+        //v2 객체 지향 entity 에게 역할을 줌
+        parent.isInquiryId(inquiryId);
+
+        int depth = parent.getDepth()+ 1; //  자식댓글의 depth 설정 : 부모댓글의 자식 댓글이므로 + 1 함
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
             nickName, parent, depth);
-        depth = contactComment.getDepth() + 1;
-        contactComment.setParent(parent);
-        contactComment.setDepth(depth);
+        contactComment.setParent(parent); // parent = null 값이므로 현재 부모댓글을 지정해줌
         contactCommentRepository.save(contactComment);
 
         /**부모댓글이 없는 경우 - 댓글 등록*/
