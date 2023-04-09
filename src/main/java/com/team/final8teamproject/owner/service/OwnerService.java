@@ -2,15 +2,13 @@ package com.team.final8teamproject.owner.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
-import com.team.final8teamproject.business.dto.BusinessRequestDto;
 import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.*;
-import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.owner.repository.OwnerRepository;
 import io.jsonwebtoken.security.SecurityException;
@@ -69,7 +67,6 @@ public class OwnerService {
                 .phoneNumber(phoneNumber).password(password)
                 .username(username).role(role).storeName(storeName)
                 .ownerName(ownerName).ownerNumber(ownerNumber).start_dt(start_dt)
-                .experience(0L)
                 .build();
         ownerRepository.save(owner);
         return new MessageResponseDto("회원가입 성공");
@@ -77,7 +74,7 @@ public class OwnerService {
 
     //2.로그인
     @Transactional
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+    public TokenResponseDto login(LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
@@ -87,9 +84,10 @@ public class OwnerService {
         if (!passwordEncoder.matches(password, base.getPassword())){
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
-        LoginResponseDto loginResponseDto =jwtUtil.createUserToken(base.getUsername(), base.getRole());
-        SetRedisRefreshToken refreshToken = new SetRedisRefreshToken(loginResponseDto.getRefreshToken(), base.getUsername(), base.getRole());
-        redisUtil.setRefreshToken(loginResponseDto.getAccessToken(), refreshToken, loginResponseDto.getRefreshTokenExpirationTime());
+        TokenResponseDto loginResponseDto =jwtUtil.createUserToken(base.getUsername(), base.getRole());
+//        SetRedisRefreshToken refreshToken = new SetRedisRefreshToken(loginResponseDto.getRefreshToken(), base.getRole());
+//        redisUtil.setRefreshToken(base.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+
         return loginResponseDto;
 //        redisUtil.setRefreshToken(base.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
 

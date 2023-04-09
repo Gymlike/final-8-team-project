@@ -31,6 +31,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class initData implements ApplicationRunner {
@@ -56,20 +59,12 @@ public class initData implements ApplicationRunner {
   @Override
   @Transactional
   public void run(ApplicationArguments args) throws Exception {
-
-//    Manager manager = Manager.builder()
-//            .nickName("manager").email("manager@nvaer.com")
-//            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
-//            .username("manager").role(UserRoleEnum.MANAGER).experience(0L)
-//            .build();
-//    Owner owner = Owner.builder()
-//            .nickName("owner1").email("owner@google.com")
-//            .phoneNumber("01022223333")
-//            .ownerNumber("owner2")
-//            .password(passwordEncoder.encode("owner1234"))
-//            .username("owner1").role(UserRoleEnum.OWNER).experience(0L)
-//            .storeName("짐")
-//            .build();
+//
+    Manager manager = Manager.builder()
+            .nickName("manager").email("manager@nvaer.com")
+            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
+            .username("manager").role(UserRoleEnum.MANAGER)
+            .build();
 //    Owner owner1 = Owner.builder()
 //            .nickName("owner2").email("owner2@google.com")
 //            .ownerNumber("owner2")
@@ -113,15 +108,42 @@ public class initData implements ApplicationRunner {
 //            .username("member5").role(UserRoleEnum.MEMBER).experience(0L)
 //            .build();
 //
-//    managerRepository.save(manager);
+    managerRepository.save(manager);
 //    userRepository.save(member);
 //    userRepository.save(member1);
 //    userRepository.save(member2);
 //    userRepository.save(member3);
 //    userRepository.save(member4);
 //    userRepository.save(member5);
-//    ownerRepository.save(owner);
-//    ownerRepository.save(owner1);
+//
+    List<User> userList = new ArrayList<>();
+    for (int i = 1; i < 15; i++) {
+      User user = User.builder()
+              .nickName("member" + i)
+              .email("member" + i + "@google.com")
+              .phoneNumber("01033334444")
+              .password(passwordEncoder.encode("member1234"))
+              .username("member" + i)
+              .role(UserRoleEnum.MEMBER)
+              .build();
+      userRepository.save(user);
+//      userList.add(user);
+    }
+//    userRepository.saveAll(userList);
+
+//    List<Owner> ownerList = new ArrayList<>();
+//    for(int i=1; i<500; i++) {
+//      Owner owners = Owner.builder()
+//              .nickName("owner"+i).email("owner"+i+"@google.com")
+//              .phoneNumber("01022223333")
+//              .ownerNumber("owner"+i)
+//              .password(passwordEncoder.encode("owner1234"))
+//              .username("owner"+i).role(UserRoleEnum.OWNER)
+//              .storeName("짐")
+//              .build();
+//      ownerList.add(owners);
+//    }
+//    ownerRepository.saveAll(ownerList);
 //
 //    // -------------------고객 센터 관련
 //

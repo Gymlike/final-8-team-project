@@ -12,6 +12,7 @@ import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,9 +38,7 @@ public class GymBoardController {
     @PostMapping("/owner/write-post")
     public String createGymPost(@RequestBody CreatePostGymRequestDto createPostGymRequestDto,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails)  throws NullPointerException, IOException {
-
         boolean checkUser = baseService.checkUser(userDetails.getUsername());
-
         if(checkUser){
             String imageUrl = presignedUrlService.findByName(path);
             gymPostService.createGymPost(createPostGymRequestDto, imageUrl,userDetails.getUsername());
@@ -51,9 +50,11 @@ public class GymBoardController {
  
     //2.유저가하는 작성된 운동시설 조회
     @GetMapping("/all")
+    @Cacheable("PostAll")
     public List<GymPostResponseDto> getGymPosts() {
         return gymPostService.getGymPostAll();
     }
+
     //3. 검색하여 운동시설 페이징 처리 조회
     @GetMapping//
     public Result<List<GymPostResponseDto>> getGymSearchPosts(
@@ -67,6 +68,7 @@ public class GymBoardController {
         return gymPostService.getGymPost(pageRequest,search,size,page);
     }
     //3.유저가하는 작성된 운동시설 하나 조회
+    @Cacheable(value = "PostAll", key = "#id")
     @GetMapping("/{id}")//
     public GymPostResponseDetailDto getGymPostDetail(@PathVariable Long id) {
         return gymPostService.getGymPostDetail(id);

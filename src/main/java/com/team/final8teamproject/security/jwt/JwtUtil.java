@@ -1,8 +1,11 @@
 package com.team.final8teamproject.security.jwt;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
+import com.team.final8teamproject.user.dto.TokenResponseDto;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.security.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
@@ -23,6 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -35,10 +39,8 @@ public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L;            // 30분
-
-//    private static final long ACCESS_TOKEN_TIME = 60 * 1000L;
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 24 * 60 * 60 * 1000L; //7일
+    private static final long ACCESS_TOKEN_TIME = 3600000L;            // 30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 86400000L; //7일
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -62,34 +64,43 @@ public class JwtUtil {
     }
 
     /**
-     *  일반유저, 오너유저, 총관리자, 관리자 토큰 생성 메소드 부분
+     /**
+     * 유저 로그인 후 토큰 발행
+     *
+     * @param username 발행 유저 이름
+     * @param role 발행 유저 권한
+     * @return TokenResponseDto : 토큰을 담아 반환할 DTO
      */
 
     // 토큰 생성
     //유저(일반 사업자)정보를 가지고 AccessToken, RefreshToken 을 반환해주는 메서드
-    public LoginResponseDto createUserToken(String username, UserRoleEnum role) {
-        Date date = new Date();
-        //권한 가져오기
-        // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
-        return getLoginResponseDto(Jwts.builder()
-                .setSubject(username) // 토큰 용도
-                .claim(AUTHORIZATION_KEY, role), date);
+    public TokenResponseDto createUserToken(String username, UserRoleEnum role) {
+        String accessToken = createToken(username, role, ACCESS_TOKEN_TIME);
+        String refreshToken = createToken(username, role, REFRESH_TOKEN_EXPIRE_TIME);
+        redisUtil.setRefreshToken(username, refreshToken, REFRESH_TOKEN_EXPIRE_TIME);
+        return new TokenResponseDto(accessToken,refreshToken);
     }
 
 
-    // 총관리자, 관리자 가지고 AccessToken, RefreshToken 을 반환해주는 메서드
-    public LoginResponseDto createManagerToken(String general, UserRoleEnum role) {
-        Date date = new Date();
-        //권한 가져오기
-        // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
-        return getLoginResponseDto(Jwts.builder()
-                .setSubject(general) // 토큰 용도
-                .claim(AUTHORIZATION_KEY, role), date);
+    /**
+     * Access Token 재발행(reissue)
+     * @param username 발행 유저 이름
+     * @param role 발행 유저 권한
+     * @return TokenResponseDto : 토큰을 담아 반환할 DTO
+     */
+    public TokenResponseDto reissueAtk(String username, UserRoleEnum role) {
+        //if로 지금 들어온 엑세스 토큰이 전의 엑세스 토큰인지 아닌지 확인
+        if (redisUtil.hasKey(username)) throw new CustomException(ExceptionStatus.AUTHENTICATION);
+        String accessToken = createToken(username, role, ACCESS_TOKEN_TIME);
+        String refreshToken = createToken(username, role, REFRESH_TOKEN_EXPIRE_TIME);
+        redisUtil.setRefreshToken(username, refreshToken, REFRESH_TOKEN_EXPIRE_TIME);
+        return new TokenResponseDto(accessToken,refreshToken);
     }
 
-    // 토큰 제발급
+
+    // 토큰 재발급
     //토큰(AccessToken, RefreshToken) 생성 메서드
-    public String reCreateUserToken(String username, UserRoleEnum role) {
+    public String reCreateAccessToken(String username, UserRoleEnum role) {
         Date date = new Date();
         //권한 가져오기
         // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
@@ -101,30 +112,34 @@ public class JwtUtil {
                 .signWith(key, signatureAlgorithm)
                 .compact();
     }
-    public BaseEntity AuthenticatedUser(String username) {
-        return userDetailsService.loadUserByUsernameUseRefreshToken(username);
-    }
 
-    private LoginResponseDto getLoginResponseDto(JwtBuilder general, Date date) {
-        String accessToken = BEARER_PREFIX + general // payload에 들어갈 정보 조각들
-                .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료시간 설정
-                .setIssuedAt(date) // 토큰 발행일
-                .signWith(key, signatureAlgorithm) // key변수 값과 해당 알고리즘으로 sign
-                .compact(); // 토큰 생성
-
-        String refreshToken = Jwts.builder()
+    public String reCreateRefreshTokenToken(String username) {
+        Date date = new Date();
+        //권한 가져오기
+        // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
+        return Jwts.builder()
+                .setSubject(username)
                 .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_EXPIRE_TIME))
+                .setIssuedAt(date) // 토큰 발행일
                 .signWith(key,signatureAlgorithm)
                 .compact();
-
-        return LoginResponseDto.builder()
-                .grantType(BEARER_PREFIX)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .refreshTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
-                .build();
     }
 
+    /**
+     * 토큰 생성 메서드
+     * @param role  권한
+     * @return
+     */
+    private String createToken(String username, UserRoleEnum role, Long tokenLive) {
+        Date date = new Date();
+        return BEARER_PREFIX + Jwts.builder()
+                .claim(AUTHORIZATION_KEY, role)
+                .setSubject(username)
+                .setIssuedAt(date)
+                .setExpiration(new Date(date.getTime() + tokenLive))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
 
     /**
      *  일반유저, 오너유저, 총관리자, 관리자 인증 객체 생성 메소드 부분

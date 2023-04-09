@@ -12,6 +12,7 @@ public enum ExceptionStatus {
     DUPLICATED_PHONENUMBER(406, "이미 사용중인 휴대폰번호입니다."),
     SIGNUP_WRONG_USERNAME(409, "최소 4자 이상, 10자 이하이며, 영문과 숫자만 입력하세요."),
     WRONG_USERNAME(404, "아이디를 잘못 입력 하였거나 등록되지 않은 아이디 입니다."),
+
     WRONG_PASSWORD(400, "잘못된 비밀번호 입니다."),
     WRONG_PROFILE(404, "프로필이 존재하지 않습니다."),
     WRONG_AUTHORITY_DEMAND(404, "판매자 권한 신청서가 존재하지 않습니다"),
@@ -21,10 +22,13 @@ public enum ExceptionStatus {
     ALREADY_PROCESSED_REQUEST(409,"이미 처리된 요청입니다."),
     WRONG_ADMINTOKEN(400, "잘못된 관리자 비밀번호 입니다."),
     ACCESS_DENINED(500, "접근 권한이 없습니다."),
-    AUTHENTICATION(500, "인증 실패"), 
+    AUTHENTICATION(500, "인증 실패"),
+    AUTH_EXPIRED(501, "인증 만료"),
     NOT_FOUNT_USER(404,"해당 사용자가 존재하지 않습니다."),
-    NOT_FOUNT_TOKEN(404,"토큰이 일치하지 않습니다."), 
-    AUTH_EXPIRED(501, "인증 만료"), 
+    NOT_FOUNT_TOKEN(404,"토큰이 일치하지 않습니다."),
+
+    ROOM_NOT_EXIST(404, "방이 삭제되어 존재하지 않습니다."),
+
     BOARD_NOT_EXIST(404, "게시물이 삭제되어 존재하지 않습니다."),
     COMMENT_NOT_EXIST(404, "해당 댓글이 삭제되어 존재 하지 않습니다."),
     COMMENT_REPLY_NOT_EXIST(404, "해당하는 댓글이 삭제되어 존재 하지 않습니다."),

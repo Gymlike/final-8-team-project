@@ -8,10 +8,9 @@ import com.team.final8teamproject.manager.entity.Manager;
 import com.team.final8teamproject.manager.repository.GeneralManagerRepository;
 import com.team.final8teamproject.manager.repository.ManagerRepository;
 import com.team.final8teamproject.security.jwt.JwtUtil;
-import com.team.final8teamproject.security.redis.RedisUtil;
+import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
-import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,22 +47,23 @@ public class GeneralManagerServiceImpl implements GeneralManagerService {
     @Override
     public LoginResponseDto login(ManagerLoginRequestDto requestDto){
 
-        String username = requestDto.getUsername();
-        String password = requestDto.getPassword();
-
-        GeneralManager manager = generalManagerRepository.findByUsername(username).orElseThrow(
-                () -> new SecurityException("사용자를 찾을수 없습니다.")
-        );
-        if (!passwordEncoder.matches(password, manager.getPassword())) {
-            throw new SecurityException("사용자를 찾을수 없습니다.");
-        }
-        LoginResponseDto loginResponseDto =jwtUtil.createManagerToken(manager.getUsername(), manager.getRole());
-
-        if(redisUtil.hasKey("RT:" +manager.getUsername())){
-            throw new SecurityException("이미 접속중인 사용자 입니다.");
-        }
-//        redisUtil.setRefreshToken("RT:" +manager.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
-        return loginResponseDto;
+//        String username = requestDto.getUsername();
+//        String password = requestDto.getPassword();
+//
+//        GeneralManager manager = generalManagerRepository.findByUsername(username).orElseThrow(
+//                () -> new SecurityException("사용자를 찾을수 없습니다.")
+//        );
+//        if (!passwordEncoder.matches(password, manager.getPassword())) {
+//            throw new SecurityException("사용자를 찾을수 없습니다.");
+//        }
+//        LoginResponseDto loginResponseDto =jwtUtil.createManagerToken(manager.getUsername(), manager.getRole());
+//
+//        if(redisUtil.hasKey("RT:" +manager.getUsername())){
+//            throw new SecurityException("이미 접속중인 사용자 입니다.");
+//        }
+////        redisUtil.setRefreshToken("RT:" +manager.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
+//        return loginResponseDto;
+        return null;
     }
     //관리자 조회
     public List<WaitMangerResponseDto> waitManagerList(Pageable pageable) {

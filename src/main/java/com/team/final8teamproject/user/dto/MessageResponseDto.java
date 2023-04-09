@@ -4,9 +4,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MessageResponseDto {
+public class MessageResponseDto implements Serializable {
 
     private String message;
 

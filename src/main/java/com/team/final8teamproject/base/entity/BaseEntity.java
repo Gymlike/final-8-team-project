@@ -5,16 +5,20 @@ import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
+
+import java.io.Serializable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
-public class BaseEntity extends Timestamped {
+@Table(indexes = @Index(name = "idx_username", columnList = "username"))
+public class BaseEntity extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "User_ID")
@@ -33,10 +37,16 @@ public class BaseEntity extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
-
     @Column(nullable = false)
     private String nickName;
-
+    private String profileImage;
+    private String phoneNumber;
+    @JsonIgnore
+    private String writerName;
+    public void modifyProfile(String nickName, String profileImage) {
+        changeNickNme(nickName);
+        this.profileImage = profileImage;
+    }
     public BaseEntity(String username, String password,
                       String email, UserRoleEnum role,
                       String nickName){
@@ -62,26 +72,20 @@ public class BaseEntity extends Timestamped {
     public void changePassword(String password){
         this.password = password;
     }
-
     public void changeNickNme(String nickName) {
         this.nickName = nickName;
     }
     public boolean isUserId(Long userid) {
         return this.id.equals(userid);
     }
-
     public boolean isUsername(String username){ return this.username.equals(username);}
-
     public boolean isEmail(String email){return this.email.equals(email);}
     public String getWriterName() {
         return this.username;
     }
-
-
     public void approvalManager(UserRoleEnum role) {
         this.role = role;
     }
-
     public void modifyBaseProfile(String email, String password) {
         this.email = email;
         this.password = password;

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.user.dto.KakaoUserInfoDto;
 import com.team.final8teamproject.user.dto.LoginResponseDto;
+import com.team.final8teamproject.user.dto.TokenResponseDto;
 import com.team.final8teamproject.user.entity.KaKao;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.user.repository.KakaoRepository;
@@ -33,7 +34,7 @@ public class KakaoService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public LoginResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public TokenResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
         System.out.println("액세스 토큰 " + accessToken);

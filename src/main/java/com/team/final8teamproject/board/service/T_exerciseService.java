@@ -1,6 +1,7 @@
 package com.team.final8teamproject.board.service;
 
 
+import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
@@ -19,7 +20,7 @@ import java.util.List;
 public interface T_exerciseService {
 
 
-    ResponseEntity<String> creatTExerciseBord(String title, String content, String imageUrl, BaseEntity base) throws NullPointerException, IOException;
+    CreatCommentRequestDTO creatTExerciseBord(String title, String content, String imageUrl, BaseEntity base) throws NullPointerException, IOException;
 
 
     T_exerciseServiceImple.Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);
