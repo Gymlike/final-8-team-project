@@ -71,6 +71,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache' 
 //    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
+    //swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+
+
 
     // MySql
     implementation 'mysql:mysql-connector-java'
