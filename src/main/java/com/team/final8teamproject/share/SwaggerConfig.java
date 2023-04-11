@@ -21,8 +21,16 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi texe(){
         return GroupedOpenApi.builder()
-                .group("t_exercise")
+                .group("오운완게시판")
                 .pathsToMatch("/t-exercise/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi todayMeal(){
+        return GroupedOpenApi.builder()
+                .group("오늘식단게시판")
+                .pathsToMatch("/todaymeal/**")
                 .build();
     }
 }
