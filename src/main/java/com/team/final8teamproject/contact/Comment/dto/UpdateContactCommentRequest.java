@@ -9,4 +9,7 @@ public class UpdateContactCommentRequest {
 
     private final String comments;
 
+    public UpdateContactCommentRequest(String comments) {
+        this.comments = comments;
+    }
 }

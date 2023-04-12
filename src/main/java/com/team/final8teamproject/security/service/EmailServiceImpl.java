@@ -59,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage message = emailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
-        message.setSubject("서치짐 이메일인증 코드");//제목
+        message.setSubject("서치짐 이메일인증 코드");// 제목
 
         String msgg = "";
         msgg += "<div style='background-color:#f7f7f7; font-family:Verdana, sans-serif;'>";

@@ -1,6 +1,8 @@
 package com.team.final8teamproject.contact.Comment.entity;
 
 import com.team.final8teamproject.share.Timestamped;
+import com.team.final8teamproject.share.exception.CustomException;
+import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,9 +18,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-/**inquiry , user 연관관계  x  없이 구현
+/**
+ * inquiry , user 연관관계  x  없이 구현
  */
 
 
@@ -50,6 +52,7 @@ public class ContactComment extends Timestamped {
   private List<ContactComment> children = new ArrayList<>();
 
   private int depth;
+
   @Builder
   public ContactComment(String comments, String username, Long inquiryId, String nickName,
       ContactComment parent, int depth) {
@@ -66,6 +69,7 @@ public class ContactComment extends Timestamped {
     this.comments = comments;
   }
 
+
   public boolean isWriter(String username) {
     return this.username.equals(username);
   }
@@ -78,9 +82,13 @@ public class ContactComment extends Timestamped {
     this.depth = depth;
   }
 
-  public boolean isInquiryId(Long inquiryId) {
-    return this.inquiryId.equals(inquiryId);
+  public void isInquiryId(Long inquiryId) {
+    if (!this.inquiryId.equals(inquiryId)) {
+      throw new CustomException(ExceptionStatus.WRONG_POST_ID);
+    }
   }
+
+
 }
 
 

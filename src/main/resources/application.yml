@@ -9,6 +9,8 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: 'false'
+
+
 spring:
   jpa:
     generate-ddl: 'true'
@@ -23,11 +25,18 @@ spring:
         jdbc:
           batch_size: 30
 
+# h2
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:db;MODE=MYSQL;
     username: sa
     password:
+  # Mysql 설정
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/example?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: woni
+#    password: govlmysql
 
   mvc:
     hiddenmethod:
@@ -51,7 +60,7 @@ spring:
 #      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
 #      path: /h2-console  # H2 Console의 Path
 
-  # Mysql 설정
+  # Mysql 설정(RDS )
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://team-database1.cjqopg7k8xlv.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
