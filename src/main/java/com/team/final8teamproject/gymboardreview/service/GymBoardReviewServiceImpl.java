@@ -30,7 +30,7 @@ public class GymBoardReviewServiceImpl implements GymBoardReviewService{
     @Transactional
     public void writeReview(Long id,GymBoardReviewRequestDto requestDto, String username){
 
-        BaseEntity base = baseRepository.findByUsername(username).orElseThrow(
+        baseRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
         try {
             GymReview gymReview = GymReview.builder()

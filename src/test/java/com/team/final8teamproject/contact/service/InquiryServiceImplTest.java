@@ -49,7 +49,6 @@ class InquiryServiceImplTest {
   InquiryRepository inquiryRepository;
   @Mock
   ContactCommentServiceImpl contactCommentService;
-
   @InjectMocks
   InquiryServiceImpl inquiryServiceImpl;
 

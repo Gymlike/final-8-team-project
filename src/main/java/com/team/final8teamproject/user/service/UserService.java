@@ -2,6 +2,7 @@ package com.team.final8teamproject.user.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
+import com.team.final8teamproject.base.dto.BaseEntityProjectionDto;
 import com.team.final8teamproject.redis.cache.CacheNames;
 import com.team.final8teamproject.redis.RedisUtil;
 import com.team.final8teamproject.security.service.EmailService;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -89,15 +91,18 @@ public class UserService {
     }
 
     //2. 로그인
+    @Cacheable(cacheNames = CacheNames.LOGINUSER, key = "'login'+#p0.getUsername()", unless = "#result == null")
     @Transactional
     public UserResponseDto login(LoginRequestDto loginRequestDto) {
 
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
-
-        BaseEntity user = baseRepository.findByUsername(username).orElseThrow(
+        BaseEntityProjectionDto user =  baseRepository.findByUsernameAndInLiveIsTrue(username).orElseThrow(
                 () -> new CustomException(ExceptionStatus.WRONG_USERNAME)
         );
+//        BaseEntity user = baseRepository.findByUsername(username).orElseThrow(
+//                () -> new CustomException(ExceptionStatus.WRONG_USERNAME)
+//        );
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
@@ -218,6 +223,5 @@ public class UserService {
         BaseEntity user = baseRepository.findByUsername(username).orElseThrow(() -> new CustomException(ExceptionStatus.WRONG_USERNAME));
         return user.getNickName();
     }
-
 }
 

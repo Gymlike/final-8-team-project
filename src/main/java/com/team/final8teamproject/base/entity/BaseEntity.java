@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
 @Table(indexes = @Index(name = "idx_username", columnList = "username"))
 public class BaseEntity extends Timestamped{
@@ -24,6 +24,7 @@ public class BaseEntity extends Timestamped{
     @Column(name = "User_ID")
     private Long id;
 
+    private boolean inLive = true;
     @Column(nullable = false, unique = true)
     private String username;
 

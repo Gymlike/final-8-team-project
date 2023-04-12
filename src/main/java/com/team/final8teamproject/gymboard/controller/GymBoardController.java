@@ -12,6 +12,7 @@ import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,12 +51,12 @@ public class GymBoardController {
  
     //2.유저가하는 작성된 운동시설 조회
     @GetMapping("/all")
-    @Cacheable("PostAll")
     public List<GymPostResponseDto> getGymPosts() {
         return gymPostService.getGymPostAll();
     }
 
     //3. 검색하여 운동시설 페이징 처리 조회
+    @Cacheable("PostAll")
     @GetMapping//
     public Result<List<GymPostResponseDto>> getGymSearchPosts(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
@@ -68,7 +69,7 @@ public class GymBoardController {
         return gymPostService.getGymPost(pageRequest,search,size,page);
     }
     //3.유저가하는 작성된 운동시설 하나 조회
-    @Cacheable(value = "PostAll", key = "#id")
+    @Cacheable(value = "postCache", key = "#id", unless = "#result == null")
     @GetMapping("/{id}")//
     public GymPostResponseDetailDto getGymPostDetail(@PathVariable Long id) {
         return gymPostService.getGymPostDetail(id);
@@ -76,9 +77,10 @@ public class GymBoardController {
     //4.사업자가하는 자기가 작성한 게시글 전체조회
     @GetMapping("/owner/myposts")
     public List<GymBoardviewResponseDto> getAllPosts(@PageableDefault Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return gymPostService.getAllGymPost(pageable.getPageNumber(), userDetails.getUsername());
+        return gymPostService.getAllGymPosts(pageable.getPageNumber(), userDetails.getUsername());
     }
 
+    @CacheEvict(value = "postCache", key = "#id")
     //5.운동시설 글 수정
     @PutMapping("/owner/{id}/putpost")
     public String updateGymPost(@PathVariable Long id, @RequestBody GymUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
