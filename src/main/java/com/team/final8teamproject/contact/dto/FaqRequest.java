@@ -15,7 +15,7 @@ public class FaqRequest {
   @NotBlank
   private final String answer;
 
-@Builder
+  @Builder
   public FaqRequest(String question, String answer) {
     this.question = question;
     this.answer = answer;

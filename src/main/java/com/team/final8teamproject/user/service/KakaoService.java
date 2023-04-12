@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.final8teamproject.security.jwt.JwtUtil;
 import com.team.final8teamproject.user.dto.KakaoUserInfoDto;
-import com.team.final8teamproject.user.dto.LoginResponseDto;
 import com.team.final8teamproject.user.dto.TokenResponseDto;
 import com.team.final8teamproject.user.entity.KaKao;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
@@ -29,7 +28,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class KakaoService {
-
     private final KakaoRepository kakaoRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;

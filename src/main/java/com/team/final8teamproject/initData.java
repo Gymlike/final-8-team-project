@@ -327,267 +327,277 @@ public class initData implements ApplicationRunner {
 //      T_exerciseLike like = new T_exerciseLike(member5.getUsername(), 1L);
 //      tExerciseLikeRepository.save(like);
 //    }
-//    // 운동시설 등록
-//
-//    GymBoard gymBoard1 = GymBoard.GymBoard()
-//            .title("[마포] 플라이번지 피트니스 - 다이어트와 근력운동, 바디밸런스까지 모두 잡을 수 있는 번지피트니스")
-//            .content("안녕하세요,\n" +
-//                    "\n" +
-//                    "플라이번지 피트니스 입니다.\n" +
-//                    "★MY OWN FITNESS★\n" +
-//                    "\n" +
-//                    "당신의 건강파트너!\n" +
-//                    "\n" +
-//                    "■ 번지코드의 탄성을 이용해 빠르고 정확하게 몸의 밸런스를 잡는 번지운동법\n" +
-//                    "\n" +
-//                    "■ 코어강화와 유산소를 동시에 할 수 있는 운동법")
-//            .username("owner1")
-//            .image("images\\img_5.jpg")
-//            .gymName("[마포] 광흥창 플라이번지피트니스")
-//            .ownerNumber("112A23B1")
-//            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
-//            .region("서울 마포구 토정로 192, 진영빌딩 지하 1층")
-//            .openTime("[평   일] 09:00 ~ 22:00\n" +
-//                    "[토요일] 09:00 ~ 22:00\n" +
-//                    "[일요일] 09:00 ~ 22:00\n" +
-//                    "[휴무일] 공휴일")
-//            .amenities("시설_1_2_3_4_5")
-//            .amenitiesDetail("편의시설 이용 정보\n" +
-//                    "무료\n" +
-//                    "주차 3시간 / 수건 / 운동복\n" +
-//                    "유료\n" +
-//                    "라커 : 월 10,000원")
-//            .build();
-//
-//    GymBoard gymBoard2 = GymBoard.GymBoard()
-//            .title("[마포] 상암 지플렉스 온핏 스마트짐 - 상암동 최대규모 900평대 헬스장")
-//            .content("안녕하세요,\n" +
-//                    "\n" +
-//                    "상암 지플렉스 온핏 스마트짐 입니다.\n" +
-//                    "\n" +
-//                    "★MY OWN FITNESS★\n" +
-//                    "\n" +
-//                    "당신의 건강파트너!\n" +
-//                    "\n" +
-//                    "■ 상암동 최대규모 900평대 헬스장 온핏 지플렉스\n" +
-//                    "\n" +
-//                    "■ 개인별 운동처방! 맞춤형 프로그램\n" +
-//                    "\n" +
-//                    "■ 과학적이고 체계적인 시스템")
-//            .username("owner2")
-//            .image("images\\img_4.jpg")
-//            .gymName("피트니스탑")
-//            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
-//            .ownerNumber("112A23C1")
-//            .region("서울 마포구 매봉산로 31, 지하 2층")
-//            .openTime("[평   일] 06:00 ~ 22:00\n" +
-//                    "\n" +
-//                    "[토요일] 07:00 ~ 19:00\n" +
-//                    "\n" +"유료\n" +
-////                        "운동복 : 월 11,000원 / 라커 : 월 11,000원
-//                    "[일요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[휴무일] 매달 셋째주 일요일")
-//            .amenities("시설_1_2_3_4_5_6")
-//            .amenitiesDetail("무료\n" +
-//                    "주차 3시간 / 수건\n" +
-//                    "\n" +
-//                    "")
-//            .build();
-//
-//    GymBoard gymBoard3 = GymBoard.GymBoard()
-//            .title("[마포] 엠베이스짐 - 상암동 1:1 PT 전문으로 하는 프라이빗샵")
-//            .content("안녕하세요,\n" +
-//                    "\n" +
-//                    "상암 엠베이스짐 입니다.\n" +
-//                    "\n" +
-//                    "★MY OWN FITNESS★\n" +
-//                    "\n" +
-//                    "당신의 건강파트너!\n" +
-//                    "\n" +
-//                    "■ 1:1 P.T만을 전문으로 하는 프라이빗 샵")
-//            .username("owner2")
-//            .image("images\\img_1.jpg")
-//            .gymName("[마포] 상암 엠베이스짐")
-//            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
-//            .ownerNumber("112A23C1")
-//            .region("서울 용산구 보광로 126")
-//            .openTime("[평   일] 09:00 ~ 23:00\n" +
-//                    "\n" +
-//                    "[토요일] 09:00 ~ 18:00\n" +
-//                    "\n" +
-//                    "[일요일]\n" +
-//                    "\n" +
-//                    "[휴무일] 공휴일,매주 일요일")
-//            .amenities("시설_1_2_3_4_5_6")
-//            .amenitiesDetail("편의시설 이용 정보\n" +
-//                    "무료\n" +
-//                    "주차 3시간 / 수건 / 운동복\n" +
-//                    "유료\n" +
-//                    "라커 : 월 10,000원")
-//            .build();
-//
-//    GymBoard gymBoard4 = GymBoard.GymBoard()
-//            .title("[인천]피트니스를 연구하는~ 연구소 용마루점")
-//            .content("안녕하세요," +
-//                    "\n" +
-//                    " 용마루점 입니다.\n" +
-//                    "\n" +
-//                    "★MY OWN FITNESS★\n" +
-//                    "\n" +
-//                    "당신의 건강파트너!\n" +
-//                    "\n" +
-//                    "■ 1:1 P.T만을 전문으로 하는 프라이빗 샵")
-//            .username("owner2")
-//            .image("images\\img_3.jpg")
-//            .gymName("피트니스연구소 용마루점")
-//            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
-//            .ownerNumber("112A23C1")
-//            .region("인천 미추홀구 인주대로 68")
-//            .openTime("[평   일] 06:00 ~ 22:00\n" +
-//                    "\n" +
-//                    "[토요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[일요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[휴무일] 매달 셋째주 일요일")
-//            .amenities("시설_3_6")
-//            .amenitiesDetail("편의시설 이용 정보\n" +
-//                    "무료\n" +
-//                    "주차 3시간 / 수건 / 운동복            \n" +
-//                    "유료\n" +
-//                    "라커 : 월 10,000원")
-//            .build();
-//
-//    GymBoard gymBoard5 = GymBoard.GymBoard()
-//            .title("명현만멀티짐")
-//            .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
-//                    "많이 찾아와주시기 바랍니다.~" +
-//                    "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
-//                    "모두 화이팅")
-//            .username("owner2")
-//            .image("images\\T_exe.jpg")
-//            .gymName("명현만멀티짐")
-//            .price("시설비용_1_21000_2_40000_4_80000_5_100000.트레이닝_1_21000_2_40000")
-//            .ownerNumber("112A23C1")
-//            .region("인천 연수구 앵고개로246번길 3")
-//            .openTime("[평   일] 06:00 ~ 22:00\n" +
-//                    "\n" +
-//                    "[토요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[일요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[휴무일] 매달 셋째주 일요일")
-//            .amenities("시설_1_3_6")
-//            .amenitiesDetail("편의시설 이용 정보\n" +
-//                    "무료\n" +
-//                    "주차 3시간 / 수건 / 운동복            \n" +
-//                    "유료\n" +
-//                    "라커 : 월 10,000원")
-//            .build();
-//
-//    GymBoard gymBoard6 = GymBoard.GymBoard()
-//            .title("휩스휘트니스클럽")
-//            .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
-//                    "많이 찾아와주시기 바랍니다.~" +
-//                    "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
-//                    "모두 화이팅")
-//            .username("owner2")
-//            .image("images\\img_4.jpg")
-//            .gymName("휩스휘트니스클럽")
-//            .price("시설비용_1_21000_2_40000_4_80000_5_100000.트레이닝_1_21000_2_40000")
-//            .ownerNumber("112A23C1")
-//            .region("대전 유성구 문화원로 101")
-//            .openTime("[평   일] 06:00 ~ 22:00\n" +
-//                    "\n" +
-//                    "[토요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[일요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[휴무일] 매달 셋째주 일요일")
-//            .amenities("시설_1_2_3_4_5_6")
-//            .amenitiesDetail("편의시설 이용 정보\n" +
-//                    "무료\n" +
-//                    "주차 3시간 / 수건 / 운동복            \n" +
-//                    "유료\n" +
-//                    "라커 : 월 10,000원")
-//            .build();
-//    GymBoard gymBoard7 = GymBoard.GymBoard()
-//            .title("랩스 유성온천점")
-//            .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
-//                    "많이 찾아와주시기 바랍니다.~" +
-//                    "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
-//                    "모두 화이팅")
-//            .username("owner2")
-//            .image("images\\noImage.PNG")
-//            .gymName("랩스 유성온천점")
-//            .price("시설비용_1_21000_2_40000_4_80000_5_100000.트레이닝_1_21000_2_40000")
-//            .ownerNumber("112A23C1")
-//            .region("대전 유성구 계룡로52번길 11")
-//            .openTime("[평   일] 06:00 ~ 22:00\n" +
-//                    "\n" +
-//                    "[토요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[일요일] 07:00 ~ 19:00\n" +
-//                    "\n" +
-//                    "[휴무일] 매달 셋째주 일요일")
-//            .amenities("시설_1_2_3_4_6")
-//            .amenitiesDetail("편의시설 이용 정보\n" +
-//                    "무료\n" +
-//                    "주차 3시간 / 수건 / 운동복            \n" +
-//                    "유료\n" +
-//                    "라커 : 월 10,000원")
-//            .build();
-//    gymBoardRepository.save(gymBoard3);
-//    gymBoardRepository.save(gymBoard4);
-//    gymBoardRepository.save(gymBoard5);
-//    gymBoardRepository.save(gymBoard2);
-//    gymBoardRepository.save(gymBoard1);
-//    gymBoardRepository.save(gymBoard6);
-//    gymBoardRepository.save(gymBoard7);
-//    // ----------------
-//
-//
-//    //운동시설 후기 등록
-//    GymReview gymReview1 = GymReview.builder()
-//            .gymId(1L)
-//            .comment("여기 정말 별로에여")
-//            .username("member2")
-//            .rating(1L)
-//            .build();
-//
-//    GymReview gymReview2 = GymReview.builder()
-//            .gymId(2L)
-//            .comment("여기 정말 트레이너분도 친절하고 좋네요")
-//            .username("member2")
-//            .rating(5L)
-//            .build();
-//
-//    GymReview gymReview3 = GymReview.builder()
-//            .gymId(2L)
-//            .comment("여기 정말좋아여 많이들 오세요")
-//            .username("member1")
-//            .rating(4L)
-//            .build();
-//
-//    GymReview gymReview4 = GymReview.builder()
-//            .gymId(2L)
-//            .comment("여기 좋은가여 많이들 오지마세여 좋지 못해여")
-//            .username("member2")
-//            .rating(1L)
-//            .build();
-//
-//    GymReview gymReview5 = GymReview.builder()
-//            .gymId(2L)
-//            .comment("그냥 평벙함? 그런느낌")
-//            .username("owner1")
-//            .rating(3L)
-//            .build();
-//    gymReviewRepository.save(gymReview1);
-//    gymReviewRepository.save(gymReview2);
-//    gymReviewRepository.save(gymReview3);
-//    gymReviewRepository.save(gymReview4);
-//    gymReviewRepository.save(gymReview5);
+    // 운동시설 등록
+
+    GymBoard gymBoard1 = GymBoard.GymBoard()
+            .title("[마포] 플라이번지 피트니스 - 다이어트와 근력운동, 바디밸런스까지 모두 잡을 수 있는 번지피트니스")
+            .content("안녕하세요,\n" +
+                    "\n" +
+                    "플라이번지 피트니스 입니다.\n" +
+                    "★MY OWN FITNESS★\n" +
+                    "\n" +
+                    "당신의 건강파트너!\n" +
+                    "\n" +
+                    "■ 번지코드의 탄성을 이용해 빠르고 정확하게 몸의 밸런스를 잡는 번지운동법\n" +
+                    "\n" +
+                    "■ 코어강화와 유산소를 동시에 할 수 있는 운동법")
+            .username("owner1")
+            .image("images\\img_5.jpg")
+            .gymName("[마포] 광흥창 플라이번지피트니스")
+            .ownerNumber("112A23B1")
+            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
+            .region("서울 마포구 토정로 192, 진영빌딩 지하 1층")
+            .openTime("[평   일] 09:00 ~ 22:00\n" +
+                    "[토요일] 09:00 ~ 22:00\n" +
+                    "[일요일] 09:00 ~ 22:00\n" +
+                    "[휴무일] 공휴일")
+            .amenities("시설_1_2_3_4_5")
+            .amenitiesDetail("편의시설 이용 정보\n" +
+                    "무료\n" +
+                    "주차 3시간 / 수건 / 운동복\n" +
+                    "유료\n" +
+                    "라커 : 월 10,000원")
+            .build();
+
+    GymBoard gymBoard2 = GymBoard.GymBoard()
+            .title("[마포] 상암 지플렉스 온핏 스마트짐 - 상암동 최대규모 900평대 헬스장")
+            .content("안녕하세요,\n" +
+                    "\n" +
+                    "상암 지플렉스 온핏 스마트짐 입니다.\n" +
+                    "\n" +
+                    "★MY OWN FITNESS★\n" +
+                    "\n" +
+                    "당신의 건강파트너!\n" +
+                    "\n" +
+                    "■ 상암동 최대규모 900평대 헬스장 온핏 지플렉스\n" +
+                    "\n" +
+                    "■ 개인별 운동처방! 맞춤형 프로그램\n" +
+                    "\n" +
+                    "■ 과학적이고 체계적인 시스템")
+            .username("owner2")
+            .image("images\\img_4.jpg")
+            .gymName("피트니스탑")
+            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
+            .ownerNumber("112A23C1")
+            .region("서울 마포구 매봉산로 31, 지하 2층")
+            .openTime("[평   일] 06:00 ~ 22:00\n" +
+                    "\n" +
+                    "[토요일] 07:00 ~ 19:00\n" +
+                    "\n" +"유료\n" +
+//                        "운동복 : 월 11,000원 / 라커 : 월 11,000원
+                    "[일요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[휴무일] 매달 셋째주 일요일")
+            .amenities("시설_1_2_3_4_5_6")
+            .amenitiesDetail("무료\n" +
+                    "주차 3시간 / 수건\n" +
+                    "\n" +
+                    "")
+            .build();
+
+    GymBoard gymBoard3 = GymBoard.GymBoard()
+            .title("[마포] 엠베이스짐 - 상암동 1:1 PT 전문으로 하는 프라이빗샵")
+            .content("안녕하세요,\n" +
+                    "\n" +
+                    "상암 엠베이스짐 입니다.\n" +
+                    "\n" +
+                    "★MY OWN FITNESS★\n" +
+                    "\n" +
+                    "당신의 건강파트너!\n" +
+                    "\n" +
+                    "■ 1:1 P.T만을 전문으로 하는 프라이빗 샵")
+            .username("owner2")
+            .image("images\\img_1.jpg")
+            .gymName("[마포] 상암 엠베이스짐")
+            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
+            .ownerNumber("112A23C1")
+            .region("서울 용산구 보광로 126")
+            .openTime("[평   일] 09:00 ~ 23:00\n" +
+                    "\n" +
+                    "[토요일] 09:00 ~ 18:00\n" +
+                    "\n" +
+                    "[일요일]\n" +
+                    "\n" +
+                    "[휴무일] 공휴일,매주 일요일")
+            .amenities("시설_1_2_3_4_5_6")
+            .amenitiesDetail("편의시설 이용 정보\n" +
+                    "무료\n" +
+                    "주차 3시간 / 수건 / 운동복\n" +
+                    "유료\n" +
+                    "라커 : 월 10,000원")
+            .build();
+
+    GymBoard gymBoard4 = GymBoard.GymBoard()
+            .title("[인천]피트니스를 연구하는~ 연구소 용마루점")
+            .content("안녕하세요," +
+                    "\n" +
+                    " 용마루점 입니다.\n" +
+                    "\n" +
+                    "★MY OWN FITNESS★\n" +
+                    "\n" +
+                    "당신의 건강파트너!\n" +
+                    "\n" +
+                    "■ 1:1 P.T만을 전문으로 하는 프라이빗 샵")
+            .username("owner2")
+            .image("images\\img_3.jpg")
+            .gymName("피트니스연구소 용마루점")
+            .price("시설비용_1_21000_2_40000_4_80000_5_100000")
+            .ownerNumber("112A23C1")
+            .region("인천 미추홀구 인주대로 68")
+            .openTime("[평   일] 06:00 ~ 22:00\n" +
+                    "\n" +
+                    "[토요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[일요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[휴무일] 매달 셋째주 일요일")
+            .amenities("시설_3_6")
+            .amenitiesDetail("편의시설 이용 정보\n" +
+                    "무료\n" +
+                    "주차 3시간 / 수건 / 운동복            \n" +
+                    "유료\n" +
+                    "라커 : 월 10,000원")
+            .build();
+
+    GymBoard gymBoard5 = GymBoard.GymBoard()
+            .title("명현만멀티짐")
+            .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                    "많이 찾아와주시기 바랍니다.~" +
+                    "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                    "모두 화이팅")
+            .username("owner2")
+            .image("images\\T_exe.jpg")
+            .gymName("명현만멀티짐")
+            .price("시설비용_1_21000_2_40000_4_80000_5_100000.트레이닝_1_21000_2_40000")
+            .ownerNumber("112A23C1")
+            .region("인천 연수구 앵고개로246번길 3")
+            .openTime("[평   일] 06:00 ~ 22:00\n" +
+                    "\n" +
+                    "[토요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[일요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[휴무일] 매달 셋째주 일요일")
+            .amenities("시설_1_3_6")
+            .amenitiesDetail("편의시설 이용 정보\n" +
+                    "무료\n" +
+                    "주차 3시간 / 수건 / 운동복            \n" +
+                    "유료\n" +
+                    "라커 : 월 10,000원")
+            .build();
+
+    GymBoard gymBoard6 = GymBoard.GymBoard()
+            .title("휩스휘트니스클럽")
+            .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                    "많이 찾아와주시기 바랍니다.~" +
+                    "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                    "모두 화이팅")
+            .username("owner2")
+            .image("images\\img_4.jpg")
+            .gymName("휩스휘트니스클럽")
+            .price("시설비용_1_21000_2_40000_4_80000_5_100000.트레이닝_1_21000_2_40000")
+            .ownerNumber("112A23C1")
+            .region("대전 유성구 문화원로 101")
+            .openTime("[평   일] 06:00 ~ 22:00\n" +
+                    "\n" +
+                    "[토요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[일요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[휴무일] 매달 셋째주 일요일")
+            .amenities("시설_1_2_3_4_5_6")
+            .amenitiesDetail("편의시설 이용 정보\n" +
+                    "무료\n" +
+                    "주차 3시간 / 수건 / 운동복            \n" +
+                    "유료\n" +
+                    "라커 : 월 10,000원")
+            .build();
+    GymBoard gymBoard7 = GymBoard.GymBoard()
+            .title("랩스 유성온천점")
+            .content("여러분 없는거좀 있지만 이번에 새로 개점한 피트니스에요" +
+                    "많이 찾아와주시기 바랍니다.~" +
+                    "게다가 이벤트도 개최중이니 많은참여 부탁드려요" +
+                    "모두 화이팅")
+            .username("owner2")
+            .image("images\\noImage.PNG")
+            .gymName("랩스 유성온천점")
+            .price("시설비용_1_21000_2_40000_4_80000_5_100000.트레이닝_1_21000_2_40000")
+            .ownerNumber("112A23C1")
+            .region("대전 유성구 계룡로52번길 11")
+            .openTime("[평   일] 06:00 ~ 22:00\n" +
+                    "\n" +
+                    "[토요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[일요일] 07:00 ~ 19:00\n" +
+                    "\n" +
+                    "[휴무일] 매달 셋째주 일요일")
+            .amenities("시설_1_2_3_4_6")
+            .amenitiesDetail("편의시설 이용 정보\n" +
+                    "무료\n" +
+                    "주차 3시간 / 수건 / 운동복            \n" +
+                    "유료\n" +
+                    "라커 : 월 10,000원")
+            .build();
+    gymBoardRepository.save(gymBoard3);
+    gymBoardRepository.save(gymBoard4);
+    gymBoardRepository.save(gymBoard5);
+    gymBoardRepository.save(gymBoard2);
+    gymBoardRepository.save(gymBoard1);
+    gymBoardRepository.save(gymBoard6);
+    gymBoardRepository.save(gymBoard7);
+    // ----------------
+
+
+    //운동시설 후기 등록
+    GymReview gymReview1 = GymReview.builder()
+            .gymId(1L)
+            .comment("여기 정말 별로에여")
+            .username("member2")
+            .rating(1L)
+            .build();
+
+    GymReview gymReview2 = GymReview.builder()
+            .gymId(2L)
+            .comment("여기 정말 트레이너분도 친절하고 좋네요")
+            .username("member2")
+            .rating(5L)
+            .build();
+
+    GymReview gymReview3 = GymReview.builder()
+            .gymId(2L)
+            .comment("여기 정말좋아여 많이들 오세요")
+            .username("member1")
+            .rating(4L)
+            .build();
+
+    GymReview gymReview4 = GymReview.builder()
+            .gymId(2L)
+            .comment("여기 좋은가여 많이들 오지마세여 좋지 못해여")
+            .username("member2")
+            .rating(1L)
+            .build();
+
+    GymReview gymReview5 = GymReview.builder()
+            .gymId(2L)
+            .comment("그냥 평벙함? 그런느낌")
+            .username("owner1")
+            .rating(3L)
+            .build();
+    gymReviewRepository.save(gymReview1);
+    gymReviewRepository.save(gymReview2);
+    gymReviewRepository.save(gymReview3);
+    gymReviewRepository.save(gymReview4);
+    gymReviewRepository.save(gymReview5);
+    for(int i=0; i<30;i++){
+
+      GymReview gymReviews = GymReview.builder()
+              .gymId((long) (i % 4))
+              .comment("그냥 평벙함? 그런느낌")
+              .username("member"+i%15)
+              .rating((long) (i % 4 +1))
+              .build();
+      gymReviewRepository.save(gymReviews);
+    }
 
   }
 }

@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.controller;
 
 
 import com.amazonaws.services.workdocs.model.CreateCommentRequest;
+import com.team.final8teamproject.aop.Timer;
 import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
@@ -66,7 +67,7 @@ public class T_exerciseController {
 
     //오운완 전체 게시물 조회
     @GetMapping("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
-    public T_exerciseServiceImple.Result getAllT_exerciseBoards(
+    public T_exerciseServiceImple.Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "6") Integer size,//나중에 10
             @RequestParam(value = "isAsc", required = false, defaultValue = "false") Boolean isAsc,
@@ -79,8 +80,8 @@ public class T_exerciseController {
 
     //오운완 선택 게시물 조회
     @GetMapping("/selectboard/{boardId}")
+    @Timer
     public T_exerciseBoardResponseDTO getT_exerciseBoard(@PathVariable Long boardId) {
-
         return t_exerciseService.getT_exerciseBoard(boardId);
     }
 

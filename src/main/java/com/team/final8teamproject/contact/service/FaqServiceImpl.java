@@ -72,6 +72,7 @@ public class FaqServiceImpl implements FaqService {
     String answer = keyword;
     Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
         answer, PageRequest.of(page - 1, size, direction, properties));
+
     int totalCount = (int) faqListPage.getTotalElements();
     if (faqListPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
@@ -87,37 +88,36 @@ public class FaqServiceImpl implements FaqService {
     if (totalPage < page) {
       page = totalPage;
     }
+
     return new Result(page, totalCount, countPage, totalPage, faqResponses);
   }
-
 
   @Override
   public void updateFaq(Long id, Long managerId, UpdateFaqRequest updateFaqRequest) {
     String question = updateFaqRequest.getQuestion();
     String answer = updateFaqRequest.getAnswer();
-
-    Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
-    );
+    Faq faq = findByFaqId(id);
     faq.isWriter(managerId);
     faq.update(question, answer);
     faqRepository.save(faq);
-
   }
 
   @Override
   public void deleteFaq(Long id, Long managerId) {
-    Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
-    );
+    Faq faq = findByFaqId(id);
     faq.isWriter(managerId);
     faqRepository.delete(faq);
+  }
+
+  private Faq findByFaqId(Long id){
+    return faqRepository.findById(id).orElseThrow(
+            () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
+    );
   }
 
   @Getter
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class Result<T> {
-
     private int page;
     private int totalCount;
     private int countPage;

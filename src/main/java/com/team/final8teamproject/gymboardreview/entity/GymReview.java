@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GymReview extends Timestamped {
     @Id
-    @Column
+    @Column(name = "GymReview_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;

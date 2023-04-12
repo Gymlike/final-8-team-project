@@ -1,5 +1,6 @@
 package com.team.final8teamproject.gymboard.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team.final8teamproject.share.Timestamped;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class GymPrice extends Timestamped {
     @Column(nullable = false)
     private String gymId;
     @Column(nullable = false)
+    @JsonIgnore
     private String username;
 
     /**

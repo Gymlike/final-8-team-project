@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,18 +34,10 @@ public class GymPostServiceImpl implements GymPostService {
     public String createGymPost(CreatePostGymRequestDto requestDto,
                                 String imgUrl,
                                 String username){
-        GymBoard gymBoard = GymBoard.GymBoard()
-                .title(requestDto.getTitle())
-                .content(requestDto.getContents())
+        GymBoard gymBoard = GymBoard.CreateGymBoard()
+                .requestDto(requestDto)
+                .imgUrl(imgUrl)
                 .username(username)
-                .image(imgUrl)
-                .gymName(requestDto.getGymName())
-                .ownerNumber(requestDto.getOwnerNumber())
-                .region(requestDto.getRegion())
-                .price(requestDto.getPrice())
-                .openTime(requestDto.getOpenTime())
-                .amenitiesDetail(requestDto.getAmenitiesDetail())
-                .amenities(requestDto.getAmenities())
                 .build();
         gymBoardRepository.save(gymBoard);
         return "등록 완료";
@@ -64,7 +58,7 @@ public class GymPostServiceImpl implements GymPostService {
     //3. 작성된 운동시설 보여주기
     @Override
     public Result<List<GymPostResponseDto>> getGymPost(Pageable pageRequest, String search, Integer size, Integer page) {
-        Page<GymBoard> gymBoards = gymBoardRepository.findByTitleContainingIgnoreCase(search, pageRequest);
+        Page<GymBoard> gymBoards = gymBoardRepository.findByTitleContainingIgnoreCaseAndInLiveTrue(search, pageRequest);
         int totalCount = (int) gymBoards.getTotalElements();
         Long countList = size.longValue();
         int countPage = 5;//리펙토링때 10으로변경합세!
@@ -98,7 +92,7 @@ public class GymPostServiceImpl implements GymPostService {
     }
     //5. 자기가 작성한 운동시설 전부 조회
     @Override
-    public List<GymBoardviewResponseDto> getAllGymPost(int pageChoice, String username){
+    public List<GymBoardviewResponseDto> getAllGymPosts(int pageChoice, String username){
         Page<GymBoard> gymBoards = gymBoardRepository.findByUsername(pageableGymPostSetting(pageChoice),username);
         return gymBoards.stream().map(GymBoardviewResponseDto::new).collect(Collectors.toList());
     }
@@ -129,8 +123,11 @@ public class GymPostServiceImpl implements GymPostService {
         GymBoard gymBoard = gymBoardRepository.findByIdAndUsername(id, username).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        gymBoardRepository.deleteById(gymBoard.getId());
-        gymReviewRepository.deleteByGymId(gymBoard.getId());
+        if(gymBoard.isInLive()){
+            gymBoard.changeLive(false);
+        }
+//        gymBoardRepository.deleteById(gymBoard.getId());
+//        gymReviewRepository.deleteByGymId(gymBoard.getId());
         return "삭제완료";
     }
 
@@ -174,7 +171,7 @@ public class GymPostServiceImpl implements GymPostService {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Result<T> {
+    public static class Result<T> implements Serializable {
         private int page;
         private int totalCount;
         private int countPage;
