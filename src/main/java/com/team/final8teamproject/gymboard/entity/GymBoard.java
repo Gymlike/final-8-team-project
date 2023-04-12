@@ -112,32 +112,40 @@ public class GymBoard extends Timestamped {
     }
 
     public void update(GymUpdateRequestDto requestDto, String imageUrl) {
-        if (requestDto.getTitle() != null && !requestDto.getTitle().isEmpty()) {
+        
+        /*
+        requestDto.getTitle() != null && !requestDto.getTitle().isEmpty()
+        로 되어있던걸 나중에 변경해야한다면 유지보수시 수정하기 쉽게 메소드로 다빼서 변경함
+         */
+        if (notNullNotEmpty(requestDto.getTitle())) {
             updateTitle(requestDto.getTitle());
         }
-        if (requestDto.getContent() != null && !requestDto.getContent().isEmpty()) {
+        if (notNullNotEmpty(requestDto.getContent())) {
             updateContent(requestDto.getContent());
         }
-        if (requestDto.getRegion() != null && !requestDto.getRegion().isEmpty()) {
+        if (notNullNotEmpty(requestDto.getRegion())) {
             updateRegion(requestDto.getRegion());
         }
-        if (requestDto.getGymName() != null && !requestDto.getGymName().isEmpty()) {
+        if (notNullNotEmpty(requestDto.getGymName())) {
             updateGymName(requestDto.getGymName());
         }
-        if (imageUrl != null && !imageUrl.isEmpty()) {
+        if (notNullNotEmpty(imageUrl)) {
             updateImageUrl(imageUrl);
         }
-        if (requestDto.getOpenTime() != null && !requestDto.getOpenTime().isEmpty()) {
+        if (notNullNotEmpty(requestDto.getOpenTime())) {
             updateOpenTime(requestDto.getOpenTime());
         }
-        if (requestDto.getAmenitiesDetail() != null && !requestDto.getAmenitiesDetail().isEmpty()) {
+        if (notNullNotEmpty(requestDto.getAmenitiesDetail())){
             updateAmenitiesDetail(requestDto.getAmenitiesDetail());
         }
-        if (requestDto.getAmenities() != null && !requestDto.getAmenities().isEmpty()) {
+        if (notNullNotEmpty(requestDto.getAmenities())) {
             updateAmenities(requestDto.getAmenities());
         }
     }
 
+    private boolean notNullNotEmpty(String vaild){
+        return vaild != null && !vaild.isEmpty();
+    }
     public void changeLive(boolean live){
         updateInLive(live);
     }
