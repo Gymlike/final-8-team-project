@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
+
     @Bean
     public GroupedOpenApi texe(){
         return GroupedOpenApi.builder()
@@ -85,7 +86,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi user(){
         return GroupedOpenApi.builder()
-                .group("공지사항")
+                .group("유저")
                 .pathsToMatch("/api/user/**")
                 .build();
     }

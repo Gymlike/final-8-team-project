@@ -1,7 +1,6 @@
 package com.team.final8teamproject.board.service;
 
 
-
 import com.amazonaws.services.workdocs.model.CreateCommentRequest;
 import com.team.final8teamproject.board.comment.commentReply.dto.T_exerciseCommentReplyResponseDTO;
 
@@ -21,6 +20,7 @@ import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
 
 import com.team.final8teamproject.user.service.UserService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class T_exerciseServiceImple  implements  T_exerciseService {
+public class T_exerciseServiceImple implements T_exerciseService {
     private final T_exerciseRepository t_exerciseRepository;
     private final T_exerciseCommentService tExerciseCommentService;
     private final T_exerciseLikeService tExerciseLikeService;
@@ -52,10 +52,10 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
     /**
      * 오운완 게시물 생성
      *
-     * @param title   제목
-     * @param content 내용
-     * @param imageUrl    이게 올릴 이미지임..!
-     * @param user    관계를 맺기 위해 ~ 인증된 객체 꺼내옴
+     * @param title    제목
+     * @param content  내용
+     * @param imageUrl 이게 올릴 이미지임..!
+     * @param user     관계를 맺기 위해 ~ 인증된 객체 꺼내옴
      * @return http status
      * @throws NullPointerException ?
      * @throws IOException          ?
@@ -140,63 +140,64 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
         Long countLike = tExerciseLikeService.countLike(boardId);
         String userNickname = userService.getUserNickname(t_exercise.getUser());
 
-        return new T_exerciseBoardResponseDTO(countLike, t_exercise, commentFilter,userNickname);
+        return new T_exerciseBoardResponseDTO(countLike, t_exercise, commentFilter, userNickname);
     }
 
 
     /**
      * 작성자만 오운완 게시글 삭제가능!
+     *
      * @param boardId 게시글아이디ㅣ
-     * @param base  삭제요청을한 유저
+     * @param base    삭제요청을한 유저
      * @return status
      */
     @Override
     @Transactional
-        public ResponseEntity<String> deletePost(Long boardId, BaseEntity base){
-            T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-            if (t_exercise.isWriter(base.getId())) {
-                t_exerciseRepository.deleteById(boardId);
-                tExerciseCommentService.deleteByBoardId(boardId);
-                return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
-            } else {
-                throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
-            }
-        }
-
-        /**
-         * 오운완 게시물 수정
-         * @param boardId  게시물id
-         * @param creatTExerciseBordRequestDTO 수정할 내용이 담겨있음
-         * @param user  수정을 요청한 유저
-         * @param imageUrl 들어갈 이미지~
-         * @return status
-         * @throws IOException ?
-         */
-        @Override
-        @Transactional
-        public ResponseEntity<String> editPost(Long boardId,
-                                               CreatBordRequestDTO creatTExerciseBordRequestDTO,
-                                               BaseEntity user,
-                                               String imageUrl) throws IOException
-        {
-            T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
-
-            if (t_exercise.isWriter(user.getId())) {
-
-                String content = creatTExerciseBordRequestDTO.getContent();
-                String title = creatTExerciseBordRequestDTO.getTitle();
-
-                t_exercise.editSalePost(title, content,imageUrl);
-                return new ResponseEntity<>("게시물 수정 완료", HttpStatus.OK);
-
-            }
+    public ResponseEntity<String> deletePost(Long boardId, BaseEntity base) {
+        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+        if (t_exercise.isWriter(base.getId())) {
+            t_exerciseRepository.deleteById(boardId);
+            tExerciseCommentService.deleteByBoardId(boardId);
+            return new ResponseEntity<>("게시글 삭제 완료했습니다", HttpStatus.OK);
+        } else {
             throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
         }
+    }
 
-        @Override
-        public T_exercise findT_exerciseBoardById (Long id){
-            return t_exerciseRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+    /**
+     * 오운완 게시물 수정
+     *
+     * @param boardId                      게시물id
+     * @param creatTExerciseBordRequestDTO 수정할 내용이 담겨있음
+     * @param user                         수정을 요청한 유저
+     * @param imageUrl                     들어갈 이미지~
+     * @return status
+     * @throws IOException ?
+     */
+    @Override
+    @Transactional
+    public ResponseEntity<String> editPost(Long boardId,
+                                           CreatBordRequestDTO creatTExerciseBordRequestDTO,
+                                           BaseEntity user,
+                                           String imageUrl) throws IOException {
+        T_exercise t_exercise = t_exerciseRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+
+        if (t_exercise.isWriter(user.getId())) {
+
+            String content = creatTExerciseBordRequestDTO.getContent();
+            String title = creatTExerciseBordRequestDTO.getTitle();
+
+            t_exercise.editSalePost(title, content, imageUrl);
+            return new ResponseEntity<>("게시물 수정 완료", HttpStatus.OK);
+
         }
+        throw new CustomException(ExceptionStatus.WRONG_SELLER_ID_T0_BOARD);
+    }
+
+    @Override
+    public T_exercise findT_exerciseBoardById(Long id) {
+        return t_exerciseRepository.findById(id).orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
+    }
 
     @Override
     public List<T_exerciseBoardResponseDTO> getTop3PostByLike() {
@@ -204,20 +205,19 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
         List<T_exerciseBoardResponseDTO> top3Post = new ArrayList<>();
 
 
-        HashMap<T_exercise,Long> postSortByLike = new HashMap();
-        ValueComparator bvc =  new ValueComparator(postSortByLike);
-        TreeMap<T_exercise,Long> sorted_map = new TreeMap<>(bvc);
-
+        HashMap<T_exercise, Long> postSortByLike = new HashMap();
+        ValueComparator bvc = new ValueComparator(postSortByLike);
+        TreeMap<T_exercise, Long> sorted_map = new TreeMap<>(bvc);
 
 
         for (T_exercise exercise : exercises) {
             Long boardId = exercise.returnPostId();
             Long countLike = tExerciseLikeService.countLike(boardId);
-            postSortByLike.put(exercise,countLike);
+            postSortByLike.put(exercise, countLike);
         }
         sorted_map.putAll(postSortByLike);
 
-        int count =0;
+        int count = 0;
         for (Map.Entry<T_exercise, Long> tExerciseLongEntry : sorted_map.entrySet()) {
             T_exercise exercise = tExerciseLongEntry.getKey();
 
@@ -233,7 +233,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
             T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
             top3Post.add(dto);
             count++;
-            if (count==3){
+            if (count == 3) {
                 break;
             }
         }
@@ -241,22 +241,30 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
     }
 
     @Getter
-        @NoArgsConstructor(access = AccessLevel.PROTECTED)
-        public static class Result<T> {
-            private int page;
-            private int totalCount;
-            private int countPage;
-            private int totalPage;
-            private T data;
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Schema(description = "게시글 조회시 반환 dto")
+    public static class Result<T> {
+        @Schema(description = "페이지 번호", example = "2")
+        private int page;
+        @Schema(description = "총 가지고온 게시글의 수", example = "6")
+        private int totalCount;
 
-            public Result(int page, int totalCount, int countPage, int totalPage, T data) {
-                this.page = page;
-                this.totalCount = totalCount;
-                this.countPage = countPage;
-                this.totalPage = totalPage;
-                this.data = data;
-            }
+        @Schema(description = "한페이지에 표현할 게시글 수 ", example = "3")
+        private int countPage;
+        @Schema(description = "총 만들어진 페이지 수  ", example = "2")
+        private int totalPage;
+
+        @Schema(description = "게시글 ", example = "{제목,작성일자,내용,댓글,대댓글..등}")
+        private T data;
+
+        public Result(int page, int totalCount, int countPage, int totalPage, T data) {
+            this.page = page;
+            this.totalCount = totalCount;
+            this.countPage = countPage;
+            this.totalPage = totalPage;
+            this.data = data;
         }
+    }
 //    private LinkedHashMap<T_exercise, Long> sortMapByValue(Map<T_exercise, Long> map) {
 //        List<Map.Entry<T_exercise, Long>> entries = new LinkedList<>(map.entrySet());
 //        entries.sort(Map.Entry.comparingByValue());
@@ -267,7 +275,7 @@ public class T_exerciseServiceImple  implements  T_exerciseService {
 //        }
 //        return result;
 
-  private class ValueComparator implements Comparator<T_exercise> {
+    private class ValueComparator implements Comparator<T_exercise> {
 
         Map<T_exercise, Long> base;
 
