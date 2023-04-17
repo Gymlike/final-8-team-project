@@ -40,7 +40,7 @@ public class ContactCommentController {
   }
 
 
-  //댓글 수정
+  //댓글 수정//
   @PutMapping("/{id}/inquiry")
   public ResponseEntity updateInquiryComment(
       @PathVariable Long id,
