@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -79,6 +80,7 @@ public class T_exerciseServiceImple implements T_exerciseService {
      * @param search      게시물 검색시 들어갈 값.. 디폴트값을 ""로해서 입력x시 전체 게시물 검색
      * @return 리스트로 반환
      */
+    @Cacheable(value ="t-exercise")
     @Override
     public Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page) {
         Page<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
