@@ -15,6 +15,7 @@ import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
 import com.team.final8teamproject.board.comment.dto.T_exerciseCommentResponseDTO;
 import com.team.final8teamproject.board.comment.entity.T_exerciseComment;
+import com.team.final8teamproject.redis.cache.CacheNames;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
@@ -26,6 +27,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -78,7 +80,7 @@ public class T_exerciseServiceImple implements T_exerciseService {
      * @return 리스트로 반환
      */
     @Override
-    public Result getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page) {
+    public Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page) {
         Page<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
         int totalCount = (int) tExerciseList.getTotalElements();
         Long countList = size.longValue();
@@ -105,7 +107,10 @@ public class T_exerciseServiceImple implements T_exerciseService {
             String username = t_exercise.getUser().getUsername();
             String nickName = userService.getUserNickname(t_exercise.getUser());
 
-            T_exerciseBoardResponseDTO dto = new T_exerciseBoardResponseDTO(countLike, boardId, title, content, imageUrl, modifiedDate, username, nickName);
+            T_exerciseBoardResponseDTO dto =
+                    new T_exerciseBoardResponseDTO(countLike,
+                            boardId, title, content, imageUrl,
+                            modifiedDate, username, nickName);
             boardResponseDTO.add(dto);
         }
         return new Result(page, totalCount, countPage, totalPage, boardResponseDTO);
@@ -120,6 +125,7 @@ public class T_exerciseServiceImple implements T_exerciseService {
      * @return DTO에 담아서 반환
      */
     @Override
+    @Cacheable(cacheNames = CacheNames.SELECTEXCERISE, key = "'selectT'+#p0", unless = "#result == null")
     public T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId) {
         T_exercise t_exercise = t_exerciseRepository.findById(boardId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST));
@@ -256,6 +262,7 @@ public class T_exerciseServiceImple implements T_exerciseService {
 
         @Schema(description = "게시글 ", example = "{제목,작성일자,내용,댓글,대댓글..등}")
         private T data;
+
 
         public Result(int page, int totalCount, int countPage, int totalPage, T data) {
             this.page = page;

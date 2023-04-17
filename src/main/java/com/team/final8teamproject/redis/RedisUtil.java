@@ -15,7 +15,6 @@ public class RedisUtil {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-
     public void setRefreshToken(String key, String o, Long minutes) {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(o.getClass()));
         redisTemplate.opsForValue().set(key, o, minutes, TimeUnit.MINUTES);

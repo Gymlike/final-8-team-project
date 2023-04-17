@@ -1,7 +1,9 @@
 package com.team.final8teamproject.gymboardreview.dto;
 
 import com.team.final8teamproject.gymboard.entity.GymBoard;
+import lombok.Getter;
 
+@Getter
 public class GymBoardviewResponseDto {
 
     private Long id;

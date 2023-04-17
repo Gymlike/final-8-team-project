@@ -15,11 +15,6 @@ import lombok.NoArgsConstructor;
 @Entity(name = "Manager")
 public class Manager extends BaseEntity {
     private String profileImage;
-//
-//    @Column(nullable = false)
-//    private String nickName;
-
-    //    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)

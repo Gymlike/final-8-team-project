@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 public class Trainer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column
+    @Column(name = "Trainer_ID")
     private Long id;
 
     @Column(nullable = false)

@@ -45,7 +45,19 @@ public class CacheConfiguration {
                                         .fromSerializer(new JdkSerializationRedisSerializer())
                         )
         );
+        redisCacheConfigMap.put(
+                CacheNames.LOGINUSER,
+                defaultConfig.entryTtl(Duration.ofHours(2))
+        );
 
+        redisCacheConfigMap.put(
+                CacheNames.SELECTEXCERISE,
+                defaultConfig.entryTtl(Duration.ofHours(2))
+        );
+        redisCacheConfigMap.put(
+                CacheNames.ALLEXCERCIES,
+                defaultConfig.entryTtl(Duration.ofHours(2))
+        );
         redisCacheConfigMap.put(
                 CacheNames.THREAD,
                 defaultConfig.entryTtl(Duration.ofHours(4))

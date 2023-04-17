@@ -24,6 +24,7 @@ spring:
         default_batch_fetch_size: 100
         jdbc:
           batch_size: 30
+
 # h2
   datasource:
     driver-class-name: org.h2.Driver
@@ -54,12 +55,10 @@ spring:
 
 
   # H2 Setting Info (H2 Console에 접속하기 위한 설정정보 입력)
-  #  h2:
-  #    console:
-  #      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
-  #      path: /h2-console  # H2 Console의 Path
-
-
+#  h2:
+#    console:
+#      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
+#      path: /h2-console  # H2 Console의 Path
 
   # Mysql 설정(RDS )
 #  datasource:
@@ -68,6 +67,36 @@ spring:
 #    username: admin
 #    password: 8teamadmin
 
+# Actuator
+management:
+  endpoint:
+    metrics:
+      enabled : true
+    prometheus:
+      enabled: true
+
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health, metrics, prometheus, info
+        # exclude: env은 Actuator 엔드포인트 중에서 "env"를 제외하겠다는 의미입니다.
+        # "env" 엔드포인트는 애플리케이션의 환경 변수를 보여주는 엔드포인트이며,
+        # 보안상의 이유로 기본적으로 제외되어 있습니다.
+        # 굳이 해둔이유는 누군가
+        # include를 "*"로 바꾸었을때를 위한 대비입니다.
+        exclude: env
+
+  metrics:
+    tags:
+      application: Final8TeamProjectApplication
+
+
+logging:
+  level:
+    com.example.myapp: DEBUG
+
+#이메일보내는것 설정
 
 mail:
   smtp:
@@ -88,6 +117,7 @@ AdminMail:
 jwt:
   secret:
     key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+
 
 springdoc:
   override-with-generic-response: false
