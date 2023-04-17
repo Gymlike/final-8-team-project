@@ -35,11 +35,8 @@ public class ContactComment extends Timestamped {
   private Long id;
   @Column(nullable = false)
   private String comments;
-
   @Column(nullable = false)
   private String username;
-
-
   @Column(nullable = false)
   private Long inquiryId;
   @Column(nullable = false)
@@ -78,9 +75,6 @@ public class ContactComment extends Timestamped {
     this.parent = parent;
   }
 
-  public void setDepth(int depth) {
-    this.depth = depth;
-  }
 
   public void isInquiryId(Long inquiryId) {
     if (!this.inquiryId.equals(inquiryId)) {
