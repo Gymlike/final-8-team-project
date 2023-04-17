@@ -80,6 +80,8 @@ public class T_exerciseController {
             @ApiResponse(responseCode = "400", description = "클라에러"),
             @ApiResponse(responseCode = "500", description = "서버에러")
     })
+
+
     //오운완 전체 게시물 조회
     @GetMapping("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
     public T_exerciseServiceImple.Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(

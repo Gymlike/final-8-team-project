@@ -17,6 +17,13 @@ import java.util.Map;
 @Configuration
 public class CacheConfiguration {
 
+
+
+
+
+
+
+
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration defaultConfig
@@ -64,6 +71,10 @@ public class CacheConfiguration {
         );
         redisCacheConfigMap.put(
                 CacheNames.CHANNELS,
+                defaultConfig.entryTtl(Duration.ofHours(4))
+        );
+        redisCacheConfigMap.put(
+                CacheNames.GETBOARD,
                 defaultConfig.entryTtl(Duration.ofHours(4))
         );
 

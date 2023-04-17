@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.io.Serializable;
+
 
 @Entity
 @Getter
@@ -31,7 +33,7 @@ title에 인덱스를 적용시켜서 성능을 비교하였을때 더 좋았습
 인덱스를 적용한것이 더 좋았습니다.
 
  */
-public class T_exercise extends Timestamped {
+public class T_exercise extends Timestamped implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
