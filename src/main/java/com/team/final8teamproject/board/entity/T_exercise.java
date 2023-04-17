@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.base.entity.BaseEntity;
 
@@ -9,11 +10,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
-import java.io.Serializable;
 
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,7 +32,7 @@ title에 인덱스를 적용시켜서 성능을 비교하였을때 더 좋았습
 인덱스를 적용한것이 더 좋았습니다.
 
  */
-public class T_exercise extends Timestamped implements Serializable {
+public class T_exercise extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
