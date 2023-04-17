@@ -78,7 +78,7 @@ public class InquiryServiceImpl implements InquiryService {
   public InquiryResponse getSelectedInquiry(Long id, String nickName, UserRoleEnum role) {
     Inquiry inquiry = findById(id);
     if (inquiry.getSecret()) {
-        // 건당 조회시 작성자 닉네임이 보이기위해 이것만 nickName 으로 
+        // 건당 조회시 작성자 닉네임이 보이기위해 이것만 nickName 으로
       if (inquiry.isNickName(nickName) || role.equals(UserRoleEnum.MANAGER)) {
         //부모댓글를 조회하면 자식댓글도 함께 조회 됨
         List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(

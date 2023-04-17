@@ -88,9 +88,10 @@ public class JwtUtil {
      * @param role 발행 유저 권한
      * @return TokenResponseDto : 토큰을 담아 반환할 DTO
      */
-    public TokenResponseDto reissueAtk(String username, UserRoleEnum role) {
+    public TokenResponseDto reissueAtk(String username, UserRoleEnum role,
+                                       String token) {
         //if로 지금 들어온 엑세스 토큰이 전의 엑세스 토큰인지 아닌지 확인
-        if (redisUtil.hasKey(username)) throw new CustomException(ExceptionStatus.AUTHENTICATION);
+        if (!redisUtil.getRefreshToken(username).equals(token)) throw new CustomException(ExceptionStatus.AUTHENTICATION);
         String accessToken = createToken(username, role, ACCESS_TOKEN_TIME);
         String refreshToken = createToken(username, role, REFRESH_TOKEN_EXPIRE_TIME);
         redisUtil.setRefreshToken(username, refreshToken, REFRESH_TOKEN_EXPIRE_TIME);

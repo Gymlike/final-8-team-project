@@ -25,7 +25,6 @@ public class OwnerSignupRequestDto {
     @Email
     private String email;
     private String storeName;
-
     private String b_no;
     private String start_dt;
     private String p_nm;

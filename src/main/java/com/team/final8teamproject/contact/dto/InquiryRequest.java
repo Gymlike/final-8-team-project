@@ -17,18 +17,12 @@ public class InquiryRequest {
   private final String content;
   private boolean secret; // 비밀글 유무
 
-
-
-
-
   @Builder
   public InquiryRequest(String title, String content,Boolean secret) {
     this.title = title;
     this.content = content;
     this.secret = secret;
-
   }
-
 
   public Inquiry toEntity(String username,String nickName) {
     return Inquiry.builder()

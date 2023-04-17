@@ -20,6 +20,9 @@ public class ExecutionTimer {
     @Pointcut("@annotation(com.team.final8teamproject.aop.Timer)")
     private void timer(){}
 
+    // 패키지의 Controller 라는 이름으로 끝나는 패키지에 모두 적용 (매서드만)
+    @Pointcut("within(*..*Controller)")
+    private void cut(){}
     // 메서드 전 후로 시간 측정 시작하고 멈추려면 Before,
     // AfterReturning으로는 시간을 공유 할 수가 없음 Around 사용!
     @Around("timer()")
