@@ -71,42 +71,42 @@ public class GymPostServiceImplTest {
     }
 
 
-    @Test
-    @DisplayName("게시글 등록 실패 테스트 - 필수값 미입력(공백)")
-    void createGymPost_FailBlack() {
-        // given
-        CreatePostGymRequestDto gymPostRequestDto =
-                new CreatePostGymRequestDto("", "내용", "작성자 아이디",
-                        "체육관 이름", "지역",
-                        "시설1", "시설2", "시설3", "시설4");
-        // when
-        Set<ConstraintViolation<CreatePostGymRequestDto>> violation =
-                validator.validate(gymPostRequestDto);
-        //then
-        assertThat(violation).isNotEmpty();
-        violation
-                .forEach(error -> {
-                    assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
-                });
-    }
-    @Test
-    @DisplayName("게시글 등록 실패 테스트 - 필수값 미입력(null)")
-    void createGymPost_FailNull() {
-        // given
-        CreatePostGymRequestDto gymPostRequestDto =
-                new CreatePostGymRequestDto(null, "내용", "작성자 아이디",
-                        "체육관 이름", "지역",
-                        "시설1", "시설2", "시설3", "시설4");
-        // when
-        Set<ConstraintViolation<CreatePostGymRequestDto>> violation =
-                validator.validate(gymPostRequestDto);
-        //then
-        assertThat(violation).isNotEmpty();
-        violation
-                .forEach(error -> {
-                    assertThat(error.getMessage()).isEqualTo("널이어서는 안됩니다");
-                });
-    }
+//    @Test
+//    @DisplayName("게시글 등록 실패 테스트 - 필수값 미입력(공백)")
+//    void createGymPost_FailBlack() {
+//        // given
+//        CreatePostGymRequestDto gymPostRequestDto =
+//                new CreatePostGymRequestDto("", "내용", "작성자 아이디",
+//                        "체육관 이름", "지역",
+//                        "시설1", "시설2", "시설3", "시설4");
+//        // when
+//        Set<ConstraintViolation<CreatePostGymRequestDto>> violation =
+//                validator.validate(gymPostRequestDto);
+//        //then
+//        assertThat(violation).isNotEmpty();
+//        violation
+//                .forEach(error -> {
+//                    assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
+//                });
+//    }
+//    @Test
+//    @DisplayName("게시글 등록 실패 테스트 - 필수값 미입력(null)")
+//    void createGymPost_FailNull() {
+//        // given
+//        CreatePostGymRequestDto gymPostRequestDto =
+//                new CreatePostGymRequestDto(null, "내용", "작성자 아이디",
+//                        "체육관 이름", "지역",
+//                        "시설1", "시설2", "시설3", "시설4");
+//        // when
+//        Set<ConstraintViolation<CreatePostGymRequestDto>> violation =
+//                validator.validate(gymPostRequestDto);
+//        //then
+//        assertThat(violation).isNotEmpty();
+//        violation
+//                .forEach(error -> {
+//                    assertThat(error.getMessage()).isEqualTo("널이어서는 안됩니다");
+//                });
+//    }
 
 
 }

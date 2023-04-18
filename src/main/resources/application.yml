@@ -24,12 +24,7 @@ spring:
         default_batch_fetch_size: 100
         jdbc:
           batch_size: 30
-<<<<<<< HEAD
- #h2
-=======
-
 # h2
->>>>>>> c8144c47f96e82813f48365dc3bf324b5098135e
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:db;MODE=MYSQL;
