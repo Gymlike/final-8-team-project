@@ -43,7 +43,6 @@ public class GymPostServiceImplTest {
     public void setUp() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
-
         amenities = Amenities.builder()
                 .parkingLot(true)
                 .build();

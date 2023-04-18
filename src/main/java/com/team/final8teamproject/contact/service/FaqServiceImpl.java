@@ -3,8 +3,11 @@ package com.team.final8teamproject.contact.service;
 import com.team.final8teamproject.contact.Repository.FaqRepository;
 import com.team.final8teamproject.contact.dto.FaqRequest;
 import com.team.final8teamproject.contact.dto.FaqResponse;
+import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
+import com.team.final8teamproject.contact.entity.Inquiry;
+import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import jakarta.validation.Valid;
@@ -37,31 +40,14 @@ public class FaqServiceImpl implements FaqService {
   public Result getFaqList(int page, int size, Direction direction, String properties) {
     Page<Faq> faqListPage = faqRepository.findAll(
         PageRequest.of(page - 1, size, direction, properties));
-    int totalCount = (int) faqListPage.getTotalElements();
-    if (faqListPage.isEmpty()) {
-      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
-    }
-
-    List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
-        .collect(Collectors.toList());
-    int countList = size;
-    int countPage = 5;//todo 리팩토링때  10으로 변경예정
-    int totalPage = totalCount / countList;
-    if (totalCount % countList > 0) {
-      totalPage++;
-    }
-    if (totalPage < page) {
-      page = totalPage;
-    }
-    return new Result(page, totalCount, countPage, totalPage, faqResponses);
+    return pageProcessing(faqListPage, page, size);
   }
+
 
   //FAQ 해당 글 조회 (보기,가져오기)
   @Override
   public FaqResponse getSelectedFaq(Long id) {
-    Faq faq = faqRepository.findById(id).orElseThrow(
-        () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
-    );
+    Faq faq = findByFaqId(id);
     return new FaqResponse(faq);
   }
 
@@ -72,30 +58,15 @@ public class FaqServiceImpl implements FaqService {
     String answer = keyword;
     Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
         answer, PageRequest.of(page - 1, size, direction, properties));
+    return pageProcessing(faqListPage, page, size);
 
-    int totalCount = (int) faqListPage.getTotalElements();
-    if (faqListPage.isEmpty()) {
-      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
-    }
-    List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new).toList();
-
-    int countList = size;
-    int countPage = 5;//todo 리팩토링때  10으로 변경예정
-    int totalPage = totalCount / countList;
-    if (totalCount % countList > 0) {
-      totalPage++;
-    }
-    if (totalPage < page) {
-      page = totalPage;
-    }
-
-    return new Result(page, totalCount, countPage, totalPage, faqResponses);
   }
 
   @Override
   public void updateFaq(Long id, Long managerId, UpdateFaqRequest updateFaqRequest) {
     String question = updateFaqRequest.getQuestion();
     String answer = updateFaqRequest.getAnswer();
+
     Faq faq = findByFaqId(id);
     faq.isWriter(managerId);
     faq.update(question, answer);
@@ -104,6 +75,7 @@ public class FaqServiceImpl implements FaqService {
 
   @Override
   public void deleteFaq(Long id, Long managerId) {
+
     Faq faq = findByFaqId(id);
     faq.isWriter(managerId);
     faqRepository.delete(faq);
@@ -115,6 +87,26 @@ public class FaqServiceImpl implements FaqService {
     );
   }
 
+  //페이지 처리를 위한 메서드
+  public Result pageProcessing(Page<Faq> faqListPage, int page, int size) {
+    int totalCount = (int) faqListPage.getTotalElements();
+    if (faqListPage.isEmpty()) {
+      throw new CustomException(ExceptionStatus.POST_IS_EMPTY);
+    }
+    List<FaqResponse> faqResponses = faqListPage.stream().map(FaqResponse::new)
+        .toList();
+    int countList = size;
+    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int totalPage = totalCount / countList;
+    if (totalCount % countList > 0) {
+      totalPage++;
+    }
+    if (totalPage < page) {
+      page = totalPage;
+    }
+    return new Result(page, totalCount, countPage, totalPage, faqResponses);
+  }
+
   @Getter
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class Result<T> {
@@ -124,10 +116,6 @@ public class FaqServiceImpl implements FaqService {
     private int totalPage;
     private T data;
 
-    public Result(int totalCount, T data) {
-      this.totalCount = totalCount;
-      this.data = data;
-    }
 
     public Result(int page, int totalCount, int countPage, int totalPage, T data) {
       this.page = page;

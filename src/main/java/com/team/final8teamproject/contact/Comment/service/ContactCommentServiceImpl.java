@@ -50,7 +50,6 @@ public class ContactCommentServiceImpl implements ContactCommentService {
         /** 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인*/
         //v2 객체 지향 entity 에게 역할을 줌
         parent.isInquiryId(inquiryId);
-
         int depth = parent.getDepth()+ 1; //  자식댓글의 depth 설정 : 부모댓글의 자식 댓글이므로 + 1 함
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
             nickName, parent, depth);

@@ -85,7 +85,8 @@ public class InquiryController {
   public ResponseEntity updateInquiry(@PathVariable Long id,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody UpdateInquiryRequest updateInquiryRequest){
-    inquiryService.updateInquiry(id,userDetails.getBase().getUsername(), updateInquiryRequest);// todo getWriterName  ->닉네임 가져와야 됨...... 우찌가져옴? 닉네임이어야 프론트 가능 .
+    inquiryService.updateInquiry(id,userDetails.getBase().getUsername(), updateInquiryRequest,userDetails.getBase()
+        .getRole());
 
     return ResponseEntity.ok("수정 완료");
   }

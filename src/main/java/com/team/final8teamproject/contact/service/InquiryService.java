@@ -14,7 +14,7 @@ public interface InquiryService {
 
   void createInquiry(InquiryRequest inquiryRequest, String username, String nickName);
 
-  void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest);
+  void updateInquiry(Long id, String username, UpdateInquiryRequest updateInquiryRequest,UserRoleEnum role);
 
   void deleteInquiry(Long id, String username, UserRoleEnum role);
 

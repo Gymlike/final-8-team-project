@@ -31,6 +31,12 @@ spring:
     url: jdbc:h2:mem:db;MODE=MYSQL;
     username: sa
     password:
+  # Mysql 설정
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: woni
+#    password: govlmysql
 
   mvc:
     hiddenmethod:
@@ -46,7 +52,13 @@ spring:
       host: localhost
       port: 6379
       timeout: 6
- 
+
+
+  # H2 Setting Info (H2 Console에 접속하기 위한 설정정보 입력)
+#  h2:
+#    console:
+#      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
+#      path: /h2-console  # H2 Console의 Path
 
   # Mysql 설정(RDS )
 #  datasource:
