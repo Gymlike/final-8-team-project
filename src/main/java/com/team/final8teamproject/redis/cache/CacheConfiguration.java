@@ -3,6 +3,7 @@ package com.team.final8teamproject.redis.cache;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,9 +17,8 @@ import java.util.Map;
 
 @Configuration
 public class CacheConfiguration {
-
     @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory, ResourceLoader resourceLoader) {
         RedisCacheConfiguration defaultConfig
                 = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
@@ -27,6 +27,8 @@ public class CacheConfiguration {
                                 .SerializationPair
                                 .fromSerializer(new GenericJackson2JsonRedisSerializer())
                 );
+
+
         Map<String, RedisCacheConfiguration> redisCacheConfigMap
                 = new HashMap<>();
 
@@ -65,6 +67,16 @@ public class CacheConfiguration {
         redisCacheConfigMap.put(
                 CacheNames.CHANNELS,
                 defaultConfig.entryTtl(Duration.ofHours(4))
+        );
+        //전체조회시 -KimTW
+        redisCacheConfigMap.put(
+                CacheNames.GETBOARD,
+                defaultConfig.entryTtl(Duration.ofHours(4))
+                        .serializeValuesWith(
+                                RedisSerializationContext
+                                        .SerializationPair
+                                        .fromSerializer(new JdkSerializationRedisSerializer(resourceLoader.getClassLoader()))
+                        )
         );
 
         return RedisCacheManager.builder(connectionFactory)

@@ -11,6 +11,7 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 
 
 import com.team.final8teamproject.board.dto.ImageNameDTO;
+import com.team.final8teamproject.board.dto.ResultDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 
 import com.team.final8teamproject.board.service.T_exerciseService;
@@ -82,7 +83,7 @@ public class T_exerciseController {
     })
     //오운완 전체 게시물 조회
     @GetMapping("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..
-    public T_exerciseServiceImple.Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(
+    public ResultDTO getAllT_exerciseBoards(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "6") Integer size,//나중에 10
             @RequestParam(value = "isAsc", required = false, defaultValue = "false") Boolean isAsc,

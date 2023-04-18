@@ -2,6 +2,7 @@ package com.team.final8teamproject.board.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.base.entity.BaseEntity;
 
@@ -9,9 +10,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

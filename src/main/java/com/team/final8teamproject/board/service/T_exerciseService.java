@@ -6,6 +6,7 @@ import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 
+import com.team.final8teamproject.board.dto.ResultDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.user.entity.User;
@@ -23,7 +24,8 @@ public interface T_exerciseService {
     CreatCommentRequestDTO creatTExerciseBord(String title, String content, String imageUrl, BaseEntity base) throws NullPointerException, IOException;
 
 
-    T_exerciseServiceImple.Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);
+
+    ResultDTO getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);
 
     T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);
 

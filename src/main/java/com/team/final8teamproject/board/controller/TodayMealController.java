@@ -8,12 +8,14 @@ import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.dto.TodayMealBoardResponseDTO;
 import com.team.final8teamproject.board.service.TodayMealService;
 import com.team.final8teamproject.board.service.TodayMealServiceImple;
+import com.team.final8teamproject.redis.cache.CacheNames;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,6 +58,7 @@ public class TodayMealController {
     }
 
     //오먹 전체 게시물 조회
+    @Cacheable(value = CacheNames.GETBOARD)
     @GetMapping ("/allboard")
     public TodayMealServiceImple.Result getAllTodayMealBoards(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,

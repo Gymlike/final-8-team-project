@@ -9,6 +9,7 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
 import com.team.final8teamproject.board.dto.CreatBordRequestDTO;
+import com.team.final8teamproject.board.dto.ResultDTO;
 import com.team.final8teamproject.board.dto.T_exerciseBoardResponseDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
@@ -27,6 +28,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -79,8 +82,9 @@ public class T_exerciseServiceImple implements T_exerciseService {
      * @param search      게시물 검색시 들어갈 값.. 디폴트값을 ""로해서 입력x시 전체 게시물 검색
      * @return 리스트로 반환
      */
+    @Cacheable(cacheNames = CacheNames.GETBOARD)
     @Override
-    public Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page) {
+    public ResultDTO getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page) {
         Page<T_exercise> tExerciseList = t_exerciseRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(search, search, pageRequest);
         int totalCount = (int) tExerciseList.getTotalElements();
         Long countList = size.longValue();
@@ -113,7 +117,10 @@ public class T_exerciseServiceImple implements T_exerciseService {
                             modifiedDate, username, nickName);
             boardResponseDTO.add(dto);
         }
-        return new Result(page, totalCount, countPage, totalPage, boardResponseDTO);
+
+        Result result = new Result(page, totalCount, countPage, totalPage, boardResponseDTO);
+
+        return new ResultDTO(result);
     }
 
     /**
@@ -249,7 +256,7 @@ public class T_exerciseServiceImple implements T_exerciseService {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Schema(description = "게시글 조회시 반환 dto")
-    public static class Result<T> {
+    public static class Result<T> implements  Serializable{
         @Schema(description = "페이지 번호", example = "2")
         private int page;
         @Schema(description = "총 가지고온 게시글의 수", example = "6")
