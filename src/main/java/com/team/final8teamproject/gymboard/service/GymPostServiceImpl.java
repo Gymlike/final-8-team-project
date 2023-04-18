@@ -94,6 +94,24 @@ public class GymPostServiceImpl implements GymPostService {
         return new gymResult<List<GymPostResponseDto>>(page, totalCount, countPage, totalPage, gymPostResponseDetailDtosList);
     }
     //4. 작성한 운동시설 선택시 세부사항
+    /*
+        해야되는거
+        현재 GymBoard랑 GymReview 만 되어있는데
+        QueryDsl이나 jquery 이용해서 Amenities랑 Trainer를 추가해서
+        N+1문제없이 조회되게 만들면 됩니다.
+
+        그러니까 지금현재는 전체 운동페이지에서 클릭시 상세페이지로 이동하게 되는데
+        거기에서 gymboardRepository테이블의 정보와 gymreviewRepository테이블의정보만을
+        읽어와서 유저에게 전송해줍니다.
+        한번 읽어보면서 정리하시길.
+
+        그것에서 이제 AmenitiesRepository와 TrainerRepository(트레이너테이블)의 정보들도
+        읽어와서
+        이제 2개가 아닌 4개의 테이블을 읽어오는데 그냥 읽어오면
+        하나씩 하나씩 join타고 들어가면서 N+1문제가 발생하니 한번에 읽어오게
+        QueryDSL을 이용하여 N+1문제 해결과 QueryDsl 사용에대하여 습득해보시라는 내용입니다.
+
+     */
     @Override
     @Cacheable(cacheNames = CacheNames.SELECTGYMBOARD, key = "#id", unless = "#result == null")
     @Transactional(readOnly = true)

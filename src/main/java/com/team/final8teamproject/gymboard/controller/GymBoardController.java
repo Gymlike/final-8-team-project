@@ -72,8 +72,9 @@ public class GymBoardController {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
         return gymPostService.getGymPost(pageRequest,search,size,page);
     }
+
     //3.유저가하는 작성된 운동시설 하나 조회
-     @GetMapping("/{id}")//
+    @GetMapping("/{id}")//
     public GymPostResponseDetailDto getGymPostDetail(@PathVariable Long id) {
         return gymPostService.getGymPostDetail(id);
     }
