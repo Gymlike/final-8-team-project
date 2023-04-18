@@ -17,15 +17,9 @@ rule_files: # 규칙을 로딩하고 evaluation_interval 설정에 따라 정기
 #메트릭을 수집할 엔드포인트를 설정 여기서는 Prometheus 서버 자신을 가르키는 설정을 했다.
 scrape_configs:
   #이 설정 에서 수집한 타임시리즈에 'job=<job_name>'으로 잡의 이름을 설정한다.
-  - job_name : 'prometheus'
+  - job_name : 'job'
     # 'metrics_path'라는 설정의 기본값은 '/meterics'이고
     #'scheme'라는 설정의 기본 값은 'http'이다.
     metrics_path: '/actuator/prometheus' #메트릭을 수집할 path설정
     static_configs:
       - targets: ['host.docker.internal:8080']
-
-
-
-
-
-

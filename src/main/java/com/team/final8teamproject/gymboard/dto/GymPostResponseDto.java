@@ -1,6 +1,10 @@
 package com.team.final8teamproject.gymboard.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.team.final8teamproject.gymboard.entity.GymBoard;
 import lombok.Getter;
 
@@ -8,16 +12,20 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
-public class GymPostResponseDto{
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final String image;
-    private final String gymName;
-    private final String region;
-    private final Long rating;
+public class GymPostResponseDto implements Serializable{
+    private Long id;
+    private String title;
+    private String content;
+    private String image;
+    private String gymName;
+    private String region;
+    private Long rating;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'작성시간'HH:mm:ss", timezone = "Asia/Seoul")
-    private final LocalDateTime createdDate;
+    private LocalDateTime createdDate;
+
+    public GymPostResponseDto(){}
     public GymPostResponseDto(GymBoard gymBoard) {
         this.id = gymBoard.getId();
         this.title = gymBoard.getTitle();

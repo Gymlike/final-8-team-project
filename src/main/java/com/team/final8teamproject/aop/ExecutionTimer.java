@@ -15,7 +15,6 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 public class ExecutionTimer {
-
     // 조인포인트를 어노테이션으로 설정
     @Pointcut("@annotation(com.team.final8teamproject.aop.Timer)")
     private void timer(){}

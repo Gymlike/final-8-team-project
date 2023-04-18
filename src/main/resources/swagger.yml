@@ -5,4 +5,3 @@
 #    groups:
 #      enabled: true
 #  override-with-generic-response: false   #참조  https://springdoc.org/#springdoc-openapi-core-properties
-
