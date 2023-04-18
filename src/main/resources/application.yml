@@ -1,16 +1,14 @@
 cloud:
   aws:
     credentials:
-      secret-key: FtrO2s8GEapoXp9Ux6I9hlk4GPpuNBmyJ3u/m7Sg
-      access-key: AKIA3PSCLOQM4KZGTWEK
+      secret-key: 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
+      access-key: AKIA5CHINSZMB4NQUEDS
     s3:
-      bucket: gylike.shop
+      bucket: search.site
     region:
       static: ap-northeast-2
     stack:
       auto: 'false'
-
-
 spring:
   jpa:
     generate-ddl: 'true'
