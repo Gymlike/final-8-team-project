@@ -50,7 +50,7 @@ public class UserService {
     private final Logger loggers = LoggerFactory.getLogger(UserService.class);
     private final RedisTemplate<String, String> redisTemplate;
     //1. 회원가입
-    @CacheEvict(cacheNames = CacheNames.ALLUSERS, key = "'SimpleKey []'")
+    @CacheEvict(cacheNames = CacheNames.ALLUSERS,key = "'SimpleKey []'")
     @Transactional
     public MessageResponseDto signUp(@Valid SignupRequestDto signupRequestDto) {
 
