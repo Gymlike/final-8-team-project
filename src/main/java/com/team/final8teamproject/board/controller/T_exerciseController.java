@@ -22,6 +22,11 @@ import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +40,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+
+
+@Tag(name = "오운완 게시판 관련", description = "오운완 관련 api 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/t-exercise")
@@ -64,6 +72,15 @@ public class T_exerciseController {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
     }
+
+
+    @Operation(summary = "전체 게시글 조회", description = "페이징 처리된 전체 게시물 조회입니다 생성일자 기준 6개씩 가지고옵니다")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "게시물 조회성공"),
+            @ApiResponse(responseCode = "400", description = "클라에러"),
+            @ApiResponse(responseCode = "500", description = "서버에러")
+    })
+
 
     //오운완 전체 게시물 조회
     @GetMapping("/allboard")  //지금문제는 인증된 사용자만 조회가능하다는점..

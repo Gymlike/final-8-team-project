@@ -1,0 +1,8 @@
+#springdoc:
+#  default-consumes-media-type: application/json
+#  default-produces-media-type: application/json
+#  api-docs:
+#    groups:
+#      enabled: true
+#  override-with-generic-response: false   #참조  https://springdoc.org/#springdoc-openapi-core-properties
+

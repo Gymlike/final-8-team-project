@@ -23,6 +23,7 @@ public interface T_exerciseService {
     CreatCommentRequestDTO creatTExerciseBord(String title, String content, String imageUrl, BaseEntity base) throws NullPointerException, IOException;
 
 
+
     T_exerciseServiceImple.Result<List<T_exerciseServiceImple>> getAllT_exerciseBoards(Pageable pageRequest, String search, Integer size, Integer page);
 
     T_exerciseBoardResponseDTO getT_exerciseBoard(Long boardId);

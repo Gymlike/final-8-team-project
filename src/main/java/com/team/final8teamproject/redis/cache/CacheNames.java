@@ -10,4 +10,5 @@ public class CacheNames {
     public static final String ALLGYMBOARD = "CACHE_ALLGYMBOARD";
     public static final String THREAD = "CACHE_THREAD";
     public static final String CHANNELS = "CACHE_CHANNELS";
+    public static final String GETBOARD = "CACHE_BOARD";
 }
