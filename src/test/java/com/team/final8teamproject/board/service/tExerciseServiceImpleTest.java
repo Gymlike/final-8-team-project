@@ -71,27 +71,4 @@ class tExerciseServiceImpleTest {
         assertThat(response.getComment()).isEqualTo("등록완료");
     }
 
-    @Test
-    void getAllT_exerciseBoards() {
-    }
-
-    @Test
-    void getT_exerciseBoard() {
-    }
-
-    @Test
-    void deletePost() {
-    }
-
-    @Test
-    void editPost() {
-    }
-
-    @Test
-    void findT_exerciseBoardById() {
-    }
-
-    @Test
-    void getTop3PostByLike() {
-    }
 }
