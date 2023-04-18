@@ -1,23 +1,27 @@
 package com.team.final8teamproject.gymboard.service;
 
 import com.team.final8teamproject.gymboard.dto.*;
+import com.team.final8teamproject.gymboard.entity.Amenities;
 import com.team.final8teamproject.gymboard.entity.GymBoard;
+import com.team.final8teamproject.gymboard.repository.GymAmenitiesRepository;
 import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardReviewResponseDto;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardviewResponseDto;
 import com.team.final8teamproject.gymboardreview.repository.GymReviewRepository;
 import com.team.final8teamproject.gymboardreview.service.GymBoardReviewServiceImpl;
+import com.team.final8teamproject.redis.cache.CacheNames;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,8 +32,10 @@ public class GymPostServiceImpl implements GymPostService {
     private final GymBoardRepository gymBoardRepository;
     private final GymBoardReviewServiceImpl gymBoardReviewServiceImpl;
     private final GymReviewRepository gymReviewRepository;
+    private final GymAmenitiesRepository gymAmenitiesRepository;
 
     //1.헬스장 게시글 작성
+    @CacheEvict(cacheNames = CacheNames.ALLEXCERCIES, key = "'SimpleKey [Page request [number: 0, size 6, sort: createdDate: DESC], 헬스장,6,1]'")
     @Override
     public String createGymPost(CreatePostGymRequestDto requestDto,
                                 String imgUrl,
@@ -42,6 +48,11 @@ public class GymPostServiceImpl implements GymPostService {
         gymBoardRepository.save(gymBoard);
         return "등록 완료";
     }
+
+    public void createAmenities(Amenities amenities){
+        gymAmenitiesRepository.save(amenities);
+    }
+
     //2. 메인 페이지 보여주기
     @Override
     public List<GymPostResponseDto> getGymPostAll() {
@@ -52,12 +63,15 @@ public class GymPostServiceImpl implements GymPostService {
             gymPostResponseDetailDtosList.add(gymPostResponseDetailDto);
         }
         return gymPostResponseDetailDtosList;
-//        return new InquiryServiceImpl.Result<List<InquiryResponse>>(page, totalCount, countPage, totalPage, inquiryResponses);
-//        return new Result<List<GymPostResponseDto>>(page, totalCount, countPage, totalPage, gymPostResponseDetailDtosList);
     }
+
     //3. 작성된 운동시설 보여주기
     @Override
-    public Result<List<GymPostResponseDto>> getGymPost(Pageable pageRequest, String search, Integer size, Integer page) {
+    @Cacheable(cacheNames = CacheNames.ALLEXCERCIES)
+    public gymResult<List<GymPostResponseDto>> getGymPost(Pageable pageRequest,
+                                                          String search,
+                                                          Integer size,
+                                                          Integer page) {
         Page<GymBoard> gymBoards = gymBoardRepository.findByTitleContainingIgnoreCaseAndInLiveTrue(search, pageRequest);
         int totalCount = (int) gymBoards.getTotalElements();
         Long countList = size.longValue();
@@ -67,24 +81,24 @@ public class GymPostServiceImpl implements GymPostService {
         if (totalCount % countList > 0) {
             totalPage++;
         }
+
         if (totalPage < page) {
             page = totalPage;
         }
+
         List<GymPostResponseDto> gymPostResponseDetailDtosList = new ArrayList<>();
         for (GymBoard gymBoard : gymBoards) {
             GymPostResponseDto gymPostResponseDetailDto = new GymPostResponseDto(gymBoard);
             gymPostResponseDetailDtosList.add(gymPostResponseDetailDto);
         }
-        return new Result<List<GymPostResponseDto>>(page, totalCount, countPage, totalPage, gymPostResponseDetailDtosList);
-
-//        return gymPostResponseDetailDtosList;
-//        return new InquiryServiceImpl.Result<List<InquiryResponse>>(page, totalCount, countPage, totalPage, inquiryResponses);
+        return new gymResult<List<GymPostResponseDto>>(page, totalCount, countPage, totalPage, gymPostResponseDetailDtosList);
     }
     //4. 작성한 운동시설 선택시 세부사항
     @Override
+    @Cacheable(cacheNames = CacheNames.SELECTGYMBOARD, key = "#id", unless = "#result == null")
     @Transactional(readOnly = true)
     public GymPostResponseDetailDto getGymPostDetail(Long id) {
-        GymBoard gymBoards = gymBoardRepository.findById(id).orElseThrow(
+        GymBoard gymBoards = gymBoardRepository.findByIdWithAmenities(id).orElseThrow(
                 ()-> new IllegalArgumentException("게시글이 삭제되어 찾을수 없습니다.")
         );
         List<GymBoardReviewResponseDto> review = gymBoardReviewServiceImpl.getReview(gymBoards.getId());
@@ -104,20 +118,20 @@ public class GymPostServiceImpl implements GymPostService {
     }
     //6. 헬스장 게시글 수정
     @Override
-    public void updateGymPost(GymUpdateRequestDto requestDto,String imageUrl, String username, Long id) {
+    @CacheEvict(cacheNames = CacheNames.SELECTGYMBOARD, key = "#id")
+    public void updateGymPost(GymUpdateRequestDto requestDto,
+                              String imageUrl,
+                              String username,
+                              Long id) {
         GymBoard gymBoard = gymBoardRepository.findByIdAndUsername(id, username).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
         gymBoard.update(requestDto, imageUrl);
     }
-    /** 
-     * @param id          삭제할 게시글 번호
-     * @param username    게시글과 작성자가 같은지 검사하기 위한 파라미터
-     * @return  
-     */
 
     //7. 헬스장 게시글 삭제
     @Override
+    @CacheEvict(cacheNames = CacheNames.SELECTGYMBOARD, key = "#id")
     @Transactional
     public String deleteGymPost(Long id, String username) {
         GymBoard gymBoard = gymBoardRepository.findByIdAndUsername(id, username).orElseThrow(
@@ -154,31 +168,32 @@ public class GymPostServiceImpl implements GymPostService {
         GymBoard gymBoard = gymBoardRepository.findByIdAndUsername(id, username).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        gymBoard.priceUpdate(price);
+        gymBoard.updatePrice(price);
         return "변경완료";
     }
     public String imageUpdate(Long id, String imageUrl, String username){
         GymBoard gymBoard = gymBoardRepository.findByIdAndUsername(id, username).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        gymBoard.priceUpdate(imageUrl);
+        gymBoard.updatePrice(imageUrl);
         return "변경완료";
     }
-    /**
-     * 스레드와 스케쥴러를 이용하여
-     * 일정 주기별로 리뷰 평점점수를 총합하여 데이터베이스를 업데이트 해줌
-     */
 
+    /*
+        A요청 ->    A에대한대답 ->B에대한 대답 ->A에게 전달
+                    ↑   ↓
+                   B요청들옴
+     */
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Result<T> implements Serializable {
+    public static class gymResult<T> implements Serializable {
         private int page;
         private int totalCount;
         private int countPage;
         private int totalPage;
         private T data;
 
-        public Result(int page, int totalCount, int countPage, int totalPage, T data) {
+        public gymResult(int page, int totalCount, int countPage, int totalPage, T data) {
             this.page = page;
             this.totalCount = totalCount;
             this.countPage = countPage;
@@ -187,28 +202,3 @@ public class GymPostServiceImpl implements GymPostService {
         }
     }
 }
-
- /* 참조형 해보기 default를 활용해서 더하기가 안됨
-        List<GymBoard> gymBoards = gymBoardRepository.findAll();
-        if(gymBoards.isEmpty()){
-            throw new IllegalArgumentException("작성된 운동시설이 없습니다.");
-        }
-        List<GymReview> gymReview = gymReviewRepository.findAll();
-        if(gymReview.isEmpty()){
-            throw new IllegalArgumentException("리뷰가 없습니다.");
-        }
-        Map<Long, RatingDto> rating = new HashMap<>();
-        for(GymReview gymReview1 : gymReview){
-            Long key = gymReview1.getGymId();
-            Long value = gymReview1.getRating();
-            RatingDto ratingDto = new RatingDto(value, 1L);
-            rating.put(key , ratingDto);
-        }
-        for (GymBoard gymBoard : gymBoards) {
-            if(rating.get(gymBoard.getId()) == null){
-                continue;
-            }
-            RatingDto ratingDto = rating.get(gymBoard.getId());
-            gymBoard.ratingUpdate(ratingDto.getTotal()/ratingDto.getCount());
-        }
- */

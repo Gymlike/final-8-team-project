@@ -1,6 +1,7 @@
 package com.team.final8teamproject.gymboard.service;
 
 import com.team.final8teamproject.gymboard.dto.*;
+import com.team.final8teamproject.gymboard.entity.Amenities;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardviewResponseDto;
 import org.springframework.data.domain.Pageable;
 
@@ -14,17 +15,18 @@ public interface GymPostService {
                                 String imgUrl,
                                 String username);
 
+    public void createAmenities(Amenities amenities);
     //2. 메인 페이지에서 조회
     List<GymPostResponseDto> getGymPostAll();
     //2. 작성된 운동시설 보여주기
-    GymPostServiceImpl.Result<List<GymPostResponseDto>> getGymPost(Pageable pageRequest, String search, Integer size, Integer page);
+    GymPostServiceImpl.gymResult<List<GymPostResponseDto>> getGymPost(Pageable pageRequest, String search, Integer size, Integer page);
 
     //3. 작성한 운동시설 선택시 세부사항
     GymPostResponseDetailDto getGymPostDetail(Long id);
     //4. 자기가 작성한 운동시설 전부 조회
     List<GymBoardviewResponseDto> getAllGymPosts(int pageChoice, String username);
 
-    //5. 헬스장 게시글 수정
+    //5. 헬스장 게시글 수정 GymUpdateRequestDto
     void updateGymPost(GymUpdateRequestDto requestDto, String imageUrl,String username, Long id);
 
     //6. 헬스장 게시글 삭제

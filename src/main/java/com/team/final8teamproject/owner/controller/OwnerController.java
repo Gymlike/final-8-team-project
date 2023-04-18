@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -47,4 +48,15 @@ public class OwnerController {
         return new MessageResponseDto(ownerService.logout(accessToken, userDetails.getUsername()));
     }
 
+    @GetMapping("/password")
+    public String showPasswordForm(@RequestParam(name = "error", defaultValue = "0") int error, Model model) {
+        model.addAttribute("error",error);
+        return "password";
+    }
+
+    @GetMapping("/{id}/write-owner")
+    public boolean userIsOwner(@PathVariable Long id
+            ,@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ownerService.userIsOwner(userDetails.getUsername(), id);
+    }
 }
