@@ -26,12 +26,12 @@ spring:
           batch_size: 30
 
 # h2
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:db;MODE=MYSQL;
-    username: sa
-    password:
-  # Mysql 설정
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:db;MODE=MYSQL;
+#    username: sa
+#    password:
+#   Mysql 설정
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
@@ -61,11 +61,11 @@ spring:
 #      path: /h2-console  # H2 Console의 Path
 
   # Mysql 설정(RDS )
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://team-database.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
-#    username: admin
-#    password: 8teamadmin
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://team-database.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: 8teamadmin
 
 # Actuator
 management:
