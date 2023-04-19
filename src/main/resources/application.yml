@@ -49,7 +49,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: host.docker.internal
       port: 6379
       timeout: 6
 
