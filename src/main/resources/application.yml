@@ -16,15 +16,15 @@ spring:
   jpa:
     generate-ddl: 'true'
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 
     properties:
       hibernate:
         format_sql: 'true'
         show_sql: 'true'
-        default_batch_fetch_size: 100
-        jdbc:
-          batch_size: 30
+#        default_batch_fetch_size: 100
+#        jdbc:
+#          batch_size: 30
 
   # Mysql 설정(RDS )
   datasource:
@@ -32,7 +32,6 @@ spring:
     url: jdbc:mysql://team-database1.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
     username: admin
     password: 8teamadmin
-
 
 # h2
 #  datasource:
