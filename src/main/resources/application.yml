@@ -4,18 +4,19 @@ cloud:
       secret-key: QQvtr4AAZvl3ZEtiGhAvhXT1kSOk9W6oXRetYRYH
       access-key: AKIA5CHINSZMB4NQUEDS
     s3:
-      bucket: search.site
+      bucket: signer-image-url
+
     region:
       static: ap-northeast-2
+
     stack:
       auto: 'false'
-
 
 spring:
   jpa:
     generate-ddl: 'true'
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
 
     properties:
       hibernate:
@@ -24,6 +25,14 @@ spring:
         default_batch_fetch_size: 100
         jdbc:
           batch_size: 30
+
+  # Mysql 설정(RDS )
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://team-database1.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: 8teamadmin
+
 
 # h2
 #  datasource:
@@ -49,23 +58,11 @@ spring:
 
   data:
     redis:
-      host: host.docker.internal
+      host: localhost
       port: 6379
       timeout: 6
 
 
-  # H2 Setting Info (H2 Console에 접속하기 위한 설정정보 입력)
-#  h2:
-#    console:
-#      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
-#      path: /h2-console  # H2 Console의 Path
-
-  # Mysql 설정(RDS )
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://team-database1.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
-    username: admin
-    password: 8teamadmin
 
 # Actuator
 management:
