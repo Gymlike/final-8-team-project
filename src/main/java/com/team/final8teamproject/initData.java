@@ -64,7 +64,7 @@ public class initData implements ApplicationRunner {
   public void run(ApplicationArguments args) throws Exception {
 //
     Manager manager = Manager.builder()
-            .nickName("manager").email("manager@nvaer.com")
+            .nickName("manager").email("manager@naver.com")
             .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
             .username("manager").role(UserRoleEnum.MANAGER)
             .build();

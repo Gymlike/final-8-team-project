@@ -69,6 +69,7 @@ public class PresignedUrlService {
         return generatePresignedUrlRequest;
     }
 
+    //getPreSignedUrl 응답 시간 제한 현재 2분
     private Date getPreSignedUrlExpiration() {
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
@@ -80,7 +81,6 @@ public class PresignedUrlService {
 
     private String onlyOneFileName(String filename){
         return UUID.randomUUID().toString()+filename;
-
     }
 
     public String findByName(String path) {
