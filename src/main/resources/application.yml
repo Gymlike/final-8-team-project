@@ -63,7 +63,7 @@ spring:
   # Mysql 설정(RDS )
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://team-database.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://team-database1.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
     username: admin
     password: 8teamadmin
 
