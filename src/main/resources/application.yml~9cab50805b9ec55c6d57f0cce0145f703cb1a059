@@ -1,14 +1,17 @@
 cloud:
   aws:
     credentials:
-      secret-key: PLeV9oo/RAL69JcaD549VnemQtJr4EPARWNSwNtB
-      access-key: AKIA3PSCLOQM5NPQ4OTY
+      secret-key: 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
+      access-key: AKIA5CHINSZMB4NQUEDS
     s3:
-      bucket: team-image
+      bucket: signer-image-url
+
     region:
       static: ap-northeast-2
+
     stack:
       auto: 'false'
+
 spring:
   jpa:
     generate-ddl: 'true'
@@ -19,16 +22,24 @@ spring:
       hibernate:
         format_sql: 'true'
         show_sql: 'true'
-        default_batch_fetch_size: 100
-        jdbc:
-          batch_size: 30
-# h2//
+#        default_batch_fetch_size: 100
+#        jdbc:
+#          batch_size: 30
+
+  # Mysql 설정(RDS )
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:db;MODE=MYSQL;
-    username: sa
-    password:
-  # Mysql 설정
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://team-database1.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: 8teamadmin
+
+# h2
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:db;MODE=MYSQL;
+#    username: sa
+#    password:
+#   Mysql 설정
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
@@ -51,18 +62,6 @@ spring:
       timeout: 6
 
 
-  # H2 Setting Info (H2 Console에 접속하기 위한 설정정보 입력)
-#  h2:
-#    console:
-#      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
-#      path: /h2-console  # H2 Console의 Path
-
-  # Mysql 설정(RDS )
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://team-database1.cjqopg7k8xlv.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
-#    username: admin
-#    password: 8teamadmin
 
 # Actuator
 management:
