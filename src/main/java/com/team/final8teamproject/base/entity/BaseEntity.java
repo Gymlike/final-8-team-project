@@ -15,9 +15,9 @@ import java.io.Serializable;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
-@Table(indexes = @Index(name = "idx_username", columnList = "username"))
+//@Table(indexes = @Index(name = "idx_username", columnList = "username"))
 public class BaseEntity extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +44,7 @@ public class BaseEntity extends Timestamped{
     private String phoneNumber;
     @JsonIgnore
     private String writerName;
+
     public void modifyProfile(String nickName, String profileImage) {
         changeNickNme(nickName);
         this.profileImage = profileImage;

@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +48,7 @@ public class DslService {
             if (gymId != null && ratingCount != null && ratingSum != null && ratingCount != 0) {
                 gymBoardRepository.findById(gymId).ifPresent(gymBoard -> {
                     long ratingAvg = (long) (ratingSum / (double) ratingCount);
-                    gymBoard.ratingUpdate(ratingAvg);
+                    gymBoard.updateRating(ratingAvg);
                     gymBoardsToUpdate.add(gymBoard);
                 });
             }
@@ -81,7 +80,7 @@ public class DslService {
             }
             Long total = rating.get(gymBoard.getId());
             Long div = rating_count.get(gymBoard.getId());
-            gymBoard.ratingUpdate(total/div);
+            gymBoard.updateRating(total/div);
         }
     }
 }

@@ -4,9 +4,11 @@ import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.service.BaseService;
 import com.team.final8teamproject.board.dto.ImageNameDTO;
 import com.team.final8teamproject.gymboard.dto.*;
+import com.team.final8teamproject.gymboard.repository.GymAmenitiesRepository;
 import com.team.final8teamproject.gymboard.service.GymPostServiceImpl;
-import com.team.final8teamproject.gymboard.service.GymPostServiceImpl.Result;
+import com.team.final8teamproject.gymboard.service.GymPostServiceImpl.gymResult;
 import com.team.final8teamproject.gymboardreview.dto.GymBoardviewResponseDto;
+import com.team.final8teamproject.redis.cache.CacheNames;
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 import com.team.final8teamproject.share.aws_s3.PresignedUrlService;
 import com.team.final8teamproject.share.exception.CustomException;
@@ -27,23 +29,26 @@ import java.util.List;
 @RequestMapping("/api/gym")
 @RequiredArgsConstructor
 public class GymBoardController {
-
     private final GymPostServiceImpl gymPostService;
-
     private final BaseService baseService;
-
     private final PresignedUrlService presignedUrlService;
-
     private String path;
+
     //1.운동시설 글 작성
     @PostMapping("/owner/write-post")
     public String createGymPost(@RequestBody CreatePostGymRequestDto createPostGymRequestDto,
-                                @AuthenticationPrincipal UserDetailsImpl userDetails)  throws NullPointerException, IOException {
+                                @AuthenticationPrincipal UserDetailsImpl userDetails)
+            throws NullPointerException, IOException {
+
         boolean checkUser = baseService.checkUser(userDetails.getUsername());
+
         if(checkUser){
             String imageUrl = presignedUrlService.findByName(path);
+
+            gymPostService.createAmenities(createPostGymRequestDto.getAmenities());
             gymPostService.createGymPost(createPostGymRequestDto, imageUrl,userDetails.getUsername());
             return "작성 성공";
+
         }else {
             throw new CustomException(ExceptionStatus.WRONG_USERNAME);
         }
@@ -56,34 +61,41 @@ public class GymBoardController {
     }
 
     //3. 검색하여 운동시설 페이징 처리 조회
-    @Cacheable("PostAll")
     @GetMapping//
-    public Result<List<GymPostResponseDto>> getGymSearchPosts(
+    public gymResult<List<GymPostResponseDto>> getGymSearchPosts(
             @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
             @RequestParam(value = "size",required = false,defaultValue = "6") Integer size,//나중에 10
             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
             @RequestParam(value = "sortBy",required = false,defaultValue = "createdDate")String sortBy,
-            @RequestParam(value = "search",required = false,defaultValue = "") String search
+            @RequestParam(value = "search",required = false,defaultValue = "헬스장") String search
     ) {
         Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
         return gymPostService.getGymPost(pageRequest,search,size,page);
     }
+
     //3.유저가하는 작성된 운동시설 하나 조회
-    @Cacheable(value = "postCache", key = "#id", unless = "#result == null")
     @GetMapping("/{id}")//
     public GymPostResponseDetailDto getGymPostDetail(@PathVariable Long id) {
         return gymPostService.getGymPostDetail(id);
     }
     //4.사업자가하는 자기가 작성한 게시글 전체조회
-    @GetMapping("/owner/myposts")
-    public List<GymBoardviewResponseDto> getAllPosts(@PageableDefault Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return gymPostService.getAllGymPosts(pageable.getPageNumber(), userDetails.getUsername());
+    @GetMapping("/owner/my-posts")
+    public List<GymBoardviewResponseDto> getAllPosts(
+            @RequestParam(value = "page",required = false,defaultValue ="1") Integer page,
+             @RequestParam(value = "size",required = false,defaultValue = "6") Integer size,//나중에 10
+             @RequestParam(value = "isAsc",required = false,defaultValue = "false")Boolean isAsc,
+             @RequestParam(value = "sortBy",required = false,defaultValue = "createdDate")String sortBy,
+             @RequestParam(value = "search",required = false,defaultValue = "") String search,
+             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Pageable pageRequest = getPageable(page, size, isAsc, sortBy);
+        return gymPostService.getAllGymPosts(pageRequest.getPageNumber(), userDetails.getUsername());
     }
 
-    @CacheEvict(value = "postCache", key = "#id")
     //5.운동시설 글 수정
-    @PutMapping("/owner/{id}/putpost")
-    public String updateGymPost(@PathVariable Long id, @RequestBody GymUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PutMapping("/owner/{id}/update-post")
+    public String updateGymPost(@PathVariable Long id,
+                                @RequestBody GymUpdateRequestDto requestDto,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
         boolean checkUser = baseService.checkUser(userDetails.getUsername());
 
         if(checkUser){

@@ -2,6 +2,7 @@ package com.team.final8teamproject.owner.service;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.base.repository.BaseRepository;
+import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
 import com.team.final8teamproject.owner.dto.OwnerSignupRequestDto;
 import com.team.final8teamproject.owner.entity.Owner;
 import com.team.final8teamproject.security.jwt.JwtUtil;
@@ -28,8 +29,8 @@ public class OwnerService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final OwnerRepository ownerRepository;
-
     private final BaseRepository baseRepository;
+    private final GymBoardRepository gymBoardRepository;
     public MessageResponseDto signUp(OwnerSignupRequestDto OwnerSignupRequestDto) {
         String username = OwnerSignupRequestDto.getUsername();
         String password = passwordEncoder.encode(OwnerSignupRequestDto.getPassword());
@@ -85,12 +86,7 @@ public class OwnerService {
             throw new SecurityException("사용자를 찾을수 없습니다.");
         }
         TokenResponseDto loginResponseDto =jwtUtil.createUserToken(base.getUsername(), base.getRole());
-//        SetRedisRefreshToken refreshToken = new SetRedisRefreshToken(loginResponseDto.getRefreshToken(), base.getRole());
-//        redisUtil.setRefreshToken(base.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
-
         return loginResponseDto;
-//        redisUtil.setRefreshToken(base.getUsername(), loginResponseDto.getRefreshToken(), loginResponseDto.getRefreshTokenExpirationTime());
-
     }
 
     //3. 로그아웃
@@ -112,5 +108,23 @@ public class OwnerService {
             throw new NoSuchElementException("오너가 존재하지 않습니다.");
         }
         return optionalOwner.get();
+    }
+
+    public boolean userIsOwner(String username, Long id){
+        try {
+            BaseEntity base= baseRepository.findByUsername(username).orElseThrow(
+                    () -> new IllegalArgumentException("")
+            );
+            if(base.getRole().equals(UserRoleEnum.OWNER)) {
+                gymBoardRepository.findByIdAndUsername(id, username).orElseThrow(
+                        () -> new IllegalArgumentException("")
+                );
+            }else{
+                throw new IllegalArgumentException("");
+            }
+            return true;
+        }catch (IllegalArgumentException e){
+            return false;
+        }
     }
 }

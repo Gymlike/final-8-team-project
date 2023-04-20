@@ -6,7 +6,6 @@ import com.team.final8teamproject.base.repository.BaseRepository;
 import com.team.final8teamproject.gymboard.entity.GymBoard;
 import com.team.final8teamproject.gymboard.entity.QGymBoard;
 import com.team.final8teamproject.gymboard.repository.GymBoardRepository;
-import com.team.final8teamproject.gymboardreview.entity.GymReview;
 import com.team.final8teamproject.gymboardreview.entity.QGymReview;
 import com.team.final8teamproject.gymboardreview.repository.GymReviewRepository;
 import com.team.final8teamproject.gymboardreview.service.GymBoardReviewServiceImpl;
@@ -17,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +58,7 @@ public class RatingReviewUpdateSchedeled {
             long ratingAvg = (long) (ratingSum / (double) ratingCount);
             assert gymId != null;
             Optional<GymBoard> optionalGymBoard = gymBoardRepository.findById(gymId);
-            optionalGymBoard.ifPresent(gymBoard -> gymBoard.ratingUpdate(ratingAvg));
+            optionalGymBoard.ifPresent(gymBoard -> gymBoard.updateRating(ratingAvg));
         }
     }
 
@@ -99,3 +97,29 @@ public class RatingReviewUpdateSchedeled {
 //        }
 //    }
 }
+
+
+ /* 참조형 해보기 default를 활용해서 더하기가 안됨
+        List<GymBoard> gymBoards = gymBoardRepository.findAll();
+        if(gymBoards.isEmpty()){
+            throw new IllegalArgumentException("작성된 운동시설이 없습니다.");
+        }
+        List<GymReview> gymReview = gymReviewRepository.findAll();
+        if(gymReview.isEmpty()){
+            throw new IllegalArgumentException("리뷰가 없습니다.");
+        }
+        Map<Long, RatingDto> rating = new HashMap<>();
+        for(GymReview gymReview1 : gymReview){
+            Long key = gymReview1.getGymId();
+            Long value = gymReview1.getRating();
+            RatingDto ratingDto = new RatingDto(value, 1L);
+            rating.put(key , ratingDto);
+        }
+        for (GymBoard gymBoard : gymBoards) {
+            if(rating.get(gymBoard.getId()) == null){
+                continue;
+            }
+            RatingDto ratingDto = rating.get(gymBoard.getId());
+            gymBoard.ratingUpdate(ratingDto.getTotal()/ratingDto.getCount());
+        }
+ */

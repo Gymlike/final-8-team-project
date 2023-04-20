@@ -61,6 +61,14 @@ public class CacheConfiguration {
                 defaultConfig.entryTtl(Duration.ofHours(2))
         );
         redisCacheConfigMap.put(
+                CacheNames.SELECTGYMBOARD,
+                defaultConfig.entryTtl(Duration.ofHours(2))
+        );
+        redisCacheConfigMap.put(
+                CacheNames.ALLGYMBOARD,
+                defaultConfig.entryTtl(Duration.ofHours(2))
+        );
+        redisCacheConfigMap.put(
                 CacheNames.THREAD,
                 defaultConfig.entryTtl(Duration.ofHours(4))
         );

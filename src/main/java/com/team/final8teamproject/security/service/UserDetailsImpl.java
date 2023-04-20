@@ -11,7 +11,6 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails{
     private final BaseEntity base;
     private final String username;
-
     public UserDetailsImpl(BaseEntity base, String username) {
         this.base = base;
         this.username = username;

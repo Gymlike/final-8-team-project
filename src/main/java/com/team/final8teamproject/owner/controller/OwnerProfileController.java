@@ -61,6 +61,7 @@ public class OwnerProfileController {
         return "password";
     }
 
+
     //프리사인 이용할꺼임
     @PostMapping("/presigned")
     public String creatPresigned(@RequestBody ImageNameDTO imageNameDTO,
