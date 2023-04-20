@@ -89,7 +89,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
         () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
     );
     if (comment.isWriter(username) || role.equals(UserRoleEnum.MANAGER)) {
-      contactCommentRepository.deleteById(commentId);
+      contactCommentRepository.deleteById(commentId);//
     } else {
       throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
     }
