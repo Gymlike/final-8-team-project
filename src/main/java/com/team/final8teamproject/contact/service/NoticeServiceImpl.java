@@ -62,7 +62,7 @@ public class NoticeServiceImpl implements NoticeService {
     String title = keyword;
     String content = keyword;
 
-    Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingOrContentContaining(
+    Page<Notice> noticeListPage = noticeRepository.findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(
         title, content,
         PageRequest.of(page - 1, size, direction, properties));
     return pageProcessing(noticeListPage, page, size);

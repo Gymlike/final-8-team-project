@@ -102,7 +102,7 @@ public class InquiryServiceImpl implements InquiryService {
     String title = keyword;
     String content = keyword;
 
-    Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingOrContentContaining(
+    Page<Inquiry> inquiryListPage = inquiryRepository.findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(
         title, content, PageRequest.of(page - 1, size, direction, properties));
     return pageProcessing(inquiryListPage, page, size);
   }

@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class InquiryRequest {
-  @NotBlank // null 과 "" 과 " " 모두 비허용
+  @NotBlank(message = "This is not blank")// null 과 "" 과 " " 모두 비허용
   private final String title;
-  @NotBlank
+  @NotBlank(message = "This is not blank")
   private final String content;
   private boolean secret; // 비밀글 유무
 
