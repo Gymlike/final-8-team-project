@@ -1,14 +1,15 @@
 cloud:
   aws:
     credentials:
-      secret-key: PLeV9oo/RAL69JcaD549VnemQtJr4EPARWNSwNtB
-      access-key: AKIA3PSCLOQM5NPQ4OTY
+      secret-key: CvObACjXvYJ3mCmzdFqZcM6Oj02oD747BxOxANf
+      access-key: AKIA5CHINSZMISLBBXHE
     s3:
-      bucket: team-image
+      bucket: searchgym-github-actions-s3-bucket
     region:
       static: ap-northeast-2
     stack:
       auto: 'false'
+
 spring:
   jpa:
     generate-ddl: 'true'
@@ -22,6 +23,12 @@ spring:
         default_batch_fetch_size: 100
         jdbc:
           batch_size: 30
+  #   Mysql 설정(RDS )
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://team-database.cdhsnkagrp4k.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: admin
+#    password: 8teamadmin
 # h2//
   datasource:
     driver-class-name: org.h2.Driver
@@ -57,12 +64,7 @@ spring:
 #      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
 #      path: /h2-console  # H2 Console의 Path
 
-  # Mysql 설정(RDS )
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://team-database1.cjqopg7k8xlv.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=UTC&characterEncoding=UTF-8
-#    username: admin
-#    password: 8teamadmin
+
 
 # Actuator
 management:

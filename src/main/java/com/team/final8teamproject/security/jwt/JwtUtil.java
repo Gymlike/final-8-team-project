@@ -34,7 +34,6 @@ import java.util.Objects;
 public class JwtUtil {
 
     private final UserDetailsServiceImpl userDetailsService;
-
     private final RedisUtil redisUtil;
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
@@ -98,38 +97,8 @@ public class JwtUtil {
         return new TokenResponseDto(accessToken,refreshToken);
     }
 
-
-    // 토큰 재발급
-    //토큰(AccessToken, RefreshToken) 생성 메서드
-    public String reCreateAccessToken(String username, UserRoleEnum role) {
-        Date date = new Date();
-        //권한 가져오기
-        // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
-        return BEARER_PREFIX + Jwts.builder()
-                .setSubject(username)
-                .claim(AUTHORIZATION_KEY, role)
-                .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
-                .setIssuedAt(date)
-                .signWith(key, signatureAlgorithm)
-                .compact();
-    }
-
-    public String reCreateRefreshTokenToken(String username) {
-        Date date = new Date();
-        //권한 가져오기
-        // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
-        return Jwts.builder()
-                .setSubject(username)
-                .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_EXPIRE_TIME))
-                .setIssuedAt(date) // 토큰 발행일
-                .signWith(key,signatureAlgorithm)
-                .compact();
-    }
-
     /**
      * 토큰 생성 메서드
-     * @param role  권한
-     * @return
      */
     private String createToken(String username, UserRoleEnum role, Long tokenLive) {
         Date date = new Date();
