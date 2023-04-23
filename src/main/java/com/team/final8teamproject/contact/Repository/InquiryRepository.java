@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InquiryRepository extends JpaRepository<Inquiry,Long> {
 
 
-  Page<Inquiry> findAllByTitleContainingOrContentContaining(String title, String content, PageRequest of);
+ // Page<Inquiry> findAllByTitleContainingOrContentContaining(String title, String content, PageRequest of);
+  //IgnoreCase : 대소문자 구분없이 검색됨
+ Page<Inquiry> findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content, PageRequest of);
 
 }

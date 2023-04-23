@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FaqRepository extends JpaRepository<Faq, Long> {
 
- Page<Faq> findAllByQuestionContainingOrAnswerContaining(String question, String answer, PageRequest of);
+ Page<Faq> findAllByQuestionContainingIgnoreCaseOrAnswerContainingIgnoreCase(String question, String answer, PageRequest of);
 
 }

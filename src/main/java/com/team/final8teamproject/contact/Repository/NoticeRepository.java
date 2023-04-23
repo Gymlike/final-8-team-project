@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NoticeRepository extends JpaRepository<Notice,Long> {
 
 
-  Page<Notice> findAllByTitleContainingOrContentContaining(String title, String content, PageRequest of);
+  Page<Notice> findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content, PageRequest of);
 
 
 }
