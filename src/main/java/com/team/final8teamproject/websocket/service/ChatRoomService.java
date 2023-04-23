@@ -8,7 +8,6 @@ import com.team.final8teamproject.user.entity.UserRoleEnum;
 import com.team.final8teamproject.websocket.dto.ChatRoomDto;
 import com.team.final8teamproject.websocket.dto.GetMyAllRoomResponseDto;
 import com.team.final8teamproject.websocket.entity.ChatRoom;
-import com.team.final8teamproject.websocket.entity.ChatRoomMessage;
 import com.team.final8teamproject.websocket.repository.ChatMessageRepository;
 import com.team.final8teamproject.websocket.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +26,6 @@ import java.util.Set;
 public class ChatRoomService {
 
     private final ChatRoomRepository roomRepository;
-
-    private final ChatMessageRepository chatMessageRepository;
     private final BaseRepository baseRepository;
 
     public ChatRoomDto createRoom(BaseEntity owner, BaseEntity user){

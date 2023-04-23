@@ -22,13 +22,9 @@ public class ChatMessage extends ChatTimestamped {
 
     @Column(nullable = false)
     private String message;
-
     @Column(nullable = false)
     private String receiver;
     private boolean live = true;
-
-    @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.REMOVE)
-    private final Set<ChatRoomMessage> chatRooms = new HashSet<>();
     @Builder
     public ChatMessage(Long roomId, String message, String receiver){
         this.roomId = roomId;

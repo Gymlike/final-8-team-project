@@ -25,8 +25,6 @@ public class ChatRoom extends ChatTimestamped {
     private BaseEntity user;
     private boolean live = true;
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
-    private final Set<ChatRoomMessage> messages = new HashSet<>();
     @Builder
     public ChatRoom(BaseEntity owner,
                     BaseEntity user) {
