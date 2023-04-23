@@ -13,24 +13,28 @@ import java.util.Set;
 //lombok
 @NoArgsConstructor
 @Getter
-public class Message extends ChatTimestamped {
+public class ChatMessage extends ChatTimestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String message;
-    private String receiver;
+    @Column(nullable = false)
     private Long roomId;
+
+    @Column(nullable = false)
+    private String message;
+
+    @Column(nullable = false)
+    private String receiver;
     private boolean live = true;
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.REMOVE)
     private final Set<ChatRoomMessage> chatRooms = new HashSet<>();
     @Builder
-    public Message(Long roomId,String message, String receiver){
+    public ChatMessage(Long roomId, String message, String receiver){
         this.roomId = roomId;
         this.message = message;
         this.receiver = receiver;
     }
-
     public void setLive(boolean live) {
         this.live = live;
     }

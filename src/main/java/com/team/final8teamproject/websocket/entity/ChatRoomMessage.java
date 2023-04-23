@@ -18,10 +18,10 @@ public class ChatRoomMessage {
 
     @ManyToOne
     @JoinColumn(name = "message_id")
-    private Message message;
+    private ChatMessage chatMessage;
 
-    public ChatRoomMessage(ChatRoom chatRoom, Message message) {
+    public ChatRoomMessage(ChatRoom chatRoom, ChatMessage chatMessage) {
         this.chatRoom = chatRoom;
-        this.message = message;
+        this.chatMessage = chatMessage;
     }
 }

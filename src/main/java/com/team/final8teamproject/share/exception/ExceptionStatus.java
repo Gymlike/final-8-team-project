@@ -26,7 +26,6 @@ public enum ExceptionStatus {
     AUTH_EXPIRED(501, "인증 만료"),
     NOT_FOUNT_USER(404,"해당 사용자가 존재하지 않습니다."),
     NOT_FOUNT_TOKEN(404,"토큰이 일치하지 않습니다."),
-
     ROOM_NOT_EXIST(404, "방이 삭제되어 존재하지 않습니다."),
 
     BOARD_NOT_EXIST(404, "게시물이 삭제되어 존재하지 않습니다."),

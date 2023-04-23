@@ -39,7 +39,6 @@ public class GymBoardController {
     public String createGymPost(@RequestBody CreatePostGymRequestDto createPostGymRequestDto,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails)
             throws NullPointerException, IOException {
-
         boolean checkUser = baseService.checkUser(userDetails.getUsername());
 
         if(checkUser){

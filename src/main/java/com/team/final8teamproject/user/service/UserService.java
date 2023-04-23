@@ -169,55 +169,7 @@ public class UserService {
         return new FindByResponseDto("임시 패스워드 발송 성공");
     }
 
-    //6. 엑세스 토큰 재발급
 
-    /**
-     *
-     * @param base 만료되어 받아오는 access토큰
-     * @return
-     * 서버 DB조회없이 redis에서 조회해온 데이터를 이용하여 처리
-     * 여기서 문제 하루동안 접속을 안하거나
-     * 하루종일 있다면 한명이 최대 48개의 redis칸을 차지함
-     * 그로인하여 속도 저하도 있을 수 있다.
-     * 그렇게 되면 DB조회하는것과 redis만 이용 하는것 둘중 뭐가 좋은지.. 애매하다.
-     */
-    @Transactional
-    public ResponseEntity<String> regenerateToken(
-            BaseEntity base){
-        try{
-            String username = base.getUsername();
-            if(!redisUtil.hasKey(username)){
-                throw new CustomException(NOT_FOUNT_TOKEN);
-            }
-            String redisToken = redisUtil.getRefreshToken(username);
-            long REFRESH_TOKEN_EXPIRE_TIME = 24 * 60 * 60 * 1000L; //1일
-            String reAccessToken = jwtUtil.reCreateAccessToken(username,
-                    base.getRole());
-            String reFreshToken = jwtUtil.reCreateRefreshTokenToken(username);
-            SetRedisRefreshToken redisRefreshToken =
-                    new SetRedisRefreshToken(reFreshToken, base.getRole());
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtUtil.AUTHORIZATION_HEADER, reAccessToken);
-            redisUtil.setRefreshToken(username, reFreshToken, REFRESH_TOKEN_EXPIRE_TIME);
-            return new ResponseEntity<>("생성성공", httpHeaders, HttpStatus.OK);
-//            if(redisToken instanceof  SetRedisRefreshToken instanceofRefreshToken) {
-//                long REFRESH_TOKEN_EXPIRE_TIME = 24 * 60 * 60 * 1000L; //1일
-//                String reAccessToken = jwtUtil.reCreateAccessToken(username,
-//                        instanceofRefreshToken.getRole());
-//                String reFreshToken = jwtUtil.reCreateRefreshTokenToken(username);
-//                SetRedisRefreshToken redisRefreshToken =
-//                        new SetRedisRefreshToken(reFreshToken, instanceofRefreshToken.getRole());
-//                RegenerateTokenResponseDto tokenResponseDto
-//                        = new RegenerateTokenResponseDto(reAccessToken);
-//                HttpHeaders httpHeaders = new HttpHeaders();
-//                httpHeaders.add(JwtUtil.AUTHORIZATION_HEADER, tokenResponseDto.getAccessToken());
-//                redisUtil.setRefreshToken(username, reFreshToken, REFRESH_TOKEN_EXPIRE_TIME);
-//                return new ResponseEntity<>("생성성공", httpHeaders, HttpStatus.OK);
-//            }
-        }catch (AuthenticationException e) {
-            throw new CustomException(NOT_FOUNT_TOKEN);
-        }
-    }
     public String getUserNickname(BaseEntity base) {
         String username = base.getUsername();
         BaseEntity user = baseRepository.findByUsername(username).orElseThrow(() -> new CustomException(ExceptionStatus.WRONG_USERNAME));
