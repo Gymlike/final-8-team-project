@@ -14,7 +14,7 @@ spring:
   jpa:
     generate-ddl: 'true'
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
 
     properties:
       hibernate:

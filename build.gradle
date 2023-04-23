@@ -62,7 +62,7 @@ dependencies {
     //redis를 사용하기 위한 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     //로컬 레디스를 사용하기 위한 의존성
-    //    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
+    //implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
     //캐시
     implementation 'org.springframework.boot:spring-boot-starter-cache' 
@@ -70,17 +70,13 @@ dependencies {
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
-
     // MySql
     implementation 'mysql:mysql-connector-java'
     //사업자정보조회
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
     //이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-
     implementation 'org.json:json:20230227'
-
 
     // for API Request
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
