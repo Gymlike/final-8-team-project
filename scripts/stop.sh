@@ -15,6 +15,19 @@ if [ -z $CURRENT_PID ]; then
   echo "$TIME_NOW > 현재 실행중인 애플리케이션이 없습니다" >> $DEPLOY_LOG
 else
   echo "$TIME_NOW > 실행중인 $CURRENT_PID 애플리케이션 종료 " >> $DEPLOY_LOG
-  sudo kill -9 $CURRENT_PID
+  MAX_RETRIES=5
+  CURRENT_RETRIES=0
+  while true; do
+    sudo kill -9 $CURRENT_PID
+    if [ $? -eq 0 ]; then
+      break
+    fi
+    CURRENT_RETRIES=$((CURRENT_RETRIES+1))
+    if [ $CURRENT_RETRIES -eq $MAX_RETRIES ]; then
+      echo "Failed to kill the process after $MAX_RETRIES retries. Giving up."
+      exit 1
+    fi
+    sleep 2
+  done
 fi
 
