@@ -72,7 +72,6 @@ public class UserController {
         return new MessageResponseDto(userService.logout(accessToken, userDetails.getUsername()));
     }
 
-
     //4. 이메일 인증
     //이메일 전송
     @PostMapping("/email")
