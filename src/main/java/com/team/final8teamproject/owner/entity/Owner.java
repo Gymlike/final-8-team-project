@@ -48,7 +48,7 @@ public class Owner extends BaseEntity {
                                    String nickName, String phoneNumber, String email,
                                    String storeName, String ownerNumber, String profileImage) {
         super.modifyBaseProfile(email, password);
-        changeNickNme(nickName);
+        changeNickName(nickName);
         this.phoneNumber = phoneNumber;
         this.ownerNumber = ownerNumber;
         this.storeName = storeName;
