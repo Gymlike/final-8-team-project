@@ -18,7 +18,6 @@ import java.util.HashMap;
 @Component
 public class StompInterceptor implements ChannelInterceptor {
     private final JwtUtil jwtTokenProvider;
-
     public static final Map<String, RequestChatConnecting> connectedUserPool = new HashMap<>();
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
