@@ -73,6 +73,10 @@ public class UserController {
     }
 
 
+    @DeleteMapping("/test")
+    public String CdTest(){
+        return "Ci/CdTest";   
+    }
 
     //4. 이메일 인증
     //이메일 전송
