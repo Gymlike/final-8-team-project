@@ -11,6 +11,7 @@ Actuator을 이용한 이 프로젝트에대한 정보를 보여주고 싶을때
 public class MyInfoContributor implements InfoContributor {
     @Override
     public void contribute(Info.Builder builder) {
+        
         builder.withDetail("name", "SearchGym")
                 .withDetail("version", "1.0.0")
                 .withDetail("descriptionEnglish", "The project is designed to help people who are interested in sports facilities, and sports facility officials also have a function to inform the facility and promote it so that many people can solve their questions and reduce time waste.")
