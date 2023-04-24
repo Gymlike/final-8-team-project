@@ -18,5 +18,6 @@ else
   sudo kill -9 $CURRENT_PID
   if [ $? -eq 1 ]; then
     sudo kill -9 $CURRENT_PID
+    fi
 fi
 
