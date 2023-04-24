@@ -39,8 +39,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class initData implements ApplicationRunner {
-
-
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final OwnerRepository ownerRepository;
