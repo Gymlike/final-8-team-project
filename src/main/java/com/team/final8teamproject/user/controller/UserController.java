@@ -75,7 +75,7 @@ public class UserController {
 
     @GetMapping("/test")
     public String CdTest(){
-        return "Ci/CdTests";   
+        return "CdTests";   
     }
 
     //4. 이메일 인증
