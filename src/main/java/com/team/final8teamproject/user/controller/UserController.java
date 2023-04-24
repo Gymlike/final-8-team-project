@@ -73,11 +73,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/test")
-    public String testTransactional() {
-        return "Ci/CD적용완료";
-    }
-
 
     //4. 이메일 인증
     //이메일 전송
