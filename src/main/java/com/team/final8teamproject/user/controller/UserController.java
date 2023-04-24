@@ -75,7 +75,7 @@ public class UserController {
 
     @DeleteMapping("/test")
     public String CdTest(){
-        return "Ci/CdTest";   
+        return "Ci/CdTests";   
     }
 
     //4. 이메일 인증
