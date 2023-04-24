@@ -73,7 +73,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/test")
+    @GetMapping("/test")
     public String CdTest(){
         return "Ci/CdTests";   
     }
