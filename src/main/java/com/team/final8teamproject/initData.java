@@ -46,9 +46,7 @@ public class initData implements ApplicationRunner {
   private final FaqRepository faqRepository;
   //    private final ContactCommentRepository contactCommentRepository;
   private final NoticeRepository noticeRepository;
-
   private final T_exerciseRepository tExerciseRepository;
-
   private final T_exerciseLikeRepository tExerciseLikeRepository;
 
   private final ContactCommentRepository contactCommentRepository;
@@ -61,11 +59,11 @@ public class initData implements ApplicationRunner {
   @Transactional
   public void run(ApplicationArguments args) throws Exception {
 //
-    Manager manager = Manager.builder()
-            .nickName("manager").email("manager@naver.com")
-            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
-            .username("manager").role(UserRoleEnum.MANAGER)
-            .build();
+//    Manager manager = Manager.builder()
+//            .nickName("manager").email("manager@naver.com")
+//            .phoneNumber("01011112222").password(passwordEncoder.encode("manager1234"))
+//            .username("manager").role(UserRoleEnum.MANAGER)
+//            .build();
 //    Owner owner1 = Owner.builder()
 //            .nickName("owner2").email("owner2@google.com")
 //            .ownerNumber("owner2")
@@ -109,7 +107,7 @@ public class initData implements ApplicationRunner {
 //            .username("member5").role(UserRoleEnum.MEMBER).experience(0L)
 //            .build();
 //
-    managerRepository.save(manager);
+//    managerRepository.save(manager);
 //    userRepository.save(member);
 //    userRepository.save(member1);
 //    userRepository.save(member2);
@@ -117,19 +115,19 @@ public class initData implements ApplicationRunner {
 //    userRepository.save(member4);
 //    userRepository.save(member5);
 //
-    List<User> userList = new ArrayList<>();
-    for (int i = 1; i < 15; i++) {
-      User user = User.builder()
-              .nickName("member" + i)
-              .email("member" + i + "@google.com")
-              .phoneNumber("01033334444")
-              .password(passwordEncoder.encode("member1234"))
-              .username("member" + i)
-              .role(UserRoleEnum.MEMBER)
-              .build();
-      userRepository.save(user);
+//    List<User> userList = new ArrayList<>();
+//    for (int i = 1; i < 15; i++) {
+//      User user = User.builder()
+//              .nickName("member" + i)
+//              .email("member" + i + "@google.com")
+//              .phoneNumber("01033334444")
+//              .password(passwordEncoder.encode("member1234"))
+//              .username("member" + i)
+//              .role(UserRoleEnum.MEMBER)
+//              .build();
+//      userRepository.save(user);
 //      userList.add(user);
-    }
+//    }
 //    userRepository.saveAll(userList);
 
 //    List<Owner> ownerList = new ArrayList<>();
