@@ -73,11 +73,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/test")
-    public String CdTest(){
-        return "Ci/CdTests";   
-    }
-
     //4. 이메일 인증
     //이메일 전송
     @PostMapping("/email")
