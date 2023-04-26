@@ -76,7 +76,7 @@ public class CacheConfiguration {
                 CacheNames.CHANNELS,
                 defaultConfig.entryTtl(Duration.ofHours(4))
         );
-        //전체조회시 -KimTW
+        //전체조회시
         redisCacheConfigMap.put(
                 CacheNames.GETBOARD,
                 defaultConfig.entryTtl(Duration.ofHours(4))
