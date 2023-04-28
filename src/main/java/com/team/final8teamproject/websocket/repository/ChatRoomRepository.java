@@ -13,16 +13,15 @@ import java.util.Optional;
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     boolean existsByRoomTitle(String roomName);
-    @Query("SELECT r FROM ChatRoom r LEFT JOIN FETCH r.messages WHERE r.ownerNickName = :ownerNickName AND r.roomTitle = :roomTitle")
-    Optional<ChatRoom> findByOwnerNickNameAndRoomTitleWithMessages(@Param("ownerNickName") String ownerNickName, @Param("roomTitle") String roomTitle);
-    @Cacheable(cacheNames = "GetUserMyChatRoom")
+//    @Query("SELECT r FROM ChatRoom r LEFT JOIN FETCH r.messages WHERE r.owner = :owner AND r.roomTitle = :roomTitle")
+    Optional<ChatRoom> findByOwnerNickNameAndRoomTitle(@Param("ownerNickName") String owner, @Param("roomTitle") String roomTitle);
+
     List<ChatRoom> findByUserNickName(String username);
 
-    @Cacheable(cacheNames = "GetOwnerMyChatRoom")
     List<ChatRoom> findByOwnerNickName(String ownerName);
     ChatRoom findByRoomTitle(String roomName);
 
-    Optional<ChatRoom> findByOwnerNickNameAndRoomTitle(String ownerName, String roomName);
+//    Optional<ChatRoom> findByOwnerNickNameAndRoomTitle(String ownerName, String roomName);
     boolean existsByOwnerNickNameAndRoomTitle(String ownerName, String roomName);
 
     void deleteByOwnerNickNameAndRoomTitle(String ownerName, String roomName);

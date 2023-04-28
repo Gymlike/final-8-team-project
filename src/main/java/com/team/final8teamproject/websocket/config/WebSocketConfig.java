@@ -1,8 +1,10 @@
 package com.team.final8teamproject.websocket.config;
 
+import com.team.final8teamproject.websocket.StompInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -16,9 +18,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Slf4j
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    private final StompInterceptor stompSessionInterceptor;
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint( "ws/chat").setAllowedOrigins("*")
+        registry.addEndpoint( "/UOTalk")
+                .setAllowedOrigins("*")
                 .withSockJS();
     }
 
@@ -28,5 +32,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         config.enableSimpleBroker("/sub");
         // 클라이언트에서 요청을 전송할 경로 (이 경로 뒤에 컨트롤러의 매핑 주소가 붙음)
         config.setApplicationDestinationPrefixes("/pub");
+    }
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration){
+        registration.interceptors(stompSessionInterceptor);
     }
 }

@@ -1,45 +1,53 @@
 package com.team.final8teamproject.websocket.controller;
 
-import com.team.final8teamproject.websocket.dto.CreateRoomRequestDto;
-import com.team.final8teamproject.websocket.dto.DeleteRoomRequestDto;
-import com.team.final8teamproject.websocket.dto.GetMyAllRoomResponseDto;
-import com.team.final8teamproject.websocket.dto.GetMyRoomRequestDto;
-import com.team.final8teamproject.websocket.entity.ChatRoom;
-import com.team.final8teamproject.websocket.repository.ChatRoomRepository;
+import com.team.final8teamproject.security.service.UserDetailsImpl;
+import com.team.final8teamproject.websocket.dto.*;
+import com.team.final8teamproject.websocket.entity.ChatMessage;
+import com.team.final8teamproject.websocket.service.ChatMessageService;
 import com.team.final8teamproject.websocket.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 @Slf4j
 public class ChatRoomController {
     private final ChatRoomService roomService;
-    @PostMapping("/room/create")
-    public ResponseEntity<String> creatRoom(@RequestBody CreateRoomRequestDto roomRequestDto){
-        return roomService.createRoom(roomRequestDto.getOwnerNickName(), roomRequestDto.getUserNickName());
-    }
 
-    @PostMapping("/room/delete")
-    public ResponseEntity<String> deleteRoom(@RequestBody DeleteRoomRequestDto roomRequestDto){
-        return roomService.deleteRoom(roomRequestDto.getOwnerNickName(), roomRequestDto.getRoomTitle());
-    }
-
-    //되는거 확인하면 페이징 처리해서
-    //몇개만 보여주기
+    private final ChatMessageService messageService;
     @GetMapping("/rooms")
-    public List<GetMyAllRoomResponseDto> getMyRoom(@RequestBody GetMyRoomRequestDto roomRequestDto,
-                                                   @AuthenticationPrincipal UserDetails userDetails){
-        return roomService.getMyAllRoom(roomRequestDto.getUserNickName(), userDetails.getUsername());
+    public List<GetMyAllRoomResponseDto> getMyRoom(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        return roomService.getMyAllRoom(userDetails.getUsername());
     }
 
+    @GetMapping("/room/{nickName}")
+    public ResponseEntity<ChatRoomDto> getChatRoom(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable String nickName
+            ){
+        return roomService.getChatRoom(userDetails.getBase(), nickName);
+    }
 
+    @GetMapping("/chat/{roomId}/message")
+    public ResponseEntity<List<ChatMessage>> getRoomMessage(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable Long roomId
+            ){
+        return ResponseEntity.ok().body(messageService.getRoomMessages(roomId, userDetails.getUsername()));
+    }
+
+//    @PostMapping("/room/delete")
+//    public ResponseEntity<String> deleteRoom(
+//            @RequestBody DeleteRoomRequestDto roomRequestDto
+//    ){
+//        return roomService.deleteRoom(roomRequestDto.getOwnerNickName(), roomRequestDto.getRoomTitle());
+//    }
 }

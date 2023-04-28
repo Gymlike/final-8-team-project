@@ -5,9 +5,7 @@ public enum MessageType {
     NEW(UserChatRoomType.NEW),
     READ(UserChatRoomType.READ),
     CLOSE(UserChatRoomType.CLOSE);
-
     private final String chatType;
-
     MessageType(String chatType){
         this.chatType = chatType;
     }

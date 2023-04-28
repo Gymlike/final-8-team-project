@@ -1,7 +1,6 @@
 package com.team.final8teamproject.manager.entity;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
-import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -36,7 +35,7 @@ public class Manager extends BaseEntity {
 
     //프로필이미지 수정
     public void modifyManagerProfile(String nickName, String profileImage) {
-        changeNickNme(nickName);
+        changeNickName(nickName);
         this.profileImage = profileImage;
     }
 

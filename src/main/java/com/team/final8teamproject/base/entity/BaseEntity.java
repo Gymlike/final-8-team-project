@@ -5,19 +5,16 @@ import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
-
-import java.io.Serializable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
-//@Table(indexes = @Index(name = "idx_username", columnList = "username"))
+@Table(indexes = @Index(name = "idx_username", columnList = "username"))
 public class BaseEntity extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +43,7 @@ public class BaseEntity extends Timestamped{
     private String writerName;
 
     public void modifyProfile(String nickName, String profileImage) {
-        changeNickNme(nickName);
+        changeNickName(nickName);
         this.profileImage = profileImage;
     }
     public BaseEntity(String username, String password,
@@ -74,7 +71,7 @@ public class BaseEntity extends Timestamped{
     public void changePassword(String password){
         this.password = password;
     }
-    public void changeNickNme(String nickName) {
+    public void changeNickName(String nickName) {
         this.nickName = nickName;
     }
     public boolean isUserId(Long userid) {

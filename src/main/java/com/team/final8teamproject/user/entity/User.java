@@ -2,7 +2,6 @@ package com.team.final8teamproject.user.entity;
 
 import com.team.final8teamproject.base.entity.BaseEntity;
 
-import com.team.final8teamproject.user.dto.ProfileModifyRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,7 +29,7 @@ public class User extends BaseEntity {
         this.phoneNumber = phoneNumber;
     }
     public void modifyProfile(String nickName, String profileImage) {
-        changeNickNme(nickName);
+        changeNickName(nickName);
         this.profileImage = profileImage;
     }
 

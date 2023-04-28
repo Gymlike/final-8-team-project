@@ -75,7 +75,6 @@ public class UserController {
     //4. 이메일 인증
     //이메일 전송
     @PostMapping("/email")
-    @ResponseBody
     public void emailConfirm(String email) throws Exception {
         logger.info("post emailConfirm");
         Optional<BaseEntity> findEmail = baseRepository.findByEmail(email);
@@ -83,10 +82,8 @@ public class UserController {
             throw new IllegalArgumentException("이메일 중복");
         } else emailService.sendSimpleMessage(email);
     }
-
     //이메일 코드 확인
     @PostMapping("/verifyCode")
-    @ResponseBody
     public int verifyCode(String code, String email) throws CustomException {
         logger.info("Post verifyCode");
         int result = 0;
