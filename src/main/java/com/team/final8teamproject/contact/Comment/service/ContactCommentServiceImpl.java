@@ -6,6 +6,7 @@ import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentReques
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.repository.ContactCommentRepository;
 import com.team.final8teamproject.contact.Repository.InquiryRepository;
+import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
@@ -23,10 +24,8 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   private final InquiryRepository inquiryRepository;
 
   /**
-   * ㄴ 부모댓글이 있는 경우    -> 대댓글 저장
-   *    ㄴ 자식댓글(대댓글) 경우     -> 대대댓글을 저장
-   * ㄴ 부모댓글이 없는 경우.   -> 댓글 저장
-   *
+   * ㄴ 부모댓글이 있는 경우    -> 대댓글 저장 ㄴ 자식댓글(대댓글) 경우     -> 대대댓글을 저장 ㄴ 부모댓글이 없는 경우.   -> 댓글 저장
+   * <p>
    * 프론트엔드를 고려하여 자식 댓글의 계층구조로 보여주기 위해  depth 로 계층구조 나눔
    */
 
@@ -50,7 +49,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
         /** 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인*/
         //v2 객체 지향 entity 에게 역할을 줌
         parent.isInquiryId(inquiryId);
-        int depth = parent.getDepth()+ 1; //  자식댓글의 depth 설정 : 부모댓글의 자식 댓글이므로 + 1 함
+        int depth = parent.getDepth() + 1; //  자식댓글의 depth 설정 : 부모댓글의 자식 댓글이므로 + 1 함
         ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
             nickName, parent, depth);
         contactComment.setParent(parent); // parent = null 값이므로 현재 부모댓글을 지정해줌
@@ -69,30 +68,22 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   @Override
   @Transactional
   public void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
-      String username) {
+      String username, UserRoleEnum role) {
+
     String comments = updateCommentRequest.getComments();
-    ContactComment comment = contactCommentRepository.findById(commentId).orElseThrow(
-        () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
-    );
-    if (comment.isWriter(username)) {
-      comment.update(comments);
-      contactCommentRepository.save(comment);
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
-    }
+    ContactComment comment = findById(commentId);
+    isWriterAndIsManager(comment, username, role);
+    comment.update(comments);
+    contactCommentRepository.save(comment);
+
   }
 
   @Transactional
   @Override
   public void deleteInquiryComment(Long commentId, String username, UserRoleEnum role) {
-    ContactComment comment = contactCommentRepository.findById(commentId).orElseThrow(
-        () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
-    );
-    if (comment.isWriter(username) || role.equals(UserRoleEnum.MANAGER)) {
-      contactCommentRepository.deleteById(commentId);//
-    } else {
-      throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
-    }
+    ContactComment comment = findById(commentId);
+    isWriterAndIsManager(comment, username, role);
+    contactCommentRepository.deleteById(commentId);
   }
 
   /**
@@ -111,4 +102,25 @@ public class ContactCommentServiceImpl implements ContactCommentService {
     return contactCommentRepository.findAllByInquiryIdAndParentIsNull(inquiryId);
   }
 
+  /**
+   * 해당 글의 유저이거나 역할이 매니저라면 true 반환 하는 메서드
+   */
+  public void isWriterAndIsManager(ContactComment comment, String username, UserRoleEnum role) {
+    if (!comment.isWriter(username) && !role.equals(UserRoleEnum.MANAGER)) {
+      throw new CustomException(ExceptionStatus.WRONG_USER_T0_COMMENT);
+    }
+  }
+
+  /**
+   * 해당 유저의 댓글 조회 메서드
+   */
+  public ContactComment findById(Long commentId) {
+    ContactComment comment = contactCommentRepository.findById(commentId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.COMMENT_NOT_EXIST)
+    );
+    return comment;
+  }
+
 }
+
+

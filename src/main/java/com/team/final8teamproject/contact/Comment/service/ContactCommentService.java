@@ -15,7 +15,7 @@ public interface ContactCommentService {
       String username,String nickName);
 
   void updateInquiryComment(Long commentId, UpdateContactCommentRequest updateCommentRequest,
-      String username);
+      String username,UserRoleEnum role);
 
   void deleteInquiryComment(Long commentId, String username, UserRoleEnum role);
 
