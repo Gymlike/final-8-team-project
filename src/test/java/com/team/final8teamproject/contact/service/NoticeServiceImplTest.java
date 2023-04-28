@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,17 +11,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.team.final8teamproject.contact.Repository.NoticeRepository;
+import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.NoticeRequest;
 import com.team.final8teamproject.contact.dto.NoticeResponse;
 import com.team.final8teamproject.contact.dto.UpdateNoticeRequest;
+import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.contact.entity.Notice;
+import com.team.final8teamproject.contact.service.NoticeServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -30,10 +34,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class NoticeServiceImplTest {
@@ -96,7 +99,7 @@ class NoticeServiceImplTest {
 //    assertThat(violation).isNotEmpty();
 //    violation
 //        .forEach(error -> {
-//          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
+//          assertThat(error.getMessage()).isEqualTo("This is not blank");
 //        });
 //  }
 
@@ -157,11 +160,6 @@ class NoticeServiceImplTest {
     //given
     Notice notice = new Notice(1L, "title", "content", "imageUrl");
     UpdateNoticeRequest updateNoticeRequest = new UpdateNoticeRequest("updateT", "updateC");
-    String title = updateNoticeRequest.getTitle();
-    String content = updateNoticeRequest.getContent();
-    String imageUrl = "imageUrl";
-
-    notice.update(title, content, imageUrl);
 
     when(noticeRepository.findById(1L))
         .thenReturn(Optional.of(notice));
@@ -213,4 +211,72 @@ class NoticeServiceImplTest {
         () -> noticeServiceImpl.deleteNotice(anyLong(), 1L))
         .isInstanceOf((CustomException.class));
   }
+
+  @Test
+  @DisplayName("FAQ _대소문자 구분 없이 제목 검색조회(TitleContaining)")
+  void searchByKeyword_titleContaining_success() {
+    //given
+    String keyword = "Title";
+    String question = keyword;
+    String answer = keyword;
+
+    int page = 1;
+    int size = 1;
+    Direction direction = Direction.DESC;
+    String properties = "createdDate";
+
+    NoticeRequest noticeRequest = new NoticeRequest("Title", "answer");
+    Notice notice = noticeRequest.toEntity(1L,"이미지");
+
+
+    //Page<Notice> 객체를 반환하도록 설정
+    List<Notice> noticeList = new ArrayList<>();
+    noticeList.add(notice);
+
+
+    PageImpl<Notice> pageImpl = new PageImpl<>(noticeList);
+
+    when(noticeRepository.findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(question,
+        answer, PageRequest.of(page - 1, size, direction, properties))).thenReturn(pageImpl);
+    //when
+    Result response = noticeServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    //then
+    assertThat(response.getTotalCount()).isEqualTo(1);
+
+  }
+
+  @Test
+  @DisplayName("FAQ _대소문자 구분 없이 내용 검색조회(ContentContaining)")
+  void searchByKeyword_ContentContaining_success() {
+    //given
+    String keyword = "Content";
+    String question = keyword;
+    String answer = keyword;
+
+    int page = 1;
+    int size = 1;
+    Direction direction = Direction.DESC;
+    String properties = "createdDate";
+
+    NoticeRequest noticeRequest = new NoticeRequest("Title", "Content");
+    Notice notice = noticeRequest.toEntity(1L,"이미지");
+
+
+    //Page<Notice> 객체를 반환하도록 설정
+    List<Notice> noticeList = new ArrayList<>();
+    noticeList.add(notice);
+
+
+    PageImpl<Notice> pageImpl = new PageImpl<>(noticeList);
+
+    when(noticeRepository.findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(question,
+        answer, PageRequest.of(page - 1, size, direction, properties))).thenReturn(pageImpl);
+    //when
+    Result response = noticeServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    //then
+    assertThat(response.getTotalCount()).isEqualTo(1);
+
+  }
+
+
 }

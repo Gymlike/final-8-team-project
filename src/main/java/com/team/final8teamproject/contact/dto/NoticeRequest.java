@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class NoticeRequest {
-  @NotBlank
+  @NotBlank(message = "This is not blank")
   private final String title;
-  @NotBlank
+  @NotBlank(message = "This is not blank")
   private final String content;
 
 

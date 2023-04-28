@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -21,14 +20,12 @@ import com.team.final8teamproject.contact.dto.UpdateFaqRequest;
 import com.team.final8teamproject.contact.entity.Faq;
 import com.team.final8teamproject.contact.service.FaqServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +37,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 
 
@@ -128,7 +124,7 @@ class FaqServiceImplTest {
 //    assertThat(violation).isNotEmpty();
 //    violation
 //        .forEach(error -> {
-//          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
+//          assertThat(error.getMessage()).isEqualTo("This is not blank");
 //        });
 //  }
   @Test
@@ -178,9 +174,6 @@ class FaqServiceImplTest {
     });
   }
 
-//  @Test
-//  @DisplayName("FAQ 검색조회")
-//  검색이 잘 되는지는 jpa가 하는 일이 때문에 성공은 별도 테스트 하지 않음
 
   @Test
   @DisplayName("FAQ 수정_성공")
@@ -260,6 +253,79 @@ class FaqServiceImplTest {
     assertThrows(CustomException.class, () -> {
       faqServiceImpl.deleteFaq(1L, anyLong());
     });
+  }
+
+
+  @Test
+  @DisplayName("FAQ _대소문자 구분 없이 질문 검색조회(questionContaining)")
+  void searchByKeyword_questionContaining_success() {
+    //given
+    String keyword = "keyword";
+    String question = keyword;
+    String answer = keyword;
+
+    int page = 1;
+    int size = 1;
+    Direction direction = Direction.DESC;
+    String properties = "createdDate";
+
+
+    FaqRequest faqRequest = new FaqRequest("KEYWORD", "키워드");
+    Faq faq = faqRequest.toEntity(1L);
+    FaqRequest faqRequest1 = new FaqRequest("keyword", "키워드");
+    Faq faq1 = faqRequest1.toEntity(1L);
+
+    //Page<Faq> 객체를 반환하도록 설정
+    List<Faq> faqList = new ArrayList<>();
+    faqList.add(faq);
+    faqList.add(faq1);
+    PageImpl<Faq> pageImpl = new PageImpl<>(faqList);
+
+    when(faqRepository.findAllByQuestionContainingIgnoreCaseOrAnswerContainingIgnoreCase(question,
+        answer, PageRequest.of(page - 1, size, direction, properties))).thenReturn(pageImpl);
+    //when
+    Result response = faqServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    //then
+
+    assertThat(response.getTotalCount()).isEqualTo(2);
+
+
+  }
+
+  @Test
+  @DisplayName("FAQ _대소문자 구분 없이 답변 검색조회(answerContaining)")
+  void searchByKeyword_answerContaining_success() {
+    //given
+    String keyword = "answer";
+    String question = keyword;
+    String answer = keyword;
+
+    int page = 1;
+    int size = 1;
+    Direction direction = Direction.DESC;
+    String properties = "createdDate";
+
+    FaqRequest faqRequest = new FaqRequest("KEYWORD", "answer");
+    Faq faq = faqRequest.toEntity(1L);
+    FaqRequest faqRequest1 = new FaqRequest("keyword", "Answer");
+    Faq faq1 = faqRequest1.toEntity(1L);
+
+
+    //Page<Faq> 객체를 반환하도록 설정
+    List<Faq> faqList = new ArrayList<>();
+    faqList.add(faq);
+    faqList.add(faq1);
+
+
+    PageImpl<Faq> pageImpl = new PageImpl<>(faqList);
+
+    when(faqRepository.findAllByQuestionContainingIgnoreCaseOrAnswerContainingIgnoreCase(question,
+        answer, PageRequest.of(page - 1, size, direction, properties))).thenReturn(pageImpl);
+    //when
+    Result response = faqServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    //then
+    assertThat(response.getTotalCount()).isEqualTo(2);
+
   }
 
 }

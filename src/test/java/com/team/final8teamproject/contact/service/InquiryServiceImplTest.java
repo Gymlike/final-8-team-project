@@ -1,6 +1,12 @@
 package com.team.final8teamproject.contact.service;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceImpl;
@@ -9,11 +15,10 @@ import com.team.final8teamproject.contact.dto.InquiryRequest;
 import com.team.final8teamproject.contact.dto.InquiryResponse;
 import com.team.final8teamproject.contact.dto.UpdateInquiryRequest;
 import com.team.final8teamproject.contact.entity.Inquiry;
+import com.team.final8teamproject.contact.service.InquiryServiceImpl.Result;
 import com.team.final8teamproject.share.exception.CustomException;
-import com.team.final8teamproject.share.exception.ExceptionStatus;
 import com.team.final8teamproject.user.entity.User;
 import com.team.final8teamproject.user.entity.UserRoleEnum;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -29,16 +34,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -98,7 +96,7 @@ class InquiryServiceImplTest {
     assertThat(violation).isEmpty();
     violation
         .forEach(error -> {
-          assertThat(error.getMessage()).isEqualTo("공백일 수 없습니다");
+          assertThat(error.getMessage()).isEqualTo("This is not blank");
         });
   }
 
@@ -168,24 +166,7 @@ class InquiryServiceImplTest {
     verify(inquiryRepository).findById(anyLong());
   }
 
-  @Test
-  @DisplayName("Inquiry 건당조회 & getSecret_true 일때 해당 유저 아닐때 보기 예외")
-  void getSelectedInquiry_true_invalidUser_throw() {
-    InquiryResponse inquiryResponse = null;
-    User user = new User("username", "username1234", UserRoleEnum.MEMBER, "validUser",
-        "01022223333", "member@naver.com");
-    Inquiry inquiry = new Inquiry("username", "validUser", "title", "content", true);
-    when(inquiryRepository.findById(1L))
-        .thenReturn(Optional.of(inquiry));
 
-      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
-          anyLong());
-      inquiryResponse = new InquiryResponse(inquiry, parentComments);
-
-    //when&then
-    assertThatThrownBy(() -> inquiryServiceImpl.getSelectedInquiry(1L, "invalidUser",
-        UserRoleEnum.MEMBER)).isInstanceOf(CustomException.class);
-  }
 
 
   @Test
@@ -212,6 +193,7 @@ class InquiryServiceImplTest {
     assertThat(response.getComments()).isEqualTo(inquiryResponse.getComments());
   }
 
+
   @Test
   @DisplayName("Inquiry 건당조회 & getSecret_true 일때 관리자도 아니고 해당 유저도 아닐때 보기 예외")
   void getSelectedInquiry_true_invalidUserAndRole_MemBer_throw() {
@@ -233,66 +215,85 @@ class InquiryServiceImplTest {
             UserRoleEnum.MEMBER)).isInstanceOf(CustomException.class);
   }
 
-  /**
-   * 매니저일때도 수정가능하게 코드 변경함-> 테스트코드 변경 요망
-   */
-//  @Test
-//  @DisplayName("inquiry 수정_성공")
-//  void updateInquiry_success() {
-//    //given
-//    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
-//    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
-//        "updateContent");
-//    String updateTitle = updateInquiryRequest.getTitle();
-//    String updateContent = updateInquiryRequest.getContent();
-//
-//    when(inquiryRepository.findById(anyLong()))
-//        .thenReturn(Optional.of(inquiry));
-//    //when
-//    inquiryServiceImpl.updateInquiry(anyLong(), "username", updateInquiryRequest);
-//
-//    //then
-//    assertThat(inquiry.getTitle()).isEqualTo(updateTitle);
-//    assertThat(inquiry.getContent()).isEqualTo(updateContent);
-//    verify(inquiryRepository, times(1)).save(any(Inquiry.class));
-//  }
-//
-//  @Test
-//  @DisplayName("inquiry 수정_해당유저의 글이 존재 하지 않을때 예외")
-//  void updateInquiry_BOARD_NOT_EXIST_throw() {
-//    //given
-//    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
-//    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
-//        "updateContent");
-//    String updateTitle = updateInquiryRequest.getTitle();
-//    String updateContent = updateInquiryRequest.getContent();
-//    inquiry.update(updateTitle, updateContent);
-//    when(inquiryRepository.findById(anyLong()))
-//        .thenReturn(Optional.of(inquiry));
-//    //when&then
-//    assertThatThrownBy(() ->
-//        inquiryServiceImpl.updateInquiry(anyLong(), "invalid", updateInquiryRequest)).isInstanceOf(
-//        CustomException.class);
-//  }
 
-//  @Test
-//  @DisplayName("inquiry 수정_해당 유저가 아닐때 예외")
-//  void updateInquiry_invalidUser_throw() {
-//    //given
-//    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
-//    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
-//        "updateContent");
-//    String updateTitle = updateInquiryRequest.getTitle();
-//    String updateContent = updateInquiryRequest.getContent();
-//
-//    when(inquiryRepository.findById(anyLong()))
-//        .thenReturn(Optional.of(inquiry));
-//
-//    //when&then
-//    assertThatThrownBy(() ->
-//        inquiryServiceImpl.updateInquiry(anyLong(), "invalid", updateInquiryRequest)).isInstanceOf(
-//        CustomException.class);
-//  }
+  @Test
+  @DisplayName("inquiry 수정_해당 유저 일때 성공")
+  void updateInquiry_valiedUser_success() {
+    //given
+    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
+    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
+        "updateContent");
+    String updateTitle = updateInquiryRequest.getTitle();
+    String updateContent = updateInquiryRequest.getContent();
+
+    when(inquiryRepository.findById(anyLong()))
+        .thenReturn(Optional.of(inquiry));
+    //when
+    inquiryServiceImpl.updateInquiry(anyLong(), "username", updateInquiryRequest,UserRoleEnum.MEMBER);
+
+    //then
+    assertThat(inquiry.getTitle()).isEqualTo(updateTitle);
+    assertThat(inquiry.getContent()).isEqualTo(updateContent);
+    verify(inquiryRepository, times(1)).save(any(Inquiry.class));
+  }
+
+  @Test
+  @DisplayName("inquiry 수정_매니저일때 성공")
+  void updateInquiry_RoleManager_success() {
+    //given
+    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
+    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
+        "updateContent");
+    String updateTitle = updateInquiryRequest.getTitle();
+    String updateContent = updateInquiryRequest.getContent();
+
+    when(inquiryRepository.findById(anyLong()))
+        .thenReturn(Optional.of(inquiry));
+    //when
+    inquiryServiceImpl.updateInquiry(anyLong(), "manager", updateInquiryRequest,UserRoleEnum.MANAGER);
+
+    //then
+    assertThat(inquiry.getTitle()).isEqualTo(updateTitle);
+    assertThat(inquiry.getContent()).isEqualTo(updateContent);
+    verify(inquiryRepository, times(1)).save(any(Inquiry.class));
+  }
+
+  @Test
+  @DisplayName("inquiry 수정_해당유저의 글이 존재 하지 않을때 예외")
+  void updateInquiry_BOARD_NOT_EXIST_throw() {
+    //given
+    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
+    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
+        "updateContent");
+    String updateTitle = updateInquiryRequest.getTitle();
+    String updateContent = updateInquiryRequest.getContent();
+    inquiry.update(updateTitle, updateContent);
+    when(inquiryRepository.findById(anyLong()))
+        .thenReturn(Optional.of(inquiry));
+    //when&then
+    assertThatThrownBy(() ->
+        inquiryServiceImpl.updateInquiry(anyLong(), "invalid", updateInquiryRequest,UserRoleEnum.MEMBER)).isInstanceOf(
+        CustomException.class);
+  }
+
+  @Test
+  @DisplayName("inquiry 수정_해당 유저가 아닐때 예외")
+  void updateInquiry_invalidUser_throw() {
+    //given
+    Inquiry inquiry = new Inquiry("username", "nickname", "title", "content", false);
+    UpdateInquiryRequest updateInquiryRequest = new UpdateInquiryRequest("updateTitle",
+        "updateContent");
+    String updateTitle = updateInquiryRequest.getTitle();
+    String updateContent = updateInquiryRequest.getContent();
+
+    when(inquiryRepository.findById(anyLong()))
+        .thenReturn(Optional.of(inquiry));
+
+    //when&then
+    assertThatThrownBy(() ->
+        inquiryServiceImpl.updateInquiry(anyLong(), "invalid", updateInquiryRequest,UserRoleEnum.MEMBER)).isInstanceOf(
+        CustomException.class);
+  }
 
   @Test
   @DisplayName("Inquiry 삭제_해당 유저 일때 성공")
@@ -343,5 +344,70 @@ class InquiryServiceImplTest {
             UserRoleEnum.MEMBER)).isInstanceOf(CustomException.class);
   }
 
+  @Test
+  @DisplayName("FAQ _대소문자 구분 없이 제목 검색조회(TitleContaining)")
+  void searchByKeyword_titleContaining_success() {
+    //given
+    String keyword = "Title";
+    String question = keyword;
+    String answer = keyword;
 
+    int page = 1;
+    int size = 1;
+    Direction direction = Direction.DESC;
+    String properties = "createdDate";
+
+   InquiryRequest inquiryRequest = new InquiryRequest("Title", "answer",false);
+    Inquiry inquiry = inquiryRequest.toEntity("username","nickName");
+
+
+    //Page<Inquiry> 객체를 반환하도록 설정
+    List<Inquiry> inquiryList = new ArrayList<>();
+    inquiryList.add(inquiry);
+
+
+    PageImpl<Inquiry> pageImpl = new PageImpl<>(inquiryList);
+
+    when(inquiryRepository.findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(question,
+        answer, PageRequest.of(page - 1, size, direction, properties))).thenReturn(pageImpl);
+    //when
+    Result response = inquiryServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    //then
+    assertThat(response.getTotalCount()).isEqualTo(1);
+
+  }
+
+  @Test
+  @DisplayName("FAQ _대소문자 구분 없이 내용 검색조회(ContentContaining)")
+  void searchByKeyword_contentContaining_success() {
+    //given
+    String keyword = "Content";
+    String question = keyword;
+    String answer = keyword;
+
+    int page = 1;
+    int size = 1;
+    Direction direction = Direction.DESC;
+    String properties = "createdDate";
+
+    InquiryRequest inquiryRequest = new InquiryRequest("KEYWORD", "Content",false);
+    Inquiry inquiry = inquiryRequest.toEntity("username","nickName");
+
+
+    //Page<Inquiry> 객체를 반환하도록 설정
+    List<Inquiry> inquiryList = new ArrayList<>();
+    inquiryList.add(inquiry);
+
+
+    PageImpl<Inquiry> pageImpl = new PageImpl<>(inquiryList);
+
+    when(inquiryRepository.findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(question,
+        answer, PageRequest.of(page - 1, size, direction, properties))).thenReturn(pageImpl);
+    //when
+    Result response = inquiryServiceImpl.searchByKeyword(keyword, page, size, direction, properties);
+    //then
+    assertThat(response.getTotalCount()).isEqualTo(1);
+
+  }
 }
+

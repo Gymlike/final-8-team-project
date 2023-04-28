@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class FaqRequest {
-  @NotBlank
+
+
+  @NotBlank(message = "This is not blank")
   private final String question;
-  @NotBlank
+  @NotBlank(message = "This is not blank")
   private final String answer;
 
   @Builder

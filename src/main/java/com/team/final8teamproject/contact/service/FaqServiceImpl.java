@@ -56,7 +56,7 @@ public class FaqServiceImpl implements FaqService {
       Direction direction, String properties) {
     String question = keyword;
     String answer = keyword;
-    Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingOrAnswerContaining(question,
+    Page<Faq> faqListPage = faqRepository.findAllByQuestionContainingIgnoreCaseOrAnswerContainingIgnoreCase(question,
         answer, PageRequest.of(page - 1, size, direction, properties));
     return pageProcessing(faqListPage, page, size);
 

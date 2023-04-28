@@ -47,7 +47,7 @@ public class ContactCommentController {
       @RequestBody UpdateContactCommentRequest updateCommentRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     contactCommentServiceIml.updateInquiryComment(id,
-        updateCommentRequest, userDetails.getBase().getUsername());
+        updateCommentRequest, userDetails.getBase().getUsername(),userDetails.getBase().getRole());
     return ResponseEntity.ok("수정 완료");
   }
 
