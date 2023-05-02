@@ -3,6 +3,7 @@ package com.team.final8teamproject.board.service;
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.board.comment.dto.CreatCommentRequestDTO;
 import com.team.final8teamproject.board.comment.service.T_exerciseCommentService;
+import com.team.final8teamproject.board.dto.ResultDTO;
 import com.team.final8teamproject.board.entity.T_exercise;
 import com.team.final8teamproject.board.like.service.T_exerciseLikeService;
 import com.team.final8teamproject.board.repository.T_exerciseRepository;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -45,6 +47,9 @@ class tExerciseServiceImpleTest {
     @Mock
     BaseEntity user;
 
+    @Mock
+    Pageable pageRequest;
+
     //test를 실행하기 전마다 가짜객체를 주입시켜준다!..
     @BeforeEach
     void  setUp(){
@@ -71,4 +76,26 @@ class tExerciseServiceImpleTest {
         assertThat(response.getComment()).isEqualTo("등록완료");
     }
 
+
+    @Test
+    @DisplayName("전체 게시글 조히")
+    void getTotalBoard() throws IOException{
+        //given
+
+        T_exercise t_exercise = new T_exercise("제목","내용","이미지주소",user);
+        ReflectionTestUtils.setField(t_exercise,"id",1L);
+
+        T_exercise t_exercise2 = new T_exercise("제목","내용","이미지주소",user);
+        ReflectionTestUtils.setField(t_exercise2,"id",2L);
+
+        T_exercise savet_exercise1 = t_exerciseRepository.save(t_exercise);
+        T_exercise savet_exercise2 = t_exerciseRepository.save(t_exercise2);
+
+        //when
+        ResultDTO response = t_exerciseService.getAllT_exerciseBoards(pageRequest, "", 2, 1);
+
+        //then
+
+        assertThat(response.getResult().getCountPage()).isEqualTo(2);
+    }
 }
