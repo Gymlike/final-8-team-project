@@ -1,8 +1,11 @@
 package com.team.final8teamproject.contact.entity;
 
+import com.team.final8teamproject.contact.Comment.entity.ContactComment;
 import com.team.final8teamproject.share.Timestamped;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +19,7 @@ public class Inquiry extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "inquiry_id", nullable = false)
   private Long id;
 
 
@@ -34,6 +37,8 @@ public class Inquiry extends Timestamped {
 
   private Boolean secret; // todo ** 관리자만 보기 와 모두 보기 선택지 - 관리자만 보기시 관리지만 볼 수 있음
 
+  @OneToMany(fetch = FetchType.EAGER , mappedBy = "inquiry",cascade = {CascadeType.ALL},orphanRemoval = true)
+  private List<ContactComment> contactComments = new ArrayList<>();
 
 
   @Builder

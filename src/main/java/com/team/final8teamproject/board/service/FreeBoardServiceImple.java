@@ -43,7 +43,6 @@ public class FreeBoardServiceImple implements FreeBoardService {
     private final FreeBoardRepository freeBoardRepository;
     private final FreeBoardCommentService freeBoardCommentService;
     private final FreeBoardLikeService freeBoardLikeService;
-
     private final UserService userService;
 
     /**

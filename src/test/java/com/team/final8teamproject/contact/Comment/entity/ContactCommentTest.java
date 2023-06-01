@@ -1,8 +1,10 @@
 package com.team.final8teamproject.contact.Comment.entity;
 
+import static com.team.final8teamproject.contact.entity.QInquiry.inquiry;
 import static org.assertj.core.api.Assertions.*;
 
 
+import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ class ContactCommentTest {
   void builder() {
     //given
     ContactComment parent = new ContactComment();
+
     //when
     ContactComment contactComment = ContactComment.builder()
         .comments("댓글")
@@ -97,7 +100,7 @@ class ContactCommentTest {
 
   @Test
   @DisplayName("유효한 inquiry 인지  테스트")
-  void isInquiryId() {
+  void isInquiry() {
     //given
     ContactComment parent = new ContactComment();
     ContactComment contactComment = ContactComment.builder()

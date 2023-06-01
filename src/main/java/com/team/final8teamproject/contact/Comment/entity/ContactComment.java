@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.Comment.entity;
 
+import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
@@ -37,17 +38,21 @@ public class ContactComment extends Timestamped {
   private String comments;
   @Column(nullable = false)
   private String username;
-  @Column(nullable = false)
-  private Long inquiryId;
+
   @Column(nullable = false)
   private String nickName;
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parent_id")
+  @JoinColumn(name = "parent")
   private ContactComment parent;
 
   @OneToMany(mappedBy = "parent", orphanRemoval = true)
   private List<ContactComment> children = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "inquiry_id", nullable = false)
+  private Inquiry inquiry;
 
+  @Column(nullable = false)
+  private Long inquiryId;
   private int depth;
 
   @Builder
