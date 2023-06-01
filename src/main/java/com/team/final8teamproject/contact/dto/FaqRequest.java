@@ -17,7 +17,7 @@ public class FaqRequest {
   @NotBlank(message = "This is not blank")
   private final String answer;
 
-  @Builder
+
   public FaqRequest(String question, String answer) {
     this.question = question;
     this.answer = answer;

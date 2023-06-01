@@ -17,7 +17,7 @@ public class NoticeRequest {
   private final String content;
 
 
-  @Builder
+
   public NoticeRequest(String title, String content) {
     this.title = title;
     this.content = content;

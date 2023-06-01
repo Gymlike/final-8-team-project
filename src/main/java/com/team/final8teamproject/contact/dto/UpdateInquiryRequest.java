@@ -12,7 +12,7 @@ public class UpdateInquiryRequest {
 
   private final String title;
   private final String content;
-@Builder
+
   public UpdateInquiryRequest(String title, String content) {
     this.title = title;
     this.content = content;
