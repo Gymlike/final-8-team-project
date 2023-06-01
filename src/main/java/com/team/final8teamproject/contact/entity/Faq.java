@@ -17,7 +17,7 @@ public class Faq extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "faq_id", nullable = false)
   private Long id;
 
   @Column(nullable = false)
