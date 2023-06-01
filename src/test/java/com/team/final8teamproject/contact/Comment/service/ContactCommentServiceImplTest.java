@@ -120,7 +120,7 @@ class ContactCommentServiceImplTest {
     CreateContactCommentRequest createContactRequest =
         new CreateContactCommentRequest("comments", parent.getId());
     // 부모댓글과 자식댓글이 될 inquiryId 같은지 체크 true 일때
-    parent.isInquiryId(1L);
+    parent.isInquiry(inquiry);
     int depth = parent.getDepth() + 1;
     when(contactCommentRepository.save(any(ContactComment.class)))
         .thenReturn(createContactRequest.toEntity(inquiry, "username", "nickname", parent, depth));

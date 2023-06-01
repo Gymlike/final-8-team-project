@@ -81,8 +81,8 @@ public class ContactComment extends Timestamped {
   }
 
 
-  public void isInquiryId(Long inquiryId) {
-    if (!this.inquiry.getId().equals(inquiryId)) {
+  public void isInquiry(Inquiry inquiry) {
+    if (!this.inquiry.equals(inquiry)) {
       throw new CustomException(ExceptionStatus.WRONG_POST_ID);
     }
   }

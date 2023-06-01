@@ -100,13 +100,14 @@ class ContactCommentTest {
     //then
     assertThat(contactComment.getParent()).isEqualTo(parent1);
   }
-
+/////////
   @Test
   @DisplayName("유효한 inquiry 인지  테스트")
-  void isInquiryId() {
+  void isInquiry() {
     //given
     ContactComment parent = new ContactComment();
     Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    Inquiry inquiry1 = new Inquiry("username","nick","title","content",false);
     ContactComment contactComment = ContactComment.builder()
         .comments("댓글")
         .username("username")
@@ -116,8 +117,8 @@ class ContactCommentTest {
         .depth(0)
         .build();
     //when&then
-    assertThatNoException().isThrownBy(()-> contactComment.isInquiryId(1L));//예외가 없을때
-    assertThatThrownBy(()->contactComment.isInquiryId(2L)).isInstanceOf(CustomException.class); //예외 발생시
+    assertThatNoException().isThrownBy(()-> contactComment.isInquiry(inquiry));//예외가 없을때
+    assertThatThrownBy(()->contactComment.isInquiry(inquiry1)).isInstanceOf(CustomException.class); //예외 발생시
   }
 
 
