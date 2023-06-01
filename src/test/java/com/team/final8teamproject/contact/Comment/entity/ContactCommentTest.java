@@ -22,12 +22,12 @@ class ContactCommentTest {
   void builder() {
     //given
     ContactComment parent = new ContactComment();
-    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+
     //when
     ContactComment contactComment = ContactComment.builder()
         .comments("댓글")
         .username("username")
-        .inquiry(inquiry)
+        .inquiryId(1L)
         .nickName("nickname")
         .parent(parent)
         .depth(0)
@@ -36,7 +36,7 @@ class ContactCommentTest {
     assertThat(contactComment.getId()).isNull();
     assertThat(contactComment.getUsername()).isEqualTo("username");
     assertThat(contactComment.getComments()).isEqualTo("댓글");
-    assertThat(contactComment.getInquiry().getTitle()).isEqualTo("title");
+    assertThat(contactComment.getInquiryId()).isEqualTo(1L);
     assertThat(contactComment.getNickName()).isEqualTo("nickname");
     assertThat(contactComment.getParent()).isEqualTo(parent);
     assertThat(contactComment.getDepth()).isEqualTo(0);
@@ -46,11 +46,10 @@ class ContactCommentTest {
   void update() {
     //given
     ContactComment parent = new ContactComment();
-    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
     ContactComment contactComment = ContactComment.builder()
         .comments("댓글")
         .username("username")
-        .inquiry(inquiry)
+        .inquiryId(1L)
         .nickName("nickname")
         .parent(parent)
         .depth(0)
@@ -66,11 +65,10 @@ class ContactCommentTest {
   void isWriter() {
     //given
     ContactComment parent = new ContactComment();
-    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
     ContactComment contactComment = ContactComment.builder()
         .comments("댓글")
         .username("username")
-        .inquiry(inquiry)
+        .inquiryId(1L)
         .nickName("nickname")
         .parent(parent)
         .depth(0)
@@ -85,12 +83,11 @@ class ContactCommentTest {
     //given
     ContactComment parent = new ContactComment();
     ContactComment parent1 = new ContactComment();
-    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
 
     ContactComment contactComment = ContactComment.builder()
         .comments("댓글")
         .username("username")
-        .inquiry(inquiry)
+        .inquiryId(1L)
         .nickName("nickname")
         .parent(parent)
         .depth(0)
@@ -100,25 +97,23 @@ class ContactCommentTest {
     //then
     assertThat(contactComment.getParent()).isEqualTo(parent1);
   }
-/////////
+
   @Test
   @DisplayName("유효한 inquiry 인지  테스트")
   void isInquiry() {
     //given
     ContactComment parent = new ContactComment();
-    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
-    Inquiry inquiry1 = new Inquiry("username","nick","title","content",false);
     ContactComment contactComment = ContactComment.builder()
         .comments("댓글")
         .username("username")
-        .inquiry(inquiry)
+        .inquiryId(1L)
         .nickName("nickname")
         .parent(parent)
         .depth(0)
         .build();
     //when&then
-    assertThatNoException().isThrownBy(()-> contactComment.isInquiry(inquiry));//예외가 없을때
-    assertThatThrownBy(()->contactComment.isInquiry(inquiry1)).isInstanceOf(CustomException.class); //예외 발생시
+    assertThatNoException().isThrownBy(()-> contactComment.isInquiryId(1L));//예외가 없을때
+    assertThatThrownBy(()->contactComment.isInquiryId(2L)).isInstanceOf(CustomException.class); //예외 발생시
   }
 
 

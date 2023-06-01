@@ -51,16 +51,16 @@ public class ContactComment extends Timestamped {
   @JoinColumn(name = "inquiry_id", nullable = false)
   private Inquiry inquiry;
 
-//  @Column(nullable = false)
-//  private Long inquiryId;
+  @Column(nullable = false)
+  private Long inquiryId;
   private int depth;
 
   @Builder
-  public ContactComment(String comments, String username, Inquiry inquiry, String nickName,
+  public ContactComment(String comments, String username, Long inquiryId, String nickName,
       ContactComment parent, int depth) {
     this.comments = comments;
     this.username = username;
-    this.inquiry = inquiry;
+    this.inquiryId = inquiryId;
     this.nickName = nickName;
     this.parent = parent;
     this.depth = depth;
@@ -81,8 +81,8 @@ public class ContactComment extends Timestamped {
   }
 
 
-  public void isInquiry(Inquiry inquiry) {
-    if (!this.inquiry.equals(inquiry)) {
+  public void isInquiryId(Long inquiryId) {
+    if (!this.inquiryId.equals(inquiryId)) {
       throw new CustomException(ExceptionStatus.WRONG_POST_ID);
     }
   }
