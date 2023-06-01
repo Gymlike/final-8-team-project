@@ -152,7 +152,7 @@ public class InquiryServiceImpl implements InquiryService {
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
     int countList = size;
-    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int countPage = 10;
     int totalPage = totalCount / countList;
     if (totalCount % countList > 0) {
       totalPage++;
