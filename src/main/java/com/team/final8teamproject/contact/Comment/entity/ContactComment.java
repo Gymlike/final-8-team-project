@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 /**
  * inquiry , user 연관관계  x  없이 구현
@@ -48,19 +49,18 @@ public class ContactComment extends Timestamped {
   @OneToMany(mappedBy = "parent", orphanRemoval = true)
   private List<ContactComment> children = new ArrayList<>();
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "inquiry_id", nullable = false)
+  @JoinColumn(name = "inquiry_id",nullable = false)
   private Inquiry inquiry;
 
-  @Column(nullable = false)
-  private Long inquiryId;
+
   private int depth;
 
   @Builder
-  public ContactComment(String comments, String username, Long inquiryId, String nickName,
+  public ContactComment(String comments, String username, Inquiry inquiry, String nickName,
       ContactComment parent, int depth) {
     this.comments = comments;
     this.username = username;
-    this.inquiryId = inquiryId;
+    this.inquiry = inquiry;
     this.nickName = nickName;
     this.parent = parent;
     this.depth = depth;
@@ -80,15 +80,10 @@ public class ContactComment extends Timestamped {
     this.parent = parent;
   }
 
-
-  public void isInquiryId(Long inquiryId) {
-    if (!this.inquiryId.equals(inquiryId)) {
-      throw new CustomException(ExceptionStatus.WRONG_POST_ID);
-    }
   }
 
 
-}
+
 
 
 

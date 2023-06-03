@@ -6,6 +6,7 @@ import com.team.final8teamproject.contact.Comment.service.ContactCommentServiceI
 import com.team.final8teamproject.security.service.UserDetailsImpl;
 
 import com.team.final8teamproject.user.service.UserService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,7 @@ public class ContactCommentController {
 
   @PostMapping("/inquiry/{id}")
   public ResponseEntity savaInquiryComment(
-      @PathVariable Long id,
+      @PathVariable  Long id,
       @RequestBody CreateContactCommentRequest createContactCommentRequest,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     System.out.println(createContactCommentRequest.getComments());
