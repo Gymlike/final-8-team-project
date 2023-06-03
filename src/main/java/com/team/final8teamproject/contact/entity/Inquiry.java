@@ -37,13 +37,22 @@ public class Inquiry extends Timestamped {
 
   private Boolean secret; // todo ** 관리자만 보기 와 모두 보기 선택지 - 관리자만 보기시 관리지만 볼 수 있음
 
-  @OneToMany(fetch = FetchType.EAGER , mappedBy = "inquiry",cascade = {CascadeType.ALL},orphanRemoval = true)
+  @OneToMany( mappedBy = "inquiry",cascade = {CascadeType.ALL},orphanRemoval = true)
   private List<ContactComment> contactComments = new ArrayList<>();
 
 
   @Builder
   public Inquiry( String username, String nickName, String title, String content,
       Boolean secret) {
+    this.username = username;
+    this.nickName = nickName;
+    this.title = title;
+    this.content = content;
+    this.secret = secret;
+  }
+  // 생성자 추가(테스트 하기 위함)
+  public Inquiry(Long id, String username, String nickName, String title, String content, Boolean secret) {
+    this.id = id;
     this.username = username;
     this.nickName = nickName;
     this.title = title;
