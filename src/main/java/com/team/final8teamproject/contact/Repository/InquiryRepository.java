@@ -17,6 +17,6 @@ public interface InquiryRepository extends JpaRepository<Inquiry,Long> {
   //IgnoreCase : 대소문자 구분없이 검색됨
  Page<Inquiry> findAllByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content, PageRequest of);
 
- @Query("SELECT DISTINCT i FROM Inquiry i LEFT JOIN FETCH i.contactComments WHERE i.id = :inquiryId")
- Optional<Inquiry> findByIdWithComments(@Param("inquiryId") Long inquiryId);
+// @Query("SELECT DISTINCT i FROM Inquiry i LEFT JOIN FETCH i.contactComments WHERE i.id = :inquiryId")
+// Optional<Inquiry> findByIdWithComments(@Param("inquiryId") Long inquiryId);
 }

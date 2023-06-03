@@ -129,7 +129,7 @@ public class InquiryServiceImpl implements InquiryService {
   //해당 유저의 문의글 찾는 메서드
   @Override
   public Inquiry findById(Long inquiryId) {
-    Inquiry inquiry = inquiryRepository.findByIdWithComments(inquiryId).orElseThrow(
+    Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(
         () -> new CustomException(ExceptionStatus.BOARD_NOT_EXIST)
     );
     return inquiry;
