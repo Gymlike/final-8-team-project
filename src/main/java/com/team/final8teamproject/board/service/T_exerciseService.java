@@ -20,7 +20,7 @@ import java.util.List;
 
 public interface T_exerciseService {
 
-
+    // 커밋 조작이 로컬에서말고 원격에서도 가능한지 확인하기 위한 주석.
     CreatCommentRequestDTO creatTExerciseBord(String title, String content, String imageUrl, BaseEntity base) throws NullPointerException, IOException;
 
 
