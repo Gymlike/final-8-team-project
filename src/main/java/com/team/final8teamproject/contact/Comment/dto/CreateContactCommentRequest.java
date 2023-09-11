@@ -2,6 +2,7 @@ package com.team.final8teamproject.contact.Comment.dto;
 
 
 import com.team.final8teamproject.contact.Comment.entity.ContactComment;
+import com.team.final8teamproject.contact.entity.Inquiry;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,12 +21,12 @@ public class CreateContactCommentRequest {
     this.parentId = parentId;
   }
 
-  public ContactComment toEntity(Long inquiryId, String username,String nickName, ContactComment parent,int depth) {
+  public ContactComment toEntity(Inquiry inquiry, String username,String nickName, ContactComment parent,int depth) {
     return ContactComment.builder()
         .comments(comments)
         .username(username)
         .nickName(nickName)
-        .inquiryId(inquiryId)
+        .inquiry(inquiry)
         .parent(parent)
         .depth(depth)
         .build();

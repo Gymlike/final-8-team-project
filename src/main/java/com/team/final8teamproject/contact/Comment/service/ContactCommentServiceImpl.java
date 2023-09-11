@@ -1,5 +1,7 @@
 package com.team.final8teamproject.contact.Comment.service;
 
+import static com.team.final8teamproject.contact.entity.QInquiry.inquiry;
+
 import com.team.final8teamproject.base.entity.BaseEntity;
 import com.team.final8teamproject.contact.Comment.dto.CreateContactCommentRequest;
 import com.team.final8teamproject.contact.Comment.dto.UpdateContactCommentRequest;
@@ -34,6 +36,7 @@ public class ContactCommentServiceImpl implements ContactCommentService {
   public void saveInquiryComment(Long inquiryId,
       CreateContactCommentRequest createContactCommentRequest,
       String username, String nickName) {
+
     if (!inquiryRepository.existsById(inquiryId)) {
       throw new CustomException(ExceptionStatus.BOARD_NOT_EXIST);
     } else {
@@ -48,9 +51,11 @@ public class ContactCommentServiceImpl implements ContactCommentService {
             );
         /** 부모 댓글과 자식 댓글의 게시글 아이디가 같은지 확인*/
         //v2 객체 지향 entity 에게 역할을 줌
-        parent.isInquiryId(inquiryId);
+
+
         int depth = parent.getDepth() + 1; //  자식댓글의 depth 설정 : 부모댓글의 자식 댓글이므로 + 1 함
-        ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
+        Inquiry inquiry = findInquiryById( inquiryId);
+        ContactComment contactComment = createContactCommentRequest.toEntity(inquiry, username,
             nickName, parent, depth);
         contactComment.setParent(parent); // parent = null 값이므로 현재 부모댓글을 지정해줌
         contactCommentRepository.save(contactComment);
@@ -58,11 +63,18 @@ public class ContactCommentServiceImpl implements ContactCommentService {
         /**부모댓글이 없는 경우 - 댓글 등록*/
       } else {
         int depth = 1;
-        ContactComment contactComment = createContactCommentRequest.toEntity(inquiryId, username,
+        Inquiry inquiry = findInquiryById( inquiryId);
+        ContactComment contactComment = createContactCommentRequest.toEntity(inquiry, username,
             nickName, parent, depth);
         contactCommentRepository.save(contactComment);
       }
     }
+  }
+
+  public Inquiry findInquiryById(Long inquiryId) {
+    return inquiryRepository.findById(inquiryId).orElseThrow(
+        ()-> new CustomException(ExceptionStatus.POST_IS_EMPTY)
+    );
   }
 
   @Override

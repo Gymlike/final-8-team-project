@@ -2,6 +2,7 @@ package com.team.final8teamproject.contact.Comment.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.in;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -74,17 +75,19 @@ class ContactCommentServiceImplTest {
     int depth = 1;
     CreateContactCommentRequest createContactRequest = new CreateContactCommentRequest("comments",
         null);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
 
     when(contactCommentRepository.save(any(ContactComment.class)))
-        .thenReturn(createContactRequest.toEntity(1L, "username", "nickname", null, depth));
-    when(inquiryRepository.existsById(1L))
+        .thenReturn(createContactRequest.toEntity(inquiry, "username", "nickname", null, depth));
+    when(inquiryRepository.existsById(inquiry.getId()))
         .thenReturn(true);
-
+    when(inquiryRepository.findById(inquiry.getId())).
+        thenReturn(Optional.of(inquiry));
     //when
-    contactCommentService.saveInquiryComment(1L, createContactRequest, "username", "nickname");
+    contactCommentService.saveInquiryComment(inquiry.getId(), createContactRequest, "username", "nickname");
     //then
     verify(contactCommentRepository, times(1)).save(any(ContactComment.class));
-    assertThat(createContactRequest.toEntity(1L, "username", "nickname", //저장된 댓글의 depth가 1이면 댓글임
+    assertThat(createContactRequest.toEntity(inquiry, "username", "nickname", //저장된 댓글의 depth가 1이면 댓글임
         null, depth).getDepth()).isEqualTo(1);
 
   }
@@ -96,11 +99,12 @@ class ContactCommentServiceImplTest {
     int depth = 1;
     CreateContactCommentRequest createContactRequest =
         new CreateContactCommentRequest("comments", null);
+    Inquiry inquiry = new Inquiry("ser","we","se","se",false);
 
-    when(inquiryRepository.existsById(1L))
+    when(inquiryRepository.existsById(inquiry.getId()))
         .thenReturn(false);
     //when&then
-    assertThatThrownBy(() -> contactCommentService.saveInquiryComment(1L, createContactRequest,
+    assertThatThrownBy(() -> contactCommentService.saveInquiryComment(inquiry.getId(), createContactRequest,
         "username", "nickname")).isInstanceOf(CustomException.class);
   }
 
@@ -111,24 +115,27 @@ class ContactCommentServiceImplTest {
   void saveInquiryComment_reComment() {
     //given
     //부모댓글 작성
-    ContactComment parent = new ContactComment("부모댓글", "username", 1L,
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+
+    ContactComment parent = new ContactComment("부모댓글", "username", inquiry,
         "nickName", null, 1);
 
     CreateContactCommentRequest createContactRequest =
         new CreateContactCommentRequest("comments", parent.getId());
     // 부모댓글과 자식댓글이 될 inquiryId 같은지 체크 true 일때
-    parent.isInquiryId(1L);
     int depth = parent.getDepth() + 1;
     when(contactCommentRepository.save(any(ContactComment.class)))
-        .thenReturn(createContactRequest.toEntity(1L, "username", "nickname", parent, depth));
-    when(inquiryRepository.existsById(1L))
+        .thenReturn(createContactRequest.toEntity(inquiry, "username", "nickname", parent, depth));
+    when(inquiryRepository.existsById(inquiry.getId()))
         .thenReturn(true);
+    when(inquiryRepository.findById(inquiry.getId())).
+        thenReturn(Optional.of(inquiry));
 
     //when
-    contactCommentService.saveInquiryComment(1L, createContactRequest, "username", "nickname");
+    contactCommentService.saveInquiryComment(inquiry.getId(), createContactRequest, "username", "nickname");
     //then
     verify(contactCommentRepository, times(1)).save(any(ContactComment.class));
-    assertThat(createContactRequest.toEntity(1L, "username", "nickname", parent,
+    assertThat(createContactRequest.toEntity(inquiry, "username", "nickname", parent,
             depth)//저장된 댓글의 depth가 2이면 대댓글임
         .getDepth()).isEqualTo(2);
   }
@@ -137,53 +144,33 @@ class ContactCommentServiceImplTest {
   //-------------부모댓글 있고 & 자식댓글(대댓글)인 경우 : ( 대대댓글 저장 )----------------
 
   @Test
-  public void saveInquiryComment_WithParentComment_ShouldSaveChildComment() {
+  @DisplayName("Save Inquiry Comment with Parent Comment - Success")
+  void saveInquiryComment_withParentComment() {
     // given
-    Long inquiryId = 1L;
     Long parentId = 2L;
     String username = "test";
     String nickName = "TestUser";
-    CreateContactCommentRequest request = new CreateContactCommentRequest("test comment", parentId);
 
-    ContactComment parent = request.toEntity(1L,"username","nickName",null,1);
+    Inquiry inquiry = new Inquiry("username", "nick", "title", "content", false);
+    ContactComment parentComment = new ContactComment("Parent Comment", "username", inquiry, "nickName", null, 1);
 
-    when(inquiryRepository.existsById(inquiryId)).thenReturn(true);
-    when(contactCommentRepository.findById(parentId)).thenReturn(Optional.of(parent));
+
+    // Create the request for the child comment
+    CreateContactCommentRequest request = new CreateContactCommentRequest("Child Comment", parentId);
+
+
+    when(inquiryRepository.existsById(inquiry.getId())).thenReturn(true);
+    when(contactCommentRepository.findById(parentId)).thenReturn(Optional.of(parentComment));
+    when(inquiryRepository.findById(inquiry.getId())).thenReturn(Optional.of(inquiry));
+
 
     // when
-    contactCommentService.saveInquiryComment(inquiryId, request, username, nickName);
+    contactCommentService.saveInquiryComment(inquiry.getId(), request, username, nickName);
 
     // then
     verify(contactCommentRepository).findById(parentId);
     verify(contactCommentRepository).save(any(ContactComment.class));
   }
-
-//  @Test
-//  @DisplayName("부모댓글 있고 & 자식댓글(대댓글)인 경우 -> 대대댓글을 저장 성공")
-//  void saveInquiryComment_reReComment() {
-//    //given
-//    //자식 댓글 작성
-//    ContactComment parent = new ContactComment("자식댓글", "username", 1L,
-//        "nickName", null, 2);
-//
-//    CreateContactCommentRequest createContactRequest =
-//        new CreateContactCommentRequest("comments", parent.getId());
-//    // 부모댓글과 자식댓글이 될 inquiryId 같은지 체크 true 일때
-//    parent.isInquiryId(1L);
-//    int depth = parent.getDepth() + 1;
-//    when(contactCommentRepository.save(any(ContactComment.class)))
-//        .thenReturn(createContactRequest.toEntity(1L, "username", "nickname", parent, depth));
-//    when(inquiryRepository.existsById(1L))
-//        .thenReturn(true);
-//
-//    //when
-//    contactCommentService.saveInquiryComment(1L, createContactRequest, "username", "nickname");
-//    //then
-//    verify(contactCommentRepository, times(1)).save(any(ContactComment.class));
-//    assertThat(createContactRequest.toEntity(1L, "username", "nickname", parent,
-//            depth)//저장된 댓글의 depth가 3이면 대대댓글임
-//        .getDepth()).isEqualTo(3);
-//  }
 //-----------------------------------------------------------------------------
 
   @Test
@@ -203,15 +190,17 @@ class ContactCommentServiceImplTest {
   @DisplayName("부모댓글이 있지만 해당 부모댓글이 없는 경우 예외처리  - 대댓글,대댓글 등록 실패")
   void saveInquiryComment_reComment_throw2() {
     //given
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+
     CreateContactCommentRequest createContactCommentRequest = new CreateContactCommentRequest(
         "부모댓글",
         1L);
-    ContactComment parent = createContactCommentRequest.toEntity(1L, "username",
+    ContactComment parent = createContactCommentRequest.toEntity(inquiry, "username",
         "nickName", null, 1);
     CreateContactCommentRequest createContactCommentRequest1 = new CreateContactCommentRequest(
         "대댓글",
         1L);
-    ContactComment child = createContactCommentRequest1.toEntity(1L, "username1",
+    ContactComment child = createContactCommentRequest1.toEntity(inquiry, "username1",
         "nickName1", parent, 2);
 
     lenient().when(contactCommentRepository.findById(createContactCommentRequest1.getParentId()))
@@ -230,7 +219,9 @@ class ContactCommentServiceImplTest {
   void updateInquiryComment_valid_success() {
 
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+
+    ContactComment comment = new ContactComment("댓글", "username", inquiry, "닉네임", null, 1);
     UpdateContactCommentRequest updateCommentRequest = new UpdateContactCommentRequest("수정글");
     String updateComment = updateCommentRequest.getComments();
 
@@ -251,7 +242,8 @@ class ContactCommentServiceImplTest {
   void updateInquiryComment_roleManager_success() {
 
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment = new ContactComment("댓글", "username", inquiry, "닉네임", null, 1);
     UpdateContactCommentRequest updateCommentRequest = new UpdateContactCommentRequest("수정글");
     String updateComment = updateCommentRequest.getComments();
 
@@ -271,7 +263,8 @@ class ContactCommentServiceImplTest {
   @DisplayName("댓글 수정 예외- 유효한 댓글이 아닐때  ")
   void updateInquiryComment_invalidComment_throw() {
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment = new ContactComment("댓글", "username",inquiry, "닉네임", null, 1);
     UpdateContactCommentRequest updateCommentRequest = new UpdateContactCommentRequest("수정글");
     when(contactCommentRepository.findById(1L))
         .thenReturn(Optional.empty());
@@ -287,7 +280,8 @@ class ContactCommentServiceImplTest {
   @DisplayName("댓글 수정 예외- 유효한 username 또는 매니저가 아닐때  ")
   void updateInquiryComment_invalidUsername_noManager_throw() {
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment = new ContactComment("댓글", "username",inquiry, "닉네임", null, 1);
     UpdateContactCommentRequest updateCommentRequest = new UpdateContactCommentRequest("수정글");
     when(contactCommentRepository.findById(1L))
         .thenReturn(Optional.of(comment));
@@ -303,7 +297,8 @@ class ContactCommentServiceImplTest {
   @DisplayName("댓글 삭제 성공_해당 유저글일때 ")
   void deleteInquiryComment_valid_success() {
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment = new ContactComment("댓글", "username", inquiry, "닉네임", null, 1);
     when(contactCommentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
 
     //when
@@ -316,7 +311,8 @@ class ContactCommentServiceImplTest {
   @DisplayName("댓글 삭제 성공_해당 유저가 아닌 관리자 일때 ")
   void deleteInquiryComment_UserRole_manager_success() {
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment = new ContactComment("댓글", "username",inquiry, "닉네임", null, 1);
     when(contactCommentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
     //when
     contactCommentService.deleteInquiryComment(comment.getId(), "manager", UserRoleEnum.MANAGER);
@@ -328,7 +324,8 @@ class ContactCommentServiceImplTest {
   @DisplayName("댓글 삭제 예외- 유효하지 않은 댓글 시  ")
   void deleteInquiryComment_invalidComment_throw() {
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment = new ContactComment("댓글", "username", inquiry, "닉네임", null, 1);
     when(contactCommentRepository.findById(comment.getId())).thenReturn(Optional.empty());
     //when&then
     assertThatThrownBy(
@@ -341,7 +338,8 @@ class ContactCommentServiceImplTest {
   @DisplayName("댓글 삭제 예외 ")
   void deleteInquiryComment_invalidUserAndNoManager_throw() {
     //given
-    ContactComment comment = new ContactComment("댓글", "username", 1L, "닉네임", null, 1);
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment = new ContactComment("댓글", "username",inquiry, "닉네임", null, 1);
     when(contactCommentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
     //when&then
     assertThatThrownBy(
@@ -355,8 +353,9 @@ class ContactCommentServiceImplTest {
   @DisplayName("문의글에 해당하는 댓글 리스트 같이 반환하는 서비스 호출_성공")
   void findAllByInquiryIdAndParentIsNull_success() {
     //given
-    ContactComment comment1 = new ContactComment("comment1", "usernames", 1L, "nickName", null, 1);
-    ContactComment comment2 = new ContactComment("comment2", "usernames", 1L, "nickName", comment1,
+    Inquiry inquiry = new Inquiry("username","nick","title","content",false);
+    ContactComment comment1 = new ContactComment("comment1", "usernames", inquiry, "nickName", null, 1);
+    ContactComment comment2 = new ContactComment("comment2", "usernames",inquiry, "nickName", comment1,
         2);
 
     List<ContactComment> contactCommentList = new ArrayList<>();

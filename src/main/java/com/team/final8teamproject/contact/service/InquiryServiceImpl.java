@@ -80,17 +80,12 @@ public class InquiryServiceImpl implements InquiryService {
     if (inquiry.getSecret()) {
         // 건당 조회시 작성자 닉네임이 보이기위해 이것만 nickName 으로
       if (inquiry.isNickName(nickName) || role.equals(UserRoleEnum.MANAGER)) {
-        //부모댓글를 조회하면 자식댓글도 함께 조회 됨
-        List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
-            id);
-        return new InquiryResponse(inquiry, parentComments);
+        return new InquiryResponse(inquiry);// 연관관계를 통해 부모댓글과 자식댓글 함께 반환됨
       } else {
         throw new CustomException(ExceptionStatus.SECRET_POST);
       }
     } else {
-      List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
-          id);
-      return new InquiryResponse(inquiry, parentComments);
+      return new InquiryResponse(inquiry);
     }
 
   }
@@ -120,9 +115,6 @@ public class InquiryServiceImpl implements InquiryService {
     Inquiry inquiry = findById(id);
     isWriterAndIsManager(inquiry, username, role);
     inquiryRepository.delete(inquiry);
-    // 문의글 해당 댓글 삭제
-    contactCommentService.deleteAllByInquiryId(id);
-
 
   }
 
@@ -152,7 +144,7 @@ public class InquiryServiceImpl implements InquiryService {
     List<InquiryResponse> inquiryResponses = inquiryListPage.stream().map(InquiryResponse::new)
         .toList();
     int countList = size;
-    int countPage = 5;//todo 리팩토링때  10으로 변경예정
+    int countPage = 10;
     int totalPage = totalCount / countList;
     if (totalCount % countList > 0) {
       totalPage++;

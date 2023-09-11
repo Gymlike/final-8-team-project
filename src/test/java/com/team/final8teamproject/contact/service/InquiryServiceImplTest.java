@@ -128,7 +128,7 @@ class InquiryServiceImplTest {
 
     when(inquiryRepository.findById(1L))
         .thenReturn(Optional.of(inquiry));
-    InquiryResponse inquiryResponse = new InquiryResponse(inquiry, parentComments);
+    InquiryResponse inquiryResponse = new InquiryResponse(inquiry);
     //when
     InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "nickname",
         UserRoleEnum.MEMBER);
@@ -152,7 +152,7 @@ class InquiryServiceImplTest {
 
       List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
         anyLong());
-     inquiryResponse = new InquiryResponse(inquiry, parentComments);
+     inquiryResponse = new InquiryResponse(inquiry);
 
 
     //when
@@ -181,7 +181,7 @@ class InquiryServiceImplTest {
         .thenReturn(Optional.of(inquiry));
       List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
           anyLong());
-      inquiryResponse = new InquiryResponse(inquiry, parentComments);
+      inquiryResponse = new InquiryResponse(inquiry);
 
     //when
     InquiryResponse response = inquiryServiceImpl.getSelectedInquiry(1L, "invalidUser",
@@ -206,7 +206,7 @@ class InquiryServiceImplTest {
         .thenReturn(Optional.of(inquiry));
       List<ContactComment> parentComments = contactCommentService.findAllByInquiryIdAndParentIsNull(
           anyLong());
-      inquiryResponse = new InquiryResponse(inquiry, parentComments);
+      inquiryResponse = new InquiryResponse(inquiry);
 
 
     //when&then

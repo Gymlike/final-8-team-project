@@ -1,5 +1,6 @@
 package com.team.final8teamproject.contact.Comment.entity;
 
+import com.team.final8teamproject.contact.entity.Inquiry;
 import com.team.final8teamproject.share.Timestamped;
 import com.team.final8teamproject.share.exception.CustomException;
 import com.team.final8teamproject.share.exception.ExceptionStatus;
@@ -18,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 /**
  * inquiry , user 연관관계  x  없이 구현
@@ -37,25 +39,28 @@ public class ContactComment extends Timestamped {
   private String comments;
   @Column(nullable = false)
   private String username;
-  @Column(nullable = false)
-  private Long inquiryId;
+
   @Column(nullable = false)
   private String nickName;
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parent_id")
+  @JoinColumn(name = "parent")
   private ContactComment parent;
 
   @OneToMany(mappedBy = "parent", orphanRemoval = true)
   private List<ContactComment> children = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "inquiry_id",nullable = false)
+  private Inquiry inquiry;
+
 
   private int depth;
 
   @Builder
-  public ContactComment(String comments, String username, Long inquiryId, String nickName,
+  public ContactComment(String comments, String username, Inquiry inquiry, String nickName,
       ContactComment parent, int depth) {
     this.comments = comments;
     this.username = username;
-    this.inquiryId = inquiryId;
+    this.inquiry = inquiry;
     this.nickName = nickName;
     this.parent = parent;
     this.depth = depth;
@@ -75,15 +80,10 @@ public class ContactComment extends Timestamped {
     this.parent = parent;
   }
 
-
-  public void isInquiryId(Long inquiryId) {
-    if (!this.inquiryId.equals(inquiryId)) {
-      throw new CustomException(ExceptionStatus.WRONG_POST_ID);
-    }
   }
 
 
-}
+
 
 
 

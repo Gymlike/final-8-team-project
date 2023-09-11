@@ -25,19 +25,6 @@ public class InquiryResponse {
   private List<ContactCommentResponse> comments;
   private boolean secret;
 
-  public InquiryResponse(Inquiry inquiry, List<ContactComment> comments) {
-    this.id = inquiry.getId();
-    this.title = inquiry.getTitle();
-    this.content = inquiry.getContent();
-    this.nickName = inquiry.getNickName();
-    this.createdDate = inquiry.getCreatedDate();
-    this.secret = inquiry.getSecret();
-    this.comments = comments.stream().map(ContactCommentResponse::new)
-        .sorted(Comparator.comparing(ContactCommentResponse::getCreatedDate))
-        .collect(Collectors.toList());
-
-  }
-
   public InquiryResponse(Inquiry inquiry) {
     this.id = inquiry.getId();
     this.title = inquiry.getTitle();
@@ -45,6 +32,12 @@ public class InquiryResponse {
     this.nickName = inquiry.getNickName();
     this.createdDate = inquiry.getCreatedDate();
     this.secret = inquiry.getSecret();
+    this.comments = inquiry.getContactComments().stream()
+        .filter(comment -> comment.getParent() == null )//부모댓글만 조회 ( 이유 : 부모댓글이 자식댓글까지 포함하고있기 때문임)
+        .map(ContactCommentResponse::new)
+        .sorted(Comparator.comparing(ContactCommentResponse::getCreatedDate))
+        .collect(Collectors.toList());
 
   }
+
 }
